@@ -1,0 +1,545 @@
+---
+title: "Probabilità congiunta"
+subtitle: "Distribuzioni congiunte e indipendenza statistica"
+version: "1.0"
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+toc-depth: 2
+lang: it
+
+execute:
+  echo: true
+
+format:
+    revealjs:
+      theme: [default, ../revealjs.scss]
+      title-slide-attributes:
+        data-background-color: "#0072bc"
+      slide-number: c
+      show-slide-number: print
+      highlight-style: github
+      math: mathjax
+      mermaid:
+        theme: neutral
+      
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+```{r}
+#| echo: false
+#| output: false
+library(tibble)
+library(dplyr)
+library(knitr)
+library(kableExtra)
+```
+
+## Obiettivo {.unnumbered .unlisted}
+
+In questa prima parte della lezione introduciamo:
+
+- la **distribuzione di probabilità congiunta** di due variabili casuali;
+- le **distribuzioni marginali**;
+- il concetto di **indipendenza statistica**;
+- **covarianza** e **correlazione**.
+
+Questi concetti sono fondamentali per l'inferenza bayesiana e la modellazione statistica.
+
+---
+
+## Perché studiare la probabilità congiunta?
+
+In psicologia, spesso misuriamo **più variabili** sulla stessa persona:
+
+- ansia e depressione;
+- intelligenza verbale e numerica;
+- tempo di reazione e accuratezza.
+
+**Domanda chiave:** come si relazionano queste variabili tra loro?
+
+> La distribuzione congiunta descrive il comportamento **simultaneo** di due o più variabili casuali.
+
+---
+
+## Esempio motivante: lancio di tre monete
+
+Consideriamo il lancio di tre monete equilibrate.
+
+Definiamo due variabili casuali:
+
+- $X$ = numero totale di teste (0, 1, 2, 3)
+- $Y$ = testa al primo lancio? (0 = no, 1 = sì)
+
+**Domanda:** qual è la probabilità di osservare contemporaneamente $X = 2$ e $Y = 1$?
+
+---
+
+## Lo spazio campionario
+
+| Esito | $X$ | $Y$ | $P(\omega)$ |
+|-------|-----|-----|-------------|
+| TTT | 3 | 1 | 1/8 |
+| TTC | 2 | 1 | 1/8 |
+| TCT | 2 | 1 | 1/8 |
+| CTT | 2 | 0 | 1/8 |
+| TCC | 1 | 1 | 1/8 |
+| CTC | 1 | 0 | 1/8 |
+| CCT | 1 | 0 | 1/8 |
+| CCC | 0 | 0 | 1/8 |
+
+---
+
+## La tabella di probabilità congiunta
+
+Raggruppiamo per valori di $X$ e $Y$:
+
+| $X \backslash Y$ | $Y=0$ | $Y=1$ | $P(X)$ |
+|------------------|-------|-------|--------|
+| $X=0$ | 1/8 | 0 | 1/8 |
+| $X=1$ | 2/8 | 1/8 | 3/8 |
+| $X=2$ | 1/8 | 2/8 | 3/8 |
+| $X=3$ | 0 | 1/8 | 1/8 |
+| $P(Y)$ | 4/8 | 4/8 | 1 |
+
+> Ogni cella contiene $P(X = x, Y = y)$.
+
+---
+
+## Distribuzione congiunta: definizione
+
+La **funzione di probabilità congiunta** di due v.c. discrete $X$ e $Y$ associa una probabilità a ogni coppia $(x, y)$:
+
+$$
+P(X = x, Y = y) = P_{X,Y}(x, y).
+$$
+
+**Proprietà:**
+
+1. $0 \leq P(x, y) \leq 1$ per ogni coppia;
+2. $\sum_x \sum_y P(x, y) = 1$.
+
+---
+
+## Distribuzioni marginali
+
+Le **distribuzioni marginali** descrivono ciascuna variabile *singolarmente*, ignorando l'altra.
+
+$$
+P_X(x) = \sum_y P(X = x, Y = y)
+$$
+
+$$
+P_Y(y) = \sum_x P(X = x, Y = y)
+$$
+
+> "Marginale" perché i totali appaiono ai **margini** della tabella.
+
+---
+
+## Esempio: calcolare le marginali
+
+Dalla tabella precedente:
+
+**Marginale di $X$:**
+
+- $P(X=0) = 1/8 + 0 = 1/8$
+- $P(X=1) = 2/8 + 1/8 = 3/8$
+- $P(X=2) = 1/8 + 2/8 = 3/8$
+- $P(X=3) = 0 + 1/8 = 1/8$
+
+---
+
+**Marginale di $Y$:**
+
+- $P(Y=0) = 1/8 + 2/8 + 1/8 + 0 = 4/8$
+- $P(Y=1) = 0 + 1/8 + 2/8 + 1/8 = 4/8$
+
+---
+
+## Indipendenza statistica: definizione
+
+Due variabili casuali $X$ e $Y$ sono **indipendenti** se e solo se:
+
+$$
+P(X = x, Y = y) = P_X(x) \cdot P_Y(y),
+$$
+
+per **tutte** le coppie $(x, y)$.
+
+**A parole:** conoscere il valore di una variabile non fornisce informazione sull'altra.
+
+---
+
+## Verifica dell'indipendenza
+
+Per verificare l'indipendenza, controlliamo se ogni cella della tabella congiunta è uguale al prodotto delle marginali.
+
+**Esempio:** $X$ e $Y$ sono indipendenti?
+
+Verifichiamo per $(X=2, Y=1)$:
+
+- $P(X=2, Y=1) = 2/8 = 0.25$
+- $P(X=2) \cdot P(Y=1) = 3/8 \cdot 4/8 = 12/64 = 0.1875$
+
+$0.25 \neq 0.1875$ → **Non sono indipendenti!**
+
+---
+
+## Conseguenze dell'indipendenza
+
+Se $X$ e $Y$ sono indipendenti:
+
+1. $P(X | Y) = P(X)$ (conoscere $Y$ non cambia $P(X)$);
+2. $\mathbb{E}(XY) = \mathbb{E}(X) \cdot \mathbb{E}(Y)$;
+3. $\text{Cov}(X, Y) = 0$;
+4. $\mathbb{V}(X + Y) = \mathbb{V}(X) + \mathbb{V}(Y)$.
+
+> L'indipendenza è un'assunzione **forte** e spesso irrealistica in psicologia!
+
+---
+
+## Covarianza: definizione
+
+La **covarianza** misura come due variabili "variano insieme":
+
+$$
+\text{Cov}(X, Y) = \mathbb{E}\left[(X - \mu_X)(Y - \mu_Y)\right].
+$$
+
+**Formula operativa:**
+
+$$
+\text{Cov}(X, Y) = \mathbb{E}(XY) - \mathbb{E}(X)\mathbb{E}(Y).
+$$
+
+---
+
+## Interpretazione della covarianza
+
+- $\text{Cov}(X, Y) > 0$: quando $X$ è alto, $Y$ tende ad essere alto.
+- $\text{Cov}(X, Y) < 0$: quando $X$ è alto, $Y$ tende ad essere basso.
+- $\text{Cov}(X, Y) = 0$: nessuna relazione lineare.
+
+**Problema:** la covarianza dipende dalle unità di misura!
+
+---
+
+## Correlazione: definizione
+
+Il **coefficiente di correlazione** standardizza la covarianza:
+
+$$
+\rho_{XY} = \frac{\text{Cov}(X, Y)}{\sigma_X \sigma_Y}.
+$$
+
+**Proprietà:**
+
+- $-1 \leq \rho \leq 1$;
+- $\rho = 1$: relazione lineare perfetta positiva;
+- $\rho = -1$: relazione lineare perfetta negativa;
+- $\rho = 0$: variabili incorrelate.
+
+---
+
+## Attenzione: incorrelazione ≠ indipendenza!
+
+**Fatto importante:**
+
+$$
+\text{Indipendenza} \Rightarrow \text{Cov}(X,Y) = 0.
+$$
+
+Ma **non** vale il viceversa!
+
+> Due variabili possono avere covarianza zero ed essere comunque **dipendenti** (se la relazione non è lineare).
+
+---
+
+## Esempio classico: incorrelazione senza indipendenza
+
+Consideriamo $X$ e $Y$ con distribuzione congiunta:
+
+| $(x, y)$ | (0, 0) | (1, 1) | (1, -1) | (2, 0) |
+|----------|--------|--------|---------|--------|
+| $P$ | 1/4 | 1/4 | 1/4 | 1/4 |
+
+Si può dimostrare che $\text{Cov}(X,Y) = 0$, ma $X$ e $Y$ **non** sono indipendenti.
+
+---
+
+## Esercizio 1 — Tabella congiunta
+
+Un ricercatore studia ansia ($A$) e depressione ($D$) in una popolazione. La distribuzione congiunta è:
+
+| $A \backslash D$ | Bassa | Alta | 
+|------------------|-------|------|
+| Bassa | 0.50 | 0.10 |
+| Alta | 0.15 | 0.25 |
+
+**Calcola** le distribuzioni marginali di $A$ e $D$.
+
+---
+
+### Soluzione Esercizio 1
+
+**Marginale di $A$:**
+
+- $P(A = \text{Bassa}) = 0.50 + 0.10 = 0.60$.
+- $P(A = \text{Alta}) = 0.15 + 0.25 = 0.40$.
+
+**Marginale di $D$:**
+
+- $P(D = \text{Bassa}) = 0.50 + 0.15 = 0.65$.
+- $P(D = \text{Alta}) = 0.10 + 0.25 = 0.35$.
+
+---
+
+## Esercizio 2 — Verifica dell'indipendenza
+
+Usando i dati dell'Esercizio 1, verifica se ansia e depressione sono indipendenti.
+
+---
+
+### Soluzione Esercizio 2
+
+Calcoliamo i prodotti delle marginali:
+
+| $A \backslash D$ | Bassa | Alta |
+|------------------|-------|------|
+| Bassa | $0.60 \times 0.65 = 0.39$ | $0.60 \times 0.35 = 0.21$ |
+| Alta | $0.40 \times 0.65 = 0.26$ | $0.40 \times 0.35 = 0.14$ |
+
+Confrontiamo con la distribuzione congiunta:
+
+- $P(A=\text{Bassa}, D=\text{Bassa}) = 0.50 \neq 0.39$.
+
+**Conclusione:** Ansia e depressione **non sono indipendenti**.
+
+---
+
+## Esercizio 3 — Covarianza
+
+Due variabili $X$ e $Y$ hanno la seguente distribuzione congiunta:
+
+| $(x, y)$ | (1, 2) | (1, 4) | (3, 2) | (3, 4) |
+|----------|--------|--------|--------|--------|
+| $P$ | 0.1 | 0.2 | 0.3 | 0.4 |
+
+**Calcola** $\text{Cov}(X, Y)$ usando la formula $\mathbb{E}(XY) - \mathbb{E}(X)\mathbb{E}(Y)$.
+
+---
+
+### Soluzione Esercizio 3 (passo 1)
+
+**Calcolo $\mathbb{E}(X)$:**
+
+- $P(X=1) = 0.1 + 0.2 = 0.3$
+- $P(X=3) = 0.3 + 0.4 = 0.7$
+- $\mathbb{E}(X) = 1(0.3) + 3(0.7) = 0.3 + 2.1 = 2.4$
+
+**Calcolo $\mathbb{E}(Y)$:**
+
+- $P(Y=2) = 0.1 + 0.3 = 0.4$
+- $P(Y=4) = 0.2 + 0.4 = 0.6$
+- $\mathbb{E}(Y) = 2(0.4) + 4(0.6) = 0.8 + 2.4 = 3.2$
+
+---
+
+### Soluzione Esercizio 3 (passo 2)
+
+**Calcolo $\mathbb{E}(XY)$:**
+
+$$
+\mathbb{E}(XY) = (1 \cdot 2)(0.1) + (1 \cdot 4)(0.2) + (3 \cdot 2)(0.3) + (3 \cdot 4)(0.4).
+$$
+$$
+= 0.2 + 0.8 + 1.8 + 4.8 = 7.6.
+$$
+
+**Covarianza:**
+
+$$
+\text{Cov}(X, Y) = 7.6 - (2.4)(3.2) = 7.6 - 7.68 = -0.08.
+$$
+
+> La covarianza è leggermente negativa (relazione inversa debole).
+
+---
+
+## Esercizio 4 — Correlazione
+
+Usando i dati dell'Esercizio 3, calcola la correlazione $\rho_{XY}$.
+
+*Suggerimento:* prima calcola le varianze di $X$ e $Y$.
+
+---
+
+### Soluzione Esercizio 4
+
+**Varianza di $X$:**
+
+- $\mathbb{E}(X^2) = 1^2(0.3) + 3^2(0.7) = 0.3 + 6.3 = 6.6$.
+- $\mathbb{V}(X) = 6.6 - 2.4^2 = 6.6 - 5.76 = 0.84$.
+
+**Varianza di $Y$:**
+
+- $\mathbb{E}(Y^2) = 2^2(0.4) + 4^2(0.6) = 1.6 + 9.6 = 11.2$.
+- $\mathbb{V}(Y) = 11.2 - 3.2^2 = 11.2 - 10.24 = 0.96$.
+
+---
+
+**Correlazione:**
+
+$$
+\rho_{XY} = \frac{-0.08}{\sqrt{0.84 \cdot 0.96}} = \frac{-0.08}{\sqrt{0.8064}} = \frac{-0.08}{0.898} \approx -0.089.
+$$
+
+---
+
+## Esercizio 5 — Test di indipendenza
+
+Un questionario misura stress ($S$) e qualità del sonno ($Q$):
+
+| $S \backslash Q$ | Buono | Scarso |
+|------------------|-------|--------|
+| Basso | 0.35 | 0.15 |
+| Alto | 0.15 | 0.35 |
+
+Le variabili sono indipendenti?
+
+---
+
+### Soluzione Esercizio 5
+
+**Marginali:**
+
+- $P(S=\text{Basso}) = 0.50$, $P(S=\text{Alto}) = 0.50$.
+- $P(Q=\text{Buono}) = 0.50$, $P(Q=\text{Scarso}) = 0.50$.
+
+**Prodotto delle marginali:**
+
+$P(S) \cdot P(Q) = 0.50 \times 0.50 = 0.25$ per tutte le celle.
+
+---
+
+**Confronto:**
+
+- $P(S=\text{Basso}, Q=\text{Buono}) = 0.35 \neq 0.25$.
+
+**Conclusione:** $S$ e $Q$ **non sono indipendenti**.
+
+> Alto stress → sonno scarso; basso stress → sonno buono.
+
+---
+
+## Esercizio 6 — Costruire una distribuzione indipendente
+
+Se $X$ e $Y$ fossero **indipendenti** con le marginali:
+
+- $P(X=0) = 0.3$, $P(X=1) = 0.7$.
+- $P(Y=0) = 0.4$, $P(Y=1) = 0.6$.
+
+**Costruisci** la tabella di probabilità congiunta.
+
+---
+
+### Soluzione Esercizio 6
+
+Se indipendenti: $P(X=x, Y=y) = P(X=x) \cdot P(Y=y)$.
+
+| $X \backslash Y$ | $Y=0$ | $Y=1$ | $P(X)$ |
+|------------------|-------|-------|--------|
+| $X=0$ | $0.3 \times 0.4 = 0.12$ | $0.3 \times 0.6 = 0.18$ | 0.30 |
+| $X=1$ | $0.7 \times 0.4 = 0.28$ | $0.7 \times 0.6 = 0.42$ | 0.70 |
+| $P(Y)$ | 0.40 | 0.60 | 1.00 |
+
+---
+
+## Esercizio 7 — Varianza della somma
+
+Due punteggi $A$ e $B$ hanno:
+
+- $\mathbb{E}(A) = 50$, $\mathbb{V}(A) = 100$.
+- $\mathbb{E}(B) = 30$, $\mathbb{V}(B) = 64$.
+- $\text{Cov}(A, B) = 40$.
+
+**Calcola** $\mathbb{E}(A + B)$ e $\mathbb{V}(A + B)$.
+
+---
+
+### Soluzione Esercizio 7
+
+**Valore atteso della somma:**
+
+$$
+\mathbb{E}(A + B) = \mathbb{E}(A) + \mathbb{E}(B) = 50 + 30 = 80.
+$$
+
+**Varianza della somma:**
+
+$$
+\mathbb{V}(A + B) = \mathbb{V}(A) + \mathbb{V}(B) + 2\text{Cov}(A, B).
+$$
+$$
+= 100 + 64 + 2(40) = 164 + 80 = 244.
+$$
+
+> La covarianza positiva **aumenta** la varianza della somma!
+
+---
+
+## Proprietà importanti: riepilogo
+
+| Proprietà | Formula |
+|-----------|---------|
+| Simmetria | $\text{Cov}(X,Y) = \text{Cov}(Y,X)$ |
+| Varianza come caso speciale | $\text{Cov}(X,X) = \mathbb{V}(X)$ |
+| Costanti | $\text{Cov}(X, c) = 0$ |
+| Linearità | $\text{Cov}(aX, bY) = ab \cdot \text{Cov}(X,Y)$ |
+| Varianza della somma | $\mathbb{V}(X+Y) = \mathbb{V}(X) + \mathbb{V}(Y) + 2\text{Cov}(X,Y)$ |
+| Indipendenza | $X \perp Y \Rightarrow \text{Cov}(X,Y) = 0$ |
+
+---
+
+## Rilevanza per l'inferenza bayesiana
+
+La distribuzione congiunta è centrale nel teorema di Bayes:
+
+$$
+P(\theta | \text{dati}) = \frac{P(\text{dati} | \theta) \cdot P(\theta)}{P(\text{dati})}.
+$$
+
+dove:
+
+- $P(\theta, \text{dati})$ = distribuzione congiunta;
+- $P(\theta | \text{dati})$ = distribuzione a posteriori;
+- $P(\text{dati})$ = marginale (costante di normalizzazione).
+
+---
+
+## Riepilogo
+
+1. La **distribuzione congiunta** $P(X, Y)$ descrive il comportamento simultaneo di due v.c..
+
+2. Le **marginali** si ottengono sommando su una variabile.
+
+3. **Indipendenza**: $P(X, Y) = P(X) \cdot P(Y)$ per tutte le coppie.
+
+4. **Covarianza**: $\text{Cov}(X,Y) = \mathbb{E}(XY) - \mathbb{E}(X)\mathbb{E}(Y)$.
+
+5. **Correlazione**: $\rho = \text{Cov}(X,Y) / (\sigma_X \sigma_Y)$, con $-1 \leq \rho \leq 1$.
+
+6. Incorrelazione ($\rho = 0$) **non implica** indipendenza!
+
+---
+
+## Prossima parte
+
+Nel secondo segmento vedremo come R semplifica questi calcoli e useremo le **simulazioni** per verificare i concetti.

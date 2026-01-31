@@ -1,0 +1,719 @@
+---
+title: "Dal laboratorio al mondo reale"
+subtitle: "Perché il sistema ha fallito — Segmento 1"
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+lang: it
+
+execute:
+  echo: true
+
+format:
+  revealjs:
+    theme: [default, ../revealjs.scss]
+    title-slide-attributes:
+      data-background-color: "#0072bc"
+    slide-number: c
+    show-slide-number: print
+    highlight-style: github
+    math: mathjax
+
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+library(ggplot2)
+library(dplyr)
+set.seed(42)
+```
+
+## Obiettivi {.unnumbered .unlisted}
+
+1. Comprendere la portata della **crisi di replicabilità** in psicologia.
+2. Identificare le **cattive pratiche** che l'hanno causata.
+3. Capire come il **p-hacking** distorce la letteratura.
+4. Riconoscere l'**HARKing** e il **garden of forking paths**.
+5. Collegare i problemi concettuali alle **conseguenze empiriche**.
+
+# Parte 1: la crisi di replicabilità
+
+## Un esperimento storico
+
+Nel 2015, l'**Open Science Collaboration** ha tentato di replicare **100 studi** pubblicati su tre prestigiose riviste di psicologia.
+
+. . .
+
+Il team includeva **270 ricercatori** da tutto il mondo, con protocolli rigorosi e campioni adeguati.
+
+---
+
+## I risultati
+
+```{r}
+#| echo: false
+
+# Dati simulati basati su OSC 2015
+df_osc <- data.frame(
+  categoria = c("Risultato significativo\nnella replica", 
+                "Risultato non significativo\nnella replica"),
+  percentuale = c(36, 64)
+)
+
+ggplot(df_osc, aes(x = categoria, y = percentuale, fill = categoria)) +
+  geom_col(width = 0.6) +
+  geom_text(aes(label = paste0(percentuale, "%")), vjust = -0.5, size = 6, fontface = "bold") +
+  scale_fill_manual(values = c("steelblue", "coral")) +
+  labs(title = "Open Science Collaboration (2015)",
+       subtitle = "Replica di 100 studi di psicologia",
+       x = "", y = "Percentuale") +
+  ylim(0, 80) +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "none")
+```
+
+---
+
+## Non solo la significatività
+
+Anche quando le repliche trovavano risultati significativi:
+
+```{r}
+#| echo: false
+
+df_effetti <- data.frame(
+  tipo = c("Studi originali", "Repliche"),
+  effetto_medio = c(0.40, 0.20)
+)
+
+ggplot(df_effetti, aes(x = tipo, y = effetto_medio, fill = tipo)) +
+  geom_col(width = 0.5) +
+  geom_text(aes(label = paste0("d = ", effetto_medio)), vjust = -0.5, size = 5) +
+  scale_fill_manual(values = c("coral", "steelblue")) +
+  labs(title = "Gli effetti si 'restringono'",
+       subtitle = "Effect size medio negli studi originali vs repliche",
+       x = "", y = "Effect size (d di Cohen)") +
+  ylim(0, 0.55) +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "none")
+```
+
+Gli effetti nelle repliche erano in media la **metà** di quelli originali.
+
+---
+
+## Cosa significa "crisi"?
+
+Non stiamo parlando di:
+
+- qualche studio isolato che non si replica;
+- errori occasionali di singoli ricercatori;
+- problemi di un sottocampo specifico.
+
+. . .
+
+Stiamo parlando di un **problema sistemico** che mette in discussione decenni di letteratura scientifica psicologica.
+
+---
+
+## Altri dati allarmanti
+
+**Many Labs 1 (2014):** 36 laboratori replicano 13 effetti classici:
+
+- solo **10 su 13** si replicano in modo consistente.
+
+. . .
+
+**Many Labs 3 (2016):** 10 effetti "ben stabiliti":
+
+- solo **3 su 10** si replicano.
+
+. . .
+
+**Registered Replication Reports:** repliche pre-registrate di singoli effetti famosi:
+
+- molti effetti "iconici" non si replicano o sono molto più piccoli.
+
+---
+
+## Alcuni esempi celebri
+
+| Effetto | Claim originale | Replica |
+|---------|-----------------|---------|
+| **Ego depletion** | L'autocontrollo si esaurisce | $d$ ≈ 0 |
+| **Power posing** | Posture di potere aumentano testosterone | Non si replica |
+| **Priming sociale** | Parole sulla vecchiaia rallentano il cammino | Non si replica |
+| **Effetto Lady Macbeth** | Senso di colpa → desiderio di lavarsi | Non si replica |
+
+. . .
+
+Questi erano effetti pubblicati su **Science**, su **Psychological Science** e su altre riviste prestigiose.
+
+---
+
+## La domanda cruciale
+
+> Come è possibile che così tanti studi "rigorosi", pubblicati su riviste prestigiose, con peer review, non replichino?
+
+. . .
+
+La risposta sta nelle **pratiche** di ricerca — non (solo) nella malafede.
+
+# Parte 2: il p-hacking
+
+## Cos'è il p-hacking?
+
+::: {.callout-note}
+## Definizione
+
+Il **p-hacking** consiste nel manipolare dati, analisi o procedure di raccolta dati fino a ottenere un p-value inferiore a 0.05.
+:::
+
+. . .
+
+Non richiede falsificazione dei dati — basta **flessibilità** nelle scelte analitiche.
+
+---
+
+## Le forme del p-hacking
+
+1. **Escludere selettivamente** partecipanti o outlier.
+2. **Aggiungere covariate** finché p < .05.
+3. **Testare più variabili dipendenti** e riportare solo quella significativa.
+4. **Fermare la raccolta dati** appena p < .05.
+5. **Trasformare variabili** (log, radice quadrata) fino a ottenere la significatività.
+6. **Dividere/unire gruppi** in modi diversi.
+
+---
+
+## Una simulazione: quanto è facile?
+
+Simuliamo uno studio dove **non c'è nessun effetto reale**:
+
+```{r}
+set.seed(123)
+
+# 10 variabili dipendenti, tutte con effetto = 0
+n <- 20
+gruppo <- rep(c("A", "B"), each = n/2)
+
+# Generiamo 10 VD casuali (nessun effetto reale)
+vd <- matrix(rnorm(n * 10), nrow = n, ncol = 10)
+colnames(vd) <- paste0("VD_", 1:10)
+
+# Testiamo tutte le VD
+p_values <- sapply(1:10, function(i) {
+  t.test(vd[gruppo == "A", i], vd[gruppo == "B", i])$p.value
+})
+```
+
+---
+
+```{r}
+data.frame(Variabile = paste0("VD_", 1:10), 
+           p_value = round(p_values, 3),
+           Significativo = ifelse(p_values < 0.05, "Sì ⚠️", "No"))
+```
+
+---
+
+## Il risultato
+
+```{r}
+cat("Variabili significative (p < .05):", sum(p_values < 0.05), "su 10\n")
+cat("Probabilità attesa per caso:", "0.5 (= 10 × 0.05)\n")
+```
+
+. . .
+
+::: {.callout-warning}
+Anche senza alcun effetto reale, testando 10 variabili abbiamo circa il **40% di probabilità** di trovarne almeno una significativa!
+:::
+
+---
+
+
+
+
+
+
+
+
+
+##  La matematica del p-hacking
+
+**Il punto di partenza: una singola ipotesi**
+
+Quando testiamo **una sola ipotesi** con livello di significatività:
+
+$$
+\alpha = 0.05
+$$
+questo significa:
+
+- **se H₀ è vera**
+- abbiamo il **5% di probabilità**
+- di ottenere un risultato “significativo” **per puro caso**.
+
+👉 Questo è un **falso positivo**.
+
+---
+
+## Probabilità di NON ottenere un falso positivo
+
+Se la probabilità di un falso positivo è 0.05, allora la probabilità dell'evento complementare è:
+
+$$
+P(\text{nessun FP}) = 1 - 0.05 = 0.95.
+$$
+
+Quindi:
+
+- con **un test**
+- abbiamo il **95% di probabilità** di *non* commettere un falso positivo.
+
+---
+
+## Cosa succede se facciamo più test?
+
+Supponiamo ora di testare:
+
+- **k ipotesi indipendenti**,
+- tutte con $\alpha = 0.05$.
+
+Domanda chiave:
+
+> Qual è la probabilità che **nessuno** dei test produca un falso positivo?
+
+---
+
+## Probabilità che TUTTI i test siano “puliti”
+
+Se i test sono **indipendenti**:
+
+- la probabilità che il primo non dia FP è 0.95,
+- lo stesso vale per il secondo, il terzo, …
+
+Quindi la probabilità che **tutti e k** i test non diano FP è:
+
+$$
+P(\text{nessun FP in k test}) = (0.95)^k = (1 - 0.05)^k.
+$$
+
+---
+
+## Dal “nessun FP” ad “almeno un FP”
+
+Gli eventi:
+
+- “**nessun falso positivo**”,
+- “**almeno un falso positivo**”,
+
+sono **complementari**.
+
+👉 Se uno NON accade, accade l’altro.
+
+---
+
+## Uso della probabilità complementare
+
+Per definizione:
+
+$$
+P(\text{almeno un FP}) = 1 - P(\text{nessun FP}).
+$$
+
+Sostituendo il risultato di prima:
+
+$$
+P(\text{almeno un FP}) = 1 - (1 - 0.05)^k.
+$$
+
+---
+
+## Interpretazione intuitiva
+
+- Ogni singolo test ha solo il **5%** di rischio,
+- ma ripetere molti test **accumula il rischio**.
+
+👉 Più ipotesi proviamo:
+
+- più è **probabile** trovare *qualcosa* di “significativo”,
+- anche se **tutte le H₀ sono vere**.
+
+---
+
+## Slide — Esempio numerico concreto
+
+Se testiamo:
+
+- $k = 1$ → $P = 5\%$,
+- $k = 5$ → $P \approx 22.6\%$,
+- $k = 10$ → $P \approx 40.1\%$,
+- $k = 20$ → $P \approx 64.2\%$.
+
+👉 Con molti test, il falso positivo diventa **probabile**, non raro.
+
+---
+
+## Collegamento con il p-hacking
+
+Il *p*-hacking consiste nel:
+
+- provare molte analisi,
+- molte variabili,
+- molte trasformazioni.
+
+👉 Ogni tentativo aumenta **k**,
+👉 e quindi aumenta la probabilità di
+
+> ottenere un risultato “significativo” **per puro caso**.
+
+---
+
+## Messaggio finale
+
+Un singolo test con $\alpha = 0.05$ è controllato.
+
+Molti test **senza correzione**:
+
+- rendono il valore-$p$ **fuorviante**,
+- anche in assenza totale di effetti reali.
+
+👉 Questa formula rende visibile il problema.
+
+---
+
+```{r}
+#| echo: false
+
+k <- 1:30
+prob_fp <- 1 - (1 - 0.05)^k
+
+df_fp <- data.frame(k = k, prob = prob_fp)
+
+ggplot(df_fp, aes(x = k, y = prob)) +
+  geom_line(linewidth = 1.2, color = "coral") +
+  geom_point(size = 2, color = "coral") +
+  geom_hline(yintercept = 0.5, linetype = "dashed", color = "gray50") +
+  annotate("text", x = 15, y = 0.55, label = "50% di probabilità", color = "gray50") +
+  scale_y_continuous(labels = scales::percent) +
+  labs(title = "Probabilità di almeno un falso positivo",
+       x = "Numero di test effettuati", y = "Probabilità") +
+  theme_minimal(base_size = 14)
+```
+
+---
+
+## Simmons, Nelson & Simonsohn (2011)
+
+Nel famoso paper "False-Positive Psychology", gli autori dimostrano che con scelte analitiche "ragionevoli" si può ottenere $p$ < .05 anche per effetti **impossibili**.
+
+. . .
+
+**L'esperimento:** dimostrare che ascoltare "When I'm Sixty-Four" dei Beatles ringiovanisce i partecipanti.
+
+. . .
+
+**Risultato:** $p$ = .04 (!!)
+
+---
+
+## Come hanno fatto?
+
+Usando solo pratiche **comuni e accettate**:
+
+1. Raccogliere dati fino ad ottenere $p$ < .05 o a raggiungere un $n$ massimo.
+2. Includere 2-3 covariate "di controllo".
+3. Testare 2-3 variabili dipendenti correlate.
+4. Escludere outlier con criteri post-hoc.
+
+. . .
+
+Nessuna frode, nessun dato inventato — solo **flessibilità analitica**.
+
+---
+
+## I gradi di libertà del ricercatore
+
+::: {.callout-important}
+## Researcher degrees of freedom
+
+Ogni studio comporta **decine di decisioni** che potrebbero essere prese diversamente:
+
+- come definire le variabili?
+- quali partecipanti escludere?
+- quali covariate includere?
+- come gestire i dati mancanti?
+- quale test statistico usare?
+
+Ognuna di queste scelte può influenzare il valore-$p$.
+:::
+
+# Parte 3: HARKing
+
+## Cos'è l'HARKing?
+
+::: {.callout-note}
+## Definizione
+
+**HARKing** = *Hypothesizing After the Results are Known*
+
+Presentare ipotesi formulate **dopo** aver visto i risultati come se fossero state fatte **prima**.
+:::
+
+---
+
+## Un esempio
+
+**Cosa è successo realmente:**
+
+1. Studio sull'effetto di $X$ su $Y$.
+2. X non ha effetto su $Y$ ($p$ = .34).
+3. Ma X ha effetto su $Z$ ($p$ = .02) — scoperto esplorando i dati.
+4. L'articolo riporta: "Abbiamo ipotizzato che $X$ influenzi $Z$".
+
+---
+
+## Il problema
+
+- L'ipotesi su $Z$ non era pre-specificata.
+- Testare più variabili aumenta i falsi positivi.
+- Il lettore pensa che fosse una predizione a priori.
+
+---
+
+## Perché è problematico?
+
+```{r}
+#| echo: false
+
+# Simulazione: 40 variabili, cercando significatività
+set.seed(123)
+n_var <- 40
+p_vals <- runif(n_var, 0, 1)  # P-values uniformi sotto H0
+p_vals_sorted <- sort(p_vals)
+
+df_hark <- data.frame(
+  variabile = factor(1:n_var),
+  p_value = p_vals_sorted,
+  significativo = p_vals_sorted < 0.05
+)
+
+ggplot(df_hark, aes(x = variabile, y = p_value, fill = significativo)) +
+  geom_col() +
+  geom_hline(yintercept = 0.05, linetype = "dashed", color = "darkred", linewidth = 1) +
+  scale_fill_manual(values = c("gray70", "coral")) +
+  labs(title = "40 variabili testate, effetto reale = 0 per tutte",
+       subtitle = "Il ricercatore 'scopre' un'ipotesi per quelle significative",
+       x = "Variabile (ordinata per p-value)", y = "p-value") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "none",
+        axis.text.x = element_blank())
+```
+
+---
+
+## La logica distorta
+
+**Ragionamento corretto:**
+
+> "Avevo la previsione $A$. Ho testato $A$. Ho trovato $A$. Questo supporta la mia teoria."
+
+. . .
+
+**HARKing (Hypothesizing After Results are Known):**
+
+> "Ho testato $A$, $B$, $C$, $D$. Ho trovato solo $C$. Costruisco una teoria basandomi su $C$ e presento il risultato come se l'avessi previsto."
+
+. . .
+
+Il secondo caso non fornisce alcuna evidenza — è **pura selezione a posteriori**.
+
+---
+
+## Un'analogia: il cecchino texano
+
+```{r}
+#| echo: false
+
+# Visualizzazione della fallacia del cecchino texano
+set.seed(789)
+punti <- data.frame(
+  x = rnorm(50, 0, 2),
+  y = rnorm(50, 0, 2)
+)
+
+ggplot(punti, aes(x = x, y = y)) +
+  geom_point(size = 3, alpha = 0.7) +
+  # Disegniamo un cerchio attorno a un cluster casuale
+  annotate("path",
+           x = -1.5 + 1.2*cos(seq(0, 2*pi, length.out = 100)),
+           y = 0.5 + 1.2*sin(seq(0, 2*pi, length.out = 100)),
+           color = "coral", linewidth = 2) +
+  labs(title = "La fallacia del cecchino texano",
+       subtitle = "Prima spara, poi disegna il bersaglio attorno ai fori") +
+  theme_minimal(base_size = 14) +
+  theme(axis.text = element_blank(),
+        axis.title = element_blank())
+```
+
+> Prima spara a caso sul fienile, poi disegna il bersaglio attorno al cluster di fori.
+
+# Parte 4: the garden of forking paths
+
+## Il giardino dei sentieri che si biforcano
+
+Andrew Gelman ha coniato questa espressione (presa da Borges) per descrivere un problema più sottile del p-hacking intenzionale.
+
+. . .
+
+::: {.callout-note}
+## Garden of forking paths
+
+Ad ogni bivio nell'analisi, il ricercatore fa una scelta. Ogni scelta influenza il risultato. Ma le scelte alternative **non vengono considerate** nel calcolo del valore-$p$.
+:::
+
+---
+
+## Un esempio concreto
+
+**Studio:** l'effetto dell'umore sulla creatività
+
+Scelte da fare:
+
+1. Come misurare la creatività? (Test A, Test B, combinazione?).
+2. Come misurare l'umore? (Scala X, Scala Y, item singoli?).
+3. Partecipanti sotto i 18 anni: includere o escludere?
+4. Outlier: definirli come ±2 SD, ±3 SD, o con altri criteri?
+5. Covariate: includere età? genere? entrambi? nessuno?
+
+---
+
+## Quanti percorsi sono possibili?
+
+Se ogni scelta ha 3 opzioni, con 5 scelte abbiamo:
+
+$$
+3^5 = 243 \text{ percorsi possibili}.
+$$
+
+. . .
+
+Ma il valore-$p$ viene calcolato come se ci fosse **un solo percorso predeterminato**.
+
+---
+
+## La differenza con il p-hacking
+
+**P-hacking (intenzionale):**
+
+> "Ho provato 10 analisi diverse finché non ho trovato $p$ < .05"
+
+. . .
+
+**Garden of forking paths (non intenzionale):**
+
+> "Ho fatto le scelte che mi sembravano ragionevoli, senza rendermi conto che avrei potuto scegliere diversamente"
+
+. . .
+
+Il secondo è più insidioso perché il ricercatore è **in buona fede**.
+
+---
+
+## Visualizziamo il problema
+
+```{r}
+#| echo: false
+
+# Simulazione: stesso dataset, scelte diverse → risultati diversi
+set.seed(321)
+n <- 100
+
+# Dati "grezzi"
+dati <- data.frame(
+  creativita_A = rnorm(n, 50, 10),
+  creativita_B = rnorm(n, 50, 10),
+  umore = rnorm(n, 0, 1),
+  eta = sample(16:65, n, replace = TRUE),
+  genere = sample(c("M", "F"), n, replace = TRUE)
+)
+dati$creativita_A <- dati$creativita_A + 2 * dati$umore + rnorm(n, 0, 5)
+dati$creativita_B <- dati$creativita_B + 0.5 * dati$umore + rnorm(n, 0, 8)
+
+# Diverse analisi
+analisi <- list(
+  "Test A, tutti i soggetti" = lm(creativita_A ~ umore, data = dati),
+  "Test B, tutti i soggetti" = lm(creativita_B ~ umore, data = dati),
+  "Test A, solo adulti (≥18)" = lm(creativita_A ~ umore, data = dati[dati$eta >= 18,]),
+  "Test A, con covariate" = lm(creativita_A ~ umore + eta + genere, data = dati),
+  "Test B, senza outlier (±2SD)" = lm(creativita_B ~ umore, 
+                                       data = dati[abs(scale(dati$creativita_B)) < 2,])
+)
+
+p_values <- sapply(analisi, function(m) summary(m)$coefficients["umore", "Pr(>|t|)"])
+
+df_analisi <- data.frame(
+  analisi = names(analisi),
+  p_value = p_values,
+  significativo = p_values < 0.05
+)
+
+ggplot(df_analisi, aes(x = reorder(analisi, p_value), y = p_value, fill = significativo)) +
+  geom_col() +
+  geom_hline(yintercept = 0.05, linetype = "dashed", color = "darkred", linewidth = 1) +
+  scale_fill_manual(values = c("coral", "steelblue")) +
+  coord_flip() +
+  labs(title = "Stesso dataset, scelte analitiche diverse",
+       subtitle = "Alcune analisi 'funzionano', altre no",
+       x = "", y = "p-value") +
+  theme_minimal(base_size = 12) +
+  theme(legend.position = "none")
+```
+
+---
+
+## Il problema fondamentale
+
+> Il valore-$p$ assume che l'analisi sia **completamente specificata prima** di vedere i dati.
+>
+> Ma nella pratica reale, molte scelte vengono fatte **dopo** avere visto i dati — consciamente o meno.
+
+. . .
+
+**Questo invalida l'interpretazione del valore-$p$ come "probabilità sotto $H_0$".**
+
+. . .
+
+Perché $H_0$ è stata scelta dopo avere visto i dati (fallacia del cecchino texano).
+
+---
+
+## Riepilogo della Parte 1
+
+1.  La **crisi di replicabilità** è reale e documentata: circa il 60% degli studi non si replica.
+2.  Il **p-hacking** (intenzionale o meno) aumenta drasticamente i falsi positivi.
+3.  L'**HARKing** presenta risultati casuali come previsioni confermate.
+4.  Il **garden of forking paths** mostra come anche i ricercatori in buona fede possano produrre risultati distorti.
+5.  Il problema è **sistemico**, non attribuibile solo al singolo ricercatore.
+
+---
+
+## Anticipazione
+
+Nella seconda parte affronteremo:
+
+- il **publication bias** e il "file drawer problem";
+- il **ciclo vizioso** che mantiene in vita il sistema;
+- le soluzioni: **Open Science** e pre-registrazione;
+- il ruolo complementare dell'approccio **bayesiano**.

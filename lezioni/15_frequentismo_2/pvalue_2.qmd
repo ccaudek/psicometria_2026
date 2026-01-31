@@ -1,0 +1,666 @@
+---
+title: "Il valore-$p$ e l'intervallo di confidenza"
+subtitle: "Cosa dicono davvero — Segmento 2"
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+lang: it
+
+execute:
+  echo: true
+
+format:
+  revealjs:
+    theme: [default, ../revealjs.scss]
+    title-slide-attributes:
+      data-background-color: "#0072bc"
+    slide-number: c
+    show-slide-number: print
+    highlight-style: github
+    math: mathjax
+
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+library(ggplot2)
+library(dplyr)
+library(pwr)
+set.seed(42)
+```
+
+## Dove eravamo {.unnumbered .unlisted}
+
+**Parte 1:** abbiamo visto
+
+- cosa il p-value **è** (e cosa **non è**);
+- la logica del test di ipotesi;
+- gli errori di Tipo I (α) e Tipo II (β);
+- il problema della bassa potenza
+
+. . .
+
+**Parte 2:** vedremo:
+
+- errori di tipo **S** (segno) e tipo **M** (magnitudine);
+- perché i risultati significativi sono spesso **esagerati**;
+- il legame con la **crisi della replicabilità**.
+
+# Parte 1: oltre Tipo I e Tipo II
+
+## I limiti della classificazione tradizionale
+
+La classificazione basata sugli errori di Tipo I e di Tipo II ci fornisce solo queste informazioni:
+
+- **Errore di Tipo I**: affermare che esiste un effetto quando in realtà non c'è.
+- **Errore di Tipo II**: concludere che non c'è un effetto quando invece esiste.
+
+---
+
+## I limiti della classificazione tradizionale
+
+Tuttavia, **non tiene conto** di altre questioni fondamentali:
+
+- Qual è l'**entità reale** dell'effetto che stimo?
+- Ho almeno individuato correttamente la **direzione** (positiva o negativa) dell'effetto?
+
+---
+
+## Gelman e Carlin (2014): Type S e Type M errors
+
+Andrew Gelman e John Carlin hanno proposto due nuovi tipi di errore:
+
+::: {.callout-note}
+## Definizioni
+
+**Errore di Tipo S (Sign):** stimare l'effetto nella **direzione sbagliata**.
+
+**Errore di Tipo M (Magnitude):** **sovrastimare** la grandezza dell'effetto.
+:::
+
+. . .
+
+Questi errori sono particolarmente gravi quando la **potenza è bassa**.
+
+---
+
+## Perché servono?
+
+Immagina di trovare un risultato "significativo" ($p$ < .05).
+
+La domanda tradizionale è: *"È un falso positivo?"*
+
+. . .
+
+Ma dovresti anche chiederti:
+
+- *"Ho almeno indovinato il segno dell'effetto?"* (Tipo S)
+- *"La mia stima è vicina al valore vero?"* (Tipo M)
+
+---
+
+## Un esempio intuitivo
+
+**Studio:** si vuole valutare l’effetto di un training di memoria sugli anziani.
+
+- Effetto reale nella popolazione: **+3 punti** (piccolo, ma presente).
+- Lo studio condotto ha una bassa potenza statistica ($n$ = 20 per gruppo).
+
+. . .
+
+Il risultato ottenuto è "significativo": **+12 punti** ($p$ = .03).
+
+. . .
+
+::: {.callout-warning}
+Hai rilevato un effetto, ma lo stai **sovrastimando di 4 volte**!
+
+Se avessi ottenuto **-8 punti** con p = .04, avresti addirittura invertito il **segno** dell'effetto.
+:::
+
+# Parte 2: la matematica degli errori S e M
+
+## Simuliamo uno scenario realistico
+
+```{r}
+# Parametri
+effetto_vero <- 0.3      # Effetto piccolo (d = 0.3)
+n_per_gruppo <- 25       # Campione tipico in psicologia
+n_simulazioni <- 10000
+alpha <- 0.05
+
+# Simuliamo molti studi
+risultati <- replicate(n_simulazioni, {
+  # Generiamo dati
+  gruppo1 <- rnorm(n_per_gruppo, mean = 0, sd = 1)
+  gruppo2 <- rnorm(n_per_gruppo, mean = effetto_vero, sd = 1)
+  
+  # Test t
+  test <- t.test(gruppo2, gruppo1)
+  
+  # Effetto stimato (d di Cohen approssimato)
+  d_stimato <- (mean(gruppo2) - mean(gruppo1)) / 
+               sqrt((var(gruppo1) + var(gruppo2)) / 2)
+  
+  c(p = test$p.value, d = d_stimato)
+})
+
+risultati_df <- data.frame(t(risultati))
+names(risultati_df) <- c("p_value", "d_stimato")
+```
+
+---
+
+## Potenza di questo studio
+
+```{r}
+# Calcoliamo la potenza
+potenza <- pwr.t.test(n = n_per_gruppo, d = effetto_vero, 
+                       sig.level = alpha, type = "two.sample")$power
+cat("Potenza dello studio:", round(potenza * 100, 1), "%\n")
+```
+
+. . .
+
+Con potenza del ~17%, la maggior parte degli effetti reali **non sarà rilevata**.
+
+Ma cosa succede quando **otteniamo** p < .05?
+
+---
+
+L'effetto vero è **0.3**.
+
+```{r}
+risultati_df[1:100, ]
+```
+
+---
+
+## Filtriamo solo i risultati "significativi"
+
+```{r}
+# Solo studi con p < .05
+significativi <- risultati_df[risultati_df$p_value < alpha, ]
+```
+
+Abbiamo ottenuto 
+
+```{r}
+nrow(significativi)
+```
+
+su `n_simulazioni` = 10,000 studi indipendenti (ripetizioni dell'esperimento casuale).
+
+La percentuale è il 
+
+```{r}
+round(nrow(significativi) / n_simulazioni * 100, 1)
+```
+percento.
+
+---
+
+## Errore di Tipo M: sovrastima dell'effetto
+
+Di quanto sovrastimiamo l'effetto negli studi significativi?
+
+```{r}
+
+media_d_significativi <- mean(abs(significativi$d_stimato))
+esagerazione <- media_d_significativi / effetto_vero
+```
+
+La media degli effetti $d$ "statisticamente significativi" è `r round(media_d_significativi, 1)`.
+
+Il fattore di esagerazione (Type M error): `r round(esagerazione, 1)` volte.
+
+. . .
+
+::: {.callout-warning}
+Gli studi significativi sovrastimano l'effetto di circa **`r round(esagerazione, 1)` volte**!
+:::
+
+---
+
+## Errore di Tipo S: direzione sbagliata
+
+Quanti studi significativi hanno il segno sbagliato?
+
+```{r}
+segno_sbagliato <- sum(significativi$d_stimato < 0)
+prop_segno_sbagliato <- segno_sbagliato / nrow(significativi)
+```
+
+Studi significativi con segno sbagliato: `r segno_sbagliato`.
+
+Proporzione (Type S error): `r round(prop_segno_sbagliato * 100, 1)`%.
+
+. . .
+
+::: {.callout-warning}
+Anche se l'effetto reale è **positivo**, circa il `r round(prop_segno_sbagliato * 100)`% degli studi significativi trova un effetto **negativo**!
+:::
+
+---
+
+## Visualizziamo la distribuzione degli effetti stimati
+
+```{r}
+#| echo: false
+#| fig-height: 5
+
+ggplot(risultati_df, aes(x = d_stimato)) +
+  geom_histogram(data = risultati_df[risultati_df$p_value >= alpha, ],
+                 aes(y = after_stat(density)), bins = 50, 
+                 fill = "gray70", alpha = 0.7) +
+  geom_histogram(data = significativi,
+                 aes(y = after_stat(density)), bins = 30, 
+                 fill = "coral", alpha = 0.8) +
+  geom_vline(xintercept = effetto_vero, color = "darkgreen", 
+             linewidth = 1.2, linetype = "solid") +
+  geom_vline(xintercept = 0, color = "darkred", 
+             linewidth = 1, linetype = "dashed") +
+  annotate("text", x = effetto_vero + 0.05, y = 1.5, 
+           label = paste0("Vero d = ", effetto_vero), 
+           color = "darkgreen", hjust = 0, size = 4) +
+  annotate("text", x = 0.8, y = 1.2, 
+           label = "Studi\nsignificativi", 
+           color = "coral", size = 4) +
+  labs(title = "La 'maledizione del vincitore'",
+       subtitle = "Gli studi significativi (arancione) sovrastimano sistematicamente l'effetto",
+       x = "Effetto stimato (d)", y = "Densità") +
+  theme_minimal(base_size = 14)
+```
+
+---
+
+La domanda naturale è:
+
+> degli studi "statisticamente significativi" di questa simulazione, quanti hanno stimato in maniera corretta (diciamo $\pm$ 20%) l'effetto reale?
+
+Risposta:
+
+. . . 
+
+**NESSUNO**.
+
+---
+
+## Perché succede? La "maledizione del vincitore"
+
+Con bassa potenza, per ottenere $p$ < .05 serve un effetto **osservato** grande.
+
+. . .
+
+Ma l'effetto **osservato** = effetto **vero** + **rumore casuale**.
+
+. . .
+
+Per superare la soglia di significatività con un effetto vero piccolo, il rumore deve essere **a tuo favore**.
+
+→ Gli studi "vincenti" sono quelli con il rumore più favorevole.
+
+→ Di conseguenza, **sovrastimano** sistematicamente l'effetto reale.
+
+---
+
+## Il legame con la potenza
+
+```{r}
+#| echo: false
+
+# Simuliamo per diverse potenze
+calcola_errori <- function(n, effetto = 0.3, n_sim = 5000) {
+  risultati <- replicate(n_sim, {
+    g1 <- rnorm(n, 0, 1)
+    g2 <- rnorm(n, effetto, 1)
+    test <- t.test(g2, g1)
+    d <- (mean(g2) - mean(g1)) / sqrt((var(g1) + var(g2)) / 2)
+    c(p = test$p.value, d = d)
+  })
+  
+  df <- data.frame(t(risultati))
+  sig <- df[df$p < 0.05, ]
+  
+  if(nrow(sig) == 0) return(c(NA, NA, NA))
+  
+  potenza <- nrow(sig) / n_sim
+  type_m <- mean(abs(sig$d)) / effetto
+  type_s <- mean(sig$d < 0)
+  
+  c(potenza = potenza, type_m = type_m, type_s = type_s)
+}
+
+ns <- c(10, 20, 30, 50, 100, 200)
+errori <- t(sapply(ns, calcola_errori))
+df_errori <- data.frame(
+  n = ns,
+  potenza = errori[, 1],
+  type_m = errori[, 2],
+  type_s = errori[, 3]
+)
+
+ggplot(df_errori, aes(x = potenza)) +
+  geom_line(aes(y = type_m, color = "Type M"), linewidth = 1.2) +
+  geom_point(aes(y = type_m, color = "Type M"), size = 3) +
+  geom_line(aes(y = type_s * 10, color = "Type S (×10)"), linewidth = 1.2) +
+  geom_point(aes(y = type_s * 10, color = "Type S (×10)"), size = 3) +
+  geom_hline(yintercept = 1, linetype = "dashed", color = "gray50") +
+  scale_color_manual(values = c("Type M" = "coral", "Type S (×10)" = "steelblue")) +
+  scale_x_continuous(labels = scales::percent) +
+  labs(title = "Errori di tipo S e M in funzione della potenza",
+       subtitle = "Con bassa potenza, gli studi 'significativi' sono molto distorti",
+       x = "Potenza", y = "Fattore di errore", color = "") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "bottom")
+```
+
+---
+
+## La tabella riassuntiva
+
+```{r}
+#| echo: false
+
+df_errori$n <- ns
+df_errori <- df_errori[, c("n", "potenza", "type_m", "type_s")]
+names(df_errori) <- c("n per gruppo", "Potenza", "Type M (esagerazione)", "Type S (prob. segno sbagliato)")
+
+knitr::kable(df_errori, digits = 2)
+```
+
+. . .
+
+Con $n$ = 20 (comune in psicologia): esageri di **~3 volte** e sbagli il segno nel **~1%** dei casi.
+
+# Parte 3: il legame con la crisi di replicabilità
+
+## Open Science Collaboration (2015)
+
+Nel 2015, un team di 270 ricercatori ha **replicato 100 studi** di psicologia.
+
+. . .
+
+**Risultati:**
+
+- Solo **36%** delle repliche ha ottenuto $p$ < .05.
+- Gli effetti nelle repliche erano in media **la metà** di quelli originali.
+
+---
+
+## Perché gli effetti si "restringono"?
+
+```{r}
+#| echo: false
+
+# Simulazione: effetto originale vs replica
+set.seed(123)
+effetti_originali <- c()
+effetti_repliche <- c()
+
+for(i in 1:50) {
+  effetto_vero <- runif(1, 0.1, 0.4)  # Effetti piccoli-medi
+  
+  # Studio originale (trova p < .05 per essere pubblicato)
+  repeat {
+    g1 <- rnorm(30, 0, 1)
+    g2 <- rnorm(30, effetto_vero, 1)
+    if(t.test(g2, g1)$p.value < 0.05) {
+      effetti_originali <- c(effetti_originali, mean(g2) - mean(g1))
+      break
+    }
+  }
+  
+  # Replica (stesso n, senza filtro)
+  g1 <- rnorm(30, 0, 1)
+  g2 <- rnorm(30, effetto_vero, 1)
+  effetti_repliche <- c(effetti_repliche, mean(g2) - mean(g1))
+}
+
+df_replica <- data.frame(
+  effetto = c(effetti_originali, effetti_repliche),
+  tipo = rep(c("Originale (pubblicato)", "Replica"), each = 50)
+)
+
+ggplot(df_replica, aes(x = tipo, y = effetto, fill = tipo)) +
+  geom_boxplot(alpha = 0.7, width = 0.5) +
+  geom_jitter(width = 0.1, alpha = 0.5) +
+  scale_fill_manual(values = c("coral", "steelblue")) +
+  labs(title = "Effetti originali vs repliche",
+       subtitle = "Gli studi pubblicati sovrastimano sistematicamente",
+       x = "", y = "Effetto osservato") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "none")
+```
+
+---
+
+## Il ciclo vizioso
+
+1.  **Studi con bassa potenza statistica** → molti non raggiungono la significatività ($p < .05$).
+2.  Vengono **pubblicati** solo i risultati "significativi" (*publication bias*).
+3.  Per risultare significativi nonostante la bassa potenza, gli effetti devono essere **sovrastimati** (Errore di Tipo M).
+4.  I tentativi di **replica** (senza il filtro della pubblicazione) stimano effetti molto più piccoli.
+5.  La conclusione diventa: **"Lo studio non si replica!"** — ma il problema era già nella progettazione iniziale.
+
+---
+
+## Un esempio concreto: ego depletion
+
+**Ego depletion:** l'autocontrollo è una risorsa limitata che si esaurisce.
+
+. . .
+
+- Meta-analisi originale: **d = 0.62** (effetto medio-grande).
+- Replica pre-registrata (n = 2000+): **d = 0.04** (praticamente zero).
+
+. . .
+
+L'effetto originale era **15 volte** più grande della replica!
+
+→ Classico esempio di Type M error amplificato dal *publication bias*.
+
+---
+
+## Le conseguenze pratiche
+
+Per i **ricercatori:**
+
+- i risultati pubblicati non sono stime affidabili degli effetti;
+- servono campioni più grandi e pre-registrazione.
+
+---
+
+## Le conseguenze pratiche
+
+Per i **clinici:**
+
+- non fidarsi ciecamente degli "effect size" riportati;
+- aspettarsi che i trattamenti funzionino meno bene di quanto pubblicato.
+
+---
+
+## Le conseguenze pratiche
+
+Per gli **studenti:**
+
+- sviluppare **spirito critico** verso la letteratura;
+- capire che $p$ < .05 non è garanzia di nulla.
+
+# Parte 4: quiz interattivo
+
+## Metti alla prova la tua comprensione
+
+Per ciascuna affermazione, decidi: **VERO** o **FALSO**?
+
+---
+
+## Domanda 1
+
+> "Un valore-$p$ di 0.001 indica un effetto più grande di un valore-$p$ di 0.04."
+
+. . .
+
+**FALSO**
+
+Il valore-$p$ dipende anche da $n$. Lo stesso effetto può produrre valori-$p$ molto diversi a seconda della dimensione campionaria.
+
+---
+
+## Domanda 2
+
+> "Se il mio studio ha potenza del 30% e trovo $p$ < .05, probabilmente sto sovrastimando l'effetto."
+
+. . .
+
+**VERO**
+
+Con bassa potenza, i risultati significativi tendono a essere esagerati (Type M error).
+
+---
+
+## Domanda 3
+
+> "Un risultato con $p$ = 0.049 è fondamentalmente diverso da uno con $p$ = 0.051."
+
+. . .
+
+**FALSO**
+
+La differenza è minima. La dicotomia significativo/non significativo è arbitraria.
+
+---
+
+## Domanda 4
+
+> "Se trovo $p$ < .05, ho il 95% di probabilità di replicare il risultato."
+
+. . .
+
+**FALSO**
+
+La probabilità di replicare dipende dalla potenza e dall'effetto reale, non dal valore-$p$.
+
+---
+
+## Domanda 5
+
+> "L'errore di Tipo S è particolarmente problematico quando la potenza è alta."
+
+. . .
+
+**FALSO**
+
+L'errore di Tipo S è problematico quando la potenza è **bassa**. Con alta potenza, se trovi un effetto significativo, quasi certamente hai il segno giusto.
+
+---
+
+## Domanda 6
+
+> "Un intervallo di confidenza al 95% che non include lo zero equivale a $p$ < .05."
+
+. . .
+
+**VERO** (per test a due code)
+
+IC e valore-$p$ danno informazioni equivalenti sulla "significatività", ma l'IC fornisce anche informazioni sulla grandezza plausibile dell'effetto.
+
+# Riepilogo
+
+## I punti chiave di oggi
+
+1. Il **valore-p** non è la probabilità che H₀ sia vera, né che il risultato sia "dovuto al caso".
+
+2. **Errori di Tipo S e M**: con bassa potenza, gli studi significativi spesso sbagliano direzione o esagerano l'effetto.
+
+3. La **"maledizione del vincitore"**: per superare la soglia con un effetto vero piccolo, serve rumore favorevole.
+
+4. La **crisi di replicabilità** è in parte spiegata da questi fenomeni.
+
+5. Servono **campioni più grandi** e **pre-registrazione**.
+
+---
+
+## Il messaggio fondamentale
+
+> Un risultato "statisticamente significativo" non è necessariamente vero, importante, o replicabile.
+>
+> Con bassa potenza, i risultati significativi sono sistematicamente **esagerati** e talvolta **sbagliati nel segno**.
+
+. . .
+
+Questo non significa che la statistica sia inutile — significa che va usata con **consapevolezza critica**.
+
+---
+
+## Implicazioni per la ricerca psicologica
+
+:::: {.columns}
+::: {.column width="50%"}
+### Cosa evitare
+
+- Campioni troppo piccoli
+- Pubblicare solo $p$ < .05
+- Interpretare $p$ come "probabilità dell'ipotesi"
+- Confondere significatività e importanza
+:::
+
+::: {.column width="50%"}
+### Cosa fare
+
+- Calcolare la potenza a priori
+- Pre-registrare ipotesi e analisi
+- Riportare effect size e IC
+- Usare l'approccio bayesiano
+:::
+::::
+
+---
+
+## Prossima lezione
+
+**La crisi di replicabilità e le cattive pratiche**
+
+- p-hacking: manipolare i dati per ottenere $p$ < .05.
+- HARKing: ipotesi formulate dopo aver visto i risultati.
+- Garden of forking paths: le decisioni invisibili.
+- Open Science: pre-registrazione, dati aperti, repliche.
+
+---
+
+## Per approfondire
+
+**Letture fondamentali:**
+
+- Gelman, A., & Carlin, J. (2014). Beyond power calculations: Assessing Type S (sign) and Type M (magnitude) errors. *Perspectives on Psychological Science*.
+
+- Wasserstein, R. L., & Lazar, N. A. (2016). The ASA statement on p-values. *The American Statistician*.
+
+- Button, K. S., et al. (2013). Power failure: Why small sample size undermines the reliability of neuroscience. *Nature Reviews Neuroscience*.
+
+---
+
+## Materiali del corso
+
+[https://ccaudek.github.io/utet-frequentista/](https://ccaudek.github.io/utet-frequentista/)
+
+---
+
+## Una citazione finale
+
+> "The difference between 'significant' and 'not significant' is not itself statistically significant."
+>
+> — Gelman & Stern (2006)
+
+. . .
+
+La prossima volta che leggete "$p$ = 0.049, quindi significativo" e "$p$ = 0.051, quindi non significativo" nello stesso articolo... sapete che qualcosa non va.

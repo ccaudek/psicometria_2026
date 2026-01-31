@@ -1,0 +1,979 @@
+---
+title: "Distribuzione predittiva a priori"
+subtitle: "Applicazioni e calibrazione — Segmento 2"
+version: 1.0
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+lang: it
+
+execute:
+  echo: true
+
+format:
+  revealjs:
+    theme: [default, ../revealjs.scss]
+    title-slide-attributes:
+      data-background-color: "#0072bc"
+    slide-number: c
+    show-slide-number: print
+    highlight-style: github
+    math: mathjax
+
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+```{r}
+#| echo: false
+library(ggplot2)
+set.seed(42)
+```
+
+## Obiettivi {.unnumbered .unlisted}
+
+1. Applicare il prior predictive check a **variabili continue**.
+2. Usare la simulazione per **calibrare** prior su scala dei dati.
+3. Comprendere la relazione con la **distribuzione predittiva a posteriori**.
+4. Sviluppare **intuizioni pratiche** per la scelta delle prior.
+
+# Parte 1: prior predictive con variabili continue
+
+# Prior Predictive Check: Intuizioni prima dei dati  
+
+## Punteggi di depressione (BDI-II)  
+
+Vogliamo stimare il livello medio di depressione in pazienti con **disturbo depressivo maggiore** usando il **BDI-II** (Beck Depression Inventory II, range: **0–63**).  
+
+. . .
+
+**Modello statistico:**  
+
+- dato per il paziente $i$: $y_i \sim \text{Normale}(\mu, \sigma)$;  
+- prior su $\mu$: da definire;  
+- prior su $\sigma$: da definire.  
+
+. . .
+
+**Domanda pratica:** come scegliere le prior in modo che il modello generi **dati realistici**?  
+
+---
+
+## Il problema: prior sui parametri vs. intuizioni sui dati  
+
+Noi specifichiamo le prior sui **parametri** ($\mu$ e $\sigma$), ma ragioniamo naturalmente sui **dati osservabili**:  
+
+- i punteggi BDI-II devono stare tra **0 e 63**;  
+- pazienti con depressione maggiore di solito hanno punteggi **> 20**;  
+- valori **negativi** o **> 63 sono impossibili**.  
+
+👉 Le prior che scegliamo per $\mu$ e $\sigma$ portano a dati plausibili?  
+
+---
+
+## Prior predictive check: l'idea  
+
+Vogliamo rispondere a questa domanda:  
+
+> “Se il mio modello (con le prior scelte) fosse vero, **che tipo di dati potrei osservare**?”  
+
+Procediamo in due passi:  
+
+1. **simuliamo un solo studio** con 20 pazienti;  
+2. **ripetiamo la simulazione molte volte** per vedere la variabilità.  
+
+---
+
+## Passo 1: simuliamo **un solo studio**  
+
+Iniziamo in un modo semplice: immaginiamo di fare **uno studio** con 20 pazienti.  
+
+```{r}
+# Passo 1: Simuliamo UN SOLO studio
+
+# 1. Scegliamo una prior per la media (mu)
+mu_sim <- rnorm(n = 1, mean = 30, sd = 20)
+
+# 2. Scegliamo una prior per la deviazione standard (sigma)
+sigma_sim <- rexp(n = 1, rate = 0.1)
+
+# 3. Generiamo i dati per 20 pazienti
+n_pazienti <- 20
+punteggi_simulati <- rnorm(
+  n = n_pazienti,
+  mean = mu_sim,
+  sd = sigma_sim
+)
+```
+
+---
+
+```{r}
+# Vediamo i primi 6 punteggi
+head(punteggi_simulati)
+```
+
+**Cosa abbiamo fatto?**  
+
+1. Abbiamo estratto **una possibile media** $\mu$ dalla sua prior.  
+2. Abbiamo estratto **una possibile deviazione standard** $\sigma$ dalla sua prior.  
+3. Abbiamo generato **20 punteggi** da una Normale con quei parametri.  
+
+---
+
+## E se ripetiamo? Un secondo studio  
+
+Rifacciamo lo stesso procedimento:  
+
+```{r}
+# Altro studio (altri parametri, altri dati)
+mu_sim2 <- rnorm(1, mean = 30, sd = 20)
+sigma_sim2 <- rexp(1, rate = 0.1)
+
+punteggi_simulati2 <- rnorm(20, mean = mu_sim2, sd = sigma_sim2)
+head(punteggi_simulati2)
+```
+
+Ogni volta otterremo **punteggi diversi** perché i parametri $\mu$ e $\sigma$ cambiano. 
+
+---
+
+## Passo 2: simuliamo **molti studi**  
+
+Vogliamo vedere **l’intera gamma** di dati che il modello considera plausibili. 
+
+* Simuliamo **5000 studi**, ognuno con 20 pazienti.  
+
+
+--- 
+
+Per gestire tanti studi, usiamo una **lista**: ogni elemento della lista è uno studio.  
+
+```r
+# Spiegazione: le liste in R
+# Una lista è un contenitore che può tenere oggetti diversi.
+# Esempio:
+mia_lista <- list(
+  "primo_elemento" = c(1, 2, 3),
+  "secondo_elemento" = matrix(1:4, nrow = 2)
+)
+```
+
+---
+
+## Simulazione di 5000 studi  
+
+```{r}
+# Numero di studi da simulare
+n_sim <- 5000
+n_pazienti <- 20
+
+# Prior per mu: Normale(media=30, sd=20)
+mu_sim <- rnorm(n_sim, mean = 30, sd = 20)
+
+# Prior per sigma: Esponenziale(rate=0.1)
+sigma_sim <- rexp(n_sim, rate = 0.1)
+
+# Creiamo una lista vuota per i dati
+dati_sim <- vector("list", n_sim)
+```
+
+---
+
+```{r}
+# Riempiamo la lista: ogni elemento è uno studio
+for (i in 1:n_sim) {
+  dati_sim[[i]] <- rnorm(
+    n = n_pazienti,
+    mean = mu_sim[i],
+    sd = sigma_sim[i]
+  )
+}
+
+# Esempio: primi 6 punteggi del primo studio
+head(dati_sim[[1]])
+```
+
+---
+
+## Cosa contiene `dati_sim`?  
+
+- `dati_sim` è una **lista di 5000 elementi**.  
+- Ogni elemento è un **vettore di 20 numeri** (i punteggi di uno studio).  
+- `dati_sim[[1]]` → punteggi del primo studio simulato.  
+- `dati_sim[[2]]` → punteggi del secondo studio simulato.  
+- … e così via  
+
+---
+
+## Visualizziamo 100 studi a caso  
+
+```{r}
+#| echo: false
+
+library(ggplot2)
+
+# Scegliamo 100 studi a caso
+set.seed(123)
+indici_studi <- sample(1:n_sim, 100)
+
+# Prepariamo i dati per ggplot
+# Uniamo tutti i punteggi dei 100 studi in un unico dataframe
+df_sim <- data.frame(
+  valore = unlist(dati_sim[indici_studi]),
+  simulazione = rep(1:100, each = n_pazienti)
+)
+
+# Grafico: una linea per studio (distribuzione dei punteggi)
+ggplot(df_sim, aes(x = valore, group = simulazione)) +
+  geom_density(alpha = 0.1, color = "steelblue") +
+  geom_vline(xintercept = c(0, 63),
+             color = "darkred", linewidth = 1, linetype = "dashed") +
+  annotate("text", x = -15, y = 1,
+           label = "Impossibile", color = "darkred") +
+  annotate("text", x = 77, y = 1,
+           label = "Impossibile", color = "darkred") +
+  labs(title = "Prior predictive check: punteggi BDI-II",
+       subtitle = "100 studi simulati — molti valori impossibili",
+       x = "Punteggio BDI-II", y = "Densità") +
+  theme_minimal(base_size = 14)
+```
+
+---
+
+## Quantifichiamo il problema  
+
+Calcoliamo quanti valori simulati sono **impossibili** (<0 o >63).  
+
+```{r}
+# Uniamo TUTTI i punteggi di tutti gli studi
+tutti_i_valori <- unlist(dati_sim)
+
+# Proporzioni
+prop_negativi <- mean(tutti_i_valori < 0)
+prop_troppo_alti <- mean(tutti_i_valori > 63)
+```
+
+---
+
+```{r}
+cat("Valori < 0:", round(prop_negativi * 100, 1), "%\n")
+cat("Valori > 63:", round(prop_troppo_alti * 100, 1), "%\n")
+cat("Totale valori impossibili:",
+    round((prop_negativi + prop_troppo_alti) * 100, 1), "%\n")
+```
+
+**Risultato:**  
+con queste prior, **oltre il 18%** dei dati simulati è **impossibile**.  
+
+---
+
+## Conclusione  
+
+Le prior “vaghe” che abbiamo scelto:  
+
+- $\mu \sim \text{Normale}(30, 20)$,  
+- $\sigma \sim \text{Esponenziale}(0.1)$,  
+
+producono **dati irrealistici** per il BDI-II.  
+
+---
+
+👉 **Prior che sembrano poco informative sui parametri possono essere molto informative (e sbagliate) sui dati**  
+
+**Prossimo passo:**  
+dobbiamo scegliere prior che rispettino i **vincoli del problema reale** (punteggi tra 0 e 63).
+
+---
+
+## Rendiamo le prior più ragionevoli
+
+Ragioniamo direttamente sulla **scala dei dati**:
+
+* per pazienti depressi, $\mu$ è plausibilmente tra **20 e 45**
+  → usiamo una **Normale(32, 8)**;
+* la variabilità tipica è tra **5 e 15**
+  → usiamo una **Gamma** centrata su 10.
+
+---
+
+```{r}
+# Prior più informative
+mu_sim_good <- rnorm(n_sim, mean = 32, sd = 8)
+
+# Gamma per sigma: media 10
+sigma_sim_good <- rgamma(n_sim, shape = 4, rate = 0.4)
+
+# Simuliamo di nuovo
+dati_sim_good <- vector("list", n_sim)
+for (i in 1:n_sim) {
+  dati_sim_good[[i]] <- rnorm(
+    n_pazienti,
+    mean = mu_sim_good[i],
+    sd = sigma_sim_good[i]
+  )
+}
+```
+
+---
+
+## Confronto quantitativo
+
+```{r}
+tutti_good <- unlist(dati_sim_good)
+
+cat("Con prior più ragionevoli:\n")
+cat("Valori < 0:", round(mean(tutti_good < 0) * 100, 2), "%\n")
+cat("Valori > 63:", round(mean(tutti_good > 63) * 100, 2), "%\n")
+```
+
+Ora i valori impossibili sono **rari**.
+
+---
+
+## Visualizzazione del miglioramento
+
+```{r}
+#| echo: false
+
+# Prima dobbiamo definire idx_sample 
+set.seed(123)
+idx_sample <- sample(1:n_sim, 100)
+
+# Ora possiamo creare il dataframe
+df_good <- data.frame(
+  valore = unlist(dati_sim_good[idx_sample]),
+  simulazione = rep(1:100, each = n_pazienti)
+)
+
+ggplot(df_good, aes(x = valore, group = simulazione)) +
+  geom_density(alpha = 0.1, color = "forestgreen") +
+  geom_vline(xintercept = c(0, 63),
+             color = "darkred", linewidth = 1, linetype = "dashed") +
+  labs(title = "Prior predictive check con prior più ragionevoli",
+       subtitle = "Quasi tutti i dati simulati sono plausibili",
+       x = "Punteggio BDI-II", y = "Densità") +
+  theme_minimal(base_size = 14)
+```
+
+---
+
+## Messaggio finale
+
+> Le prior non vanno giudicate solo sulla scala dei **parametri**,
+> ma sulla scala dei **dati che generano**.
+
+Il **prior predictive check** è uno strumento fondamentale per:
+
+* individuare assunzioni implausibili;
+* migliorare il modello prima di vedere i dati;
+* collegare statistica e conoscenza clinica.
+
+# Parte 2: calibrazione iterativa
+
+## Il processo di calibrazione delle prior
+
+La scelta delle prior non è un atto unico, ma un **processo iterativo**:
+
+1. **Proponi** una prior iniziale.
+2. **Simula** dati dalla distribuzione predittiva a priori.
+3. **Valuta**: i dati simulati sono clinicamente plausibili?
+4. **Modifica** la prior se necessario.
+5. **Ripeti** fino a ottenere risultati sensati.
+
+👉 Non esiste la prior “perfetta”,
+ma possiamo **scartare quelle chiaramente implausibili**
+e avvicinarci a una coerente con la conoscenza clinica.
+
+---
+
+## Esempio: calibrare la prior su σ
+
+Vogliamo rispondere a una domanda concreta:
+
+> *Quale prior sulla deviazione standard σ è ragionevole
+> per i punteggi BDI-II in un campione clinico?*
+
+Consideriamo tre possibilità, da molto vaga a più informativa.
+
+---
+
+```{r}
+#| echo: false
+library(ggplot2)
+
+x_sigma <- seq(0, 40, length.out = 300)
+
+df_sigma <- data.frame(
+  x = rep(x_sigma, 3),
+  y = c(dgamma(x_sigma, 1, 0.1),
+        dgamma(x_sigma, 4, 0.4),
+        dgamma(x_sigma, 9, 0.9)),
+  Prior = rep(c("Gamma(1, 0.1) – vaga",
+                "Gamma(4, 0.4) – moderata",
+                "Gamma(9, 0.9) – informativa"),
+              each = 300)
+)
+
+ggplot(df_sigma, aes(x = x, y = y, color = Prior)) +
+  geom_line(linewidth = 1.2) +
+  labs(title = "Tre possibili prior per σ",
+       x = "σ (deviazione standard)", y = "Densità", color = "") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "bottom")
+```
+
+---
+
+## Come traduciamo queste prior in dati simulati
+
+Per ogni **studio simulato** facciamo sempre le stesse cose:
+
+1. estraiamo una media $\mu$ (qui fissiamo una prior ragionevole);
+2. estraiamo una deviazione standard $\sigma$ dalla prior che vogliamo testare;
+3. generiamo 20 punteggi BDI-II da una Normale $N(\mu, \sigma^2)$.
+
+Ripetendo il processo molte volte, osserviamo **che tipo di dati produce quella prior**.
+
+---
+
+## Una funzione che rappresenta *uno studio simulato*
+
+```{r}
+simula_bdi <- function(sigma_prior_fn,
+                       n_sim = 1000,
+                       n_pazienti = 20) {
+  
+  # 1. Estraiamo le medie per ciascuno studio
+  mu_sim <- rnorm(n_sim, mean = 32, sd = 8)
+  
+  # 2. Estraiamo le sigma dalla prior scelta
+  sigma_sim <- sigma_prior_fn(n_sim)
+  
+  # 3. Generiamo i dati per ciascuno studio
+  dati <- sapply(1:n_sim, function(i) {
+    rnorm(n_pazienti,
+          mean = mu_sim[i],
+          sd   = sigma_sim[i])
+  })
+  
+  # 4. Restituiamo tutti i valori come un unico vettore
+  as.vector(dati)
+}
+```
+
+---
+
+## Cosa fa `sapply()` (spiegazione lenta)
+
+Questa riga:
+
+```r
+dati <- sapply(1:n_sim, function(i) {
+  rnorm(n_pazienti, mean = mu_sim[i], sd = sigma_sim[i])
+})
+```
+
+va letta così:
+
+> “Per **ogni studio** $i = 1, \dots, n_{\text{sim}}$:
+> genera **20 osservazioni** da una Normale con
+> media $\mu_i$ e deviazione standard $\sigma_i$.”
+
+---
+
+` sapply()` è solo un modo compatto per dire:
+
+```r
+# Versione esplicita (concettualmente equivalente)
+for (i in 1:n_sim) {
+  genera 20 dati usando mu_sim[i] e sigma_sim[i]
+}
+```
+
+👉 **Non è magia**: è solo un *loop scritto in modo più breve*.
+
+---
+
+## Simulazione comparativa delle tre prior
+
+Ora applichiamo la stessa procedura a tre prior diverse su σ:
+
+```{r}
+dati_vaga <- simula_bdi(function(n) rgamma(n, 1, 0.1))
+dati_moderata <- simula_bdi(function(n) rgamma(n, 4, 0.4))
+dati_informativa <- simula_bdi(function(n) rgamma(n, 9, 0.9))
+```
+
+Ogni vettore contiene **tutti i punteggi simulati**
+prodotti da migliaia di studi ipotetici.
+
+---
+
+## Risultati della calibrazione
+
+```{r}
+cat("Prior vaga – IQR:", round(IQR(dati_vaga), 1), "\n")
+cat("Prior moderata – IQR:", round(IQR(dati_moderata), 1), "\n")
+cat("Prior informativa – IQR:", round(IQR(dati_informativa), 1), "\n")
+```
+
+---
+
+```{r}
+cat("\nValori fuori range (< 0 o > 63):\n")
+cat("Prior vaga:", round(mean(dati_vaga < 0 | dati_vaga > 63) * 100, 1), "%\n")
+cat("Prior moderata:", round(mean(dati_moderata < 0 | dati_moderata > 63) * 100, 1), "%\n")
+cat("Prior informativa:", round(mean(dati_informativa < 0 | dati_informativa > 63) * 100, 1), "%\n")
+```
+
+---
+
+## Interpretazione finale
+
+* La **prior vaga** su σ produce dati estremamente dispersi
+  e una percentuale non trascurabile di valori impossibili.
+* La **prior moderata** riflette meglio la variabilità clinica tipica.
+* La **prior informativa** genera dati più concentrati
+  e quasi sempre plausibili.
+
+👉 Il *prior predictive check* ci permette di **scegliere consapevolmente**
+tra queste opzioni, **prima di vedere i dati reali**.
+
+---
+
+## Take-home message
+
+> Le prior vanno giudicate non solo sulla scala dei parametri,
+> ma soprattutto sulla scala dei dati che generano.
+
+E `sapply()` è solo uno strumento per ripetere molte volte
+un’idea concettualmente semplice.
+
+
+<!-- # Parte 3: dalla prior alla posterior predictive -->
+
+<!-- ## Due distribuzioni predittive -->
+
+<!-- Abbiamo visto la **distribuzione predittiva a priori**: -->
+
+<!-- $$ -->
+<!-- p(y) = \int p(y \mid \theta) \cdot p(\theta) \, d\theta. -->
+<!-- $$ -->
+
+<!-- Dopo aver osservato i dati, possiamo calcolare la **distribuzione predittiva a posteriori**: -->
+
+<!-- $$ -->
+<!-- p(\tilde{y} \mid y) = \int p(\tilde{y} \mid \theta) \cdot p(\theta \mid y) \, d\theta. -->
+<!-- $$ -->
+
+<!-- --- -->
+
+<!-- ## La differenza chiave -->
+
+<!-- | | Prior predictive | Posterior predictive | -->
+<!-- |---|---|---| -->
+<!-- | **Quando** | Prima di vedere i dati | Dopo aver visto i dati | -->
+<!-- | **Pesa su** | Prior $p(\theta)$ | Posterior $p(\theta \mid y)$ | -->
+<!-- | **Scopo** | Verificare il modello | Fare previsioni | -->
+<!-- | **Incertezza** | Massima | Ridotta dai dati | -->
+
+<!-- --- -->
+
+<!-- ## Esempio: prima e dopo i dati -->
+
+<!-- ```{r} -->
+<!-- #| echo: false -->
+
+<!-- # Simuliamo uno scenario completo -->
+<!-- set.seed(456) -->
+
+<!-- # Prior -->
+<!-- alpha_prior <- 8 -->
+<!-- beta_prior <- 6 -->
+
+<!-- # "Osserviamo" dei dati -->
+<!-- n_osservati <- 30 -->
+<!-- theta_vero <- 0.65 -->
+<!-- successi_osservati <- rbinom(1, n_osservati, theta_vero) -->
+
+<!-- # Posterior -->
+<!-- alpha_post <- alpha_prior + successi_osservati -->
+<!-- beta_post <- beta_prior + (n_osservati - successi_osservati) -->
+
+<!-- cat("Dati osservati:", successi_osservati, "successi su", n_osservati, "pazienti\n\n") -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- # Prior predictive (prima dei dati) -->
+<!-- theta_prior <- rbeta(5000, alpha_prior, beta_prior) -->
+<!-- y_prior_pred <- rbinom(5000, size = 50, prob = theta_prior) -->
+
+<!-- # Posterior predictive (dopo i dati) -->
+<!-- theta_post <- rbeta(5000, alpha_post, beta_post) -->
+<!-- y_post_pred <- rbinom(5000, size = 50, prob = theta_post) -->
+<!-- ``` -->
+
+<!-- --- -->
+
+<!-- ## Confronto visivo -->
+
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- #| fig-height: 4.5 -->
+
+<!-- df_pred_compare <- data.frame( -->
+<!--   successi = c(y_prior_pred, y_post_pred), -->
+<!--   Distribuzione = rep(c("Prior predictive\n(prima dei dati)",  -->
+<!--                         "Posterior predictive\n(dopo i dati)"), each = 5000) -->
+<!-- ) -->
+
+<!-- ggplot(df_pred_compare, aes(x = successi, fill = Distribuzione)) + -->
+<!--   geom_histogram(aes(y = after_stat(density)), bins = 30,  -->
+<!--                  alpha = 0.6, position = "identity", color = "white") + -->
+<!--   scale_fill_manual(values = c("steelblue", "coral")) + -->
+<!--   labs(title = "Prior predictive vs Posterior predictive", -->
+<!--        subtitle = paste0("Dopo aver osservato ", successi_osservati,  -->
+<!--                         " successi su ", n_osservati, " pazienti"), -->
+<!--        x = "Numero di successi previsti (su 50 nuovi pazienti)", y = "Densità") + -->
+<!--   theme_minimal(base_size = 14) + -->
+<!--   theme(legend.position = "bottom") -->
+<!-- ``` -->
+
+<!-- --- -->
+
+<!-- ## Interpretazione -->
+
+<!-- ```{r} -->
+<!-- cat("Prior predictive:\n") -->
+<!-- cat("  Media:", round(mean(y_prior_pred), 1), "successi\n") -->
+<!-- cat("  Intervallo 95%:", quantile(y_prior_pred, 0.025), "-",  -->
+<!--     quantile(y_prior_pred, 0.975), "\n\n") -->
+
+<!-- cat("Posterior predictive:\n") -->
+<!-- cat("  Media:", round(mean(y_post_pred), 1), "successi\n") -->
+<!-- cat("  Intervallo 95%:", quantile(y_post_pred, 0.025), "-",  -->
+<!--     quantile(y_post_pred, 0.975), "\n") -->
+<!-- ``` -->
+
+<!-- Dopo aver visto i dati, le previsioni sono **più precise** e **centrate** sull'evidenza osservata. -->
+
+# Parte 3: comunicare con i colleghi
+
+## Il prior predictive check come strumento di comunicazione
+
+Il prior predictive check è eccellente per discutere le assunzioni con collaboratori non statistici.
+
+Invece di dire:
+
+> "Ho usato una prior Beta(8, 6) sul parametro θ"
+
+Possiamo dire:
+
+> "Prima di vedere i dati, mi aspetto che tra il 40% e il 70% dei pazienti risponda al trattamento"
+
+---
+
+## Esempio: discussione con un clinico
+
+**Statistico:** "Prima di analizzare i dati, vediamo se le mie assunzioni hanno senso. Con il mio modello, mi aspetto che i punteggi BDI siano distribuiti così..."
+
+**Clinico:** "Hmm, questi valori sembrano troppo alti. I miei pazienti raramente superano 50."
+
+**Statistico:** "Ok, modifico la prior sulla media. Ora i dati simulati sono più realistici?"
+
+**Clinico:** "Sì, molto meglio. Questo corrisponde a quello che vedo nella pratica."
+
+---
+
+## Documentare le scelte
+
+Un buon report include:
+
+1. **Specificazione delle prior** con giustificazione.
+2. **Grafici del prior predictive check**. 
+3. **Discussione** di eventuali valori implausibili.
+4. **Iterazioni** se le prior sono state modificate.
+
+Questo rende l'analisi **trasparente e riproducibile**.
+
+# Parte 4: esercizio guidato
+
+## Scenario: memoria di lavoro e invecchiamento
+
+Un ricercatore vuole studiare la **memoria di lavoro** (digit span) in anziani sani.
+
+---
+
+### Conoscenza del dominio
+
+* il digit span tipicamente varia tra **4 e 9**;
+* negli anziani sani la **media** è circa **6**;
+* la variabilità è moderata (**SD ≈ 1–2**).
+
+**Obiettivo:** scegliere prior ragionevoli per $\mu$ e $\sigma$ e verificarle con un prior predictive check.
+
+---
+
+## Modello statistico
+
+Assumiamo un modello continuo semplice:
+
+$$
+y \sim \mathcal{N}(\mu,\sigma^2),
+$$
+dove:
+
+* $\mu$ = media del digit span nella popolazione di anziani sani;
+* $\sigma$ = variabilità individuale.
+
+---
+
+## Passo 1 — proponiamo le prior
+
+Scegliamo prior coerenti con la conoscenza del dominio:
+
+* $\mu$ intorno a 6, con incertezza moderata;
+* $\sigma$ tipicamente tra 1 e 2, ma con un po’ di flessibilità.
+
+```{r}
+# Prior su mu: media intorno a 6 (incertezza moderata)
+prior_mu <- function(n) rnorm(n, mean = 6, sd = 1)
+
+# Prior su sigma: variabilità tipica ~ 1-2 (con coda verso valori più grandi)
+prior_sigma <- function(n) rgamma(n, shape = 4, rate = 2)  # media = 2
+```
+
+---
+
+## Controlliamo cosa implicano le prior (senza simulare dati)
+
+```{r}
+cat("Prior su μ: N(6, 1)\n")
+cat("  Intervallo 95%:",
+    round(qnorm(0.025, 6, 1), 1), "-",
+    round(qnorm(0.975, 6, 1), 1), "\n\n")
+```
+
+Interpretazione:
+
+* $\mu$ è quasi sempre tra **4 e 8** → plausibile.
+
+---
+
+```{r}
+cat("Prior su σ: Gamma(4, 2)\n")
+cat("  Media:", 4/2, "\n")
+cat("  Intervallo 95%:",
+    round(qgamma(0.025, 4, 2), 2), "-",
+    round(qgamma(0.975, 4, 2), 2), "\n")
+```
+
+Interpretazione:
+
+* $\sigma$ è spesso tra **~0.6 e ~3.5** → compatibile con SD ≈ 1–2.
+
+---
+
+## Passo 2 — simuliamo **uno studio** (25 soggetti)
+
+Prima di fare 5000 simulazioni, immaginiamo di osservare **un solo studio**.
+
+```{r}
+set.seed(1)
+
+n_soggetti <- 25
+
+# 1) estraiamo una possibile media e una possibile SD
+mu_1 <- prior_mu(1)
+sigma_1 <- prior_sigma(1)
+
+# 2) generiamo i dati per 25 soggetti
+digit_1 <- rnorm(n_soggetti, mean = mu_1, sd = sigma_1)
+```
+
+---
+
+```{r}
+cat("Studio 1: mu =", round(mu_1, 2), "| sigma =", round(sigma_1, 2), "\n")
+head(digit_1)
+```
+
+👉 Questo è **un mondo possibile** coerente con le prior.
+
+---
+
+## Passo 3 — simuliamo **un secondo studio**
+
+Rifacciamo lo stesso procedimento: cambiano $\mu$, $\sigma$, e quindi anche i dati.
+
+```{r}
+mu_2 <- prior_mu(1)
+sigma_2 <- prior_sigma(1)
+
+digit_2 <- rnorm(n_soggetti, mean = mu_2, sd = sigma_2)
+```
+
+---
+
+```{r}
+cat("Studio 2: mu =", round(mu_2, 2), "| sigma =", round(sigma_2, 2), "\n")
+head(digit_2)
+```
+
+**Idea chiave:** ogni studio è diverso perché **prima cambiano i parametri**, poi i dati.
+
+---
+
+## Passo 4 — simuliamo **molti studi** (prior predictive)
+
+Ora ripetiamo lo stesso schema **molte volte**.
+
+* simuliamo $n_{\text{sim}}=5000$ studi;
+* ogni studio contiene 25 osservazioni;
+* salviamo tutto in una **lista**: ogni elemento è uno studio.
+
+--- 
+
+```{r}
+set.seed(123)
+
+n_sim <- 5000
+n_soggetti <- 25
+
+# 1) parametri per ciascuno studio
+mu_sim <- prior_mu(n_sim)
+sigma_sim <- prior_sigma(n_sim)
+
+# 2) lista vuota che conterrà i dati dei 5000 studi
+dati_digit <- vector("list", n_sim)
+
+# 3) riempiamo la lista: uno studio alla volta
+for (i in 1:n_sim) {
+  dati_digit[[i]] <- rnorm(n_soggetti, mean = mu_sim[i], sd = sigma_sim[i])
+}
+
+# 4) mettiamo tutti i valori in un unico vettore (per statistiche globali)
+tutti_digit <- unlist(dati_digit)
+```
+
+---
+
+## Cosa contiene `dati_digit`?
+
+* `dati_digit[[1]]` = 25 valori del **primo studio**;
+* `dati_digit[[2]]` = 25 valori del **secondo studio**;
+* …
+* `unlist(dati_digit)` = *tutti i valori simulati messi insieme*;
+
+👉 È lo stesso oggetto “lista di studi” che abbiamo usato in precedenza.
+
+---
+
+## Verifica rapida: i dati simulati sono plausibili?
+
+```{r}
+cat("Statistiche dei dati simulati:\n")
+cat("Media:", round(mean(tutti_digit), 2), "\n")
+cat("SD:", round(sd(tutti_digit), 2), "\n")
+cat("Range:", round(min(tutti_digit), 1), "-", round(max(tutti_digit), 1), "\n\n")
+```
+
+---
+
+```{r}
+cat("Valori fuori dal range plausibile (< 3 o > 10):\n")
+cat(round(mean(tutti_digit < 3 | tutti_digit > 10) * 100, 1), "%\n")
+```
+
+Obiettivo: **pochi** valori sotto 3 o sopra 10.
+
+---
+
+## Visualizzazione: 100 studi (distribuzioni sovrapposte)
+
+```{r}
+#| echo: false
+#| fig-height: 4.5
+library(ggplot2)
+
+set.seed(123)
+idx <- sample(1:n_sim, 100)
+
+df_digit_lines <- data.frame(
+  valore = unlist(dati_digit[idx]),
+  studio = rep(1:100, each = n_soggetti)
+)
+
+ggplot(df_digit_lines, aes(x = valore, group = studio)) +
+  geom_density(alpha = 0.1, color = "steelblue") +
+  geom_vline(xintercept = c(3, 10), color = "darkred",
+             linewidth = 1, linetype = "dashed") +
+  annotate("rect", xmin = 4, xmax = 9, ymin = 0, ymax = Inf,
+           fill = "forestgreen", alpha = 0.08) +
+  labs(title = "Prior predictive check: digit span",
+       subtitle = "100 studi simulati — la maggior parte dei valori è nel range plausibile",
+       x = "Digit span", y = "Densità") +
+  theme_minimal(base_size = 14)
+```
+
+---
+
+## Valutazione finale
+
+Le prior sembrano **ragionevoli** perché:
+
+* la distribuzione è centrata intorno a **6**;
+* la maggior parte dei valori cade nel range tipico **4–9**;
+* i valori chiaramente implausibili (< 3 o > 10) sono **rari**.
+
+👉 **Conclusione:** il modello è coerente con la conoscenza del dominio e pronto per i dati reali.
+
+---
+
+## Take-home message
+
+> La calibrazione delle prior passa attraverso i dati che generano.
+
+Con il prior predictive check possiamo verificare *prima* dell’analisi se il modello produce risultati credibili.
+
+
+# Riepilogo
+
+## I punti chiave
+
+1. La **distribuzione predittiva a priori** mostra quali dati ci aspettiamo prima di osservarli.
+
+2. Il **prior predictive check** verifica se le prior producono dati plausibili.
+
+3. È più facile ragionare sulla **scala dei dati** che sulla scala dei parametri.
+
+4. La calibrazione delle prior è un processo **iterativo**.
+
+5. Dopo i dati, la **posterior predictive** fa previsioni più precise.
+
+---
+
+## Il messaggio fondamentale
+
+> "Se il mio modello non produce dati sensati **prima** di vedere i dati reali, come posso fidarmi delle sue conclusioni **dopo**?"
+
+Il prior predictive check è uno strumento di **onestà scientifica**: ci costringe a rendere esplicite e verificabili le nostre assunzioni.
+
+---
+
+## Per la prossima lezione
+
+Materiale di studio: https://ccaudek.github.io/utet-companion/
+
+**Prossimo argomento:**
+
+"L'influenza della distribuzione a priori: sensibilità e robustezza."
+
+Vedremo come le nostre credenze iniziali influenzano le conclusioni — e quando possiamo fidarci dei risultati.
+

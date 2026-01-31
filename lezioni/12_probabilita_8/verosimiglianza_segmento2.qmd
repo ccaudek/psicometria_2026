@@ -1,0 +1,851 @@
+---
+title: "La funzione di verosimiglianza"
+subtitle: "Calcolare e visualizzare la verosimiglianza in R — Segmento 2"
+version: 1.0
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+lang: it
+
+execute:
+  echo: true
+
+format:
+  revealjs:
+    theme: [default, ../revealjs.scss]
+    title-slide-attributes:
+      data-background-color: "#0072bc"
+    slide-number: c
+    show-slide-number: print
+    highlight-style: github
+    math: mathjax
+
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+```{r}
+#| echo: false
+set.seed(42)
+```
+
+## Obiettivi {.unnumbered .unlisted}
+
+1. Calcolare la verosimiglianza **passo per passo** in R.
+2. **Visualizzare** la funzione di verosimiglianza.
+3. Trovare la **stima di massima verosimiglianza**.
+4. Capire come la verosimiglianza cambia con i dati.
+
+---
+
+## Il nostro esempio guida
+
+**Scenario di ricerca clinica**
+
+Un terapeuta sperimenta un nuovo **protocollo breve** per ridurre l'ansia.  Dopo il trattamento con 12 pazienti, **9 di loro** mostrano una riduzione clinicamente rilevante dei sintomi.
+
+**Domanda centrale**
+
+Alla luce di questi dati, qual è la **probabilità vera ($\theta$)** che questo training sia efficace per un paziente?
+
+---
+
+Questo semplice scenario racchiude l'essenza del **problema inferenziale**: 
+
+* *da un risultato campionario (9/12)*  
+* *dobbiamo trarre conclusioni su un parametro della popolazione ($\theta$).*
+
+
+# Parte 1: Calcolare la verosimiglianza
+
+
+## I nostri dati
+
+```{r}
+n <- 12 # Numero totale di pazienti
+y <- 9 # Numero di successi (miglioramenti)
+```
+
+**Obiettivo:**  
+calcolare e confrontare $\mathcal{L}(\theta)$ per diversi valori della probabilità di successo $\theta$.
+
+---
+
+## Dalla probabilità alla verosimiglianza
+
+Per dati binomiali (un insieme di prove Bernoulliane indipendenti: "miglioramento clinicamente rilevante" vs. "assenza di miglioramento clinicamente rilevante"), la **distribuzione di probabilità** è:
+
+$$
+P(Y = y \mid \theta) = \binom{n}{y} \theta^y (1-\theta)^{n-y}.
+$$
+
+---
+
+**Ma attenzione:**  
+
+* quando fissiamo $y=9$ e $n=12$ (i nostri dati), 
+* e lasciamo variare $\theta$, 
+* la stessa formula diventa la **funzione di verosimiglianza**:
+
+$$
+\mathcal{L}(\theta \mid y=9) = \binom{12}{9} \theta^9 (1-\theta)^{3}.
+$$
+
+. . .
+
+In R, usiamo `dbinom(x, size, prob)` mantenendo `x` e `size` fissi mentre variamo `prob`.
+
+---
+
+## Calcolo di $\mathcal{L}(\theta)$ per $\theta = 0.5$
+
+```{r}
+# Verosimiglianza per theta = 0.5
+dbinom(x = 9, size = 12, prob = 0.5)
+```
+
+**Interpretazione:**  
+
+* avendo osservato 9 successi su 12 prove, la verosimiglianza che $\theta$ abbia il valore di 0.5 è circa 0.054.
+
+---
+
+## Calcolo di $\mathcal{L}(\theta)$ per $\theta = 0.75$
+
+```{r}
+# Verosimiglianza per theta = 0.75
+dbinom(x = 9, size = 12, prob = 0.75)
+```
+
+**Interpretazione:**
+
+* otteniamo un valore di verosimiglianza più alto! 
+* $\theta = 0.75$ è più compatibile con i dati osservati di $\theta = 0.5$.
+
+---
+
+## Confronto di tre valori
+
+```{r}
+dbinom(9, 12, prob = 0.5)   # theta = 0.5
+dbinom(9, 12, prob = 0.75)  # theta = 0.75
+dbinom(9, 12, prob = 0.9)   # theta = 0.9
+```
+
+Tra questi tre, $\theta = 0.75$ ha la verosimiglianza più alta.
+
+
+# Parte 2: la curva di verosimiglianza
+
+
+## L'idea
+
+* Invece di calcolare la verosimiglianza per pochi valori, 
+
+. . .
+
+* calcoliamola per **molti** valori di $\theta$ 
+
+. . .
+
+* e disegniamo un grafico.
+
+---
+
+## Passo 1: creare una sequenza di valori
+
+```{r}
+# Valori di theta da 0 a 1, a intervalli di 0.01
+theta <- seq(from = 0, to = 1, by = 0.01)
+```
+
+```{r}
+# Esaminiamo i primi 10 valori
+theta[1:10]
+```
+
+```{r}
+# Quanti valori abbiamo?
+length(theta)
+```
+
+Abbiamo 101 valori di $\theta$ da esaminare.
+
+---
+
+## Passo 2: calcolare la verosimiglianza per ogni valore
+
+Ora che abbiamo creato un vettore `theta` (che va da 0 a 1), possiamo calcolare l'intera funzione di verosimiglianza in un unico passaggio.
+
+Il calcolo vettoriale in R:
+
+```{r}
+# Calcola la verosimiglianza per TUTTI i valori di theta
+verosim <- dbinom(x = 9, size = 12, prob = theta)
+```
+
+```{r}
+# Prime 10 verosimiglianze
+head(verosim, 10)
+```
+
+---
+
+## Cosa abbiamo calcolato?
+
+```{r}
+# Dimensione: tanti valori di verosimiglianza quanti sono i valori di theta
+length(verosim)
+```
+
+Per ogni valore di $\theta$, abbiamo la verosimiglianza:
+
+- $\theta = 0.00$ → $\mathcal{L} = 0$
+- $\theta = 0.01$ → $\mathcal{L} = 0$
+- ...
+- $\theta = 0.75$ → $\mathcal{L} = ?$
+
+---
+
+## Passo 3: disegnare il grafico
+
+Ora abbiamo tutto ciò che serve per tracciare la curva di verosimiglianza completa.
+
+```{r}
+library(ggplot2)
+g1 <- ggplot(
+  data.frame(theta = theta, verosim = verosim), 
+  aes(x = theta, y = verosim)) +
+  geom_line() +
+  labs(x = "Theta (probabilità di successo)",
+       y = "Verosimiglianza",
+       title = "Funzione di verosimiglianza (9 successi su 12)"
+  )
+```
+
+---
+
+```{r}
+#| echo: false
+
+g1
+```
+
+
+---
+
+## Leggere il grafico
+
+La curva ci dice:
+
+- valori di $\theta$ vicini a 0 o 1 sono **poco plausibili**;
+- valori di $\theta$ vicini a 0.75 sono **molto plausibili**;
+- il **picco** indica la stima di massima verosimiglianza.
+
+
+# Parte 3: trovare la MLE
+
+
+## Qual è il valore massimo della verosimiglianza?
+
+```{r}
+# Il valore più alto che raggiunge la nostra curva
+massimo_verosim <- max(verosim)
+massimo_verosim
+```
+
+Questo numero è il valore più alto della curva che abbiamo disegnato.
+
+---
+
+## Ma quale $\theta$ corrisponde a questo massimo?
+
+Pensiamo alla curva come a una montagna. Vogliamo sapere:
+
+1. Quanto è alta la montagna (il valore massimo) ← già fatto;
+2. Dove si trova la cima (il $\theta$ corrispondente).
+
+```{r}
+# which.max() ci dice DOVE si trova il massimo
+# Pensa: "which" = "quale", "max" = "massimo"
+posizione_massimo <- which.max(verosim)
+posizione_massimo
+```
+
+Questo numero (nel nostro caso, 76) NON è il valore di $\theta$! È solo la **posizione** (indice) nell'elenco dei nostri $\theta$.
+
+---
+
+## Troviamo il vero valore di $\theta$
+
+```{r}
+# Prendiamo il θ che corrisponde a quella posizione
+theta_massimo <- theta[posizione_massimo]
+theta_massimo
+```
+
+Ora abbiamo la risposta! 
+La MLE è $\hat{\theta} = 0.75$.
+
+---
+
+## Spiegazione con analogia
+
+Immagina di avere:
+
+- una lista di numeri: `theta = [0, 0.01, 0.02, ..., 1.00]` (101 numeri totali);
+- una lista di altezze (verosimiglianze): `verosim = [0.000, 0.001, ..., 0.250]`.
+
+`which.max(verosim)` ci dice: "Il valore più alto è al 76° posto nella lista".  
+Poi prendiamo il 76° valore da `theta`: è 0.75!
+
+---
+
+## La MLE (Massima Verosimiglianza)
+
+Il risultato **$\hat{\theta}$ = 0.75** è chiamato **stimatore di massima verosimiglianza** (MLE).
+
+Perché? Perché se abbiamo osservato 9 successi su 12 prove, il valore di $\theta$ che rende **più plausibile** (più "verosimile") questa osservazione è proprio 0.75.
+
+---
+
+## Verifica
+
+Abbiamo osservato 9 successi su 12.
+
+$$
+\hat{\theta} = \frac{9}{12} = 0.75.
+$$
+
+Il nostro calcolo conferma la formula teorica!
+
+---
+
+## Riassunto in parole semplici
+
+1. **Cercare il massimo** = trovare il punto più alto della curva.
+2. `which.max()` = ci dice dove si trova quel punto (la sua posizione).
+3. `theta[posizione]` = ci dà il vero valore di $\theta$.
+4. **Risultato** = $\hat{\theta}$ = 0.75 è il valore che massimizza la verosimiglianza.
+
+---
+
+## Aggiungiamo la MLE al grafico
+
+```{r}
+# Creiamo un dataframe con i dati
+dati <- data.frame(theta = theta, verosim = verosim)
+
+g2 <- ggplot(dati, aes(x = theta, y = verosim)) +
+  # Linea della curva di verosimiglianza
+  geom_line(color = "black", size = 1) +
+  # Linea verticale rossa tratteggiata alla MLE
+  geom_vline(xintercept = 0.75, color = "red", linetype = "dashed", size = 0.8) +
+  # Etichetta del testo
+  annotate("text", x = 0.82, y = 0.2, 
+           label = "MLE = 0.75", color = "red", size = 4) +
+  # Titoli degli assi
+  labs(x = "Theta", 
+       y = "Verosimiglianza",
+       title = "Verosimiglianza con MLE evidenziata")
+```
+
+---
+
+```{r}
+#| echo: false
+g2
+```
+
+# Parte 4: interpretare la larghezza della verosimiglianza nel contesto clinico
+
+## L'incertezza nell'interpretazione clinica
+
+Consideriamo il nostro parametro $\theta$: **probabilità che il trattamento sia efficace per un paziente**.
+
+Nel contesto clinico:
+
+- $\theta > 0.5$ suggerisce che il trattamento funziona meglio del caso;
+- $\theta > 0.7$ suggerisce una buona efficacia;
+- $\theta > 0.9$ suggerisce un'eccellente efficacia.
+
+---
+
+## Le due situazioni a confronto
+
+**Scenario 1 ($n=12$):**  
+9 successi su 12 (75%) - Studio pilota.
+
+**Scenario 2 ($n=120$):**  
+90 successi su 120 (75%) - Studio clinico.
+
+Entrambi mostrano la stessa proporzione di successo, ma la **certezza** è diversa.
+
+---
+
+## Calcolo
+
+```{r}
+# Caso 1: n = 12
+verosim_12 <- dbinom(9, 12, prob = theta)
+
+# Caso 2: n = 120
+verosim_120 <- dbinom(90, 120, prob = theta)
+```
+
+---
+
+## Normalizziamo per confrontare
+
+Dividiamo per il massimo (così entrambe hanno picco = 1):
+
+```{r}
+verosim_12_norm <- verosim_12 / max(verosim_12)
+verosim_120_norm <- verosim_120 / max(verosim_120)
+```
+
+---
+
+## Grafico comparativo
+
+```{r}
+plot(theta, verosim_12_norm, type = "l", lwd = 2,
+     xlab = "Theta", ylab = "Verosimiglianza normalizzata",
+     main = "Effetto della dimensione del campione")
+lines(theta, verosim_120_norm, col = "blue", lwd = 2)
+legend("topleft", c("n = 12", "n = 120"), col = c("black", "blue"), lwd = 2)
+```
+
+---
+
+## Interpretazione clinica delle due curve
+
+**Con n=12 (curva nera):**
+
+- Il picco è a 0.75, ma la curva è molto larga.
+- Sostanziali porzioni della curva cadono su valori:
+  - sotto 0.5: il trattamento potrebbe essere inefficace o dannoso;
+  - sopra 0.9: il trattamento potrebbe essere eccellente.
+- **Conclusione clinica:** "I dati suggeriscono un'efficacia, ma con molta incertezza".
+
+---
+
+## Interpretazione clinica delle due curve
+
+**Con n=120 (curva blu):**
+
+- Il picco è sempre a 0.75, ma la curva è molto stretta.
+- Quasi tutta la massa della curva è tra 0.68 e 0.82.
+- **Conclusione clinica:** "Il trattamento mostra un'efficacia moderata con alta certezza".
+
+---
+
+## Cosa significa per la pratica clinica?
+
+```{r}
+#| echo: false
+#| fig-height: 4.5
+# Creiamo una visualizzazione che mostra l'intervallo plausibile
+# per ciascuno scenario
+
+# Per n=12: troviamo dove la verosimiglianza è > 1% del massimo
+soglia_12 <- max(verosim_12) * 0.01
+intervallo_12 <- theta[verosim_12 > soglia_12]
+
+# Per n=120: stessa soglia
+soglia_120 <- max(verosim_120) * 0.01
+intervallo_120 <- theta[verosim_120 > soglia_120]
+
+# Visualizziamo
+par(mfrow = c(1, 2))
+
+# Plot per n=12
+plot(theta, verosim_12, type = "l", lwd = 2, col = "darkorange",
+     ylab = "Verosimiglianza", xlab = "Theta",
+     main = "Studio pilota (n=12)")
+polygon(c(min(intervallo_12), intervallo_12, max(intervallo_12)), 
+        c(0, verosim_12[verosim_12 > soglia_12], 0), 
+        col = rgb(1, 0.65, 0, 0.3), border = NA)
+abline(v = c(min(intervallo_12), max(intervallo_12)), 
+       lty = 2, col = "darkorange")
+text(0.5, max(verosim_12)*0.9, 
+     sprintf("Intervallo plausibile:\n[%.2f, %.2f]", 
+             min(intervallo_12), max(intervallo_12)),
+     col = "darkorange")
+
+# Plot per n=120
+plot(theta, verosim_120, type = "l", lwd = 2, col = "darkblue",
+     ylab = "Verosimiglianza", xlab = "Theta",
+     main = "Studio clinico (n=120)")
+polygon(c(min(intervallo_120), intervallo_120, max(intervallo_120)), 
+        c(0, verosim_120[verosim_120 > soglia_120], 0), 
+        col = rgb(0, 0, 1, 0.3), border = NA)
+abline(v = c(min(intervallo_120), max(intervallo_120)), 
+       lty = 2, col = "darkblue")
+text(0.5, max(verosim_120)*0.9, 
+     sprintf("Intervallo plausibile:\n[%.2f, %.2f]", 
+             min(intervallo_120), max(intervallo_120)),
+     col = "darkblue")
+```
+
+## Messaggio chiave per lo psicologo
+
+La **larghezza** della funzione di verosimiglianza ci dice quanto possiamo essere **certi** della nostra stima:
+
+- **Curva larga** → molta incertezza → studio esplorativo → bisogno di replicazione.
+- **Curva stretta** → poca incertezza → studio conclusivo → basi solide per la decisione.
+
+Nella ricerca psicologica, spesso iniziamo con studi pilota (curve larghe) per poi confermare con campioni più numerosi (curve strette).
+
+---
+
+## Analogia con la misurazione
+
+Pensate a misurare una temperatura:
+
+- **Con un termometro di scarsa qualità:** la lettura è 23°C, ma potrebbe essere tra 20°C e 26°C.
+- **Con un termometro di alta qualità:** la lettura è 23°C, ed è quasi certamente tra 22.8°C e 23.2°C.
+
+Allo stesso modo, la curva di verosimiglianza ci dice la "qualità della nostra misura" del parametro $\theta$!
+
+
+# Parte 5: esercizi 
+
+
+## Esercizio 1
+
+Un ricercatore valuta la memoria di 15 partecipanti dopo un training. 10 superano una soglia prestabilita.
+
+**Compito:** 
+
+1. Calcola la verosimiglianza per $\theta = 0.5, 0.6, 0.7$.
+2. Disegna la curva di verosimiglianza.
+3. Trova la MLE.
+
+---
+
+## Soluzione Esercizio 1 — Passo 1
+
+```{r}
+# Dati
+n <- 15
+y <- 10
+
+# Verosimiglianze puntuali
+dbinom(y, n, prob = 0.5)
+dbinom(y, n, prob = 0.6)
+dbinom(y, n, prob = 0.7)
+```
+
+$\theta = 0.7$ ha la verosimiglianza più alta.
+
+---
+
+## Soluzione Esercizio 1 — Passo 2
+
+```{r}
+#| fig-height: 4.5
+theta <- seq(0, 1, by = 0.01)
+verosim <- dbinom(y, n, prob = theta)
+
+# Creazione del dataframe per ggplot
+dati <- data.frame(theta = theta, verosim = verosim)
+
+# Grafico con ggplot2
+g3 <- ggplot(dati, aes(x = theta, y = verosim)) +
+  geom_line(linewidth = 1, color = "steelblue") +
+  labs(
+    x = "Theta (probabilità di successo)",
+    y = "Verosimiglianza",
+    title = "Esercizio 1: 10 successi su 15"
+  ) 
+```
+
+---
+
+```{r}
+#| echo: false
+g3
+```
+
+
+---
+
+## Soluzione Esercizio 1 — Passo 3
+
+```{r}
+# MLE
+theta[which.max(verosim)]
+
+# Verifica
+y / n
+```
+
+---
+
+## Esercizio 2
+
+Due gruppi vengono sottoposti a un test:
+
+- **Gruppo A:** 8 successi su 20.
+- **Gruppo B:** 12 successi su 20.
+
+**Compito:** confronta le curve di verosimiglianza.
+
+---
+
+## Soluzione Esercizio 2
+
+```{r}
+#| fig-height: 4.5
+theta <- seq(0, 1, by = 0.01)
+verosim_A <- dbinom(8, 20, prob = theta)
+verosim_B <- dbinom(12, 20, prob = theta)
+
+# Normalizzazione
+verosim_A_norm <- verosim_A / max(verosim_A)
+verosim_B_norm <- verosim_B / max(verosim_B)
+
+# Creazione del dataframe per ggplot
+dati <- data.frame(
+  theta = rep(theta, 2),
+  verosim = c(verosim_A_norm, verosim_B_norm),
+  gruppo = rep(c("Gruppo A (8/20)", "Gruppo B (12/20)"), each = length(theta))
+)
+
+# Grafico con ggplot2
+g4 <- ggplot(dati, aes(x = theta, y = verosim, color = gruppo)) +
+  geom_line(linewidth = 1.2) +
+  scale_color_manual(
+    values = c("Gruppo A (8/20)" = "black", "Gruppo B (12/20)" = "blue")
+  ) +
+  labs(
+    x = "Theta (probabilità di successo)",
+    y = "Verosimiglianza normalizzata",
+    color = "Gruppo",
+    title = "Confronto delle verosimiglianze normalizzate"
+  ) 
+```
+
+---
+
+```{r}
+#| echo: false
+g4
+```
+
+---
+
+## Interpretazione Esercizio 2
+
+- MLE Gruppo A: $\hat{\theta}_A = 8/20 = 0.40$.
+- MLE Gruppo B: $\hat{\theta}_B = 12/20 = 0.60$.
+
+Le curve **non si sovrappongono molto**: i due gruppi sembrano avere probabilità di successo diverse.
+
+---
+
+## Esercizio 3
+
+Uno studio longitudinale segue lo stesso gruppo:
+
+- **Tempo 1:** 4 successi su 10.
+- **Tempo 2:** 7 successi su 10 (dopo un intervento).
+
+**Domanda:** l'intervento ha cambiato $\theta$ (probabilità di successo in un compito)?
+
+---
+
+## Soluzione Esercizio 3
+
+```{r}
+verosim_T1 <- dbinom(4, 10, prob = theta)
+verosim_T2 <- dbinom(7, 10, prob = theta)
+
+# Normalizzazione
+verosim_T1_norm <- verosim_T1 / max(verosim_T1)
+verosim_T2_norm <- verosim_T2 / max(verosim_T2)
+
+# Creazione del dataframe per ggplot
+dati <- data.frame(
+  theta = rep(theta, 2),
+  verosim = c(verosim_T1_norm, verosim_T2_norm),
+  gruppo = rep(c("T1 (4/10)", "T2 (7/10)"), each = length(theta))
+)
+
+# Grafico con ggplot2
+g5 <- ggplot(dati, aes(x = theta, y = verosim, color = gruppo)) +
+  geom_line(linewidth = 1.2) +
+  scale_color_manual(
+    values = c("T1 (4/10)" = "black", "T2 (7/10)" = "blue")
+  ) +
+  labs(
+    x = "Theta (probabilità di successo)",
+    y = "Verosimiglianza normalizzata",
+    color = "Gruppo",
+    title = "Prima e dopo l'intervento"
+  )
+```
+
+---
+
+```{r}
+#| echo: false
+g5
+```
+
+---
+
+## Interpretazione Esercizio 3
+
+- Le curve si **sovrappongono parzialmente**.
+- MLE prima: 0.4, MLE dopo: 0.7.
+- C'è evidenza di un cambiamento, ma i campioni sono piccoli.
+
+Con più dati, le curve sarebbero più strette e il confronto più chiaro.
+
+
+# Parte 6: la log-verosimiglianza
+
+
+## Perché il logaritmo?
+
+Quando i campione è grande, la verosimiglianza diventa un numero **molto piccolo**.
+
+```{r}
+# Con n = 100
+dbinom(75, 100, prob = 0.75)
+```
+
+```{r}
+# Con n = 10000
+dbinom(7500, 10000, prob = 0.75)
+```
+
+Numeri così piccoli possono creare problemi al computer.
+
+---
+
+## La soluzione: log-verosimiglianza
+
+```{r}
+# Log-verosimiglianza
+log(dbinom(7500, 10000, prob = 0.75))
+```
+
+Oppure direttamente con `log = TRUE`:
+
+```{r}
+dbinom(7500, 10000, prob = 0.75, log = TRUE)
+```
+
+---
+
+## Grafico della log-verosimiglianza
+
+```{r}
+theta <- seq(0.01, 0.99, by = 0.01)  # Evita log(0)
+loglik <- dbinom(9, 12, prob = theta, log = TRUE)
+
+# Creazione del dataframe per ggplot
+dati <- data.frame(theta = theta, loglik = loglik)
+
+# Calcolo della MLE (massima log-verosimiglianza)
+mle_theta <- theta[which.max(loglik)]
+
+# Grafico base
+g6 <- ggplot(dati, aes(x = theta, y = loglik)) +
+  geom_line(linewidth = 1.2, color = "darkgreen") +
+  geom_vline(xintercept = mle_theta, linetype = "dashed", 
+             color = "red", linewidth = 0.8) +
+  annotate("text", x = mle_theta + 0.07, y = max(loglik) - 1.75,
+           label = paste0("MLE = ", round(mle_theta, 3)),
+           color = "red", size = 4) +
+  labs(
+    x = "Theta (probabilità di successo)",
+    y = "Log-verosimiglianza",
+    title = "Log-verosimiglianza per 9 successi su 12"
+  )
+```
+
+---
+
+```{r}
+#| echo: false
+g6
+```
+
+---
+
+## Proprietà importante
+
+Il **massimo** della log-verosimiglianza è nello stesso punto del massimo della verosimiglianza.
+
+```{r}
+theta[which.max(loglik)]
+```
+
+Sempre 0.75!
+
+---
+
+## Riepilogo: comandi R essenziali
+
+| Operazione | Codice R |
+|------------|----------|
+| Verosimiglianza binomiale | `dbinom(y, n, prob = theta)` |
+| Log-verosimiglianza | `dbinom(y, n, prob = theta, log = TRUE)` |
+| Sequenza di valori | `seq(0, 1, by = 0.01)` |
+| Trovare il massimo | `max(verosim)` |
+| Posizione del massimo | `which.max(verosim)` |
+
+---
+
+## Riepilogo concettuale
+
+1. `dbinom()` calcola la verosimiglianza binomiale.
+
+2. Creiamo una **griglia** di valori di $\theta$ con `seq()`.
+
+3. Calcoliamo la verosimiglianza per **tutti** i valori.
+
+4. Il grafico mostra la **plausibilà relativa** di questi valori.
+
+5. La MLE è il **picco** della curva.
+
+6. Più dati → curva più **stretta** → meno incertezza.
+
+---
+
+## Il messaggio da portare a casa
+
+La funzione di verosimiglianza risponde alla domanda:
+
+> "Alla luce dei dati osservati, quanto è plausibile ciascuno dei possibili valori del parametro?"
+
+---
+
+## Il messaggio da portare a casa
+
+Questa logica è esattamente ciò di cui ha bisogno lo psicologo ricercatore per:
+
+* stimare con quanta evidenza un **trattamento** sia efficace;
+* **confrontare** teorie o gruppi in modo quantitativo;
+* valutare l'**incertezza** nelle stime di cambiamento nel tempo.
+
+La verosimiglianza trasforma i dati in un **profilo di evidenza** per il parametro di interesse.
+
+---
+
+## Per la prossima lezione
+
+Materiale di studio: https://ccaudek.github.io/utet-prob/
+
+**Prossimo argomento:** 
+
+Prior, verosimiglianza e posterior: come combinare conoscenze pregresse con i dati.

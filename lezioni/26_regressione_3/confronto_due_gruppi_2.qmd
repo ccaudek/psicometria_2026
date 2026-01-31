@@ -1,0 +1,1043 @@
+---
+title: "Confronto tra due gruppi"
+subtitle: "Implementazione bayesiana e previsioni individuali — Segmento 2"
+version: 1.0
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+lang: it
+
+execute:
+  echo: true
+
+format:
+  revealjs:
+    theme: [default, ../revealjs.scss]
+    title-slide-attributes:
+      data-background-color: "#0072bc"
+    slide-number: c
+    show-slide-number: print
+    highlight-style: github
+    math: mathjax
+
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+library(ggplot2)
+library(dplyr)
+library(brms)
+library(bayesplot)
+set.seed(42)
+```
+
+## Obiettivi {.unnumbered .unlisted}
+
+1. Implementare il confronto tra due gruppi con **brms**.
+2. Interpretare i risultati del modello bayesiano.
+3. Calcolare la **distribuzione predittiva** per nuovi pazienti.
+4. Distinguere tra **incertezza epistemica** e **variabilità aleatoria**.
+5. Comunicare i risultati in modo **clinicamente utile**.
+
+# Parte 1: riprendiamo i dati
+
+## Lo studio sulla mindfulness
+
+```{r}
+# Ricreiamo i dati dello studio
+set.seed(123)
+
+n_controllo <- 30
+ansia_controllo <- rnorm(n_controllo, mean = 55, sd = 12)
+
+n_trattamento <- 30
+ansia_trattamento <- rnorm(n_trattamento, mean = 46, sd = 11)
+
+dati <- data.frame(
+  ansia = c(ansia_controllo, ansia_trattamento),
+  gruppo = factor(c(rep("Controllo", n_controllo), 
+                    rep("Mindfulness", n_trattamento)))
+)
+```
+
+---
+
+## Riepilogo dei dati
+
+```{r}
+# Statistiche descrittive per gruppo
+dati |> 
+  group_by(gruppo) |> 
+  summarise(
+    n = n(),
+    media = round(mean(ansia), 1),
+    ds = round(sd(ansia), 1)
+  )
+```
+
+# Parte 2: il modello bayesiano con brms
+
+## Specificazione del modello
+
+```{r}
+#| output: false
+
+# Modello bayesiano per il confronto tra due gruppi
+fit <- brm(
+  ansia ~ gruppo,
+  data = dati,
+  family = gaussian(),
+  seed = 42,
+  backend = "cmdstanr",
+  silent = 2,
+  refresh = 0
+)
+```
+
+---
+
+## Cosa fa brms "dietro le quinte"
+
+1. Traduce la formula R in codice **Stan**.
+2. Genera i **prior di default** se non specificati.
+3. Esegue il campionamento **MCMC** (4 catene, 2000 iterazioni ciascuna).
+4. Restituisce la **distribuzione a posteriori** dei parametri.
+
+---
+
+## Diagnostica della convergenza
+
+```{r}
+# Verifichiamo la convergenza
+summary(fit)$fixed[, c("Estimate", "Est.Error", "Rhat", "Bulk_ESS")]
+```
+
+. . .
+
+**Criteri di convergenza:**
+
+- $\hat{R} \approx 1.00$ → le catene hanno raggiunto la stessa distribuzione
+- ESS > 400 → campione effettivo sufficiente
+
+---
+
+## Trace plots
+
+```{r}
+#| echo: false
+#| fig-height: 4
+
+mcmc_trace(fit, pars = c("b_Intercept", "b_gruppoMindfulness", "sigma"))
+```
+
+Catene che si sovrappongono → buona convergenza.
+
+---
+
+## Interpretazione dei coefficienti
+
+```{r}
+# Estraiamo le stime
+fixef(fit)
+```
+
+. . .
+
+**Significato:**
+
+- `Intercept` (54.4) = media attesa per il gruppo **Controllo**;
+- `gruppoMindfulness` (-6.5) = **differenza** rispetto al controllo.
+
+---
+
+## Le medie dei due gruppi
+
+Estraiamo i campioni a posteriori:
+
+```{r}
+post <- as_draws_df(fit)
+```
+
+```{r}
+head(post)
+```
+
+---
+
+### Interpretazione dei parametri
+
+* `b_Intercept`: media del gruppo Controllo (condizione di riferimento);
+* `b_gruppoMindfulness`: differenza tra la media del gruppo Mindfulness e il gruppo Controllo.
+
+---
+
+### Medie e intervalli di credibilità
+
+Calcoliamo le medie dei due gruppi:
+
+```{r}
+media_controllo <- post$b_Intercept
+media_mindfulness <- post$b_Intercept + post$b_gruppoMindfulness
+```
+
+Intervalli di credibilità per ciascuna media:
+
+```{r}
+cat("Media gruppo Controllo:", round(mean(media_controllo), 1), 
+    "[", round(quantile(media_controllo, 0.025), 1), ",", 
+    round(quantile(media_controllo, 0.975), 1), "]\n")
+
+cat("Media gruppo Mindfulness:", round(mean(media_mindfulness), 1),
+    "[", round(quantile(media_mindfulness, 0.025), 1), ",", 
+    round(quantile(media_mindfulness, 0.975), 1), "]\n")
+```
+
+
+---
+
+## Visualizziamo le posterior delle medie
+
+```{r}
+#| echo: false
+
+df_medie <- data.frame(
+  valore = c(media_controllo, media_mindfulness),
+  gruppo = rep(c("Controllo", "Mindfulness"), each = length(media_controllo))
+)
+
+ggplot(df_medie, aes(x = valore, fill = gruppo)) +
+  geom_density(alpha = 0.6) +
+  scale_fill_manual(values = c("coral", "steelblue")) +
+  labs(title = "Distribuzioni a posteriori delle medie dei gruppi",
+       x = "Punteggio di ansia", y = "Densità", fill = "Gruppo") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "bottom")
+```
+
+# Parte 3: la differenza tra le medie
+
+## La distribuzione di β
+
+Otteniamo i campioni a posteriodi di $\beta$:
+
+```{r}
+# 
+beta <- post$b_gruppoMindfulness
+```
+
+---
+
+## Visualizzazione
+
+```{r}
+#| echo: false
+
+df_beta <- data.frame(
+  valore = beta
+)
+
+ggplot(df_beta, aes(x = valore)) +
+  geom_density(alpha = 0.6) +
+  labs(title = "Distribuzioni a posteriori della differenza tra le medie dei gruppi",
+       x = "Punteggio di differenza dell'ansia", y = "Densità") +
+  theme_minimal(base_size = 14) 
+```
+
+---
+
+## Descrizione della distribuzione a posteriori di $\beta$
+
+Valore atteso della differenza (Mindfulness - Controllo):
+
+```{r}
+round(mean(beta), 2)
+```
+
+```{r}
+round(sd(beta), 2)
+```
+
+Intervallo di credibilità al 95%:
+
+```{r}
+c(
+  round(quantile(beta, 0.025), 2), 
+  round(quantile(beta, 0.975), 2)
+)
+```
+
+---
+
+## Probabilità dirette sulla differenza
+
+Probabilità che il trattamento sia efficace (riduca l'ansia):
+
+```{r}
+mean(beta < 0)
+```
+
+. . .
+
+Probabilità di un effetto clinicamente rilevante (> 5 punti):
+
+```{r}
+mean(beta < -5)
+```
+
+. . .
+
+Probabilità di effetto piccolo (tra 0 e -5):
+
+```{r}
+mean(beta < 0 & beta >= -5)
+```
+
+---
+
+## Visualizziamo le probabilità
+
+```{r}
+#| echo: false
+
+df_beta <- data.frame(differenza = beta)
+
+ggplot(df_beta, aes(x = differenza)) +
+  geom_density(fill = "gray80", color = "gray40") +
+  geom_area(data = subset(df_beta, differenza < -5),
+            aes(y = after_stat(density)), fill = "steelblue", alpha = 0.7,
+            stat = "density") +
+  geom_area(data = subset(df_beta, differenza >= -5 & differenza < 0),
+            aes(y = after_stat(density)), fill = "lightblue", alpha = 0.7,
+            stat = "density") +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "darkred", linewidth = 1) +
+  geom_vline(xintercept = -5, linetype = "dotted", color = "steelblue", linewidth = 1) +
+  annotate("text", x = -10, y = 0.06, label = "Effetto\nrilevante", 
+           color = "steelblue", size = 3.5) +
+  annotate("text", x = -2.5, y = 0.06, label = "Effetto\npiccolo", 
+           color = "lightblue4", size = 3.5) +
+  labs(title = "Distribuzione a posteriori della differenza",
+       x = "Differenza (punti di ansia)", y = "Densità") +
+  theme_minimal(base_size = 14)
+```
+
+# Parte 4: la distribuzione predittiva individuale
+
+## Cos'è la distribuzione predittiva?
+
+Nel segmento precedente abbiamo visto che i dati individuali sono molto variabili (alcuni pazienti migliorano di più, altri di meno, altri ancora peggiorano).
+
+. . .
+
+Ora vogliamo rispondere alla domanda:
+
+> "Dato il modello stimato, quale punteggio di ansia ci aspettiamo per un paziente?"
+
+. . .
+
+La risposta è la **distribuzione predittiva**: una distribuzione di probabilità sui possibili esiti.
+
+---
+
+## Una precisazione terminologica
+
+Quando parliamo di "previsione per un nuovo paziente", non intendiamo necessariamente un paziente che non abbiamo ancora osservato.
+
+. . .
+
+* Intendiamo: **un paziente con le stesse caratteristiche** di quelli nel nostro campione.
+
+* Potrebbe essere:
+
+  - un paziente futuro;
+  - un paziente già osservato (per verificare il modello);
+  - un paziente ipotetico.
+
+---
+
+## Partiamo da un singolo paziente: Mario
+
+Immaginiamo **Mario**, un paziente che sta per iniziare il trattamento di mindfulness.
+
+**Domanda:** quale punteggio di ansia ci aspettiamo per Mario dopo il trattamento?
+
+---
+
+## Preparazione per la previsione individuale
+
+Stiamo per utilizzare il nostro modello statistico per fare una **previsione personalizzata**: vogliamo stimare quale potrebbe essere il livello di ansia di un individuo specifico (che chiameremo "Mario") **se fosse assegnato al gruppo di trattamento Mindfulness**.
+
+---
+
+### Perché un data frame "vuoto"?
+
+Nella statistica bayesiana (e in molti modelli di regressione), dobbiamo fornire i dati nelle stesse strutture utilizzate per costruire il modello originale. 
+
+Anche se Mario non è stato effettivamente osservato nei dati originali, dobbiamo inserirlo in un formato compatibile.
+
+```{r}
+# Mario sarà nel gruppo Mindfulness
+mario <- data.frame(
+  gruppo = factor("Mindfulness", levels = levels(dati$gruppo))
+)
+print(mario)
+```
+
+---
+
+**Analisi del codice:**
+
+1. **`data.frame()`** → crea una nuova tabella dati.
+2. **`gruppo = factor(...)`** → crea una variabile "gruppo" di tipo fattore.
+   - `"Mindfulness"` → il valore che vogliamo assegnare a Mario.
+   - `levels = levels(dati$gruppo)` → **molto importante**: assicura che i livelli del fattore siano **esattamente gli stessi** utilizzati nel modello originale.
+
+---
+
+### Importanza dei livelli del fattore
+
+Quando un modello statistico viene addestrato su dati categorici (come "Controllo" e "Mindfulness"), mantiene internamente una mappatura tra le etichette e i codici numerici. Specificare `levels = levels(dati$gruppo)` garantisce che:
+
+1. la codifica di "Mindfulness" sia identica a quella usata durante il fit de modello;
+2. senza questa specifica, R potrebbe creare nuovi livelli o riordinarli in modo diverso;
+3. il modello potrà interpretare correttamente il dato di input.
+
+---
+
+### Analogia pratica
+
+Possiamo pensare a questo come ad un modulo per l'ammissione ospedaliera:
+
+- Nome paziente: **Mario**  
+- Gruppo di trattamento: **Mindfulness** ✓  
+- Tutti gli altri dati: non specificati (il modello li stimerà).
+
+---
+
+### Prossimo passo
+
+Una volta creato questo data frame con Mario, lo passeremo alla funzione `predict()` del nostro modello per ottenere:
+
+- la distribuzione predittiva del suo livello d'ansia;
+- l'incertezza associata a questa previsione.
+
+**Questo è il primo passo verso previsioni personalizzate basate sul modello.**
+
+---
+
+## Due tipi di previsione per Mario
+
+Possiamo fare due domande diverse:
+
+1. **Qual è la media attesa per pazienti come Mario?**  
+  Questa domanda riguarda il **parametro** $\mu$ (la media del gruppo).
+
+2. **Quale sarà il punteggio *specifico* di Mario?**  
+  Questa domanda riguarda il **valore individuale** $X$.
+
+. . .
+
+Sono domande diverse, con risposte diverse.
+
+---
+
+## Previsione della media: `fitted()`
+
+Iniziamo con la previsione della **media** per pazienti come Mario.
+
+```{r}
+pred_media_mario <- fitted(fit, newdata = mario, summary = TRUE)
+print(pred_media_mario)
+```
+
+. . .
+
+**Interpretazione:**
+
+- la media attesa per pazienti nel gruppo Mindfulness è circa 48 punti;
+- l'incertezza (Est.Error ≈ 2) riflette solo la nostra **incertezza sui parametri**.
+
+---
+  
+## Previsione individuale: `predict()`
+
+Consideriamo la previsione del **valore individuale** per Mario:
+
+```{r}
+pred_ind_mario <- predict(fit, newdata = mario, summary = TRUE)
+print(pred_ind_mario)
+```
+
+. . .
+
+**Interpretazione:**
+
+- ci aspettiamo che Mario abbia un punteggio attorno a 48;
+- ma l'incertezza (Est.Error ≈ 12) è **molto maggiore**;
+- l'intervallo 95% va da circa 26 a 69 punti.
+
+---
+
+## Perché l'incertezza è così diversa?
+
+```{r}
+#| echo: false
+
+cat("CONFRONTO PER MARIO:\n\n")
+cat("Previsione della MEDIA:\n")
+cat("  Stima:", round(pred_media_mario[1], 1), "\n")
+cat("  IC 95%: [", round(pred_media_mario[3], 1), ",", 
+    round(pred_media_mario[4], 1), "]\n")
+cat("  Ampiezza IC:", round(pred_media_mario[4] - pred_media_mario[3], 1), "punti\n\n")
+
+cat("Previsione INDIVIDUALE:\n")
+cat("  Stima:", round(pred_ind_mario[1], 1), "\n")
+cat("  IC 95%: [", round(pred_ind_mario[3], 1), ",", 
+    round(pred_ind_mario[4], 1), "]\n")
+cat("  Ampiezza IC:", round(pred_ind_mario[4] - pred_ind_mario[3], 1), "punti\n")
+```
+
+L'intervallo individuale è circa **5 volte più ampio**.
+
+---
+
+## La spiegazione: due fonti di incertezza
+
+**Previsione della media (`fitted`)**
+
+Include solo l'**incertezza epistemica**: non conosciamo esattamente i parametri del modello.
+
+**Previsione individuale (`predict`)**
+
+Include:
+
+1. l'**incertezza epistemica** (sui parametri)
+2. la **variabilità aleatoria** (tra i pazienti)
+
+. . .
+
+$$
+\sigma_{\text{pred}}^2 = \sigma_{\text{param}}^2 + \sigma^2.
+$$
+
+---
+
+## Visualizziamo le due previsioni per Mario
+
+Estraiamo i campioni dalla posterior:
+
+```{r}
+pred_media_samples <- fitted(fit, newdata = mario, summary = FALSE)
+pred_ind_samples <- predict(fit, newdata = mario, summary = FALSE)
+```
+
+---
+
+```{r}
+#| echo: false
+
+# Estraiamo i campioni dalla posterior
+pred_media_samples <- fitted(fit, newdata = mario, summary = FALSE)
+pred_ind_samples <- predict(fit, newdata = mario, summary = FALSE)
+
+df_mario <- data.frame(
+  valore = c(as.vector(pred_media_samples), as.vector(pred_ind_samples)),
+  tipo = rep(c("Media attesa\n(dove sta il centro?)", 
+               "Valore individuale\n(dove sarà Mario?)"), 
+             each = length(pred_media_samples))
+)
+
+ggplot(df_mario, aes(x = valore, fill = tipo)) +
+  geom_density(alpha = 0.6) +
+  scale_fill_manual(values = c("coral", "steelblue")) +
+  labs(title = "Previsioni per Mario (gruppo Mindfulness)",
+       subtitle = "La previsione individuale è molto più incerta",
+       x = "Punteggio di ansia", y = "Densità", fill = "") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "bottom")
+```
+
+---
+
+## Probabilità specifiche per Mario
+
+Con la distribuzione predittiva possiamo calcolare probabilità concrete.
+
+. . .
+
+Probabilità che Mario abbia ansia bassa (< 40):
+
+```{r}
+mean(pred_ind_samples < 40)
+```
+
+. . .
+
+Probabilità che Mario abbia ansia alta (> 60):
+
+```{r}
+mean(pred_ind_samples > 60)
+```
+
+. . .
+
+Probabilità che Mario sia nella "zona normale" (40-60):
+
+```{r}
+mean(pred_ind_samples >= 40 & pred_ind_samples <= 60)
+```
+
+---
+
+## Cosa diciamo a Mario?
+
+**Comunicazione problematica:**
+
+> "Il trattamento funziona. La media del gruppo è 48."
+
+. . .
+
+**Comunicazione onesta:**
+
+> "Dopo il trattamento, ci aspettiamo che il tuo punteggio sia attorno a 48, ma potrebbe variare molto: c'è circa il 23% di probabilità che sia sotto 40, e circa il 13% che sia sopra 60."
+
+# Parte 5: dall'individuo all'insieme
+
+## Passaggio concettuale: dal singolo paziente ai gruppi
+
+Finora abbiamo analizzato **un singolo paziente**.
+
+Ora allarghiamo lo sguardo a livello di gruppo:
+
+* costruiamo un **paziente tipo** per ciascun gruppo;
+* usiamo il modello per simulare **quali valori di ansia potremmo osservare** per un individuo appartenente a quel gruppo.
+
+Questo è diverso da: "Qual è la differenza media tra i gruppi?" 
+
+Vogliamo le **previsioni individuali** generate dal modello per tutti gli individui di ciascun gruppo.
+
+---
+
+## Pazienti tipo (e significato degli indici)
+
+Creiamo un dataset con **due righe**:
+
+1. riga 1 → un individuo generico nel gruppo *Controllo*;
+2. riga 2 → un individuo generico nel gruppo *Mindfulness*.
+
+Gli indici `1` e `2` servono **solo** a selezionare queste due righe.
+
+```{r}
+# Pazienti tipo per ciascun gruppo
+pazienti_tipo <- data.frame(
+  gruppo = factor(c("Controllo", "Mindfulness"),
+                  levels = levels(dati$gruppo))
+)
+```
+
+---
+
+Usiamo il modello (`fit`) per prevedere l'ansia di questi individui tipo.
+
+Previsione per un individuo del gruppo Controllo (riga 1):
+
+```{r}
+pred_controllo <- predict(
+  fit,
+  newdata = pazienti_tipo[1, , drop = FALSE],
+  summary = FALSE
+)
+```
+
+Previsione per un individuo del gruppo Mindfulness (riga 2):
+
+```{r}
+pred_mindfulness <- predict(
+  fit,
+  newdata = pazienti_tipo[2, , drop = FALSE],
+  summary = FALSE
+)
+```
+
+---
+
+Ogni previsione della **distribuzione predittiva**
+
+$$
+p(\tilde y \mid \text{gruppo}, \text{dati})
+$$
+combina:
+
+* l'incertezza sui parametri del modello;
+* la variabilità individuale.
+
+---
+
+## Cosa vogliamo ottenere
+
+Vogliamo rispondere a una domanda clinicamente rilevante:
+
+> *Di quanto potrebbe cambiare l’ansia di un individuo se appartenesse al gruppo Mindfulness invece che al gruppo di Controllo?*
+
+Lo facciamo confrontando **due previsioni individuali generate dal modello**,
+non confrontando due medie osservate nei dati.
+
+L’obiettivo non è stimare un effetto medio di popolazione,
+ma descrivere **la variabilità plausibile dell’effetto a livello individuale**.
+
+---
+
+## Il beneficio individuale del trattamento
+
+Definiamo il beneficio individuale come:
+$$
+\Delta_i = \tilde y_{i,\text{Mindfulness}} - \tilde y_{i,\text{Controllo}}
+$$
+dove $\tilde y$ indica un **valore futuro predetto** dal modello.
+
+```{r}
+# Differenza individuale prevista tra i due gruppi
+beneficio_ind <- pred_mindfulness - pred_controllo
+```
+
+La distribuzione di $\Delta_i$ rappresenta i **possibili benefici del trattamento**
+per **un individuo generico**, cioè non caratterizzato da covariate specifiche.
+
+---
+
+## Attenzione all’interpretazione
+
+Questa distribuzione **non** descrive:
+
+* il beneficio di un paziente reale già osservato;
+* l’effetto medio del trattamento;
+* una garanzia di miglioramento per ogni individuo.
+
+Descrive invece:
+
+* una **previsione probabilistica** per un individuo qualunque appartenente a quel gruppo,
+* ottenuta combinando l’incertezza sui parametri del modello
+  e la variabilità individuale residua.
+
+È quindi una previsione su ciò che *potrebbe accadere*,
+non una quantità osservata né deterministica.
+
+---
+
+```{r}
+dim(pred_mindfulness)
+```
+
+Il modello genera **4000 valori predetti** per **un singolo individuo** nel gruppo Mindfulness.
+
+Questi 4000 valori derivano da:
+
+* 4000 campioni posteriori dei parametri;
+* la distribuzione dell’errore individuale.
+
+Lo stesso processo viene applicato al gruppo Controllo.
+
+---
+
+```{r}
+dim(beneficio_ind)
+```
+
+Sottraendo i valori corrispondenti dei due vettori, otteniamo 4000 possibili valori di $\Delta_i$.
+
+Ogni valore rappresenta un **confronto ipotetico controfattuale**:
+
+> cosa potremmo osservare **per lo stesso individuo** se appartenesse al gruppo Mindfulness anziché al gruppo di Controllo.
+
+---
+
+È fondamentale notare che:
+
+* il beneficio è calcolato a livello **individuale**;
+* **non** è la differenza tra due medie di gruppo.
+
+L’incertezza sulla differenza tra le medie è tipicamente **molto più piccola**
+dell’incertezza associata ai punteggi del singolo individuo.
+
+--- 
+
+## Distribuzione dei benefici individuali
+
+La distribuzione seguente mostra come varia il beneficio individuale previsto:
+
+* valori negativi indicano una **riduzione dell’ansia** (beneficio);
+* la dispersione riflette la variabilità individuale attesa.
+
+Questa figura rende visibile perché,
+anche in presenza di un effetto medio favorevole,
+il beneficio per il singolo individuo rimane incerto.
+
+---
+
+```{r}
+#| echo: false
+
+df_benef <- data.frame(beneficio = as.vector(beneficio_ind))
+
+ggplot(df_benef, aes(x = beneficio)) +
+  geom_density(fill = "steelblue", alpha = 0.7) +
+  geom_vline(xintercept = mean(beneficio_ind), color = "coral", linewidth = 1.2) +
+  geom_vline(xintercept = 0, color = "darkred", linetype = "dashed", linewidth = 1) +
+  annotate("text", x = mean(beneficio_ind) - 1, y = 0.035, 
+           label = paste0("Media = ", round(mean(beneficio_ind), 1)),
+           color = "coral", hjust = 1, size = 4) +
+  annotate("text", x = 1, y = 0.035, label = "Nessun\nbeneficio",
+           color = "darkred", hjust = 0, size = 3.5) +
+  labs(title = "Distribuzione predittiva dei benefici individuali",
+       subtitle = "Valori negativi = riduzione dell'ansia (beneficio)",
+       x = "Riduzione dell'ansia (punti)", y = "Densità") +
+  theme_minimal(base_size = 14)
+```
+
+---
+
+## Distribuzione dei benefici individuali
+
+```{r}
+# Differenza individuale: cosa guadagna un paziente passando
+# da controllo a mindfulness?
+beneficio_ind <- pred_mindfulness - pred_controllo
+
+cat("BENEFICIO INDIVIDUALE DEL TRATTAMENTO:\n\n")
+cat("  Media:", round(mean(beneficio_ind), 1), "punti\n")
+cat("  DS:", round(sd(beneficio_ind), 1), "\n")
+cat("  IC 95%: [", round(quantile(beneficio_ind, 0.025), 1), ",",
+    round(quantile(beneficio_ind, 0.975), 1), "]\n")
+```
+
+---
+
+## Probabilità clinicamente rilevanti
+
+**Domande concrete per il clinico:**
+
+Probabilità di qualsiasi beneficio:
+
+```{r}
+ mean(beneficio_ind < 0)
+```
+
+Probabilità di beneficio rilevante (> 5 punti):
+
+```{r}
+mean(beneficio_ind < -5)
+```
+
+---
+
+Probabilità di **non** migliorare:
+
+```{r}
+mean(beneficio_ind >= 0)
+```
+
+Probabilità di peggiorare (> 5 punti in più di ansia):
+
+```{r}
+mean(beneficio_ind > 5)
+```
+
+---
+
+## Il pattern è sempre lo stesso
+
+I risultati presenti confermano quelli che abbiamo ottenuto in precedenza:
+
+- a livello di **gruppo**: siamo molto certi che il trattamento funzioni;
+- a livello **individuale**: c'è molta più incertezza.
+
+. . .
+
+È la stessa distinzione $\mu$ vs $X$ che abbiamo visto nella lezione precedente:
+
+$$
+\sigma_{\text{pred}}^2 = \sigma_{\text{post}}^2 + \sigma^2.
+$$
+
+## Considerazione generale (importante)
+
+In questo esempio **non usiamo covariate**.
+
+Le previsioni riguardano quindi un *individuo generico* del gruppo,
+cioè qualcuno che differisce dagli altri solo per la variabilità casuale.
+
+---
+
+Predizioni più **puntuali sul singolo individuo** diventano possibili se includiamo
+covariate che lo caratterizzano meglio, ad esempio:
+
+* età;
+* livello iniziale di ansia;
+* durata del disturbo;
+* aderenza al trattamento.
+
+---
+
+Questo si ottiene naturalmente usando un **modello di regressione**:
+è uno dei grandi benefici di questo approccio.
+
+👉 È un tema avanzato che qui non trattiamo,
+ma è fondamentale riconoscere che **questa è la direzione**
+per ottenere stime individuali più precise.
+
+# Parte 6: limiti dell'approccio frequentista
+
+## Il test $t$ e la domanda idiografica
+
+L'approccio frequentista (test $t$ di Student) può rispondere alla domanda:
+
+> "C'è una differenza significativa tra le medie dei gruppi?"
+
+. . .
+
+Ma **non può** rispondere facilmente a:
+
+> "Qual è la probabilità che questo paziente migliori?"
+
+---
+
+## Perché il frequentismo ha difficoltà?
+
+### 1. Nessuna distribuzione sui parametri
+
+Nel framework frequentista, i parametri sono **numeri fissi** (anche se sconosciuti).
+
+* Non esiste una "distribuzione a posteriori" da cui derivare previsioni probabilistiche.
+
+---
+
+### 2. Intervalli di confidenza ≠ probabilità
+
+Un intervallo di confidenza al 95% **non** significa:
+
+> "C'è il 95% di probabilità che il vero parametro sia in questo intervallo."
+
+Significa (in modo contorto):
+
+> "Se ripetessimo lo studio infinite volte, il 95% degli intervalli conterrebbe il vero parametro."
+
+---
+
+### 3. Nessun meccanismo naturale per le previsioni individuali
+
+Per ottenere una "previsione individuale" nel framework frequentista, si usano **intervalli di previsione**, ma:
+
+- sono calcolati con formule ad hoc;
+- non integrano naturalmente l'incertezza sui parametri;
+- non permettono di calcolare probabilità specifiche (es. P(ansia < 40)).
+
+---
+
+## L'approccio bayesiano è naturale per l'analisi idiografica
+
+Nel framework bayesiano:
+
+1. I parametri hanno una **distribuzione** (la posterior).
+2. Possiamo **propagare l'incertezza** dai parametri alle previsioni.
+3. La distribuzione predittiva emerge **naturalmente** dal modello.
+4. Possiamo calcolare **qualsiasi probabilità** ci interessi.
+
+---
+
+## Confronto operativo
+
+| Domanda | Frequentista | Bayesiano |
+|---------|--------------|-----------|
+| "Le medie sono diverse?" | test t, p-value | P(β ≠ 0) |
+| "Di quanto?" | IC per β | Posterior di β |
+| "Quanto sarà l'ansia di Mario?" | Intervallo di previsione | `predict()` |
+| "P(Mario < 40)?" | **Non calcolabile** | Facilmente calcolabile |
+
+---
+
+## Il limite fondamentale
+
+> L'approccio frequentista risponde bene alle domande **nomotetico-inferenziali**: "Posso generalizzare questo risultato alla popolazione?"
+
+> Ma ha difficoltà con le domande **idiografico-predittive**: "Cosa succederà a questa specifica persona?"
+
+. . .
+
+Per la psicologia clinica, le domande idiografiche sono spesso le più importanti.
+
+# Parte 7: comunicare i risultati
+
+## Comunicazione problematica
+
+> "Lo studio dimostra che la mindfulness riduce significativamente l'ansia (p < 0.05). I pazienti dovrebbero seguire questo trattamento."
+
+. . .
+
+**Problemi:**
+
+- Non quantifica l'effetto.
+- Non considera la variabilità individuale.
+- Suggerisce una certezza che non c'è.
+
+---
+
+## Comunicazione migliore
+
+> "Il trattamento di mindfulness riduce l'ansia in media di circa 7 punti (IC 95%: 2-12 punti). Tuttavia, la risposta individuale varia molto: stimiamo che circa il 70% dei pazienti mostri miglioramento, ma circa il 30% potrebbe non beneficiarne. Per un nuovo paziente come Mario, ci aspettiamo un livello di ansia tra 25 e 70 punti dopo il trattamento."
+
+# Riepilogo
+
+## I punti chiave
+
+1. La **distribuzione predittiva** risponde alla domanda idiografica.
+
+2. `fitted()` prevede la media; `predict()` prevede l'individuo.
+
+3. L'incertezza individuale include sia l'incertezza sui parametri che la variabilità tra pazienti.
+
+4. L'approccio **frequentista** ha difficoltà con le previsioni individuali probabilistiche.
+
+5. L'approccio **bayesiano** gestisce naturalmente sia domande nomotetico che idiografiche.
+
+---
+
+## Il messaggio fondamentale
+
+> "La psicologia clinica richiede risposte a domande idiografiche: cosa succederà a *questo* paziente? L'approccio bayesiano è naturalmente attrezzato per rispondere, mentre l'approccio frequentista rimane ancorato alle domande sui gruppi."
+
+---
+
+## La formula chiave (ancora una volta)
+
+$$
+\sigma_{\text{pred}} = \sqrt{\sigma_{\text{post}}^2 + \sigma^2}
+$$
+
+. . .
+
+**In parole:**
+
+L'incertezza sulla previsione individuale combina:
+
+- l'incertezza sui **parametri** del modello
+- la **variabilità tra pazienti**
+
+Solo considerando entrambe possiamo dare risposte clinicamente oneste.
+
+---
+
+## Per la prossima lezione
+
+Materiale di studio: https://ccaudek.github.io/utet-companion/
+
+**Prossimo argomento:**
+
+Estenderemo questi concetti all'**ANOVA bayesiana**: confronto tra più di due gruppi, con particolare attenzione ai contrasti e alle previsioni individuali.

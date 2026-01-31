@@ -1,0 +1,1137 @@
+---
+title: "Distribuzioni coniugate"
+subtitle: "Normale-Normale — Segmento 2"
+version: 1.1
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+lang: it
+
+execute:
+  echo: true
+
+format:
+  revealjs:
+    theme: [default, ../revealjs.scss]
+    title-slide-attributes:
+      data-background-color: "#0072bc"
+    slide-number: c
+    show-slide-number: print
+    highlight-style: github
+    math: mathjax
+
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+```{r}
+#| echo: false
+library(ggplot2)
+set.seed(42)
+```
+
+## Obiettivi {.unnumbered .unlisted}
+
+1. Introdurre la coppia coniugata **Normale-Normale**.
+2. Capire come stimare la **media** di una variabile continua.
+3. Vedere come prior e dati si **bilanciano**.
+4. Applicare il modello a esempi psicologici concreti.
+
+
+# Parte 1: dal discreto al continuo
+
+## Ripasso: Beta-Binomiale
+
+Nel segmento precedente abbiamo visto:
+
+- **Dati:** successi/insuccessi (discreti, binari).
+- **Parametro:** probabilità θ ∈ [0, 1].
+- **Prior:** Beta(α, β).
+- **Posterior:** Beta(α + k, β + n - k).
+
+Ma cosa succede con **dati continui**?
+
+---
+
+## Il nuovo scenario
+
+In psicologia spesso abbiamo variabili continue:
+
+- punteggi a test (es. BDI per depressione: 0-63);
+- tempi di reazione (in millisecondi);
+- misure fisiologiche (frequenza cardiaca, cortisolo);
+- scale Likert aggregate.
+
+**Domanda:** come stimiamo la media μ di queste variabili?
+
+---
+
+## Il modello Normale-Normale
+
+**Assunzione sui dati:**
+
+$$
+y_i \sim \text{Normale}(\mu, \sigma^2).
+$$
+
+I dati sono normalmente distribuiti con media μ (sconosciuta) e varianza σ² (per ora, nota).
+
+**Prior sulla media:**
+
+$$
+\mu \sim \text{Normale}(\mu_0, \sigma_0^2).
+$$
+
+---
+
+## Perché è una famiglia coniugata?
+
+Se:
+
+- i dati sono Normali con media μ,
+- il prior su μ è Normale,
+
+allora il **posterior su μ è ancora Normale**:
+
+$$
+\mu \mid \text{dati} \sim \text{Normale}(\mu_{\text{post}}, \sigma_{\text{post}}^2).
+$$
+
+# Parte 2: la formula dell'aggiornamento
+
+## I parametri del posterior
+
+Data un'osservazione $\bar{y}$ (media campionaria) basata su $n$ dati, abbiamo:
+
+**media del posterior**
+
+$$
+\mu_{\text{post}} = \frac{\frac{\mu_0}{\sigma_0^2} + \frac{n \bar{y}}{\sigma^2}}{\frac{1}{\sigma_0^2} + \frac{n}{\sigma^2}}
+$$
+
+**varianza del posterior**
+
+$$
+\sigma_{\text{post}}^2 = \frac{1}{\frac{1}{\sigma_0^2} + \frac{n}{\sigma^2}}
+$$
+
+---
+
+## Formula semplificata: media ponderata
+
+La media del posterior è una **media ponderata** tra prior e dati:
+
+$$
+\mu_{\text{post}} = w \cdot \mu_0 + (1 - w) \cdot \bar{y}
+$$
+dove il peso del prior è:
+
+$$
+w = \frac{\sigma^2 / n}{\sigma_0^2 + \sigma^2 / n}
+$$
+
+---
+
+## Interpretazione
+
+* $\mu_0$ è la media del prior.
+* $\bar{y}$ è la media campionaria dei dati.
+* Il **peso** $w$ è determinato dall'**incertezza relativa**: il prior "pesa" di più se la sua varianza $\sigma_0^2$ è piccola rispetto all'incertezza dei dati $\sigma^2 / n$.
+
+---
+
+## L'intuizione
+
+Il posterior è un **compromesso** tra:
+
+- **ciò che credevamo prima** (μ₀),
+- **ciò che dicono i dati** ($\bar{y}$).
+
+. . .
+
+**Chi "vince"?**
+
+- Se il prior è **impreciso** (σ₀² grande): i dati dominano.
+- Se il prior è **preciso** (σ₀² piccolo): il prior resiste.
+- Se abbiamo **molti dati** (n grande): i dati dominano.
+
+---
+
+## Cosa vedremo nel grafico
+
+La famiglia coniugata **Normale-Normale** ci permette di aggiornare in modo esatto la nostra conoscenza sulla **media** μ di una popolazione:
+
+1. **Prior (blu)**: rappresenta la nostra conoscenza iniziale su μ prima di osservare i dati.  
+2. **Verosimiglianza (verde)**: l'informazione contenuta nei dati osservati.  
+3. **Posterior (coral)**: la nostra conoscenza aggiornata dopo aver combinato prior e dati.  
+
+---
+
+**Caso specifico:**
+
+- **Prior**: μ₀ = 0, varianza σ₀² = 4.  
+- **Dati**: Media campionaria ȳ = 4, n = 5 osservazioni, varianza nota σ² = 4.  
+- **Posterior**: Media risultante μ = 3.33.  
+
+Il grafico mostra come il posterior sia un **compromesso** tra prior e dati, secondo la logica della media ponderata.
+
+---
+
+## Visualizziamo l'intuizione
+
+```{r}
+#| echo: false
+#| fig-height: 5
+#| warning: false
+#| message: false
+library(ggplot2)
+
+x <- seq(-4, 8, length.out = 300)
+
+# Prior: N(0, 2²)
+prior <- dnorm(x, mean = 0, sd = 2)
+
+# Verosimiglianza: basata su media campionaria = 4, n = 5, sigma = 2
+# La verosimiglianza per mu è proporzionale a N(ybar, sigma²/n)
+likelihood <- dnorm(x, mean = 4, sd = 2/sqrt(5))
+
+# Calcolo dei parametri posteriori
+sigma0_sq <- 4  # 2²
+sigma_sq <- 4   # 2²
+n <- 5
+ybar <- 4
+
+prec_prior <- 1/sigma0_sq
+prec_data <- n/sigma_sq
+prec_post <- prec_prior + prec_data
+
+mu_post <- (prec_prior * 0 + prec_data * ybar) / prec_post
+sigma_post <- sqrt(1/prec_post)
+
+posterior <- dnorm(x, mean = mu_post, sd = sigma_post)
+
+# Preparazione dati per ggplot
+df <- data.frame(
+  x = rep(x, 3),
+  densita = c(prior, likelihood, posterior),
+  tipo = rep(c("Prior: N(0, 4)", "Verosimiglianza", "Posterior"), each = length(x))
+)
+
+# Normalizzazione per sovrapporre meglio le curve
+max_vals <- c(max(prior), max(likelihood), max(posterior))
+for(i in 1:3) {
+  start_idx <- (i-1)*length(x) + 1
+  end_idx <- i*length(x)
+  df$densita[start_idx:end_idx] <- df$densita[start_idx:end_idx] / max_vals[i]
+}
+
+df$tipo <- factor(df$tipo, levels = c("Prior: N(0, 4)", "Verosimiglianza", "Posterior"))
+
+# Creazione del grafico - CODICE CORRETTO
+ggplot(df, aes(x = x, y = densita, color = tipo)) +
+  geom_line(linewidth = 1.2) +
+  scale_color_manual(values = c("steelblue", "forestgreen", "coral")) +
+  labs(
+  title = "Aggiornamento Normale–Normale",
+  subtitle = paste0(
+    "Prior: mu0 = 0 | Dati: ybar = 4, n = 5 | Posterior: mu = ",
+    round(mu_post, 2)
+  ),
+  x = expression(mu),
+  y = "Densità (normalizzata)",
+  color = ""
+) +
+  theme_minimal(base_size = 14) +
+  theme(
+    legend.position = "bottom",
+    plot.title = element_text(face = "bold"),
+    axis.title.x = element_text(size = 12),
+    axis.title.y = element_text(size = 12)
+  )
+```
+
+# Parte 3: la stima della depressione media
+
+## Scenario: punteggi al BDI-II
+
+Uno psicologo clinico vuole stimare il livello medio di depressione in un gruppo di pazienti usando il **Beck Depression Inventory-II** (BDI-II, range 0-63).
+
+**Conoscenza pregressa (prior):**
+
+- la letteratura indica che pazienti con depressione moderata hanno punteggi medi intorno a 25;
+- c'è incertezza: potrebbe variare tra 20 e 30.
+
+---
+
+## Traduciamo in un prior
+
+**Prior:** μ ~ Normale(25, 5²)
+
+- media: μ₀ = 25 (valore atteso dalla letteratura);
+- deviazione standard: σ₀ = 5 (incertezza: ±10 punti copre ~95%).
+
+```{r}
+mu0 <- 25      # Media del prior
+sigma0 <- 5    # SD del prior
+
+cat("Prior: Normale(", mu0, ",", sigma0^2, ")\n")
+cat("Intervallo 95% prior: [", round(mu0 - 1.96*sigma0, 1), ",", 
+    round(mu0 + 1.96*sigma0, 1), "]")
+```
+
+---
+
+```{r}
+#| echo: false
+#| fig-height: 5
+#| warning: false
+#| message: false
+library(ggplot2)
+
+# Parametri del prior
+mu0 <- 25      # Media del prior
+sigma0 <- 5    # SD del prior
+
+# Calcolo dell'intervallo 95%
+lower_bound <- mu0 - 1.96*sigma0
+upper_bound <- mu0 + 1.96*sigma0
+
+# Range per il grafico
+x <- seq(mu0 - 4*sigma0, mu0 + 4*sigma0, length.out = 300)
+y <- dnorm(x, mean = mu0, sd = sigma0)
+
+# Data frame per ggplot
+df <- data.frame(x = x, y = y)
+
+# Creazione del grafico
+ggplot(df, aes(x = x, y = y)) +
+  geom_line(color = "steelblue", linewidth = 1.5) +
+  
+  # Area dell'intervallo 95%
+  geom_area(
+    data = subset(df, x >= lower_bound & x <= upper_bound),
+    aes(x = x, y = y),
+    fill = "steelblue",
+    alpha = 0.3
+  ) +
+  
+  # Linee verticali per media e intervallo
+  geom_vline(xintercept = mu0, color = "darkblue", linewidth = 1, linetype = "solid") +
+  geom_vline(xintercept = lower_bound, color = "darkblue", linewidth = 0.7, linetype = "dashed") +
+  geom_vline(xintercept = upper_bound, color = "darkblue", linewidth = 0.7, linetype = "dashed") +
+  
+  # Annotazioni
+  annotate("text", x = mu0, y = max(y)*1.05, 
+           label = paste0("μ = ", mu0), 
+           color = "darkblue", size = 5) +
+  
+  annotate("text", x = lower_bound, y = max(y)*0.2, 
+           label = paste0(round(lower_bound, 1)), 
+           color = "darkblue", size = 4, hjust = 1.1) +
+  
+  annotate("text", x = upper_bound, y = max(y)*0.2, 
+           label = paste0(round(upper_bound, 1)), 
+           color = "darkblue", size = 4, hjust = -0.1) +
+  
+  annotate("label", x = mu0, y = max(y)*0.5, 
+           label = "95%", 
+           color = "darkblue", fill = "white", alpha = 0.8) +
+  
+  # Titolo e assi
+  labs(
+    title = expression(paste("Distribuzione a Priori: ", mu, " ~ N(25, 5"^2, ")")),
+    subtitle = paste0("Intervallo al 95%: [", 
+                     round(lower_bound, 1), ", ", round(upper_bound, 1), "]"),
+    x = expression(paste("Valore possibile di ", mu)),
+    y = "Densità di probabilità"
+  ) +
+  
+  # Tema
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(hjust = 0.5, color = "darkblue"),
+    axis.title.x = element_text(margin = margin(t = 10)),
+    axis.title.y = element_text(margin = margin(r = 10))
+  )
+```
+
+---
+
+## I dati
+
+Lo psicologo raccoglie dati da **n = 12** pazienti.
+
+Assumiamo che la variabilità individuale (σ) sia nota dalla letteratura: σ = 8.
+
+```{r}
+# Dati simulati (punteggi BDI-II)
+punteggi <- c(28, 32, 24, 29, 35, 27, 31, 26, 30, 28, 33, 29)
+
+n <- length(punteggi)
+ybar <- mean(punteggi)
+sigma <- 8  # SD nota dalla letteratura
+
+cat("Numero pazienti:", n, "\n")
+cat("Media campionaria:", round(ybar, 2), "\n")
+```
+
+---
+
+## Calcoliamo il posterior
+
+```{r}
+# Precisioni (inverso della varianza)
+prec_prior <- 1 / sigma0^2
+prec_dati <- n / sigma^2
+prec_post <- prec_prior + prec_dati
+
+# Media del posterior
+mu_post <- (prec_prior * mu0 + prec_dati * ybar) / prec_post
+
+# SD del posterior
+sigma_post <- sqrt(1 / prec_post)
+
+cat("Posterior: Normale(", round(mu_post, 2), ",", round(sigma_post^2, 2), ")\n")
+cat("Media posterior:", round(mu_post, 2), "\n")
+cat("SD posterior:", round(sigma_post, 2), "\n")
+```
+
+---
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+library(ggplot2)
+
+# Parametri del posterior (sostituisci con i tuoi valori effettivi)
+mu_post <- 28.57  # Media del posterior
+sigma_post <- 2.1 # SD del posterior
+
+# Calcolo dell'intervallo di credibilità 95%
+post_lower <- mu_post - 1.96 * sigma_post
+post_upper <- mu_post + 1.96 * sigma_post
+
+# Range per il grafico
+x_min <- mu_post - 4 * sigma_post
+x_max <- mu_post + 4 * sigma_post
+x <- seq(x_min, x_max, length.out = 300)
+
+# Densità della distribuzione posterior
+post_dens <- dnorm(x, mean = mu_post, sd = sigma_post)
+
+# Data frame per ggplot
+df <- data.frame(x = x, y = post_dens)
+
+# Creazione del grafico
+ggplot(df, aes(x = x, y = y)) +
+  
+  # Linea della distribuzione
+  geom_line(color = "coral", linewidth = 1.8) +
+  
+  # Area dell'intervallo 95%
+  geom_area(
+    data = subset(df, x >= post_lower & x <= post_upper),
+    aes(x = x, y = y),
+    fill = "coral",
+    alpha = 0.25
+  ) +
+  
+  # Linea verticale per la media
+  geom_vline(xintercept = mu_post, color = "darkred", 
+             linewidth = 1.2, linetype = "solid", alpha = 0.8) +
+  
+  # Linee verticali per i limiti dell'intervallo 95%
+  geom_vline(xintercept = post_lower, color = "darkred", 
+             linewidth = 0.8, linetype = "dashed", alpha = 0.7) +
+  geom_vline(xintercept = post_upper, color = "darkred", 
+             linewidth = 0.8, linetype = "dashed", alpha = 0.7) +
+  
+  # Annotazione per la media
+  annotate("text", x = mu_post, y = max(post_dens) * 1.08,
+           label = paste0("μ = ", round(mu_post, 2)),
+           color = "darkred", size = 5.5, fontface = "bold") +
+  
+  # Annotazioni per i limiti dell'intervallo
+  annotate("text", x = post_lower, y = max(post_dens) * 0.15,
+           label = paste0(round(post_lower, 2)),
+           color = "darkred", size = 4.2, hjust = 1.1) +
+  
+  annotate("text", x = post_upper, y = max(post_dens) * 0.15,
+           label = paste0(round(post_upper, 2)),
+           color = "darkred", size = 4.2, hjust = -0.1) +
+  
+  # Annotazione per l'intervallo 95%
+  annotate("label", x = mu_post, y = max(post_dens) * 0.5,
+           label = "Intervallo di credibilità 95%",
+           color = "darkred", fill = "white", alpha = 0.85,
+           size = 4.5, fontface = "bold") +
+  
+  # Titolo e assi
+  labs(
+    title = expression(paste("Distribuzione a Posteriori di ", mu)),
+    subtitle = paste0(
+      "N(", round(mu_post, 2), ", ", round(sigma_post^2, 2), ") | ",
+      "95% CI: [", round(post_lower, 2), ", ", round(post_upper, 2), "]"
+    ),
+    x = expression(paste("Valore di ", mu)),
+    y = "Densità di probabilità"
+  ) +
+  
+  # Tema
+  theme_minimal(base_size = 15) +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5, size = 18),
+    plot.subtitle = element_text(hjust = 0.5, size = 13, 
+                                 color = "darkred", margin = margin(b = 12)),
+    axis.title.x = element_text(margin = margin(t = 12), size = 13, face = "bold"),
+    axis.title.y = element_text(margin = margin(r = 12), size = 13, face = "bold"),
+    panel.grid.minor = element_blank(),
+    plot.margin = margin(20, 20, 20, 20)
+  )
+```
+
+---
+
+## Interpretazione dei risultati
+
+**Prior:** media attesa = 25, SD = 5.
+
+**Dati:** media osservata = 29.3, n = 12.
+
+**Posterior:** media stimata = 28.4, SD = 2.1.
+
+Il posterior è un **compromesso**:
+
+- più vicino ai dati (29.3) che al prior (25);
+- molto più preciso (SD = 2.1 vs 5).
+
+---
+
+```{r}
+#| echo: false
+x <- seq(10, 45, length.out = 300)
+
+df_bdi <- data.frame(
+  x = rep(x, 3),
+  densita = c(dnorm(x, mu0, sigma0), 
+              dnorm(x, ybar, sigma/sqrt(n)),
+              dnorm(x, mu_post, sigma_post)),
+  tipo = rep(c("Prior", "Verosimiglianza", "Posterior"), each = length(x))
+)
+
+df_bdi$tipo <- factor(df_bdi$tipo, levels = c("Prior", "Verosimiglianza", "Posterior"))
+
+ggplot(df_bdi, aes(x = x, y = densita, color = tipo)) +
+  geom_line(linewidth = 1.2) +
+  scale_color_manual(values = c("steelblue", "forestgreen", "coral")) +
+  labs(title = "Stima del punteggio medio BDI-II",
+       subtitle = paste0("Prior: μ = 25 | Dati: ȳ = ", round(ybar, 1), 
+                        " (n = 12) | Posterior: μ = ", round(mu_post, 1)),
+       x = "Punteggio BDI-II medio (μ)", y = "Densità", color = "") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "bottom")
+```
+
+---
+
+## Domanda clinica
+
+> "Qual è la probabilità che il punteggio medio sia > 28 (depressione moderata-grave)?"
+
+```{r}
+# P(μ > 28)
+prob_gt_28 <- 1 - pnorm(28, mean = mu_post, sd = sigma_post)
+cat("P(μ > 28) =", round(prob_gt_28 * 100, 1), "%")
+```
+
+C'è circa il **60.7%** di probabilità che il gruppo abbia depressione moderata-grave.
+
+---
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+library(ggplot2)
+
+# Parametri della distribuzione
+mu <- 28.57    # Media
+sigma <- 2.1   # Deviazione standard
+threshold <- 28 # Valore soglia
+
+# Calcolo della probabilità P(μ > 28)
+prob_tail <- 1 - pnorm(threshold, mean = mu, sd = sigma)
+
+# Range per il grafico
+x_min <- mu - 4 * sigma
+x_max <- mu + 4 * sigma
+x <- seq(x_min, x_max, length.out = 500)
+y <- dnorm(x, mean = mu, sd = sigma)
+
+# Data frame per ggplot
+df <- data.frame(x = x, y = y)
+
+# Coordinate per l'area della coda
+tail_x <- seq(threshold, x_max, length.out = 200)
+tail_y <- dnorm(tail_x, mean = mu, sd = sigma)
+
+# Creazione del grafico
+ggplot(df, aes(x = x, y = y)) +
+  
+  # Linea della distribuzione completa
+  geom_line(color = "steelblue", linewidth = 1.5) +
+  
+  # Area della coda (μ > 28)
+  geom_area(
+    data = data.frame(x = tail_x, y = tail_y),
+    aes(x = x, y = y),
+    fill = "coral",
+    alpha = 0.6
+  ) +
+  
+  # Linea verticale per la media
+  geom_vline(xintercept = mu, color = "darkblue", 
+             linewidth = 1.2, linetype = "solid", alpha = 0.7) +
+  
+  # Linea verticale per la soglia
+  geom_vline(xintercept = threshold, color = "darkred", 
+             linewidth = 1.2, linetype = "dashed", alpha = 0.8) +
+  
+  # Area di testo per la probabilità
+  annotate("rect", 
+           xmin = mu + 0.5*sigma, xmax = mu + 2.5*sigma,
+           ymin = max(y)*0.5, ymax = max(y)*0.8,
+           fill = "white", alpha = 0.85, color = "darkred", linewidth = 0.8) +
+  
+  # Annotazione della probabilità
+  annotate("text", 
+           x = mu + 1.5*sigma, y = max(y)*0.7,
+           label = paste0("P(μ > 28) = ", round(prob_tail, 3)),
+           color = "darkred", size = 5.5, fontface = "bold") +
+  
+  # Annotazione della soglia
+  annotate("text", 
+           x = threshold-0.9, y = max(y)*1.08,
+           label = paste0("μ = ", threshold),
+           color = "darkred", size = 4.8, fontface = "bold") +
+  
+  # Annotazione della media
+  annotate("text", 
+           x = mu+1.2, y = max(y)*1.08,
+           label = paste0("μ = ", round(mu, 2)),
+           color = "darkblue", size = 4.8, fontface = "bold") +
+  
+  # Freccia per indicare l'area della coda
+  annotate("segment",
+           x = mu + 0.8*sigma, xend = mu + 1.2*sigma,
+           y = max(y)*0.4, yend = max(y)*0.3,
+           color = "coral", linewidth = 1.5,
+           arrow = arrow(type = "closed", length = unit(0.2, "inches"))) +
+  
+  annotate("text",
+           x = mu + 1.0*sigma, y = max(y)*0.45,
+           label = "Area: μ > 28",
+           color = "coral", size = 4.2, fontface = "bold") +
+  
+  # Titolo e assi
+  labs(
+    title = expression(paste("Distribuzione Gaussiana: μ = 28.57, σ = 2.1")),
+    subtitle = paste0(
+      "Probabilità nella coda destra: P(μ > 28) = ", round(prob_tail, 3), 
+      " (", round(prob_tail * 100, 1), "%)"
+    ),
+    x = expression(paste("Valore di ", mu)),
+    y = "Densità di probabilità"
+  ) +
+  
+  # Tema
+  theme_minimal(base_size = 15) +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5, size = 18),
+    plot.subtitle = element_text(hjust = 0.5, size = 13, 
+                                 color = "darkred", margin = margin(b = 15)),
+    axis.title.x = element_text(margin = margin(t = 12), size = 13, face = "bold"),
+    axis.title.y = element_text(margin = margin(r = 12), size = 13, face = "bold"),
+    panel.grid.minor = element_blank(),
+    plot.margin = margin(20, 20, 20, 20)
+  )
+```
+
+---
+
+## Istruzioni R
+
+Troviamo l'area a destra del valore di soglia BDI-II = 28:
+
+```{r}
+1 - pnorm(28, 28.57, 2.1)
+```
+
+---
+
+## Interpretazione finale 
+
+* **Prima dei dati (prior):** pensavamo a un gruppo con **depressione moderata**,
+  con punteggio medio atteso intorno a **25** (ampia incertezza: circa 20–30).
+
+* **Dopo i dati (posterior):** la stima del punteggio medio sale a circa **28.5**,
+  con un intervallo di credibilità al 95% di circa **[24.5, 32.7]**.
+
+* C’è circa **il 60% di probabilità** che il punteggio medio del gruppo sia **> 28**,
+  cioè in area **moderata–grave**.
+
+**Messaggio chiave:** i dati spostano in modo sostanziale la nostra valutazione verso livelli più elevati di depressione, ma manteniamo una quantificazione esplicita dell’incertezza residua.
+
+# Parte 4: l'effetto della dimensione campionaria
+
+## Cosa succede con più dati?
+
+Confrontiamo tre scenari (stessa media campionaria ȳ = 29.3):
+
+- $n$ = 5 (pochi dati);
+- $n$ = 12 (dati moderati);
+- $n$ = 50 (molti dati).
+
+---
+
+## Calcolo per i tre scenari
+
+```{r}
+calcola_posterior <- function(mu0, sigma0, ybar, sigma, n) {
+  prec_prior <- 1 / sigma0^2
+  prec_dati <- n / sigma^2
+  prec_post <- prec_prior + prec_dati
+  
+  mu_post <- (prec_prior * mu0 + prec_dati * ybar) / prec_post
+  sigma_post <- sqrt(1 / prec_post)
+  
+  list(mu = mu_post, sigma = sigma_post)
+}
+
+# Tre scenari
+post_n5 <- calcola_posterior(25, 5, 29.3, 8, 5)
+post_n12 <- calcola_posterior(25, 5, 29.3, 8, 12)
+post_n50 <- calcola_posterior(25, 5, 29.3, 8, 50)
+```
+
+---
+
+## Calcolo per i tre scenari
+
+```{r}
+cat("n = 5:  μ =", round(post_n5$mu, 2), ", σ =", round(post_n5$sigma, 2), "\n")
+cat("n = 12: μ =", round(post_n12$mu, 2), ", σ =", round(post_n12$sigma, 2), "\n")
+cat("n = 50: μ =", round(post_n50$mu, 2), ", σ =", round(post_n50$sigma, 2), "\n")
+```
+
+---
+
+```{r}
+#| echo: false
+
+df_n <- data.frame(
+  x = rep(x, 4),
+  densita = c(dnorm(x, mu0, sigma0),
+              dnorm(x, post_n5$mu, post_n5$sigma),
+              dnorm(x, post_n12$mu, post_n12$sigma),
+              dnorm(x, post_n50$mu, post_n50$sigma)),
+  tipo = rep(c("Prior", "n = 5", "n = 12", "n = 50"), each = length(x))
+)
+
+df_n$tipo <- factor(df_n$tipo, levels = c("Prior", "n = 5", "n = 12", "n = 50"))
+
+ggplot(df_n, aes(x = x, y = densita, color = tipo)) +
+  geom_line(linewidth = 1.2) +
+  geom_vline(xintercept = 29.3, linetype = "dashed", color = "gray40") +
+  labs(title = "Effetto della dimensione campionaria",
+       subtitle = "Stessa media campionaria (ȳ = 29.3), diverso n",
+       x = "μ", y = "Densità", color = "") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "bottom") +
+  annotate("text", x = 30, y = 0.5, label = "ȳ = 29.3", color = "gray40")
+```
+
+---
+
+## Interpretazione
+
+Con più dati:
+
+1. la media del posterior si **avvicina** alla media campionaria;
+2. la varianza del posterior **diminuisce** (più precisione);
+3. l'influenza del prior **svanisce**.
+
+Questo è il senso in cui "i dati vincono sempre, alla lunga."
+
+Hai perfettamente ragione — rendere l'esempio più narrativo e meno tecnico lo renderà più coinvolgente come introduzione motivante. Ecco la versione rivista:
+
+---
+
+# Parte 5: *cue-combination*
+
+## Come vediamo il mondo?
+
+Lo studio di Ernst e Banks (2002) pubblicato su *Nature* offre un'elegante dimostrazione di come la mente combini informazioni provenienti da sensi diversi — in questo caso vista e tatto — per costruire una percezione unificata del mondo. 
+
+* La domanda centrale è: quando guardiamo un oggetto e contemporaneamente lo tocchiamo, come decide la mente quale senso "fidarsi" di più?
+
+---
+
+## L'intuizione chiave
+
+La mente si comporta come uno statistico bayesiano ottimale: pesa le informazioni di ciascun senso in base alla loro **affidabilità** (cioè, l'inverso della varianza). 
+
+* Se la vista fornisce informazioni precise, domina la percezione; 
+* se invece la vista è disturbata (ad esempio da rumore visivo), il tatto assume un ruolo più importante.
+
+---
+
+## Perché è rilevante per l'inferenza bayesiana
+
+Questo studio illustra in modo concreto il principio della **media ponderata** che abbiamo visto nella famiglia coniugata Normale-Normale:
+
+- il **prior** rappresenta una fonte di informazione preesistente;
+- la **verosimiglianza** rappresenta l'informazione dai nuovi dati;
+- il **posterior** è il compromesso ottimale.
+
+---
+
+## Il parallelo con l'esperimento
+
+Nello studio di Ernst e Banks:
+
+- l'informazione **tattile** funziona come il "prior" — una stima iniziale dell'altezza della barra;
+- l'informazione **visiva** porta nuove evidenze (come i "dati");
+- la **percezione finale** è il posterior — una combinazione pesata delle due fonti.
+
+---
+
+## Il metodo sperimentale
+
+I partecipanti dovevano giudicare l'altezza di una barra orizzontale che potevano sia vedere (attraverso uno schermo stereoscopico) sia toccare (usando dispositivi a feedback di forza).
+
+---
+
+::: {#fig-like}
+![](ernst_banks.png){width="80%"}
+
+Apparato sperimentale (Ernst & Banks, 2002).
+:::
+
+---
+
+## La manipolazione sperimentale
+
+L'aspetto ingegnoso dell'esperimento era che i ricercatori potevano manipolare indipendentemente:
+
+1. l'**altezza specificata dalla vista** (ciò che i partecipanti vedevano);
+2. l'**altezza specificata dal tatto** (ciò che i partecipanti sentivano);
+3. il **livello di rumore visivo** (perturbazioni casuali nello stereogramma).
+
+---
+
+## Il risultato chiave
+
+Quando il rumore visivo aumentava, la vista diventava meno affidabile, e la percezione si spostava verso l'informazione tattile — esattamente come predetto dalla regola di aggiornamento bayesiano.
+
+---
+
+## Un esempio numerico
+
+```{r}
+#| echo: false
+
+# Setup dell'esempio
+sigma_tatto <- 4.7  # mm
+sigma_vista <- 2.2  # mm
+altezza_tatto <- 55  # mm
+altezza_vista <- 58  # mm
+
+# Calcolo dei pesi
+prec_tatto <- 1 / sigma_tatto^2
+prec_vista <- 1 / sigma_vista^2
+prec_totale <- prec_tatto + prec_vista
+
+w_vista <- prec_vista / prec_totale
+w_tatto <- prec_tatto / prec_totale
+
+# Percezione combinata
+percezione_combinata <- w_vista * altezza_vista + w_tatto * altezza_tatto
+sigma_combinata <- sqrt(1 / prec_totale)
+```
+
+Immaginiamo che un partecipante tocchi una barra alta **`r altezza_tatto` mm** ma la veda come alta **`r altezza_vista` mm**.
+
+Quale sarà la sua percezione finale?
+
+---
+
+## I pesi ottimali
+
+Dato che la vista è più precisa del tatto (SD = `r sigma_vista` mm vs `r sigma_tatto` mm), la formula bayesiana assegna:
+
+* **peso della vista:** `r round(w_vista * 100)`%,
+* **peso del tatto:** `r round(w_tatto * 100)`%.
+
+La percezione finale sarà più vicina a ciò che si vede che a ciò che si tocca.
+
+---
+
+## La percezione combinata
+
+```{r}
+#| echo: false
+#| fig-height: 4.5
+
+library(ggplot2)
+
+x <- seq(45, 68, length.out = 300)
+
+df_ernst <- data.frame(
+  x = rep(x, 3),
+  densita = c(
+    dnorm(x, altezza_tatto, sigma_tatto),
+    dnorm(x, altezza_vista, sigma_vista),
+    dnorm(x, percezione_combinata, sigma_combinata)
+  ),
+  fonte = rep(c("Tatto (prior)", "Vista (verosimiglianza)", "Percezione (posterior)"), 
+              each = length(x))
+)
+
+df_ernst$fonte <- factor(df_ernst$fonte, 
+                         levels = c("Tatto (prior)", "Vista (verosimiglianza)", 
+                                   "Percezione (posterior)"))
+
+ggplot(df_ernst, aes(x = x, y = densita, color = fonte)) +
+  geom_line(linewidth = 1.3) +
+  scale_color_manual(values = c("steelblue", "forestgreen", "coral")) +
+  labs(
+    title = "Integrazione visuo-tattile",
+    subtitle = paste0("Tatto: ", altezza_tatto, " mm | Vista: ", altezza_vista, 
+                     " mm | Percezione: ", round(percezione_combinata, 1), " mm"),
+    x = "Altezza stimata (mm)",
+    y = "Densità",
+    color = ""
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "bottom",
+        plot.title = element_text(face = "bold"))
+```
+
+La percezione finale (**`r round(percezione_combinata, 1)` mm**) è un compromesso, più vicino alla vista.
+
+---
+
+## Il guadagno della combinazione
+
+Combinare le informazioni non solo produce una stima ottimale, ma **riduce l'incertezza**:
+
+| Fonte | Incertezza (SD) |
+|-------|-----------------|
+| Solo tatto | `r sigma_tatto` mm |
+| Solo vista | `r sigma_vista` mm |
+| **Combinazione** | **`r round(sigma_combinata, 1)` mm** |
+
+La percezione combinata è **più precisa** di entrambi i sensi usati singolarmente!
+
+---
+
+## Cosa succede con rumore visivo?
+
+```{r}
+#| echo: false
+
+sigma_vista_rumorosa <- 11  # mm
+
+prec_vista_rumorosa <- 1 / sigma_vista_rumorosa^2
+prec_totale_rumoroso <- prec_tatto + prec_vista_rumorosa
+
+w_vista_rumorosa <- prec_vista_rumorosa / prec_totale_rumoroso
+w_tatto_rumoroso <- prec_tatto / prec_totale_rumoroso
+
+percezione_rumorosa <- w_vista_rumorosa * altezza_vista + w_tatto_rumoroso * altezza_tatto
+```
+
+Quando i ricercatori aggiungevano rumore allo stimolo visivo (SD passa da `r sigma_vista` a `r sigma_vista_rumorosa` mm), i pesi cambiavano drasticamente:
+
+| Condizione | Peso vista | Peso tatto |
+|------------|------------|------------|
+| Senza rumore | `r round(w_vista * 100)`% | `r round(w_tatto * 100)`% |
+| Con rumore | `r round(w_vista_rumorosa * 100)`% | `r round(w_tatto_rumoroso * 100)`% |
+
+La percezione si sposta verso il tatto: **`r round(percezione_rumorosa, 1)` mm** (più vicina ai `r altezza_tatto` mm del tatto).
+
+---
+
+## Una domanda percettiva
+
+> "Qual è la probabilità che la barra venga percepita come più alta di 57 mm?"
+
+```{r}
+#| echo: false
+
+prob_gt_57 <- 1 - pnorm(57, mean = percezione_combinata, sd = sigma_combinata)
+```
+
+Usando la **distribuzione a posteriori** della **condizione combinata** (tatto + visione), otteniamo:
+
+$$
+P(\text{percezione} > 57) = `r round(prob_gt_57 * 100, 1)`\%
+$$
+
+---
+
+## Il parallelo con l'inferenza bayesiana
+
+| Integrazione sensoriale | Inferenza Normale-Normale |
+|------------------------|---------------------------|
+| Stima tattile | Prior $\mu_0$ |
+| Stima visiva | Media campionaria $\bar{y}$ |
+| Varianza tattile $\sigma^2_T$ | Varianza del prior $\sigma^2_0$ |
+| Varianza visiva $\sigma^2_V$ | Varianza dei dati $\sigma^2/n$ |
+| Percezione finale | Posterior $\mu_{\text{post}}$ |
+
+---
+
+## Il messaggio
+
+* La mente implementa naturalmente lo stesso principio statistico che usiamo nell'inferenza bayesiana: **pesare le fonti di informazione in base alla loro affidabilità**.
+
+* Questo è il senso profondo della statistica bayesiana: non è solo una tecnica matematica, ma riflette il modo in cui la mente elabora informazioni sul mondo.
+
+
+<!-- # Parte 6: esercizio sui tempi di reazione -->
+
+<!-- ## Scenario: tempi di reazione -->
+
+<!-- Un ricercatore studia i tempi di reazione in un compito di attenzione selettiva. -->
+
+<!-- **Prior (dalla letteratura):** -->
+
+<!-- - Media: μ₀ = 500 ms, -->
+<!-- - SD: σ₀ = 50 ms (incertezza moderata). -->
+
+<!-- **Dati:** -->
+
+<!-- - n = 20 partecipanti, -->
+<!-- - Media campionaria: ȳ = 480 ms, -->
+<!-- - SD nota: σ = 80 ms. -->
+
+<!-- **Compito:** calcolare il posterior e P(μ < 500). -->
+
+<!-- --- -->
+
+<!-- ## Soluzione — Passo 1: setup -->
+
+<!-- ```{r} -->
+<!-- # Prior -->
+<!-- mu0_rt <- 500 -->
+<!-- sigma0_rt <- 50 -->
+
+<!-- # Dati -->
+<!-- n_rt <- 20 -->
+<!-- ybar_rt <- 480 -->
+<!-- sigma_rt <- 80 -->
+<!-- ``` -->
+
+<!-- --- -->
+
+<!-- ## Soluzione — Passo 2: calcolo -->
+
+<!-- ```{r} -->
+<!-- # Precisioni -->
+<!-- prec_prior_rt <- 1 / sigma0_rt^2 -->
+<!-- prec_dati_rt <- n_rt / sigma_rt^2 -->
+<!-- prec_post_rt <- prec_prior_rt + prec_dati_rt -->
+
+<!-- # Posterior -->
+<!-- mu_post_rt <- (prec_prior_rt * mu0_rt + prec_dati_rt * ybar_rt) / prec_post_rt -->
+<!-- sigma_post_rt <- sqrt(1 / prec_post_rt) -->
+
+<!-- cat("Posterior: Normale(", round(mu_post_rt, 1), ",", round(sigma_post_rt^2, 1), ")\n") -->
+<!-- cat("Media:", round(mu_post_rt, 1), "ms\n") -->
+<!-- cat("SD:", round(sigma_post_rt, 1), "ms\n") -->
+<!-- ``` -->
+
+<!-- --- -->
+
+<!-- ## Soluzione — Passo 3: probabilità -->
+
+<!-- ```{r} -->
+<!-- # P(μ < 500) -->
+<!-- prob_lt_500 <- pnorm(500, mean = mu_post_rt, sd = sigma_post_rt) -->
+<!-- cat("P(μ < 500 ms) =", round(prob_lt_500 * 100, 1), "%") -->
+<!-- ``` -->
+
+<!-- C'è circa l'**89%** di probabilità che il tempo medio sia inferiore a 500 ms. -->
+
+<!-- --- -->
+
+<!-- ## Visualizziamo -->
+
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- #| fig-height: 4.5 -->
+<!-- x_rt <- seq(350, 650, length.out = 300) -->
+
+<!-- df_rt <- data.frame( -->
+<!--   x = rep(x_rt, 2), -->
+<!--   densita = c(dnorm(x_rt, mu0_rt, sigma0_rt),  -->
+<!--               dnorm(x_rt, mu_post_rt, sigma_post_rt)), -->
+<!--   tipo = rep(c("Prior", "Posterior"), each = length(x_rt)) -->
+<!-- ) -->
+
+<!-- ggplot(df_rt, aes(x = x, y = densita, color = tipo)) + -->
+<!--   geom_line(linewidth = 1.2) + -->
+<!--   geom_vline(xintercept = 500, linetype = "dashed", color = "red") + -->
+<!--   labs(title = "Tempi di reazione: Prior vs Posterior", -->
+<!--        x = "Tempo medio (ms)", y = "Densità", color = "") + -->
+<!--   theme_minimal(base_size = 14) + -->
+<!--   theme(legend.position = "bottom") + -->
+<!--   annotate("text", x = 510, y = 0.02, label = "500 ms", color = "red") -->
+<!-- ``` -->
+
+---
+
+## Riepilogo 
+
+1. **Normale-Normale:** Prior Normale + dati Normali → Posterior Normale.
+
+2. **Il posterior è una media ponderata** tra prior e dati.
+
+3. **La precisione aumenta** con più dati.
+
+4. **Applicabile a variabili continue:** punteggi, tempi, misure fisiologiche.
+
+5. **Risposte dirette:** P(μ > soglia), intervalli di credibilità.
+
+---
+
+## Confronto: Beta-Binomiale vs Normale-Normale
+
+| Aspetto | Beta-Binomiale | Normale-Normale |
+|---------|----------------|-----------------|
+| Tipo di dati | Discreti (successi/insuccessi) | Continui |
+| Parametro | Probabilità θ ∈ [0,1] | Media μ ∈ ℝ |
+| Prior | Beta(α, β) | Normale(μ₀, σ₀²) |
+| Aggiornamento | Somma conteggi | Media ponderata |
+| Applicazioni | Tassi di risposta, accuratezza | Punteggi, tempi |
+
+---
+
+## Per la prossima lezione
+
+Materiale di studio: https://ccaudek.github.io/utet-companion/
+
+**Prossimo argomento:**
+
+"Sintesi della distribuzione a posteriori: media, mediana, intervalli di credibilità."
+
+Vedremo come **riassumere** e **comunicare** i risultati dell'inferenza bayesiana.

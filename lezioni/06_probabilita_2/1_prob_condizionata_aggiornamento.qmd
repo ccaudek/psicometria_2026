@@ -1,0 +1,692 @@
+---
+title: "Probabilità condizionata come aggiornamento"
+subtitle: "Dal linguaggio degli eventi all'idea di apprendere dai dati"
+version: 1.0
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+toc-depth: 2
+lang: it
+
+format:
+    revealjs:
+      theme: [default, ../revealjs.scss]
+      title-slide-attributes:
+        data-background-color: "#0072bc"
+      slide-number: c
+      show-slide-number: print
+      highlight-style: github
+      math: mathjax
+      mermaid:
+        theme: neutral
+      
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+```{r}
+#| echo: false
+#| output: false
+library(tibble)
+library(dplyr)
+library(knitr)
+library(kableExtra)
+```
+
+## Obiettivo {.unnumbered .unlisted}
+
+In questa lezione:
+
+- esamineremo la **probabilità condizionata** come aggiornamento delle credenze
+- definiremo formalmente $P(A \mid B)$ e le sue **proprietà**
+- introdurremo l'**indipendenza**, la **regola del prodotto** e la **probabilità totale**
+- applicheremo questi strumenti a problemi psicologici reali
+
+> Riferimento: https://ccaudek.github.io/utet-prob/ — Capitoli 6-7
+
+---
+
+## Perché la probabilità condizionata?
+
+In psicologia, raramente ci troviamo a ragionare in situazioni in cui non abbiamo alcuna informazione. Quasi sempre abbiamo **informazioni parziali**:
+
+- "Sapendo che il paziente ha ottenuto un esito positivo al test..."
+- "Dato che il partecipante è nel gruppo sperimentale..."
+- "Considerando che lo stimolo era congruente..."
+
+La **probabilità condizionata** è lo strumento matematico che ci permette di formalizzare questo tipo di ragionamento.
+
+---
+
+## Il punto chiave: aggiornare le credenze
+
+```{mermaid}
+flowchart LR
+    A["Credenza iniziale:<br/>P(Disturbo) = 5%"] --> B["Nuova informazione:<br/>Test positivo"]
+    B --> C["Credenza aggiornata:<br/>P(Disturbo | Test+) = ?"]
+```
+
+* Lo **stato clinico** del paziente rimane invariato.
+
+* Si modifica soltanto il nostro **stato epistemico** sulla sua condizione, attraverso l'integrazione formale del nuovo dato osservativo.
+
+**In sintesi:** la decisione clinica si basa non sulla realtà oggettiva in sé, ma sulla sua rappresentazione probabilistica, che viene iterativamente raffinata tramite l'evidenza empirica.
+
+---
+
+## Ogni probabilità è sempre condizionata
+
+Quando scriviamo $P(A)$, in realtà abbreviamo $P(A \mid \mathcal{I})$, dove $\mathcal{I}$ è lo **sfondo informativo**.
+
+Nel linguaggio quotidiano usiamo espressioni come:
+
+- "Data questa informazione..."
+- "Sapendo che..."
+- "Alla luce di..."
+
+La probabilità condizionata non è un caso speciale: è la **forma generale** del ragionamento probabilistico.
+
+---
+
+## Probabilità condizionata
+
+Se $P(B) > 0$, la probabilità di $A$ dato $B$ è
+
+$$
+\boxed{ P(A \mid B) = \frac{P(A \cap B)}{P(B)} }
+$$
+
+**Intuizione:** ci limitiamo ai casi in cui $B$ accade e ricalibriamo le probabilità.
+
+---
+
+## Visualizzazione: lo zoom fotografico
+
+```{mermaid}
+flowchart TD
+    subgraph "Spazio originale Ω"
+        A["A"]
+        B["B"]
+        AB["A ∩ B"]
+    end
+    subgraph "Dopo il condizionamento"
+        B2["B diventa il nuovo Ω"]
+        AB2["A ∩ B<br/>rinormalizzato"]
+    end
+    AB --> |"P(A∩B)/P(B)"| AB2
+```
+
+Non stiamo cambiando la scena, stiamo cambiando l'**inquadratura**.
+
+---
+
+## Esercizio 1 — Calcolo diretto
+
+In uno studio, 200 partecipanti sono classificati così:
+
+|  | Ansia Alta | Ansia Bassa | Totale |
+|--|------------|-------------|--------|
+| Errore | 45 | 30 | 75 |
+| Corretto | 55 | 70 | 125 |
+| **Totale** | 100 | 100 | 200 |
+
+**Calcola:** $P(\text{Errore} \mid \text{Ansia Alta})$
+
+*(3 minuti)*
+
+---
+
+### Soluzione Esercizio 1
+
+Dalla definizione:
+
+$$
+P(\text{Errore} \mid \text{Ansia Alta}) = \frac{P(\text{Errore} \cap \text{Ansia Alta})}{P(\text{Ansia Alta})}
+$$
+
+Usando le frequenze:
+
+$$
+P(\text{Errore} \mid \text{Ansia Alta}) = \frac{45/200}{100/200} = \frac{45}{100} = 0.45
+$$
+
+**Interpretazione:** tra chi ha ansia alta, il 45% commette errori.
+
+---
+
+## Proprietà della probabilità condizionata
+
+**1. Normalizzazione nel nuovo spazio**
+
+$$
+P(B \mid B) = 1.
+$$
+
+Dato che $B$ si è verificato, la probabilità di $B$ è la certezza.
+
+**2. Regola del complemento**
+
+$$
+P(A^c \mid B) = 1 - P(A \mid B).
+$$
+
+---
+
+## Esercizio 2 — Proprietà del complemento
+
+Sia $P(\text{Ansia} \mid \text{Dormito male}) = 0.35$.
+
+**Calcola:** $P(\text{No Ansia} \mid \text{Dormito male})$.
+
+---
+
+### Soluzione Esercizio 2
+
+Applicando la regola del complemento:
+
+$$
+P(\text{No Ansia} \mid \text{Dormito male}) = 1 - 0.35 = 0.65.
+$$
+
+**Interpretazione:** nello spazio ristretto "ho dormito male", le probabilità di Ansia e No-Ansia sommano a 1.
+
+---
+
+## Esercizio 3 — Probabilità condizionata in un sottospazio
+
+**Contesto:** Un test diagnostico è stato eseguito e l'esito è **positivo**.
+
+**Dato:**
+$$
+P(\text{Malattia} \mid \text{Test+}) = 0.08.
+$$
+
+**Calcolare:**
+$$
+P(\text{Nessuna malattia} \mid \text{Test+}).
+$$
+
+*Nota: lo spazio degli eventi è ristretto alla condizione "Test positivo".*
+
+---
+
+### Soluzione Esercizio 3 — Complemento nello spazio condizionato
+
+Definendo lo spazio condizionato $\Omega' = \{\text{Test+}\}$, gli unici eventi mutualmente esaustivi e disgiunti sono "Malattia" e "Nessuna malattia". Pertanto:
+
+$$
+\begin{aligned}
+P(\text{Nessuna malattia} \mid \text{Test+}) 
+&= 1 - P(\text{Malattia} \mid \text{Test+}) \\
+&= 1 - 0.08 \\
+&= 0.92.
+\end{aligned}
+$$
+
+**Interpretazione:** tra tutti i soggetti con test positivo, il 92% non presenta la malattia, nonostante il risultato positivo del test.
+
+
+---
+
+## Esercizio 4 — Quando il positivo non basta
+
+Un test:
+
+- è molto accurato;
+- ma la malattia è rara.
+
+Sappiamo che $P(\text{Malattia} \mid \text{Test+}) = 0.02.$
+
+**Calcola:**  
+$$
+P(\text{Falso positivo} \mid \text{Test+}).
+$$
+
+---
+
+### Soluzione Esercizio 4 — Falso positivo
+
+Un falso positivo è il complemento della malattia **nello spazio dei positivi**:
+
+$$
+\begin{align}
+P(\text{Falso positivo} \mid \text{Test+}) &= 1 - P(\text{Malattia} \mid \text{Test+}) \notag\\
+&= 1 - 0.02 \notag\\
+&= 0.98.
+\end{align}
+$$
+
+**Messaggio chiave:** un test può essere “buono” e tuttavia la maggior parte dei risultati positivi può essere attribuita a individui sani.
+
+---
+
+## Indipendenza statistica
+
+Due eventi sono **indipendenti** quando conoscere uno non cambia la probabilità dell'altro:
+
+$$
+\boxed{P(A \mid B) = P(A)}
+$$
+
+**Equivalentemente:**
+
+$$
+P(A \cap B) = P(A) \cdot P(B)
+$$
+
+---
+
+## Indipendenza: significato psicologico
+
+**Indipendenza** significa **assenza di potere predittivo**:
+
+- se $P(\text{Ansia} \mid \text{Caffè}) = P(\text{Ansia})$: conoscere il consumo di caffè **non aiuta** a prevedere l'ansia;
+
+- se $P(\text{Ansia} \mid \text{Caffè}) \neq P(\text{Ansia})$: il consumo di caffè **fornisce informazioni** sull'ansia.
+
+---
+
+## Esercizio 5 - Verifica dell'indipendenza
+
+In un esperimento sul priming semantico:
+
+- $P(\text{Corretto}) = 0.80$;
+- $P(\text{Corretto} \mid \text{Prime congruente}) = 0.80$.
+
+**Domanda:** gli eventi ("Corretto" e "Prime congruente") sono indipendenti?
+
+---
+
+### Soluzione Esercizio 5
+
+Poiché
+
+$$
+P(\text{Corretto} \mid \text{Prime congruente}) = P(\text{Corretto}) = 0.80
+$$
+gli eventi **sono indipendenti**. Il prime congruente non modifica la probabilità di risposta corretta.
+
+**Implicazione:** In questo esperimento pilota, il priming non ha mostrato un effetto misurabile.
+
+---
+
+## Esercizio 6 — Dipendenza
+
+Consideriamo lo stesso esperimento, ma ora:
+
+- $P(\text{Corretto}) = 0.75$,
+- $P(\text{Corretto} \mid \text{Prime congruente}) = 0.88$.
+
+**Domanda:** C'è dipendenza? Quantifica l'effetto.
+
+---
+
+### Soluzione Esercizio 6
+
+Gli eventi sono **dipendenti** perché $0.88 \neq 0.75$.
+
+**Quantificazione dell'effetto:**
+
+$$
+P(\text{Corretto} \mid \text{Prime}) - P(\text{Corretto}) = 0.88 - 0.75 = 0.13.
+$$
+
+Il prime congruente **aumenta** la probabilità di risposta corretta di 13 punti percentuali.
+
+---
+
+## Regola del prodotto
+
+Dalla definizione di probabilità condizionata:
+
+$$
+\boxed{P(A \cap B) = P(A \mid B) \cdot P(B) = P(B \mid A) \cdot P(A)}
+$$
+
+**Utilità:** scomporre eventi congiunti in passi sequenziali.
+
+---
+
+## Esercizio 7 — Regola del prodotto
+
+Consideriamo uno studio sull'apprendimento:
+
+- il 40% dei partecipanti è assegnato alla condizione **feedback immediato**; gli altri alla condizione **feedback differito**;
+- nel gruppo che riceve **feedback immediato**, l’85% delle risposte è corretto.
+
+I due eventi **non sono indipendenti** (la correttezza dipende dal tipo di feedback ricevuto).
+
+**Calcola:** 
+
+$$
+P(\text{Feedback immediato} \cap \text{Corretto}).
+$$
+
+---
+
+### Soluzione Esercizio 7
+
+Poiché gli eventi **non sono indipendenti**, si applica la **regola della probabilità composta** (o "del prodotto"):
+
+$$
+\begin{align}
+P(F \cap C) &= P(C \mid F)\, P(F)\\
+&= 0.85 \times 0.40 \\
+&= 0.34.
+\end{align}
+$$
+
+**Interpretazione:** selezionando una risposta a caso dallo studio, la probabilità che provenga **da un partecipante con feedback immediato e sia corretta** è del 34%.
+
+---
+
+### Approfondimento: confronto con il caso indipendente
+
+Se per ipotesi feedback e correttezza fossero indipendenti, varrebbe la regola più semplice:
+
+$$
+P(F \cap C) = P(F)\,P(C).
+$$
+
+Tuttavia, il dato $P(C \mid F) \neq P(C)$ (in questo caso $P(C \mid F) = 0.85$, mentre $P(C)$ non è nota) conferma la **dipendenza**, rendendo necessaria la forma condizionata $P(C \mid F) \, P(F)$.
+
+---
+
+## Legge della probabilità totale
+
+Sia $\{B_1,\dots,B_k\}$ una **partizione** di $\Omega$. Allora: 
+
+$$
+\boxed{
+P(A)=\sum_{i=1}^k P(A\mid B_i)\,P(B_i)
+}
+$$
+
+**Idea chiave:**  
+$A$ può verificarsi *attraverso* uno dei $B_i$;  
+la probabilità totale è la **somma dei percorsi verso $A$**.
+
+---
+
+## Esercizio 8 — Probabilità totale
+
+Un test per depressione ha le seguenti caratteristiche:
+
+- prevalenza: $P(D) = 0.08$
+- sensibilità: $P(+ \mid D) = 0.85$
+- specificità: $P(- \mid D^c) = 0.90$
+
+**Calcola:** $P(+)$ (probabilità totale di un test positivo).
+
+---
+
+## Visualizzazione — Probabilità totale (test diagnostico)
+
+```{mermaid}
+flowchart TD
+    subgraph "Partizione della popolazione"
+        D["D: Depressione<br/>P(D)=0.08"]
+        Dc["Dᶜ: No depressione<br/>P(Dᶜ)=0.92"]
+    end
+
+    D --> |"P(+ | D)=0.85"| A1["Test positivo"]
+    Dc --> |"P(+ | Dᶜ)=0.10"| A2["Test positivo"]
+
+    A1 --> T["P(+) = 0.85×0.08 + 0.10×0.92"]
+    A2 --> T
+```
+
+---
+
+### Soluzione Esercizio 8
+
+**Passo 1:** Identificare i termini
+
+- $P(+ \mid D^c) = 1 - 0.90 = 0.10$ (falsi positivi)
+- $P(D^c) = 1 - 0.08 = 0.92$
+
+**Passo 2:** Applicare la formula
+
+$$
+\begin{aligned}
+P(+) &= P(+ \mid D) \cdot P(D) + P(+ \mid D^c) \cdot P(D^c) \\
+&= 0.85 \times 0.08 + 0.10 \times 0.92 \\
+&= 0.068 + 0.092 = 0.160
+\end{aligned}
+$$
+
+**Risultato:** il 16% dei test darà un risultato positivo.
+
+---
+
+## Esercizio 9 — Frequenze naturali
+
+Riformula l'Esercizio 6 usando **1000 persone**.
+
+---
+
+### Soluzione Esercizio 9
+
+Su 1000 persone:
+
+| Gruppo | N | Test + | Calcolo |
+|--------|---|--------|---------|
+| Depressi | 80 | 68 | 80 × 0.85 |
+| Non depressi | 920 | 92 | 920 × 0.10 |
+| **Totale** | 1000 | **160** | |
+
+$$
+P(+) = \frac{160}{1000} = 0.16
+$$
+
+Le frequenze naturali rendono il calcolo **trasparente**.
+
+---
+
+## Il paradosso di Simpson: un'inversione statistica
+
+**Livello aggregato – Conclusione fuorviante**
+
+Analizzando i pazienti nel loro insieme:
+
+- **Procedura A**: 60% mostra miglioramento;
+- **Procedura B**: 65% mostra miglioramento. 
+
+
+➡️ Sulla base del dato aggregato, B sembrerebbe la procedura più efficace.
+
+---
+
+### Livello dei sottogruppi – Il quadro reale
+
+Disaggregando i dati per **gravità della condizione**:
+
+| Gravità iniziale | Tasso di miglioramento (A) | Tasso di miglioramento (B) |
+| :--------------- | :-------------------------: | :-------------------------: |
+| **Bassa**        | **90%**                     | 85%                         |
+| **Alta**         | **30%**                     | 25%                         |
+
+La procedura **A ottiene risultati superiori in ogni singolo sottogruppo** di gravità.
+
+---
+
+### Il meccanismo del paradosso
+
+La contraddizione nasce da una **distribuzione non bilanciata** dei pazienti nei gruppi:
+
+- Il gruppo **A** è composto prevalentemente da pazienti con gravità *alta* (a più difficile miglioramento).
+- Il gruppo **B** è composto prevalentemente da pazienti con gravità *bassa* (a più facile miglioramento).
+
+La differenza nella **composizione dei gruppi** (variabile confondente) domina e inverte l'apparente effetto della procedura a livello aggregato.
+
+
+---
+
+### Il meccanismo del paradosso
+
+**La lezione:** 
+
+* l'analisi aggregata può essere **ingannevole**. 
+* L'indagine per sottogruppi omogenei è spesso essenziale per una valutazione corretta.
+
+---
+
+## Esercizio 10 — Identificare una variabile confondente
+
+**Contesto:** uno studio osservazionale riporta i seguenti tassi di guarigione complessivi:
+
+- **terapia X**: 70%;
+- **terapia Y**: 80%.
+
+Tuttavia, la **gravità della condizione** non è distribuita uniformemente:
+
+- la Terapia X viene somministrata prevalentemente a **casi gravi**;
+- la Terapia Y viene somministrata prevalentemente a **casi lievi**.
+
+---
+
+### Domanda
+
+È corretto concludere, sulla base di questi dati aggregati, che la Terapia Y sia più efficace?
+
+---
+
+### Soluzione
+
+**No, non è possibile.** Il confronto diretto dei tassi aggregati è **viziato da una confusione (confounding)**.
+
+La **gravità** è una **variabile confondente**:
+
+- influisce sull'esito (i casi lievi guariscono più facilmente);
+- è associata alla scelta del trattamento (X per i gravi, Y per i lievi).
+
+Questa associazione crea un **bias di selezione** che distorce il confronto.
+
+---
+
+**Per un'analisi corretta**, occorre **condizionare sulla gravità**:
+
+$$
+\begin{aligned}
+&P(\text{Guarigione} \mid \text{Terapia X, Gravità = bassa}) \quad \text{vs} \\ &\quad P(\text{Guarigione} \mid \text{Terapia Y, Gravità = bassa}) 
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+&P(\text{Guarigione} \mid \text{Terapia X, Gravità = alta}) \;\;\, \text{vs} \\&\quad P(\text{Guarigione} \mid \text{Terapia Y, Gravità = alta})
+\end{aligned}
+$$
+
+Solo un confronto *entro sottogruppi omogenei per gravità* permette di isolare l'effetto reale delle terapie.
+
+---
+
+## Riepilogo delle formule
+
+| Concetto | Formula |
+|----------|---------|
+| Probabilità condizionata | $P(A \mid B) = \frac{P(A \cap B)}{P(B)}$ |
+| Indipendenza | $P(A \mid B) = P(A)$ |
+| Regola del prodotto | $P(A \cap B) = P(A \mid B) \cdot P(B)$ |
+| Probabilità totale | $P(A) = \sum_i P(A \mid B_i) \cdot P(B_i)$ |
+
+---
+
+## Esercizio 11 — Test diagnostico: probabilità e frequenze naturali
+
+Si stima che la **prevalenza** del disturbo ADHD in una popolazione universitaria sia del 5%. Viene somministrato un test diagnostico con le seguenti caratteristiche operative:
+
+- **Sensibilità** (Se): $P(+ \mid \text{ADHD}) = 0.90$  
+  (Probabilità di risultare positivo se si ha il disturbo)
+- **Specificità** (Sp): $P(- \mid \text{No ADHD}) = 0.95$  
+  (Probabilità di risultare negativo se non si ha il disturbo)
+
+---
+
+### Obiettivo
+
+Applicare il **teorema della probabilità totale** e il metodo delle **frequenze naturali** per rispondere alle seguenti domande:
+
+1. **Qual è la probabilità complessiva di risultare positivo al test?**  
+   $$
+   P(+) = \; ?
+   $$
+
+2. **Verificare il risultato immaginando una coorte di 10,000 studenti**, scomponendo i casi con frequenze naturali.
+
+---
+
+### Soluzione Esercizio 11a
+
+**Probabilità totale:**
+
+$$
+\begin{aligned}
+P(+) &= P(+ \mid D) \cdot P(D) + P(+ \mid D^c) \cdot P(D^c) \\
+&= 0.90 \times 0.05 + 0.05 \times 0.95 \\
+&= 0.045 + 0.0475 = 0.0925
+\end{aligned}
+$$
+
+---
+
+### Soluzione Esercizio 11b
+
+**Frequenze su 10,000:**
+
+| Gruppo | N | Test + |
+|--------|---|--------|
+| ADHD | 500 | 450 (90%) |
+| No ADHD | 9500 | 475 (5%) |
+| **Totale** | 10.000 | **925** |
+
+$$
+P(+) = \frac{925}{10000} = 0.0925 \quad \checkmark
+$$
+
+---
+
+## Osservazione importante
+
+Dei 925 test positivi:
+
+- 450 sono **veri positivi** (hanno ADHD)
+- 475 sono **falsi positivi** (non hanno ADHD)
+
+> Più della metà dei positivi sono falsi allarmi!
+
+Questo fenomeno è il **base-rate neglect** [@gigerenzer1995].
+
+---
+
+## Messaggio conclusivo
+
+1. La **probabilità condizionata** formalizza l'aggiornamento delle credenze
+
+2. L'**indipendenza** indica assenza di potere predittivo
+
+3. La **regola del prodotto** scompone eventi congiunti
+
+4. La **probabilità totale** somma tutti i percorsi verso un evento
+
+5. Il **paradosso di Simpson** mostra l'importanza del condizionamento
+
+---
+
+## Prossima parte
+
+Nel secondo segmento:
+
+- deriveremo il **teorema di Bayes**
+- calcoleremo $P(H \mid E)$ — la probabilità che ci interessa davvero
+- esploreremo l'**aggiornamento sequenziale** delle credenze
+
+---
+
+## Bibliografia

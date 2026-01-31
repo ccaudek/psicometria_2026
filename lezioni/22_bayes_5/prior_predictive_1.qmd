@@ -1,0 +1,786 @@
+---
+title: "Distribuzione predittiva a priori"
+subtitle: "Cosa ci aspettiamo prima di vedere i dati — Segmento 1"
+version: 1.0
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+lang: it
+
+execute:
+  echo: true
+
+format:
+  revealjs:
+    theme: [default, ../revealjs.scss]
+    title-slide-attributes:
+      data-background-color: "#0072bc"
+    slide-number: c
+    show-slide-number: print
+    highlight-style: github
+    math: mathjax
+
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+```{r}
+#| echo: false
+library(ggplot2)
+set.seed(42)
+```
+
+## Obiettivi {.unnumbered .unlisted}
+
+1. Comprendere cos'è la **distribuzione predittiva a priori**.
+2. Capire **perché** è uno strumento fondamentale nel flusso di lavoro bayesiano.
+3. Imparare a **simulare** dalla distribuzione predittiva a priori.
+4. Usarla per **verificare** se il modello ha senso **prima** di vedere i dati.
+
+# Parte 1: l'idea centrale
+
+## Una domanda fondamentale
+
+Prima di raccogliere dati, ogni ricercatore dovrebbe chiedersi:
+
+> "Se il mio modello fosse vero, che tipo di dati mi aspetterei di osservare?"
+
+. . .
+
+Questa domanda apparentemente semplice è **potentissima**:
+
+- ci costringe a rendere esplicite le nostre assunzioni;
+- ci permette di verificare se il modello ha senso;
+- ci aiuta a scegliere prior ragionevoli.
+
+---
+
+## Il problema delle prior “al buio”
+
+Finora abbiamo scelto le distribuzioni a priori ragionando sui **parametri** del modello:
+
+* “la probabilità di successo è probabilmente tra 0.5 e 0.8”
+* “la media del punteggio BDI è circa 25”
+
+Questo approccio è corretto, ma spesso **non è il più naturale**.
+
+---
+
+Molto più spesso, infatti, abbiamo intuizioni sui **dati osservabili**:
+
+* “mi aspetto di vedere circa 15–25 successi su 30 prove”;
+* “i punteggi BDI saranno probabilmente tra 15 e 45”.
+
+👉 La domanda allora diventa: *la prior che ho scelto sui parametri è coerente con ciò che mi aspetto di osservare nei dati?*
+
+---
+
+## La distribuzione predittiva a priori
+
+La **distribuzione predittiva a priori** risponde proprio a questa domanda:
+
+> *“Quali dati potrei osservare, **prima** di aver visto alcun dato, se il mio modello fosse corretto?”*
+
+Formalmente:
+
+$$
+p(y) = \int p(y \mid \theta)\, p(\theta)\, d\theta,
+$$
+
+cioè, la distribuzione dei dati ottenuta **mediando** il modello sui possibili valori del parametro, pesati dalla distribuzione a priori.
+
+---
+
+## L’intuizione operativa
+
+Possiamo pensarla come una simulazione mentale:
+
+1. **estrai** un valore del parametro dalla distribuzione a priori;
+2. **genera un dato** dal modello $p(y \mid \theta)$ usando quel valore del parametro;
+3. **ripeti** il procedimento moltissime volte.
+
+La distribuzione dei dati così generati è la **distribuzione predittiva a priori**.
+
+👉 È ciò che il modello *si aspetta di osservare* prima di vedere i dati reali.
+
+---
+
+## L’intuizione operativa
+
+Si noti che:
+
+* i valori del parametro con densità più alta nella distribuzione a priori vengono estratti **più frequentemente**;
+* fissato un valore del parametro $\theta$ in uno step della simulazione, i dati non sono generati uniformemente: la distribuzione $p(y \mid \theta)$ assegna **probabilità diverse a valori diversi** della variabile casuale.
+
+---
+
+## L’intuizione operativa
+
+In altre parole, la distribuzione predittiva a priori combina:
+
+* la nostra incertezza sui parametri (prior),
+* la variabilità dei dati data una scelta del parametro (modello).
+
+> L’integrale nella definizione di $p(y)$ formalizza esattamente questo processo di simulazione ripetuta:
+
+$$
+p(y) = \int p(y \mid \theta)\, p(\theta)\, d\theta.
+$$
+
+---
+
+## Perché questo campionamento corrisponde a un integrale
+
+Pensiamo a un valore fissato $y$.
+
+Ogni possibile valore del parametro $\theta$ assegna a $y$ una probabilità diversa tramite $p(y \mid \theta)$.
+
+La probabilità complessiva di osservare $y$ deve quindi:
+
+* tenere conto di **tutti** i valori possibili di $\theta$;
+* pesare ciascun contributo in base a quanto quel valore di $\theta$ è plausibile a priori.
+
+---
+
+## Una media pesata sulle possibili $\theta$
+
+La distribuzione predittiva a priori è una **media pesata** delle distribuzioni $p(y \mid \theta)$:
+
+* $p(y \mid \theta)$ dice *quanto è probabile $y$* se il parametro fosse $\theta$;
+* $p(\theta)$ dice *quanto è plausibile* quel valore di $\theta$ prima di vedere i dati.
+
+L’integrale
+
+$$
+p(y) = \int p(y \mid \theta)\, p(\theta)\, d\theta,
+$$
+somma tutti questi contributi, pesandoli correttamente.
+
+---
+
+## Dal campionamento all’integrale
+
+Il procedimento di simulazione fa esattamente questo:
+
+* i valori di $\theta$ più plausibili vengono estratti più spesso (peso $p(\theta))$;
+* per ciascun $\theta$, i valori di $y$ più probabili vengono generati più spesso (peso $p(y \mid \theta))$.
+
+Ripetendo il procedimento molte volte, la frequenza con cui osserviamo ciascun valore di $y$ **approssima l’integrale**.
+
+👉 L’integrale non è altro che il limite ideale di questo processo di campionamento.
+
+---
+
+## Un messaggio chiave 
+
+> La distribuzione predittiva a priori descrive ciò che otteniamo
+> **prima** osservando un parametro dalla prior
+> e **poi** osservando i dati dal modello.
+
+
+L'integrale
+
+$$
+p(y) = \int p(y \mid \theta)\, p(\theta)\, d\theta
+$$
+formalizza esattamente questa idea.
+
+---
+
+## In sintesi 
+
+* Considerato un singolo valore del parametro $\theta$, il modello $p(y \mid \theta)$ **determina in modo univoco** la distribuzione dei possibili valori della variabile casuale $y$.
+
+* Tuttavia, $\theta$ non è noto: la distribuzione a priori descrive quanto siano **relativamente plausibili** i diversi valori che $\theta$ può assumere prima di osservare i dati.
+
+---
+
+La **distribuzione predittiva a priori** si ottiene allora così:
+
+* si considera la distribuzione di $y$ associata a ciascun possibile valore di $\theta$;
+* si fa una **media** di tutte queste distribuzioni;
+* a ciascuna si assegna un peso proporzionale alla plausibilità a priori del valore di $\theta$ che l’ha generata.
+
+Il risultato di questa media pesata è la distribuzione predittiva a priori.
+
+---
+
+Per concludere, 
+
+> la distribuzione predittiva a priori descrive ciò che il modello si aspetta di osservare, tenendo conto sia dell’incertezza sui parametri sia della variabilità dei dati.
+
+---
+
+## Un’analogia: il previsore meteorologico
+
+Prima di guardare i dati satellitari, un meteorologo potrebbe dire:
+
+> “A febbraio a Firenze, sulla base della mia esperienza, mi aspetto temperature tra 2 °C e 15 °C.”
+
+Se il suo modello considerasse plausibili −30 °C o +50 °C,
+**il problema non sarebbero i dati, ma il modello**.
+
+---
+
+Allo stesso modo, la distribuzione predittiva a priori ci permette di verificare se:
+
+* le nostre assunzioni a priori sono **ragionevoli**;
+* il modello genera dati **compatibili con la realtà che ci aspettiamo**.
+
+👉 È uno strumento fondamentale per evitare prior “al buio”.
+
+# Parte 2: un primo esempio
+
+## Scenario: efficacia di un nuovo farmaco ansiolitico
+
+Un’azienda farmaceutica sta testando un nuovo farmaco per l’ansia.
+Prima dello studio clinico vogliono verificare se le assunzioni del modello sono ragionevoli.
+
+**Modello:**
+
+* $N = 50$ pazienti ricevono il trattamento;
+* misuriamo quanti mostrano una riduzione rilevante dell’ansia;
+* la probabilità di successo $\theta$ ha prior $\text{Beta}(2,2)$.
+
+---
+
+## La prior sul parametro $\theta$
+
+```{r}
+#| echo: false
+#| fig-height: 4
+library(ggplot2)
+
+x <- seq(0, 1, length.out = 300)
+y <- dbeta(x, 2, 2)
+
+df <- data.frame(x = x, y = y)
+
+ggplot(df, aes(x = x, y = y)) +
+  geom_line(linewidth = 1.3, color = "steelblue") +
+  geom_area(alpha = 0.3, fill = "steelblue") +
+  labs(title = "Prior su θ: Beta(2, 2)",
+       subtitle = "Credenza iniziale sulla probabilità di successo",
+       x = "θ (probabilità di successo)", y = "Densità") +
+  theme_minimal(base_size = 14)
+```
+
+La Beta(2,2) esprime una credenza iniziale “moderata”:
+valori estremi (vicino a 0 o 1) sono meno plausibili, ma non esclusi.
+
+---
+
+## Predittiva a priori: le domande (prima dei dati)
+
+Prima di raccogliere dati, vogliamo chiederci:
+
+* **quanti successi è ragionevole osservare su 50**, se il modello è corretto?
+* il modello prevede risultati **realistici** per un ansiolitico?
+
+Questa è la **distribuzione predittiva a priori**:
+
+$$
+\theta \sim \text{Beta}(2,2), \qquad Y \mid \theta \sim \text{Binomiale}(50,\theta).
+$$
+
+---
+
+## 1) Una singola simulazione (un “mondo possibile”)
+
+```{r}
+# Una singola simulazione
+set.seed(1)
+
+n_pazienti <- 50
+
+theta_1 <- rbeta(1, shape1 = 2, shape2 = 2)
+successi_1 <- rbinom(1, size = n_pazienti, prob = theta_1)
+
+cat("θ estratto =", round(theta_1, 3), "\n")
+cat("Successi simulati su 50 =", successi_1, "\n")
+```
+
+Interpretazione: abbiamo generato **un possibile esito** coerente con il prior.
+
+---
+
+## 2) Ripetizione esplicita con un loop `for`
+
+Ora ripetiamo lo stesso esperimento molte volte, passo per passo:
+
+```{r}
+set.seed(1)
+
+n_sim <- 10000
+n_pazienti <- 50
+
+theta_for <- numeric(n_sim)
+successi_for <- integer(n_sim)
+
+for (i in 1:n_sim) {
+  theta_for[i] <- rbeta(1, 2, 2)
+  successi_for[i] <- rbinom(1, size = n_pazienti, prob = theta_for[i])
+}
+```
+
+---
+
+```{r}
+head(
+  data.frame(
+    theta = round(theta_for, 3), 
+    successi = successi_for), 
+  10)
+```
+
+Ogni riga è **uno studio simulato**: prima estraiamo $\theta$, poi generiamo i successi.
+
+---
+
+## 3) Lo stesso, ma in modo più efficiente (vettoriale)
+
+È lo stesso algoritmo, solo più compatto:
+
+```{r}
+set.seed(1)
+
+n_sim <- 10000
+n_pazienti <- 50
+
+theta_sim <- rbeta(n_sim, 2, 2)
+successi_sim <- rbinom(n_sim, size = n_pazienti, prob = theta_sim)
+```
+
+---
+
+```{r}
+head(
+  data.frame(
+    theta = round(theta_sim, 3), 
+    successi = successi_sim), 
+  10)
+```
+
+---
+
+## Interpretazione (cosa abbiamo costruito)
+
+* Ogni simulazione produce un numero di successi $Y$ su 50.
+* La variabilità riflette **due fonti**:
+
+  * incertezza su $\theta$ (prior);
+  * variabilità campionaria (binomiale).
+
+👉 Questo insieme di $Y$ è la **predittiva a priori**.
+
+---
+
+## La distribuzione predittiva a priori 
+
+```{r}
+#| echo: false
+#| fig-height: 4.5
+
+df_pred <- data.frame(successi = successi_sim)
+
+ggplot(df_pred, aes(x = successi)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 51,
+                 fill = "coral", alpha = 0.7, color = "white") +
+  labs(title = "Distribuzione predittiva a priori",
+       subtitle = "Numero di successi attesi su 50 pazienti, prima di vedere i dati",
+       x = "Successi (su 50)", y = "Densità") +
+  theme_minimal(base_size = 14)
+```
+
+---
+
+## Riassunto numerico (prima di vedere i dati)
+
+```{r}
+cat("Media:", round(mean(successi_sim), 1), "successi\n")
+cat("Intervallo 95%:", quantile(successi_sim, 0.025), "-",
+    quantile(successi_sim, 0.975), "successi\n")
+```
+
+Interpretazione:
+
+* in media ci aspettiamo circa **25 successi su 50**;
+* ma risultati molto bassi o molto alti possono ancora capitare.
+
+---
+
+## La domanda chiave (validazione del modello)
+
+> “Questa predittiva a priori produce risultati **plausibili** per un ansiolitico?”
+
+* **8 su 50 (16%)** → quasi inefficace
+* **42 su 50 (84%)** → eccezionalmente efficace
+
+Se i ricercatori si aspettano che farmaci simili abbiano tassi tra **40% e 70%**,
+questa prior **potrebbe essere troppo vaga** (produce anche scenari poco plausibili).
+
+# Parte 3: calibrare la prior
+
+## Una prior più informativa
+
+Se l’esperienza suggerisce che farmaci simili hanno tassi di successo **tra 40% e 70%**, possiamo usare un prior più concentrato:
+
+$$
+\theta \sim \text{Beta}(22,18)
+$$
+
+* media: $0.55$,
+* forza: $22+18=40$ (prior più informativo di Beta(2,2)).
+
+---
+
+## Confronto delle prior 
+
+```{r}
+#| echo: false
+library(ggplot2)
+
+x <- seq(0, 1, length.out = 400)
+
+df_prior2 <- data.frame(
+  theta = rep(x, 2),
+  densita = c(dbeta(x, 2, 2), dbeta(x, 22, 18)),
+  prior = rep(c("Beta(2,2)  (vaga)", "Beta(22,18)  (più informativa)"), each = length(x))
+)
+
+df_prior2$prior <- factor(df_prior2$prior,
+                          levels = c("Beta(2,2)  (vaga)", "Beta(22,18)  (più informativa)"))
+
+ggplot(df_prior2, aes(theta, densita, color = prior)) +
+  geom_line(linewidth = 1.2) +
+  labs(title = "Due prior alternative su θ",
+       subtitle = "Diversa informatività",
+       x = "θ", y = "Densità", color = "") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "bottom")
+```
+
+---
+
+## Predittiva a priori
+
+Ora simuliamo, per ciascun prior:
+
+1. $\theta \sim \text{Beta}(\alpha,\beta)$,
+2. $Y\mid\theta \sim \text{Binomiale}(50,\theta)$.
+
+---
+
+```{r}
+set.seed(1)
+
+n_sim <- 10000
+n_pazienti <- 50
+
+# Prior 1 (vaga)
+theta_vaga <- rbeta(n_sim, 2, 2)
+y_vaga <- rbinom(n_sim, n_pazienti, theta_vaga)
+
+# Prior 2 (più informativa)
+theta_info <- rbeta(n_sim, 22, 18)
+y_info <- rbinom(n_sim, n_pazienti, theta_info)
+```
+
+---
+
+## Confronto predittivo: quante risposte ci aspettiamo?
+
+```{r}
+#| echo: false
+
+df_comp <- data.frame(
+  successi = c(y_vaga, y_info),
+  prior = rep(c("Prior vaga: Beta(2,2)", "Prior più informativa: Beta(22,18)"),
+              each = n_sim)
+)
+
+df_comp$prior <- factor(df_comp$prior,
+                        levels = c("Prior vaga: Beta(2,2)", "Prior più informativa: Beta(22,18)"))
+
+ggplot(df_comp, aes(x = successi, y = after_stat(density), fill = prior)) +
+  geom_histogram(bins = 51, alpha = 0.55, position = "identity", color = "white") +
+  labs(title = "Distribuzione predittiva a priori (successi su 50)",
+       subtitle = "Come cambiano i dati attesi cambiando il prior",
+       x = "Successi (su 50)", y = "Densità", fill = "") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "bottom")
+```
+
+---
+
+## Confronto numerico (riassunto)
+
+```{r}
+cat("Prior vaga (Beta(2,2)):\n")
+cat("  Media successi:", round(mean(y_vaga), 1), "\n")
+cat("  95%:", quantile(y_vaga, 0.025), "-", quantile(y_vaga, 0.975), "\n\n")
+
+cat("Prior più informativa (Beta(22,18)):\n")
+cat("  Media successi:", round(mean(y_info), 1), "\n")
+cat("  95%:", quantile(y_info, 0.025), "-", quantile(y_info, 0.975), "\n")
+```
+
+---
+
+### Interpretazione didattica 
+
+* Con **Beta(2,2)** la predittiva a priori è molto ampia:
+  ammette con probabilità non trascurabile **scenari estremi**,
+  dal quasi fallimento al successo eccezionale.
+
+* Con **Beta(22,18)** la prior su $\theta$ è più concentrata,
+  con la maggior parte della massa tra **40% e 70%**.
+  Questo produce una predittiva sui dati **più concentrata**,
+  pur includendo ancora la naturale variabilità campionaria
+  (≈ **17–37 successi su 50**).
+
+👉 **Messaggio chiave:**
+la prior restringe ciò che crediamo plausibile per il **parametro**,
+non elimina la variabilità nei **dati osservabili**.
+
+---
+
+## Intervalli
+
+> L’intervallo sulla **prior** riguarda $\theta$;
+> l’intervallo **predittivo** riguarda i dati.
+> Il secondo è sempre più largo del primo.
+
+---
+
+## Messaggio chiave (controllo predittivo a priori)
+
+**Un prior non è semplicemente un'opinione:**
+
+> è una scelta consapevole che definisce i tipi di dati che ci aspettiamo di osservare, *prima* di raccoglierli.
+
+---
+
+Se il controllo predittivo a priori rivela previsioni "strane" o irrealistiche, questo è un **segnale fondamentale** che:
+
+* il prior potrebbe essere **troppo vago** (non incorpora conoscenze di dominio adeguate), oppure
+* la **struttura del modello** potrebbe non riflettere adeguatamente il meccanismo che genera i dati.
+
+---
+
+**In sintesi:** il controllo predittivo a priori trasforma un'assunzione astratta (il prior) in previsioni concrete e verificabili, aiutandoci a identificare e correggere problemi nel modello *prima* di osservare i dati reali.
+
+**Le alternative sono chiare:**
+
+1. **affinare il prior** per incorporare conoscenze più realistiche.
+2. **rivedere la struttura del modello** per allinearla meglio alla realtà.
+
+# Parte 4: prior predictive check
+
+## Il controllo predittivo a priori
+
+Il **prior predictive check** è una procedura sistematica:
+
+1. specifica il modello completo (prior + verosimiglianza);
+2. simula dati dalla distribuzione predittiva a priori;
+3. verifica se i dati simulati sono **plausibili**;
+4. se no, rivedi la prior e ripeti.
+
+---
+
+## Quando una prior è "cattiva"?
+
+Una prior produce dati implausibili quando:
+
+- prevede valori **impossibili** (es. tempi negativi, proporzioni > 1);
+- prevede valori **estremi** con alta probabilità;
+- è **incoerente** con la conoscenza del dominio.
+
+. . .
+
+Il prior predictive check **non richiede dati reali** — è uno strumento di validazione del modello.
+
+---
+
+## Un esempio problematico
+
+Supponiamo di modellare i tempi di reazione in un compito cognitivo.
+
+**Modello (sbagliato):**
+
+- $y_i \sim \text{Normale}(\mu, \sigma)$
+- $\mu \sim \text{Normale}(0, 100)$  ← prior molto vaga
+- $\sigma = 50$ ms (fisso per semplicità)
+
+---
+
+## Cosa succede con questa prior?
+
+```{r}
+# Simuliamo dalla prior
+n_sim <- 1000
+n_soggetti <- 30
+
+# Prior molto vaga su mu
+mu_sim <- rnorm(n_sim, mean = 0, sd = 100)
+
+# Per ogni mu, generiamo un campione di tempi di reazione
+dati_sim <- matrix(NA, nrow = n_sim, ncol = n_soggetti)
+for (i in 1:n_sim) {
+  dati_sim[i, ] <- rnorm(n_soggetti, mean = mu_sim[i], sd = 50)
+}
+
+# Calcoliamo le medie campionarie
+medie_sim <- rowMeans(dati_sim)
+```
+
+---
+
+```{r}
+cat("Range delle medie simulate: da", round(min(medie_sim)), "fino a ", 
+    round(max(medie_sim)), "ms\n")
+cat("Proporzione di medie negative:", round(mean(medie_sim < 0) * 100, 1), "%\n")
+```
+
+---
+
+## Visualizziamo il problema
+
+```{r}
+#| echo: false
+
+df_rt <- data.frame(media = medie_sim)
+
+ggplot(df_rt, aes(x = media)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 50, 
+                 fill = "coral", alpha = 0.7, color = "white") +
+  geom_vline(xintercept = 0, color = "darkred", linewidth = 1, linetype = "dashed") +
+  annotate("text", x = -70, y = 0.004, label = "Tempi negativi\n(impossibili!)", 
+           color = "darkred", size = 4) +
+  labs(title = "Prior predictive check: tempi di reazione",
+       subtitle = "Con prior N(0, 100) su μ — molti valori impossibili!",
+       x = "Media dei tempi di reazione (ms)", y = "Densità") +
+  theme_minimal(base_size = 14)
+```
+
+---
+
+## Una prior migliore
+
+I tempi di reazione sono tipicamente tra 200 e 800 ms. Usiamo:
+
+- $\mu \sim \text{Normale}(500, 100)$
+
+```{r}
+# Prior ragionevole
+mu_sim_good <- rnorm(n_sim, mean = 500, sd = 100)
+
+dati_sim_good <- matrix(NA, nrow = n_sim, ncol = n_soggetti)
+for (i in 1:n_sim) {
+  dati_sim_good[i, ] <- rnorm(n_soggetti, mean = mu_sim_good[i], sd = 50)
+}
+
+medie_sim_good <- rowMeans(dati_sim_good)
+```
+
+---
+
+```{r}
+cat("Range delle medie simulate:", round(min(medie_sim_good)), "-", 
+    round(max(medie_sim_good)), "ms\n")
+cat("Proporzione di medie negative:", round(mean(medie_sim_good < 0) * 100, 1), "%\n")
+```
+
+---
+
+## Confronto
+
+```{r}
+#| echo: false
+
+df_confronto_rt <- data.frame(
+  media = c(medie_sim, medie_sim_good),
+  Prior = rep(c("N(0, 100) - problematica", "N(500, 100) - ragionevole"), each = n_sim)
+)
+
+ggplot(df_confronto_rt, aes(x = media, fill = Prior)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 40, 
+                 alpha = 0.6, position = "identity", color = "white") +
+  scale_fill_manual(values = c("coral", "steelblue")) +
+  geom_vline(xintercept = 0, color = "darkred", linewidth = 1, linetype = "dashed") +
+  labs(title = "Confronto: prior problematica vs ragionevole",
+       x = "Media dei tempi di reazione (ms)", y = "Densità") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "bottom")
+```
+
+# Parte 5: il flusso di lavoro
+
+## Prior predictive check nel workflow bayesiano
+
+```{r}
+#| echo: false
+
+# Creiamo un diagramma semplificato con ggplot
+steps <- data.frame(
+  x = c(1, 2, 3, 4, 5),
+  y = rep(1, 5),
+  label = c("1. Specifica\nprior", "2. Simula dati\npredittivi", 
+            "3. Verifica\nplausibilità", "4. Se OK:\nraccogli dati",
+            "5. Calcola\nposterior")
+)
+
+ggplot(steps, aes(x = x, y = y)) +
+  geom_point(size = 15, color = "steelblue") +
+  geom_text(aes(label = label), vjust = 2.5, size = 3.5) +
+  geom_segment(aes(x = x + 0.3, xend = x + 0.7, y = y, yend = y),
+               data = steps[1:4, ], 
+               arrow = arrow(length = unit(0.2, "cm")), color = "gray50") +
+  xlim(0.5, 5.5) + ylim(0, 2) +
+  theme_void() +
+  labs(title = "Il flusso di lavoro bayesiano")
+```
+
+Il prior predictive check avviene **prima** di raccogliere i dati reali.
+
+---
+
+## Perché è così importante?
+
+1. **Trasparenza:** le assunzioni sono esplicite e verificabili.
+
+2. **Prevenzione:** identifica problemi nel modello prima di sprecare risorse.
+
+3. **Comunicazione:** facilita la discussione con collaboratori non statistici.
+
+4. **Riproducibilità:** documenta le scelte metodologiche.
+
+---
+
+## Riepilogo
+
+1. La **distribuzione predittiva a priori** mostra quali dati ci aspettiamo *prima* di osservarli.
+
+2. Si ottiene per **simulazione**: estrai θ dal prior, genera dati, ripeti.
+
+3. Il **prior predictive check** verifica se i dati simulati sono plausibili.
+
+4. Se i dati simulati sono irrealistici, **rivedi prior o modello**.
+
+5. È uno strumento essenziale nel **flusso di lavoro bayesiano**.
+
+---
+
+## Nel prossimo segmento
+
+Vedremo:
+
+- come applicare il prior predictive check a **modelli più complessi**;
+- esempi con **variabili continue** (scala BDI-II);
+- come usare il prior predictive check per **comunicare** con i colleghi;
+- la relazione con la **distribuzione predittiva a posteriori**.

@@ -1,0 +1,677 @@
+---
+title: "Fondamenti della probabilità"
+subtitle: "Eventi, spazi campionari e assiomi"
+version: 1.0
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+toc-depth: 2
+lang: it
+
+format:
+    revealjs:
+      theme: [default, ../revealjs.scss]
+      title-slide-attributes:
+        data-background-color: "#0072bc"
+      slide-number: c
+      show-slide-number: print
+      highlight-style: github
+      math: mathjax
+      mermaid:
+        theme: neutral
+      
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+```{r}
+#| echo: false
+#| output: false
+library(tibble)
+library(dplyr)
+library(knitr)
+library(kableExtra)
+```
+
+## Obiettivo {.unnumbered .unlisted}
+
+In questa prima parte della lezione:
+
+- Comprendiamo **perché** la probabilità è essenziale in psicologia
+- Definiamo **spazio campionario** ed **eventi**
+- Introduciamo gli **assiomi della probabilità**
+- Mettiamo in luce il **divario tra intuizione e calcolo formale**
+
+> Riferimento: https://ccaudek.github.io/utet-prob/ — Capitoli 1-3
+
+---
+
+## Perché la probabilità in Psicologia?
+
+La probabilità è uno strumento per ragionare in modo coerente sull'**incertezza**.
+
+**Punto chiave:** la probabilità non descrive il mondo, ma ciò che noi *sappiamo* (o non sappiamo) sul mondo.
+
+In psicologia, l'**incertezza** è ovunque:
+
+- Come reagirà una persona a uno stimolo?
+- Un trattamento funzionerà?
+- Una differenza osservata è reale o casuale?
+
+---
+
+## Dalla lettura al ragionamento attivo {.unnumbered .unlisted}
+
+Avete già letto il materiale sui fondamenti della probabilità.
+
+**Obiettivo di oggi:** 
+
+- Riattivare i concetti chiave
+- Applicarli a situazioni psicologicamente rilevanti
+- Scoprire dove l'intuizione fallisce
+
+---
+
+## Parlare di probabilità richiede una *rappresentazione* 
+
+Quando diciamo che qualcosa è "probabile", stiamo già facendo una scelta importante: stiamo decidendo **come rappresentare il problema**.
+
+* Questa scelta, spesso implicita, è una delle principali **fonti di errore** nel ragionamento umano.
+
+* Nella teoria della probabilità, questa rappresentazione prende il nome di **spazio campionario**.
+
+---
+
+## Lo spazio campionario: definizione
+
+Lo **spazio campionario** $\Omega$ è l'insieme di tutti gli esiti possibili di un esperimento casuale:
+
+$$
+\Omega = \{\omega_1, \omega_2, \ldots, \omega_n\}
+$$
+
+**Punto cruciale:** non esiste uno spazio campionario "giusto" in assoluto. Esiste solo uno spazio campionario coerente con la domanda che ci stiamo ponendo.
+
+---
+
+## Esempio: l'incertezza dello studente
+
+> "È molto improbabile che io superi questo esame."
+
+Questa frase sembra sensata, ma dal punto di vista probabilistico è **incompleta**.
+
+---
+
+## Quale spazio campionario?
+
+La stessa situazione può essere rappresentata in molti modi diversi:
+
+| Rappresentazione | Spazio campionario |
+|------------------|-------------------|
+| Binaria | $\Omega = \{\text{supero}, \text{non supero}\}$ |
+| Per voto | $\Omega = \{18, 19, 20, \ldots, 30, \text{bocciato}\}$ |
+| Per impegno | $\Omega = \{\text{poco}, \text{abbastanza}, \text{molto}\}$ |
+| Per comprensione | $\Omega = \{\text{poco}, \text{abbastanza}, \text{molto}\}$ |
+
+> Senza specificare $\Omega$, parlare di probabilità è ambiguo.
+
+---
+
+## Esercizio 1 — Identificare lo spazio campionario
+
+Un ricercatore studia i tempi di reazione in un compito di decisione lessicale (parola vs non-parola).
+
+**Domanda:** Quali sono possibili spazi campionari per questo esperimento?
+
+*(2 minuti per riflettere)*
+
+---
+
+### Soluzione Esercizio 1
+
+Possibili spazi campionari:
+
+1. **Risposta:** $\Omega = \{\text{corretta}, \text{errata}\}$
+
+2. **Tempo discretizzato:** $\Omega = \{\text{veloce}, \text{medio}, \text{lento}\}$
+
+3. **Tempo continuo:** $\Omega = [0, +\infty)$ millisecondi
+
+4. **Risposta × Tempo:** $\Omega = \{(\text{corretta, veloce}), (\text{corretta, lento}), \ldots\}$
+
+> La scelta dipende dalla **domanda di ricerca**.
+
+---
+
+## Eventi: non singoli esiti, ma insiemi
+
+Un **evento** non è un singolo risultato, ma un **sottoinsieme** dello spazio campionario.
+
+$$
+A \subseteq \Omega
+$$
+
+**Esempio:** "Il partecipante risponde correttamente" può includere:
+
+- Risposte corrette veloci
+- Risposte corrette lente
+- Risposte corrette dopo esitazione
+
+Tutti questi esiti appartengono allo stesso evento.
+
+---
+
+## Notazione degli eventi
+
+| Simbolo | Significato |
+|---------|-------------|
+| $\Omega$ | Evento certo (qualcosa accade) |
+| $\emptyset$ | Evento impossibile (nulla accade) |
+| $A^c$ o $\bar{A}$ | Complemento di $A$ (non-$A$) |
+| $A \cup B$ | $A$ oppure $B$ (o entrambi) |
+| $A \cap B$ | $A$ e $B$ insieme |
+
+---
+
+## Eventi incompatibili (disgiunti)
+
+Due eventi sono **incompatibili** se non possono verificarsi contemporaneamente:
+
+$$
+A \cap B = \emptyset
+$$
+
+. . .
+
+**Esempio:**
+
+- $A$ = "risposta corretta"
+- $B$ = "risposta errata"
+
+$A$ e $B$ sono incompatibili: non possono accadere entrambi nello stesso trial.
+
+---
+
+## Eventi compatibili
+
+**Esempio:**
+
+- $A$ = "il partecipante è ansioso"
+- $B$ = "il partecipante sbaglia"
+
+. . .
+
+Questi eventi **non** sono incompatibili.
+
+Una persona può essere ansiosa e sbagliare, oppure essere ansiosa e rispondere correttamente.
+
+> Questa distinzione è essenziale per interpretare i risultati sperimentali.
+
+---
+
+## Esercizio 2 — Compatibilità degli eventi
+
+In uno studio sulla memoria, definiamo:
+
+- $A$ = "il partecipante ricorda almeno 5 parole"
+- $B$ = "il partecipante ricorda meno di 3 parole"
+- $C$ = "il partecipante è nella condizione sperimentale"
+
+**Domanda:** Quali coppie di eventi sono incompatibili?
+
+---
+
+### Soluzione Esercizio 2
+
+* $A$ e $B$ sono **incompatibili**: non si può ricordare ≥5 e <3 parole contemporaneamente.
+
+
+* $A$ e $C$ sono **compatibili**: si può ricordare ≥5 parole ed essere nella condizione sperimentale.
+
+* $B$ e $C$ sono **compatibili**: si può ricordare <3 parole ed essere nella condizione sperimentale.
+
+---
+
+## Probabilità come grado di credenza
+
+* Nella vita quotidiana usiamo la probabilità per esprimere **incertezza**
+* Non parliamo di esperimenti ripetuti o frequenze osservate
+
+**Esempi**
+
+* “Domani pioverà con probabilità 0.7”
+* “Questa ipotesi mi sembra molto plausibile”
+
+---
+
+In questi casi, la probabilità:
+
+* **non è** una frequenza a lungo termine
+* è una misura della **fiducia** in una proposizione
+
+---
+
+## L’interpretazione bayesiana
+
+Secondo l’approccio bayesiano:
+
+> **La probabilità misura un grado di credenza razionale**
+
+* È una valutazione soggettiva
+* ma **non arbitraria**
+* deve rispettare **regole di coerenza logica**
+
+Persone diverse possono assegnare probabilità diverse
+→ perché dispongono di **informazioni diverse**
+
+---
+
+## Probabilità di proposizioni
+
+Nell’approccio bayesiano assegniamo probabilità a **enunciati**
+
+**Esempi**
+
+* “Il paziente ha la malattia”
+* “Il modello è corretto”
+* “La moneta è truccata”
+
+La probabilità esprime:
+
+* quanto siamo convinti che l’enunciato sia vero **dato ciò che sappiamo**
+
+---
+
+## Informazione e credenze
+
+* Le probabilità rappresentano il nostro **stato di incertezza**
+* Non sono fisse: dipendono dalle informazioni disponibili
+* Quando otteniamo nuovi dati:
+
+  * le nostre credenze **devono cambiare**
+
+**Apprendere** significa aggiornare le probabilità in modo razionale
+
+---
+
+## La legge fondamentale dell’aggiornamento
+
+Questo processo è governato dal **teorema di Bayes**:
+
+> Probabilità aggiornata
+> $\propto$ Probabilità iniziale × Evidenza dei dati
+
+* da ciò che **crediamo prima** (a priori)
+* a ciò che **dovremmo credere ora** (a posteriori)
+* alla luce delle nuove informazioni
+
+---
+
+## Coerenza delle credenze
+
+> **Se le probabilità esprimono credenze razionali, devono essere coerenti tra loro**
+
+* Non tutte le assegnazioni di probabilità sono accettabili
+* Alcune portano a contraddizioni interne
+* La coerenza è un requisito di **razionalità**
+
+---
+
+## Le regole della probabilità
+
+Le regole della probabilità:
+
+* non sono scelte arbitrarie
+* sono **vincoli di coerenza logica**
+* rendono le nostre credenze mutuamente compatibili
+
+Senza queste regole:
+
+* le credenze diventano auto-contraddittorie
+
+---
+
+## L’argomento della scommessa olandese
+
+Un sistema incoerente di credenze consente di costruire:
+
+* una serie di scommesse
+* ciascuna apparentemente ragionevole
+* che **nel complesso garantisce una perdita certa**
+
+Le regole della probabilità:
+
+* impediscono questa forma di incoerenza
+* proteggono la razionalità delle nostre decisioni
+
+---
+
+## Verso una teoria formale
+
+Domanda centrale:
+
+> Quali regole devono soddisfare i gradi di credenza per essere coerenti?
+
+Risposta:
+
+* queste regole conducono naturalmente agli **assiomi della probabilità**
+
+Gli assiomi di Kolmogorov forniscono una formalizzazione matematica rigorosa compatibile con l’interpretazione bayesiana
+
+---
+
+## Gli assiomi della probabilità
+
+Gli assiomi di Kolmogorov non descrivono leggi empiriche del mondo, ma costituiscono le **regole di coerenza** del nostro ragionamento probabilistico.
+
+---
+
+## Primo assioma: non-negatività
+
+$$
+P(A) \geq 0 \quad \text{per ogni evento } A
+$$
+
+Una probabilità non può essere negativa.
+
+> Non ha senso dire "c'è una probabilità di -0.3 che piova".
+
+---
+
+## Secondo assioma: normalizzazione
+
+$$
+P(\Omega) = 1
+$$
+
+La probabilità dell'intero spazio campionario è 1.
+
+> Qualcosa deve pur accadere.
+
+---
+
+## Terzo assioma: additività
+
+Per eventi **incompatibili** $A$ e $B$:
+
+$$
+P(A \cup B) = P(A) + P(B)
+$$
+
+La probabilità che accada $A$ **oppure** $B$ è la somma delle probabilità singole.
+
+> Questo vale **solo** se $A \cap B = \emptyset$.
+
+---
+
+## Conseguenza: regola del complemento
+
+Dagli assiomi segue che:
+
+$$
+P(A^c) = 1 - P(A)
+$$
+
+**Esempio:** Se $P(\text{successo}) = 0.7$, allora $P(\text{insuccesso}) = 0.3$.
+
+---
+
+## Esercizio 3 — Applicare gli assiomi
+
+In un esperimento, la probabilità che un partecipante risponda correttamente è 0.75.
+
+**Calcola:**
+
+a) $P(\text{risposta errata})$
+b) Se $P(\text{risposta veloce}) = 0.40$ e $P(\text{risposta lenta}) = 0.35$, qual è $P(\text{risposta a tempo medio})$, assumendo che le tre categorie siano esaustive e incompatibili?
+
+---
+
+### Soluzione Esercizio 3
+
+**a)** Regola del complemento:
+
+$$
+P(\text{errata}) = 1 - P(\text{corretta}) = 1 - 0.75 = 0.25
+$$
+
+**b)** Le tre categorie formano una partizione di $\Omega$:
+
+$$
+P(\text{veloce}) + P(\text{media}) + P(\text{lenta}) = 1
+$$
+
+$$
+P(\text{media}) = 1 - 0.40 - 0.35 = 0.25
+$$
+
+---
+
+## Probabilità intuitiva vs formale
+
+La ricerca ha mostrato che l'intuizione umana della probabilità spesso **viola gli assiomi di Kolmogorov**.
+
+- Piaget: i bambini faticano a distinguere caso, intenzione e necessità [@piaget1952origins]
+- Kahneman e Tversky: errori sistematici negli adulti [@kahneman2011thinking]
+- Le euristiche funzionano in molti contesti, ma falliscono in altri [@tversky1974judgment]
+
+---
+
+## Esercizio 4 — Sequenze casuali
+
+Immaginiamo di lanciare una moneta dieci volte.
+
+**Sequenza A:** TTTTTTTTTT
+
+**Sequenza B:** TCTTCTHTHC
+
+**Domanda:** Quale sequenza è "più casuale"? Quale ha probabilità maggiore?
+
+---
+
+### Soluzione Esercizio 4
+
+**Intuizione comune:** la sequenza B sembra "più casuale".
+
+**Calcolo formale:** entrambe le sequenze hanno **esattamente la stessa probabilità**.
+
+Se la moneta è equilibrata:
+$$
+P(\text{sequenza specifica}) = \left(\frac{1}{2}\right)^{10} = \frac{1}{1024}
+$$
+
+per **qualsiasi** sequenza di 10 lanci.
+
+---
+
+## La fallacia della rappresentatività
+
+L'errore nasce dal confondere:
+
+- la **casualità** di un processo
+- la **somiglianza** rispetto a ciò che ci aspettiamo da una sequenza casuale
+
+Tendiamo a pensare che le sequenze "disordinate" siano più probabili, ma questo è un errore.
+
+> Questo è un esempio classico di **fallacia della rappresentatività** [@tversky1974judgment].
+
+---
+
+## Esercizio 5 — Ragionamento probabilistico
+
+Un test diagnostico ha le seguenti caratteristiche:
+
+- se una persona ha il disturbo, il test è positivo nel 90% dei casi
+- se una persona NON ha il disturbo, il test è positivo nel 10% dei casi
+- il disturbo colpisce l'1% della popolazione
+
+**Domanda:** Se il test è positivo, qual è la probabilità di avere il disturbo?
+
+*(Stima intuitiva, senza calcoli)*
+
+---
+
+### Discussione Esercizio 5
+
+**Risposta intuitiva comune:** ~80-90%
+
+**Risposta corretta:** ~8%
+
+Questo è un esempio del **base rate neglect**: tendiamo a ignorare la frequenza di base del disturbo (1%) e a concentrarci solo sull'accuratezza del test.
+
+> Vedremo come calcolare correttamente questa probabilità quando studieremo il **teorema di Bayes**.
+
+---
+
+## Perché questi errori sono importanti?
+
+Gli errori nel ragionamento probabilistico **non sono solo teorici**
+→ hanno conseguenze concrete
+
+* interpretazione di **diagnosi psicologiche**
+* valutazione di **evidenze sperimentali**
+* **decisioni** nella vita quotidiana
+* lettura critica della **letteratura scientifica**
+
+> Comprendere la distanza tra **probabilità intuitiva**
+> e **probabilità formalizzata** è un obiettivo centrale di questo corso
+
+---
+
+## Esercizio 6 — Costruire uno spazio campionario
+
+Un ricercatore vuole studiare l'effetto dell'ansia sulle prestazioni cognitive. I partecipanti sono classificati per:
+
+- Livello di ansia: Basso, Medio, Alto
+- Prestazione: Sotto la media, Nella media, Sopra la media
+
+**Compito:** Scrivi lo spazio campionario completo e conta quanti esiti contiene.
+
+---
+
+### Soluzione Esercizio 6
+
+Lo spazio campionario è il prodotto cartesiano:
+
+$$
+\Omega = \{(\text{B, Sotto}), (\text{B, Nella}), (\text{B, Sopra}), (\text{M, Sotto}), \ldots\}
+$$
+
+**Conteggio:** $3 \times 3 = 9$ esiti possibili.
+
+| | Sotto | Nella | Sopra |
+|---|-------|-------|-------|
+| Basso | ✓ | ✓ | ✓ |
+| Medio | ✓ | ✓ | ✓ |
+| Alto | ✓ | ✓ | ✓ |
+
+---
+
+## Esercizio 7 — Definire eventi
+
+Usando lo spazio campionario dell'Esercizio 6, definisci i seguenti eventi:
+
+a) $A$ = "il partecipante ha ansia alta"
+b) $B$ = "la prestazione è sopra la media"
+c) $A \cap B$ = ?
+d) $A \cup B$ = ?
+
+---
+
+### Soluzione Esercizio 7
+
+**a)**
+$$
+A = {(\text{Alto, Sotto}), (\text{Alto, Nella}), (\text{Alto, Sopra})}
+$$
+
+L’evento $A$ contiene **3 esiti**.
+
+---
+
+### Soluzione Esercizio 7
+
+**b)**
+$$
+B = {(\text{Basso, Sopra}), (\text{Medio, Sopra}), (\text{Alto, Sopra})}
+$$
+
+L’evento $B$ contiene **3 esiti**.
+
+---
+
+### Soluzione Esercizio 7
+
+**c)**
+$$
+A \cap B = {(\text{Alto, Sopra})}
+$$
+
+Ansia alta **e** prestazione sopra la media: **1 solo esito**.
+
+---
+
+### Soluzione Esercizio 7
+
+**d)**
+L’unione $A \cup B$ è l’insieme di **tutti gli esiti che appartengono ad $A$ oppure a $B$**:
+
+$$
+\begin{align}
+A \cup B = \{&
+(\text{Alto, Sotto}), \\
+&(\text{Alto, Nella}), \\
+&(\text{Alto, Sopra}), \\
+&(\text{Medio, Sopra}), \\
+&(\text{Basso, Sopra})
+\}
+\end{align}
+$$
+
+Quindi $A \cup B$ contiene **5 esiti**.
+
+---
+
+### Soluzione Esercizio 7
+
+**Perché non sono 6?**
+
+Perché l’esito $(\text{Alto, Sopra})$ appartiene **sia ad $A$ sia a $B$** e va contato **una sola volta**.
+
+$$
+|A \cup B| = |A| + |B| - |A \cap B| = 3 + 3 - 1 = 5.
+$$
+
+---
+
+## Riepilogo concettuale
+
+1. La **probabilità** è un linguaggio per rappresentare l'incertezza, non una proprietà del mondo
+
+2. Non si può parlare di probabilità senza definire lo **spazio campionario**
+
+3. Gli **eventi** sono sottoinsiemi dello spazio campionario
+
+4. Gli **assiomi** sono regole di coerenza, non leggi empiriche
+
+5. Le nostre **intuizioni** sulla probabilità sono spesso in conflitto con le regole formali
+
+---
+
+## Prossima parte
+
+Nel secondo segmento:
+
+- Introdurremo il **calcolo combinatorio**
+- Applicheremo la formula classica della probabilità
+- Esploreremo il **bias dell'equiprobabilità**
+- Collegheremo questi concetti all'**approccio bayesiano**
+
+---
+
+## Bibliografia

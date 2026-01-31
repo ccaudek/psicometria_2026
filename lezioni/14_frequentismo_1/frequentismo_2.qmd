@@ -1,0 +1,812 @@
+---
+title: "La domanda del ricercatore"
+subtitle: "e la risposta frequentista — Segmento 2"
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+lang: it
+
+execute:
+  echo: true
+
+format:
+  revealjs:
+    theme: [default, ../revealjs.scss]
+    title-slide-attributes:
+      data-background-color: "#0072bc"
+    slide-number: c
+    show-slide-number: print
+    highlight-style: github
+    math: mathjax
+
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+library(ggplot2)
+library(dplyr)
+set.seed(42)
+```
+
+## Dove eravamo {.unnumbered .unlisted}
+
+**Parte 1:** abbiamo visto
+
+- il gap tra domanda naturale e risposta frequentista;
+- l'inversione logica: $P(\text{dati} \mid H_0)$ invece di $P(H \mid \text{dati})$;
+- il concetto di distribuzione campionaria;
+- l'errore standard.
+
+. . .
+
+**Parte 2:** vedremo
+
+- simulazioni R per consolidare l'intuizione;
+- l'intervallo di confidenza: cosa è (e cosa **non** è);
+- perché conta per la ricerca psicologica.
+
+# Parte 1: simulazioni approfondite
+
+## Scenario: memoria di lavoro
+
+Ipotizziamo che nella popolazione degli studenti universitari:
+
+- capacità di memoria di lavoro (span di cifre): $\mu = 7$;
+- deviazione standard: $\sigma = 2$.
+
+. . .
+
+**Domanda:** se estraiamo un campione (casuale) di $n = 25$ studenti e calcoliamo la media, quanto sarà vicina a $\mu = 7$?
+
+---
+
+## Simuliamo 1000 campioni
+
+```{r}
+# Parametri
+mu <- 7       # vera media della popolazione
+sigma <- 2    # vera deviazione standard
+n <- 25       # dimensione del campione
+n_campioni <- 1000
+
+# Simulazione
+medie <- replicate(n_campioni, {
+  campione <- rnorm(n, mean = mu, sd = sigma)
+  mean(campione)
+})
+```
+
+---
+
+## Come funziona `replicate()`?
+
+La funzione `replicate()` ripete un'operazione un numero specificato di volte e raccoglie i risultati.
+
+. . .
+
+**Analogia pratica**
+
+Immagina di dire a un assistente:
+
+> "Prendi 25 persone dalla popolazione, calcola la loro media, e scrivila. Poi ripeti tutto da capo altre 999 volte."
+
+---
+
+### Sintassi
+
+```r
+replicate(n_volte, espressione_da_ripetere)
+```
+
+Nel nostro caso:
+
+```r
+medie <- replicate(n_campioni, {     # Ripeti 1000 volte...
+  campione <- rnorm(n, mean = mu, sd = sigma)  # 1. Estrai n valori
+  mean(campione)                     # 2. Calcola la media
+})                                    # Tutti i risultati in 'medie'
+```
+
+---
+
+## Cosa succede ad ogni iterazione
+
+Ad ogni ciclo `replicate()`:
+
+1. **estrae un nuovo campione casuale** dalla popolazione $N(\mu=7, \sigma=2)$;
+2. **calcola la media** di quei 25 valori;
+3. **salva il risultato** nel vettore `medie`.
+
+. . .
+
+Dopo 1000 iterazioni, `medie` conterrà **1000 medie campionarie**, ciascuna proveniente da un diverso campione casuale della stessa popolazione.
+
+---
+
+## Perché usare `replicate()` invece di un ciclo `for`?
+
+Entrambi funzionano, ma `replicate()` è:
+
+- **più conciso** (meno codice);
+- **più leggibile** (intento chiaro: "ripeti questa operazione");
+- **meno propenso a errori** (gestisce automaticamente la raccolta dei risultati).
+
+---
+
+### Equivalente con ciclo `for`
+
+```r
+medie <- numeric(n_campioni)          # Crea contenitore vuoto
+
+for (i in 1:n_campioni) {            # Per i da 1 a 1000...
+  campione <- rnorm(n, mean = mu, sd = sigma)  # Estrai campione
+  medie[i] <- mean(campione)          # Calcola e salva media
+}
+```
+
+---
+
+Il risultato finale (`medie`) è identico in entrambi i casi.
+
+* La **distribuzione di queste 1000 medie** è proprio la **distribuzione campionaria della media** che volevamo esplorare.
+
+Esaminiamo i primi 30 valori:
+
+```{r}
+medie[1:30]
+```
+
+---
+
+## La distribuzione campionaria della media
+
+```{r}
+#| echo: false
+
+df_medie <- data.frame(media = medie)
+
+ggplot(df_medie, aes(x = media)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 35, 
+                 fill = "steelblue", alpha = 0.7, color = "white") +
+  geom_vline(xintercept = mu, color = "coral", linewidth = 1.2) +
+  stat_function(fun = dnorm, args = list(mean = mu, sd = sigma/sqrt(n)),
+                color = "darkred", linewidth = 1, linetype = "dashed") +
+  annotate("text", x = mu + 0.1, y = 0.9, label = paste0("μ = ", mu), 
+           color = "coral", hjust = 0, size = 4) +
+  labs(title = "Distribuzione campionaria della media",
+       subtitle = "1000 campioni di n = 25 ciascuno",
+       x = "Media campionaria", y = "Densità") +
+  theme_minimal(base_size = 14)
+```
+
+---
+
+## Statistiche della distribuzione campionaria
+
+```{r}
+cat("Media delle medie campionarie:", round(mean(medie), 3), "\n")
+cat("DS delle medie (errore standard):", round(sd(medie), 3), "\n")
+cat("Errore standard teorico (σ/√n):", round(sigma/sqrt(n), 3), "\n")
+```
+
+. . .
+
+::: {.callout-note}
+La distribuzione campionaria è **centrata su μ** e ha **DS = σ/√n**.
+:::
+
+---
+
+## Effetto della dimensione campionaria
+
+```{r}
+#| echo: false
+
+set.seed(123)
+medie_n10 <- replicate(1000, mean(rnorm(10, mu, sigma)))
+medie_n25 <- replicate(1000, mean(rnorm(25, mu, sigma)))
+medie_n100 <- replicate(1000, mean(rnorm(100, mu, sigma)))
+
+df_confronto <- data.frame(
+  media = c(medie_n10, medie_n25, medie_n100),
+  n = factor(rep(c("n = 10", "n = 25", "n = 100"), each = 1000),
+             levels = c("n = 10", "n = 25", "n = 100"))
+)
+
+ggplot(df_confronto, aes(x = media, fill = n)) +
+  geom_density(alpha = 0.5) +
+  geom_vline(xintercept = mu, color = "darkred", linetype = "dashed", linewidth = 1) +
+  scale_fill_manual(values = c("coral", "steelblue", "forestgreen")) +
+  labs(title = "Maggiore n → minore variabilità della media",
+       x = "Media campionaria", y = "Densità", fill = "Campione") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "bottom")
+```
+
+---
+
+## Implicazione per la ricerca psicologica
+
+```{r}
+cat("SE con n = 10:", round(sigma/sqrt(10), 2), "\n")
+cat("SE con n = 25:", round(sigma/sqrt(25), 2), "\n")
+cat("SE con n = 100:", round(sigma/sqrt(100), 2), "\n")
+```
+
+. . .
+
+::: {.callout-warning}
+Con campioni piccoli (tipici in psicologia: n = 20-30), le medie campionarie **variano molto** tra uno studio e l'altro, anche se l'effetto è reale e costante.
+:::
+
+# Parte 2: l'intervallo di confidenza
+
+## Dalla distribuzione campionaria all'incertezza
+
+Sappiamo che la media campionaria varia da campione a campione.
+
+Come **quantifichiamo questa incertezza** in modo utile?
+
+. . .
+
+* **L'intervallo di confidenza** (IC) è il tentativo frequentista di rispondere a questa domanda.
+
+---
+
+## La formula dell'IC al 95%
+
+Per la media di un campione:
+
+$$
+IC_{95\%} = \bar{x} \pm 1.96 \times SE = \bar{x} \pm 1.96 \times \frac{s}{\sqrt{n}}.
+$$
+
+. . .
+
+Il valore 1.96 viene dalla distribuzione normale: il 95% dei valori cade entro ±1.96 deviazioni standard dalla media.
+
+---
+
+## 1) Assunzioni e distribuzione della media
+
+Supponiamo $X_1,\dots,X_n \overset{iid}{\sim} \mathcal N(\mu,\sigma^2).$
+
+Allora la media campionaria
+
+$$
+\bar X=\frac{1}{n}\sum_{i=1}^n X_i
+$$
+
+ha distribuzione:
+
+$$
+\bar X \sim \mathcal N\!\left(\mu,\frac{\sigma^2}{n}\right).
+$$
+
+---
+
+Quindi la variabile standardizzata
+
+$$
+Z=\frac{\bar X-\mu}{\sigma/\sqrt{n}}
+$$
+segue una normale standard:
+
+$$
+Z \sim \mathcal N(0,1).
+$$
+
+---
+
+## 2) Prendiamo il 95% centrale della normale standard
+
+Per definizione del quantile $z_{0.975}$:
+
+$$
+\mathbb P(-z_{0.975} \le Z \le z_{0.975}) = 0.95
+$$
+e numericamente
+
+$$
+z_{0.975}\approx 1.96.
+$$
+
+---
+
+Quindi:
+
+$$
+\mathbb P\!\left(-1.96 \le \frac{\bar X-\mu}{\sigma/\sqrt{n}} \le 1.96\right)=0.95.
+$$
+
+---
+
+## 3) “Invertiamo” l’ineguaglianza 
+
+Partiamo da:
+
+$$
+-1.96 \le \frac{\bar X-\mu}{\sigma/\sqrt{n}} \le 1.96.
+$$
+
+Moltiplichiamo **tutti e tre i membri** per $\sigma/\sqrt{n}$ (quantità positiva, quindi i versi non cambiano):
+
+$$
+-1.96\frac{\sigma}{\sqrt{n}} \le \bar X-\mu \le 1.96\frac{\sigma}{\sqrt{n}}.
+$$
+
+---
+
+Ora sottraiamo $\bar X$ a tutti i membri:
+
+$$
+-\bar X -1.96\frac{\sigma}{\sqrt{n}} \le -\mu \le -\bar X + 1.96\frac{\sigma}{\sqrt{n}}.
+$$
+
+Moltiplichiamo per $-1$ (qui **i versi si invertono**):
+
+$$
+\bar X +1.96\frac{\sigma}{\sqrt{n}} \ge \mu \ge \bar X - 1.96\frac{\sigma}{\sqrt{n}}.
+$$
+
+Riscriviamolo in ordine “crescente”:
+
+$$
+\bar X - 1.96\frac{\sigma}{\sqrt{n}} \le \mu \le \bar X + 1.96\frac{\sigma}{\sqrt{n}}.
+$$
+
+---
+
+Ora rimettiamo la probabilità:
+
+$$
+\mathbb P\!\left(\bar X - 1.96\frac{\sigma}{\sqrt{n}} \le \mu \le \bar X + 1.96\frac{\sigma}{\sqrt{n}}\right)=0.95.
+$$
+
+---
+
+**Questo è esattamente un intervallo di confidenza frequentista al 95%**: 
+
+> una procedura che, ripetuta su infiniti campioni, contiene $\mu$ nel 95% dei casi.
+
+Quindi l’IC è:
+
+$$
+IC_{95\%} = \left[ \bar{x} - 1.96 \frac{\sigma}{\sqrt{n}},\ \bar{x} + 1.96 \frac{\sigma}{\sqrt{n}} \right].
+$$
+
+---
+
+## 4) Da $\sigma$ a $s$: la formula pratica 
+
+Nella realtà $\sigma$ (deviazione standard della popolazione) **è quasi sempre ignota**.
+
+. . .
+
+
+Allora la si stima con la deviazione standard campionaria $s$ e si scrive:
+
+$$
+IC_{95\%} \approx \bar{x} \pm 1.96 \frac{s}{\sqrt{n}}.
+$$
+
+Questa è una **approssimazione** (buona quando $n$ è abbastanza grande o quando la popolazione è normale e $n$ non è minuscolo).
+
+---
+
+## 5) La versione “esatta” con $\sigma$ ignota 
+
+Se $\sigma$ è ignota e i dati sono normali, il pivot corretto è:
+
+$$
+T=\frac{\bar X-\mu}{s/\sqrt{n}} \sim t_{n-1}.
+$$
+
+---
+
+Allora il 95% centrale diventa:
+
+$$
+\mathbb P\!\left(-t_{0.975,n-1}\le \frac{\bar X-\mu}{s/\sqrt{n}}\le t_{0.975,n-1}\right)=0.95.
+$$
+
+e invertendo la formula in modo identico come sopra, si ottiene:
+
+$$
+IC_{95\%}=\bar x \pm t_{0.975,n-1}\frac{s}{\sqrt{n}}.
+$$
+
+Qui **non** compare 1.96, ma $t_{0.975,n-1}$ (che tende a 1.96 quando $n\to\infty$).
+
+---
+
+## Esempio numerico
+
+```{r}
+# Un singolo campione
+set.seed(42)
+campione <- rnorm(25, mean = mu, sd = sigma)
+
+# Statistiche
+media_camp <- mean(campione)
+sd_camp <- sd(campione)
+se <- sd_camp / sqrt(25)
+
+# Intervallo di confidenza
+t_critico <- qt(0.975, df = length(campione) - 1)
+ic_lower <- media_camp - t_critico * se
+ic_upper <- media_camp + t_critico * se
+```
+
+---
+
+```{r}
+cat("Media campionaria:", round(media_camp, 2), "\n")
+cat("Errore standard:", round(se, 2), "\n")
+cat("IC 95%: [", round(ic_lower, 2), ",", round(ic_upper, 2), "]\n")
+```
+
+. . .
+
+Verifichiamo:
+
+```{r}
+t.test(campione)$`conf.int`
+```
+
+---
+
+## La domanda cruciale
+
+Questo intervallo $[`r round(ic_lower, 2)`, `r round(ic_upper, 2)`]$ contiene il vero valore $\mu = 7$?
+
+```{r}
+cat("μ = 7 è nell'intervallo?", ic_lower <= 7 & 7 <= ic_upper, "\n")
+```
+
+. . .
+
+Ma **non possiamo sempre saperlo**: nella realtà $\mu$ è sconosciuto.
+
+
+# Parte 3: cosa significa "95%"?
+
+## Due interpretazioni a confronto
+
+::: {.columns}
+::: {.column width="48%"}
+### ✗ Interpretazione ERRATA
+
+"C'è il 95% di probabilità che il vero valore del parametro sia in questo intervallo"
+:::
+
+::: {.column width="4%"}
+:::
+
+::: {.column width="48%"}
+### ✓ Interpretazione CORRETTA
+
+"Se ripetessimo lo studio infinite volte, il 95% degli intervalli così costruiti conterrebbe il vero valore"
+:::
+:::
+
+---
+
+## La differenza è sottile ma fondamentale
+
+L'interpretazione frequentista riguarda la **procedura**, non **questo particolare intervallo**.
+
+. . .
+
+- Il **parametro** $\mu$ è **fisso** (non casuale) — semplicemente non lo conosciamo.
+- L'**intervallo** è **casuale** — varia da campione a campione.
+- Questo intervallo specifico **o contiene μ o non lo contiene** — non c'è probabilità.
+
+---
+
+## Vediamolo con una simulazione
+
+Generiamo 100 intervalli di confidenza e vediamo quanti contengono $\mu = 7$:
+
+---
+
+```{r}
+set.seed(123)
+n_studi <- 100
+
+# Simuliamo 100 studi
+risultati <- lapply(1:n_studi, function(i) {
+  campione <- rnorm(25, mean = mu, sd = sigma)
+  m <- mean(campione)
+  se <- sd(campione) / sqrt(25)
+  data.frame(
+    studio = i,
+    media = m,
+    lower = m - 1.96 * se,
+    upper = m + 1.96 * se
+  )
+})
+
+df_ic <- do.call(rbind, risultati)
+df_ic$contiene_mu <- df_ic$lower <= mu & mu <= df_ic$upper
+```
+
+---
+
+## Visualizziamo i 100 intervalli
+
+```{r}
+#| echo: false
+#| fig-height: 5
+
+ggplot(df_ic, aes(x = studio, y = media, color = contiene_mu)) +
+  geom_point(size = 1.5) +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0, linewidth = 0.5) +
+  geom_hline(yintercept = mu, color = "darkred", linewidth = 1, linetype = "dashed") +
+  scale_color_manual(values = c("FALSE" = "coral", "TRUE" = "steelblue"),
+                     labels = c("Non contiene μ", "Contiene μ")) +
+  labs(title = "100 intervalli di confidenza al 95%",
+       subtitle = paste0(sum(df_ic$contiene_mu), " su 100 contengono il vero μ = 7"),
+       x = "Studio", y = "Media campionaria", color = "") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "bottom")
+```
+
+---
+
+## Quanti intervalli contengono μ?
+
+```{r}
+cat("Intervalli che contengono μ:", sum(df_ic$contiene_mu), "su 100\n")
+cat("Proporzione:", mean(df_ic$contiene_mu), "\n")
+```
+
+. . .
+
+Circa il **95%** degli intervalli contiene il vero valore — come previsto dalla teoria.
+
+Ma per **ogni singolo intervallo**, non sappiamo se è tra quelli "fortunati" o meno.
+
+---
+
+## L'analogia della rete da pesca
+
+Immagina di pescare con una rete che, nel lungo periodo, cattura il pesce target il **95% delle volte**.
+
+. . .
+
+Dopo un singolo lancio:
+
+- Il pesce è nella rete, **oppure no** — non c'è "95% di probabilità".
+- Il 95% descrive **l'affidabilità della rete** nel lungo periodo.
+
+. . .
+
+::: {.callout-note}
+L'intervallo di confidenza è la "rete". Il parametro è il "pesce".
+:::
+
+# Parte 4: errori comuni di interpretazione
+
+## L'esperimento di Hoekstra et al. (2014)
+
+Ricercatori e studenti hanno risposto a un quiz su cosa significa un IC al 95%.
+
+. . .
+
+**Risultato:** la maggior parte ha scelto interpretazioni **errate**.
+
+---
+
+## Affermazioni FALSE su un IC al 95%
+
+1. "La probabilità che il vero valore sia nell'intervallo è 95%"
+
+2. "Il 95% dei dati cade nell'intervallo"
+
+3. "Se ripetessi lo studio, il 95% delle volte la media cadrebbe in questo intervallo"
+
+4. "C'è il 95% di probabilità che la media del prossimo campione cada in questo intervallo"
+
+. . .
+
+::: {.callout-warning}
+Anche ricercatori esperti commettono questi errori!
+:::
+
+---
+
+## Perché queste interpretazioni sono errate?
+
+**Affermazione 1:** "La probabilità che μ sia nell'intervallo è 95%"
+
+- Nel framework frequentista, μ è **fisso**, non ha una distribuzione di probabilità.
+- L'intervallo o lo contiene o no — non c'è probabilità.
+
+. . .
+
+**Affermazione 2:** "Il 95% dei dati cade nell'intervallo"
+
+- L'IC riguarda il **parametro** (μ), non i **dati**.
+- La variabilità dei dati è molto maggiore della variabilità della media.
+
+---
+
+## Esempio: training cognitivo e QI
+
+**Studio:** Effetto del brain training su n = 30 partecipanti.
+
+**Risultato:** Differenza media pre-post: +3.5 punti QI, con IC 95% = [1.2, 5.8]
+
+. . .
+
+::: {.columns}
+::: {.column width="48%"}
+### ✗ ERRATO
+
+"C'è il 95% di probabilità che il vero effetto del training sia tra 1.2 e 5.8 punti"
+:::
+
+::: {.column width="4%"}
+:::
+
+::: {.column width="48%"}
+### ✓ CORRETTO
+
+"Se ripetessimo questo studio infinite volte, il 95% degli IC costruiti così conterrebbe il vero effetto"
+:::
+:::
+
+# Parte 5: perché conta per la psicologia
+
+## Comunicazione con pazienti e clienti
+
+Uno psicologo non può dire:
+
+> "C'è il 95% di probabilità che questo trattamento funzioni per lei".
+
+. . .
+
+L'IC **non fornisce** questa informazione — anche se sembra che la dia.
+
+---
+
+## Interpretazione della letteratura scientifica
+
+Molti articoli **interpretano erroneamente** i propri risultati.
+
+. . .
+
+Frasi come:
+
+> "L'intervallo di confidenza indica che c'è una probabilità del 95% che l'effetto reale sia compreso tra..."
+
+...sono **tecnicamente scorrette**, ma molto comuni.
+
+---
+
+## Replicabilità
+
+Capire l'IC aiuta a capire **perché risultati "significativi" spesso non si replicano**.
+
+```{r}
+#| echo: false
+#| fig-height: 3.5
+
+# Mostriamo la variabilità tra studi
+set.seed(456)
+studi <- lapply(1:10, function(i) {
+  camp <- rnorm(25, mean = 0.5, sd = 1)  # Effetto vero = 0.5
+  m <- mean(camp)
+  se <- sd(camp) / sqrt(25)
+  data.frame(studio = paste("Studio", i), media = m, 
+             lower = m - 1.96*se, upper = m + 1.96*se)
+})
+df_studi <- do.call(rbind, studi)
+df_studi$significativo <- df_studi$lower > 0 | df_studi$upper < 0
+
+ggplot(df_studi, aes(x = studio, y = media, color = significativo)) +
+  geom_point(size = 3) +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0.2, linewidth = 1) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "darkred") +
+  geom_hline(yintercept = 0.5, linetype = "solid", color = "forestgreen") +
+  scale_color_manual(values = c("FALSE" = "gray60", "TRUE" = "steelblue")) +
+  coord_flip() +
+  labs(title = "10 studi che misurano lo stesso effetto (vero = 0.5)",
+       subtitle = "Alcuni sono 'significativi', altri no — per puro caso",
+       x = "", y = "Effetto stimato", color = "p < .05") +
+  theme_minimal(base_size = 12) +
+  theme(legend.position = "bottom")
+```
+
+---
+
+## Il problema fondamentale
+
+L'IC risponde alla domanda:
+
+> "Quanto sarebbe variabile la mia stima se ripetessi l'esperimento?"
+
+. . .
+
+Ma **non risponde** alla domanda che vorremmo porre:
+
+> "Qual è la probabilità che il parametro sia in questo intervallo?"
+
+. . .
+
+::: {.callout-important}
+Per rispondere a quest'ultima domanda, serve l'**inferenza bayesiana**.
+:::
+
+# Riepilogo
+
+## I punti chiave di oggi
+
+1. Il frequentismo risponde a una **domanda diversa** da quella che vorremmo porre.
+
+2. L'**errore standard** misura la variabilità tra esperimenti ipotetici.
+
+3. L'IC al 95% riguarda la **procedura**, non questo particolare intervallo.
+
+4. La maggior parte delle interpretazioni comuni degli IC sono **tecnicamente errate**.
+
+5. Queste limitazioni hanno conseguenze reali per la **comunicazione scientifica**.
+
+---
+
+## Il messaggio fondamentale
+
+> L'inferenza frequentista si basa su esperimenti che non faremo mai, e risponde a domande che non sono quelle che vorremmo porre.
+
+. . .
+
+Alcuni ricercatori ritengono, quindi, che sia **inutile** — ma in ogni caso, richiede una estrema **cautela interpretativa**.
+
+---
+
+## Prossima lezione
+
+**Il valore-$p$, i test di ipotesi, e perché "$p$ < .05" non significa quello che pensi**.
+
+- Cosa significa (e non significa) il valore-$p$.
+- Errori di tipo I e II.
+- Errori di tipo **S** e tipo **M** (Gelman & Carlin).
+- Il legame con la crisi di replicabilità.
+
+---
+
+## Per approfondire
+
+**Materiali del corso:**
+
+- [https://ccaudek.github.io/utet-frequentista/](https://ccaudek.github.io/utet-frequentista/)
+
+**Letture consigliate:**
+
+- Hoekstra, R., et al. (2014). Robust misinterpretation of confidence intervals. *Psychonomic Bulletin & Review*.
+- Morey, R. D., et al. (2016). The fallacy of placing confidence in confidence intervals. *Psychonomic Bulletin & Review*.
+- Cumming, G. (2014). The new statistics: Why and how. *Psychological Science*.
+
+---
+
+## Un pensiero finale
+
+> "The most important maxim for data analysis: the purpose of computing is insight, not numbers."
+>
+> — Richard Hamming
+
+. . .
+
+Le simulazioni condotte oggi hanno l'obiettivo di sviluppare **un'intuizione**, non di far memorizzare formule.
+
+Solo con questa intuizione potrete interpretare criticamente i risultati — vostri e altrui.

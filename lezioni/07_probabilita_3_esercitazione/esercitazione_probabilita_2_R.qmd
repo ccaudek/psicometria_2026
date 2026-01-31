@@ -1,0 +1,749 @@
+---
+title: "Esercitazione pratica – Probabilità (segmento 2)"
+subtitle: "Simulazioni e problemi in R"
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+toc-depth: 2
+lang: it
+
+execute:
+  echo: true
+
+format:
+    revealjs:
+      theme: [default, ../revealjs.scss]
+      title-slide-attributes:
+        data-background-color: "#0072bc"
+      slide-number: c
+      show-slide-number: print
+      highlight-style: github
+      math: mathjax
+      mermaid:
+        theme: neutral
+      
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+```{r}
+#| echo: false
+#| output: false
+set.seed(42)  # Per riproducibilità
+```
+
+## Obiettivi {.unnumbered .unlisted}
+
+In questo segmento useremo **R** per:
+
+1. **costruire** spazi campionari completi;
+2. **simulare** esperimenti (metodo Monte Carlo);
+3. **verificare** i calcoli fatti a mano;
+4. **visualizzare** distribuzioni di probabilità.
+
+> Riferimento: https://ccaudek.github.io/utet-prob/ — Capitoli 1-8
+
+---
+
+## Regola didattica
+
+> Ogni riga di codice deve corrispondere a un'idea probabilistica chiara.
+
+**Struttura:** Per ogni esercizio:
+
+1. Problema e domande (2 minuti)
+2. Provate voi (5 minuti)
+3. Soluzione commentata
+
+---
+
+## Funzioni R chiave
+
+| Funzione | Uso |
+|----------|-----|
+| `expand.grid()` | Crea tutte le combinazioni |
+| `combn(n, k)` | Genera combinazioni |
+| `factorial(n)` | Calcola $n!$ |
+| `choose(n, k)` | Calcola $\binom{n}{k}$ |
+| `sample()` | Estrae campioni casuali |
+| `replicate()` | Ripete simulazioni |
+
+---
+
+## Esercizio 1 — Spazio campionario: due dadi
+
+**Problema:** Costruisci lo spazio campionario del lancio di due dadi e calcola la distribuzione della somma.
+
+**Domande:**
+
+a) Quanti esiti sono possibili?
+b) Qual è $P(\text{somma} = 7)$?
+c) Qual è la somma più probabile?
+
+*(5 minuti)*
+
+---
+
+### Soluzione 1a — Costruire lo spazio
+
+```{r}
+# Creiamo tutte le combinazioni di due dadi
+dado1 <- 1:6
+dado2 <- 1:6
+
+# expand.grid crea TUTTE le coppie possibili
+spazio <- expand.grid(Dado1 = dado1, Dado2 = dado2)
+```
+
+---
+
+```{r}
+head(spazio)
+```
+
+```{r}
+tail(spazio)
+```
+
+---
+
+```{r}
+# Quanti esiti?
+nrow(spazio)
+```
+
+
+**Risultato:** 36 esiti possibili ($6 \times 6$).
+
+---
+
+### Soluzione 1b — Calcolare la somma
+
+```{r}
+#| echo: true
+
+# Aggiungiamo la colonna Somma
+spazio$Somma <- spazio$Dado1 + spazio$Dado2
+```
+
+```{r}
+head(spazio)
+```
+
+---
+
+Usiamo la sintassi generale:
+
+```r
+df[df$variabile == valore, ]
+```
+
+**Come si legge:**
+
+* `df$variabile == valore` crea una **condizione logica** (TRUE / FALSE);
+* `df[ … , ]` seleziona **solo le righe** per cui la condizione è vera;
+* la virgola `,` indica che **teniamo tutte le colonne**.
+
+---
+
+Nel caso presente:
+
+```{r}
+# Selezioniamo tutte le righe con Somma = 7
+somma_7 <- spazio[spazio$Somma == 7, ]
+somma_7
+```
+
+**Interpretazione:**  
+stiamo “tenendo” solo gli esiti dello spazio campionario in cui la variabile **Somma** vale **7**.
+
+> In altre parole: *filtriamo il data frame per una condizione*.
+
+---
+
+Lo stesso risultato può essere ottenuto mediante la funzione `dplyt::filter()`:
+
+```{r}
+somma_7 <- spazio |> 
+  dplyr::filter(Somma == 7)
+somma_7
+```
+
+
+---
+
+### Soluzione 1b — Probabilità
+
+```{r}
+# Probabilità classica: casi favorevoli / casi possibili
+P_somma_7 <- nrow(somma_7) / nrow(spazio)
+P_somma_7
+
+# Verifica: 6/36 = 1/6
+1/6
+```
+
+---
+
+### Soluzione 1c — Distribuzione completa
+
+La funzione `table()` costruisce la **distribuzione di frequenza** di una variabile discreta. Restituisce, per ogni valore possibile, **quante volte compare nei dati**.
+
+```{r}
+# Conteggiamo le occorrenze di ciascuna somma
+tabella <- table(spazio$Somma)
+tabella
+```
+
+**Interpretazione:**  
+la tabella mostra **quanti esiti** producono ogni valore della somma.
+
+---
+
+### Soluzione 1c — Probabilità per ogni somma
+
+```{r}
+# Convertiamo in probabilità
+prob <- tabella / sum(tabella)
+round(prob, 4)
+```
+
+**La somma 7 è la più probabile** (6/36 ≈ 0.167)
+
+---
+
+### Visualizzazione
+
+La funzione `barplot()` crea un **grafico a barre**, adatto a rappresentare **variabili discrete** come le probabilità.
+
+```{r}
+barplot(prob,
+        main = "Distribuzione della somma di due dadi",
+        xlab = "Somma",
+        ylab = "Probabilità",
+        col = "steelblue")
+```
+
+---
+
+**Come leggere il grafico:**
+
+* ogni barra corrisponde a un valore possibile della **somma**;
+* l’altezza della barra rappresenta la **probabilità** associata;
+* le somme centrali sono più probabili delle somme estreme.
+
+---
+
+### Mini–guida ai principali argomenti di `barplot()`
+
+- `barplot(x)` → valori da rappresentare (qui: un vettore di probabilità);  
+- `main` → titolo del grafico;
+- `xlab`, `ylab` → etichette degli assi;  
+- `col` → colore delle barre. 
+
+---
+
+## Esercizio 2 — Simulazione Monte Carlo
+
+**Problema:** Verifica la probabilità di somma 7 simulando 10,000 lanci di due dadi.
+
+**Domanda:** Il risultato simulato è simile a 1/6?
+
+*(5 minuti)*
+
+---
+
+### Soluzione 2 — Simulazione
+
+```{r}
+# Simuliamo 10000 lanci
+n_sim <- 10000
+
+# sample() estrae con rimpiazzo
+dado1_sim <- sample(1:6, n_sim, replace = TRUE)
+dado2_sim <- sample(1:6, n_sim, replace = TRUE)
+
+# Calcoliamo le somme
+somme_sim <- dado1_sim + dado2_sim
+```
+
+---
+
+### Soluzione 2 — Risultato
+
+```{r}
+# Proporzione di somme = 7
+prop_7 <- mean(somme_sim == 7)
+prop_7
+
+# Confronto con valore teorico
+cat("Teorico:", 1/6, "\n")
+cat("Simulato:", prop_7, "\n")
+cat("Differenza:", abs(1/6 - prop_7), "\n")
+```
+
+---
+
+### Convergenza al valore teorico
+
+```{r}
+#| fig-height: 4
+
+# Proporzione cumulativa
+prop_cum <- cumsum(somme_sim == 7) / 1:n_sim
+plot(prop_cum, type = "l", col = "steelblue",
+     xlab = "Numero di lanci", ylab = "Proporzione somma = 7",
+     main = "Convergenza al valore teorico")
+abline(h = 1/6, col = "red", lty = 2)
+legend("topright", c("Simulato", "Teorico"), 
+       col = c("steelblue", "red"), lty = c(1, 2))
+```
+
+---
+
+## Esercizio 3 — Disposizioni
+
+**Problema:**  
+hai 4 stimoli (A, B, C, D).  
+Vuoi presentarne **3 in sequenza**, **senza ripetizioni**.
+
+**Domande:**
+
+a) Quante sequenze diverse esistono?
+b) Elencale tutte.
+c) Verifica con la formula $D_{4,3} = \frac{4!}{1!}$.
+
+*(5 minuti)*
+
+---
+
+### Soluzione 3a — Generare le disposizioni 
+
+Usiamo una funzione che implementa **direttamente la definizione di disposizione**.
+
+```{r}
+library(arrangements)
+
+stimoli <- c("A", "B", "C", "D")
+
+disposizioni <- as.data.frame(permutations(stimoli, 3))
+names(disposizioni) <- c("Posizione 1", "Posizione 2", "Posizione 3")
+```
+
+👉 Ogni riga è una **sequenza ordinata senza ripetizioni**.
+
+---
+
+```{r}
+disposizioni
+```
+
+---
+
+### Soluzione 3b — Conteggio
+
+```{r}
+nrow(disposizioni)
+```
+
+**Risultato:** 24 disposizioni.
+
+---
+
+### Soluzione 3c — Verifica con la formula
+
+```{r}
+# D(n,k) = n! / (n-k)!
+factorial(4) / factorial(4 - 3)
+```
+
+```{r}
+nrow(disposizioni) == factorial(4) / factorial(1)
+```
+
+✔ Il conteggio coincide con la formula teorica.
+
+---
+
+## Esercizio 4 — Combinazioni
+
+**Scenario:**  
+Hai un questionario con **10 item**. Per una versione breve ne scegli **3**.
+
+- Gli item scelti formano un **set** (l’ordine **non conta**):  
+  $\{2,5,7\} = \{7,2,5\}$
+
+**Domande:**
+
+a) Quanti set diversi sono possibili?  
+b) Elenca i primi 10 set  
+c) Se tutti i set sono equiprobabili, qual è $P(\text{un set specifico})$?
+
+*(5 minuti)*
+
+---
+
+### Soluzione 4a — Generare i set di 3 item
+
+```{r}
+library(arrangements)
+
+item <- 1:10
+
+comb_df <- as.data.frame(combinations(item, 3))
+names(comb_df) <- c("Item1", "Item2", "Item3")
+
+head(comb_df, 10)
+```
+
+**Interpretazione:** ogni riga è un **set** di 3 item (l'ordine è irrilevante).
+
+---
+
+### Soluzione 4b — Quante combinazioni?
+
+```{r}
+n_comb <- nrow(comb_df)
+n_comb
+```
+
+**Risultato:** $n_{\text{comb}} = 120$.
+
+---
+
+### Soluzione 4c — Probabilità di un set specifico
+
+Se tutte le combinazioni sono equiprobabili:
+
+```{r}
+P_una <- 1 / n_comb
+P_una
+```
+
+$$
+P(\text{un set specifico}) = \frac{1}{120} \approx 0.0083
+$$
+
+---
+
+*(Verifica teorica: $\binom{10}{3} = 120).$*
+
+```{r}
+# Verifica con choose()
+n_comb <- choose(10, 3)
+n_comb
+```
+
+---
+
+## Esercizio 5 — Bayes con frequenze naturali 
+
+**Problema:** Considera **1 000 persone** e un test diagnostico con:
+
+- prevalenza $P(D)=0.10$;
+- sensibilità $P(+\mid D)=0.90$;
+- specificità $P(-\mid \neg D)=0.80$.
+
+**Calcola:**
+
+a) Quanti veri positivi e falsi positivi?  
+b) $P(D \mid +)$ (VPP).  
+c) $P(D \mid -)$.
+
+*(5 minuti)*
+
+---
+
+### Soluzione 5 — Costruiamo le frequenze (1 000 persone)
+
+```{r}
+N <- 1000
+prev <- 0.10
+sens <- 0.90
+spec <- 0.80
+```
+
+```{r}
+# Frequenze naturali (numeri attesi su N persone)
+D  <- N * prev
+nD <- N - D
+```
+
+---
+
+```{r}
+# Tabella 2×2: conteggi attesi
+VP <- D  * sens            # veri positivi
+FN <- D  * (1 - sens)      # falsi negativi
+VN <- nD * spec            # veri negativi
+FP <- nD * (1 - spec)      # falsi positivi
+
+c(D = D, nonD = nD, VP = VP, FP = FP, FN = FN, VN = VN)
+```
+
+---
+
+### Soluzione 5 — Tabella 2×2 
+
+> *Qui stiamo usando numeri “su 1000”, così Bayes diventa un rapporto tra conteggi.*
+
+```{r}
+tab <- matrix(c(VP, FN,
+                FP, VN),
+              nrow = 2, byrow = TRUE,
+              dimnames = list(Disturbo = c("Sì", "No"),
+                              Test = c("+", "-")))
+tab
+```
+
+---
+
+### Soluzione 5 — Calcoliamo le posteriori
+
+```{r}
+P_D_dato_pos <- VP / (VP + FP)     # P(D | +)
+P_D_dato_neg <- FN / (FN + VN)     # P(D | -)
+
+c(P_D_given_pos = P_D_dato_pos,
+  P_D_given_neg = P_D_dato_neg)
+```
+
+**Verifica:** $P(D \mid +)\approx 0.33$.
+
+---
+
+### Interpretazione (in una riga)
+
+- Tra i **positivi**, circa **1 su 3** ha davvero il disturbo.  
+- Tra i **negativi**, la probabilità di disturbo scende a circa **1.4%**.
+
+---
+
+### Nota
+
+- Il problema si riduce a un **conteggio**: niente “magia” della formula.
+- R serve solo a:
+  - costruire la tabella 2×2;
+  - fare divisioni trasparenti.
+
+---
+
+## Esercizio 6 — Effetto della prevalenza
+
+**Domanda:**  
+Cosa succede a $P(D\mid +)$ se la prevalenza passa da **10%** a **1%**?
+
+*(5 minuti)*
+
+---
+
+### Soluzione 6
+
+```{r}
+prev_1 <- 0.01
+
+D_1  <- N * prev_1
+nD_1 <- N - D_1
+
+VP_1 <- D_1  * sens
+FP_1 <- nD_1 * (1 - spec)
+
+P_D_dato_pos_1 <- VP_1 / (VP_1 + FP_1)
+P_D_dato_pos_1
+```
+
+**Interpretazione:** con prevalenza più bassa, i positivi includono molti più falsi positivi → il VPP cala.
+
+---
+
+### Confronto
+
+```{r}
+cat("Prevalenza 10% → P(D|+) =", round(P_D_dato_pos, 3), "\n")
+cat("Prevalenza 1%  → P(D|+) =", round(P_D_dato_pos_1, 3), "\n")
+```
+
+**Messaggio chiave:** il VPP dipende fortemente dalla **prevalenza**.
+
+---
+
+## Esercizio 7 — Funzione personalizzata
+
+**Problema:**  
+crea una funzione `bayes_test()` che calcola $P(D \mid +)$ dati prevalenza, sensibilità e specificità.
+
+*(5 minuti)*
+
+---
+
+### Soluzione 7
+
+```{r}
+bayes_test <- function(prev, sens, spec) {
+  # P(D|+) = [sens*prev] / [sens*prev + (1-spec)*(1-prev)]
+  num <- sens * prev
+  den <- sens * prev + (1 - spec) * (1 - prev)
+  num / den
+}
+
+# Test rapido
+bayes_test(prev = 0.10, sens = 0.90, spec = 0.80)
+bayes_test(prev = 0.01, sens = 0.90, spec = 0.80)
+```
+
+---
+
+## Esercizio 8 — Visualizzare l'effetto della prevalenza
+
+**Problema:**  
+usa `bayes_test()` per visualizzare come $P(D \mid +)$ cambia al variare della prevalenza (con sensibilità e specificità fisse).
+
+*(5 minuti)*
+
+---
+
+### Soluzione 8
+
+```{r}
+prev_seq <- seq(0.001, 0.50, by = 0.001)
+vpp <- bayes_test(prev = prev_seq, sens = sens, spec = spec)
+
+plot(prev_seq, vpp,
+     type = "l",
+     xlab = "Prevalenza P(D)",
+     ylab = "VPP = P(D | +)",
+     main = "Come la prevalenza influenza il VPP")
+abline(v = c(0.01, 0.10), lty = 2)
+```
+
+**Lettura:** a parità di test, quando la prevalenza è bassa il VPP resta basso.
+
+---
+
+## Esercizio 9 — Aggiornamento sequenziale (due test)
+
+**Problema:**  
+
+* un paziente ha probabilità iniziale $P(D)=0.05$;
+* un test ha sensibilità 0.90 e specificità 0.95.
+
+Assumi che i due test siano **indipendenti condizionatamente a $D$** (e quindi l’evidenza si accumula).
+
+**Domanda:** 
+
+* dopo **due test positivi**, qual è $P(D \mid +,+)$?
+* dopo **tre test positivi**, qual è $P(D \mid +,+,+)$?
+
+*(5 minuti)*
+
+---
+
+### Soluzione 9 — Posterior → nuova prior
+
+```{r}
+# Parametri del test
+sens <- 0.90
+spec <- 0.95
+
+# Prior iniziale
+prior <- 0.05
+
+# Due test positivi consecutivi
+post1 <- bayes_test(prior, sens, spec)
+post2 <- bayes_test(post1, sens, spec)
+
+c(Prior = prior, `Dopo 1° +` = post1, `Dopo 2° +` = post2)
+```
+
+**Interpretazione:** ogni test positivo aggiorna iterativamente la nostra credenza (probabilità a priori), trasformando la distribuzione di probabilità a posteriori nella nuova a priori per il test successivo.
+
+---
+
+### Soluzione 9 — Posterior → nuova prior (3° test)
+
+```{r}
+post3 <- bayes_test(post2, sens, spec)
+
+c(
+  Prior = prior, 
+  `Dopo 1° +` = post1, 
+  `Dopo 2° +` = post2, 
+  `Dopo 3° +` = post3
+)
+```
+
+Una maggiore quantità di evidenza concordante implica un incremento rapido di $P(D)$ nel processo di aggiornamento bayesiano.
+
+---
+
+## Riepilogo — Le funzioni R usate
+
+In questa esercitazione abbiamo usato R **come supporto concettuale**, non come strumento di simulazione complessa.
+
+### Costruzione di frequenze e tabelle
+
+- `matrix()` → costruire tabelle 2×2 a partire da conteggi
+- `nrow()` → contare casi / combinazioni
+- `table()` → distribuzioni di frequenza
+
+---
+
+### Calcolo delle probabilità
+
+- divisioni tra conteggi → probabilità condizionate
+- `choose(n, k)` → numero di combinazioni
+- `factorial()` → verifica delle formule combinatorie
+
+### Funzioni personalizzate
+
+- `bayes_test()` → implementare Bayes in modo trasparente  
+  (una riga = una formula)
+
+---
+
+### Visualizzazione
+
+- `barplot()` → confrontare probabilità prima/dopo l’evidenza
+- `plot()` → mostrare come il VPP dipende dalla prevalenza
+
+---
+
+## Messaggio finale
+
+Il teorema di Bayes non è una formula da applicare meccanicamente.
+
+È un **modo di ragionare**:
+
+- partire da ciò che sappiamo (prior),
+- osservare nuova evidenza,
+- aggiornare le nostre credenze in modo coerente.
+
+---
+
+Usare le **frequenze naturali** mostra che Bayes è, in fondo, un problema di **conteggio e proporzioni**.
+
+In conclusione,
+
+> un test non “dice la verità”:  
+> ci aiuta a **ridurre l’incertezza**, mai a eliminarla.
+
+---
+
+## Cosa ricordare
+
+- $P(E\mid H) \neq P(H\mid E)$.
+- Il VPP dipende fortemente dalla **prevalenza**.
+- Le evidenze indipendenti **si accumulano**.
+- L'aggiornamento bayesiano risulta più chiaro se si pensa in termini di  **frequenze**.
+
+---
+
+## Per approfondire
+
+- https://ccaudek.github.io/utet-prob/ — Tutto il materiale del corso
+

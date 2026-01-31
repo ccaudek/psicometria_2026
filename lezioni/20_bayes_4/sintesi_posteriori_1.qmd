@@ -1,0 +1,532 @@
+---
+title: "Sintesi della distribuzione a posteriori"
+subtitle: "Stime puntuali — Segmento 1"
+version: 1.0
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+lang: it
+
+execute:
+  echo: true
+
+format:
+  revealjs:
+    theme: [default, ../revealjs.scss]
+    title-slide-attributes:
+      data-background-color: "#0072bc"
+    slide-number: c
+    show-slide-number: print
+    highlight-style: github
+    math: mathjax
+
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+```{r}
+#| echo: false
+library(ggplot2)
+set.seed(42)
+```
+
+## Obiettivi {.unnumbered .unlisted}
+
+1. Capire **perché** sintetizzare la distribuzione a posteriori.
+2. Imparare a calcolare **stime puntuali**: media, mediana, moda (MAP).
+3. Comprendere **quando usare** ciascuna stima.
+4. Applicare questi concetti a esempi psicologici concreti.
+
+# Parte 1: dalla distribuzione ai numeri
+
+## Il paradosso della ricchezza informativa
+
+La distribuzione a posteriori contiene **tutte le informazioni** sui valori plausibili del parametro.
+
+Ma questa ricchezza può essere un problema:
+
+- Come comunichiamo i risultati ai colleghi?
+- Come prendiamo decisioni cliniche?
+- Come confrontiamo studi diversi?
+
+---
+
+## Un esempio motivante
+
+Immaginiamo di avere stimato la probabilità che un trattamento per l'ansia sia efficace.
+
+La distribuzione a posteriori ci dice:
+
+- "Il 95% della massa di probabilità è tra 0.45 e 0.85";
+- "La probabilità più credibile è circa 0.67".
+
+. . .
+
+Ma il direttore clinico chiede: **"Funziona o no?"**
+
+Dobbiamo imparare a sintetizzare senza perdere informazioni essenziali.
+
+---
+
+## Le domande fondamentali
+
+Quando sintetizziamo una distribuzione a posteriori, cerchiamo di rispondere alle seguenti domande:
+
+1. Qual è il valore **più credibile** del parametro?
+2. Quanto siamo **incerti** su questo valore?
+3. Quale intervallo contiene i valori **plausibili**?
+
+Oggi affronteremo la prima domanda.
+
+# Parte 2: le tre stime puntuali
+
+## Media, mediana e moda
+
+```{r}
+#| echo: false
+#| fig-height: 4
+
+# Creiamo una distribuzione a posteriori asimmetrica (Beta)
+x <- seq(0, 1, length.out = 300)
+alpha <- 8
+beta <- 4
+y <- dbeta(x, alpha, beta)
+
+# Calcoliamo le tre statistiche
+media <- alpha / (alpha + beta)
+moda <- (alpha - 1) / (alpha + beta - 2)
+mediana <- qbeta(0.5, alpha, beta)
+
+df <- data.frame(x = x, y = y)
+
+ggplot(df, aes(x = x, y = y)) +
+  geom_line(linewidth = 1.2, color = "steelblue") +
+  geom_vline(xintercept = media, color = "coral", linewidth = 1, linetype = "dashed") +
+  geom_vline(xintercept = mediana, color = "forestgreen", linewidth = 1, linetype = "dotted") +
+  geom_vline(xintercept = moda, color = "purple", linewidth = 1, linetype = "solid") +
+  annotate("text", x = media + 0.08, y = max(y) * 0.9, label = "Media", color = "coral") +
+  annotate("text", x = mediana - 0.08, y = max(y) * 0.7, label = "Mediana", color = "forestgreen") +
+  annotate("text", x = moda + 0.08, y = max(y) * 0.5, label = "Moda (MAP)", color = "purple") +
+  labs(title = "Tre modi per riassumere una distribuzione",
+       x = "θ", y = "Densità") +
+  theme_minimal(base_size = 14)
+```
+
+---
+
+## La media a posteriori
+
+La **media** è il valore atteso del parametro:
+
+$$
+\mathbb{E}[\theta \mid \text{dati}] = \int \theta \cdot p(\theta \mid \text{dati}) \, d\theta .
+$$
+
+**Interpretazione:** se dovessimo scommettere su un valore, la media minimizza l'errore quadratico medio.
+
+**Quando usarla:** distribuzioni simmetriche o leggermente asimmetriche.
+
+---
+
+## La mediana a posteriori
+
+La **mediana** divide la distribuzione in due parti uguali:
+
+$$
+P(\theta < \text{mediana}) = P(\theta > \text{mediana}) = 0.5 .
+$$
+
+**Interpretazione:** il valore tale che è ugualmente probabile che il parametro sia sopra o sotto.
+
+**Quando usarla:** distribuzioni asimmetriche, perché è robusta agli estremi.
+
+---
+
+## La moda a posteriori (MAP)
+
+La **moda** è il valore con la massima densità a posteriori:
+
+$$
+\text{MAP} = \arg\max_\theta \, p(\theta \mid \text{dati}) .
+$$
+
+**Interpretazione:** il singolo valore più credibile del parametro.
+
+**Quando usarla:** quando serve "il miglior singolo valore", ma attenzione alle distribuzioni multimodali.
+
+---
+
+## Quando le tre stime coincidono?
+
+```{r}
+#| echo: false
+#| fig-height: 3.5
+
+# Distribuzione simmetrica
+x <- seq(-4, 4, length.out = 300)
+y <- dnorm(x, 0, 1)
+
+df_sim <- data.frame(x = x, y = y)
+
+ggplot(df_sim, aes(x = x, y = y)) +
+  geom_line(linewidth = 1.2, color = "steelblue") +
+  geom_vline(xintercept = 0, color = "coral", linewidth = 1.5) +
+  annotate("text", x = 0.5, y = max(y) * 0.8, 
+           label = "Media = Mediana = Moda", color = "coral", size = 5) +
+  labs(title = "Distribuzione simmetrica: le tre stime coincidono",
+       x = "θ", y = "Densità") +
+  theme_minimal(base_size = 14)
+```
+
+Se la distribuzione a posteriori è **simmetrica e unimodale**, media, mediana e moda sono identiche.
+
+# Parte 3: un esempio clinico
+
+## Scenario: efficacia di un intervento CBT
+
+Uno psicologo clinico vuole stimare la **probabilità di remissione** dopo un ciclo di terapia cognitivo-comportamentale (CBT) per il disturbo d'ansia generalizzato.
+
+. . .
+
+**Dati disponibili:**
+
+- 30 pazienti hanno completato il trattamento;
+- 21 hanno mostrato remissione dei sintomi.
+
+. . .
+
+**Prior:** dalla letteratura, ci si aspetta circa il 60-70% di successo.
+
+---
+
+## Impostiamo il modello
+
+```{r}
+# Dati osservati
+successi <- 21
+pazienti <- 30
+
+# Prior: Beta(6, 4) - centrata su 0.6, moderatamente informativa
+alpha_prior <- 6
+beta_prior <- 4
+
+# Posterior: Beta(alpha + successi, beta + insuccessi)
+alpha_post <- alpha_prior + successi
+beta_post <- beta_prior + (pazienti - successi)
+
+cat("Prior: Beta(", alpha_prior, ",", beta_prior, ")\n")
+cat("Posterior: Beta(", alpha_post, ",", beta_post, ")\n")
+```
+
+---
+
+## Calcoliamo le tre stime
+
+```{r}
+# Media del posterior
+media_post <- alpha_post / (alpha_post + beta_post)
+
+# Moda del posterior (MAP)
+moda_post <- (alpha_post - 1) / (alpha_post + beta_post - 2)
+
+# Mediana del posterior
+mediana_post <- qbeta(0.5, alpha_post, beta_post)
+
+cat("Media a posteriori:", round(media_post, 3), "\n")
+cat("Moda a posteriori (MAP):", round(moda_post, 3), "\n")
+cat("Mediana a posteriori:", round(mediana_post, 3), "\n")
+```
+
+---
+
+## Le tre stime sono molto simili
+
+```{r}
+#| echo: false
+#| fig-height: 4
+
+x <- seq(0, 1, length.out = 300)
+y <- dbeta(x, alpha_post, beta_post)
+
+df_cbt <- data.frame(x = x, y = y)
+
+ggplot(df_cbt, aes(x = x, y = y)) +
+  geom_line(linewidth = 1.3, color = "steelblue") +
+  geom_vline(xintercept = media_post, color = "coral", linewidth = 1, linetype = "dashed") +
+  geom_vline(xintercept = mediana_post, color = "forestgreen", linewidth = 1, linetype = "dotted") +
+  geom_vline(xintercept = moda_post, color = "purple", linewidth = 1) +
+  labs(title = "Distribuzione a posteriori: probabilità di remissione",
+       subtitle = paste0("Media = ", round(media_post, 3), 
+                        " | Mediana = ", round(mediana_post, 3),
+                        " | MAP = ", round(moda_post, 3)),
+       x = "Probabilità di remissione (θ)", y = "Densità") +
+  theme_minimal(base_size = 14)
+```
+
+Con una distribuzione quasi simmetrica, le tre stime differiscono di meno dell'1%.
+
+---
+
+## Interpretazione clinica
+
+Possiamo ora rispondere al direttore clinico:
+
+> "la nostra migliore stima è che circa il **68%** dei pazienti mostrerà remissione dopo il trattamento CBT."
+
+. . .
+
+Ma questa è solo una stima puntuale. Per comunicare anche l'**incertezza**, dobbiamo usare gli intervalli di credibilità (prossimo segmento).
+
+# Parte 4: quando le stime divergono
+
+## Il caso delle distribuzioni asimmetriche
+
+Consideriamo uno scenario diverso: stimiamo la **frequenza di eventi rari** — ad esempio, la probabilità che un paziente con ideazione suicidaria passi all'atto entro un anno.
+
+**Dati:** su 30 pazienti monitorati, 1 ha tentato il suicidio.
+
+```{r}
+# Dati
+eventi <- 1
+osservazioni <- 30
+
+# Prior non informativo
+alpha_prior_raro <- 1
+beta_prior_raro <- 1
+
+# Posterior
+alpha_post_raro <- alpha_prior_raro + eventi
+beta_post_raro <- beta_prior_raro + (osservazioni - eventi)
+```
+
+---
+
+## Le stime divergono di più
+
+```{r}
+# Calcolo delle tre stime
+media_raro <- alpha_post_raro / (alpha_post_raro + beta_post_raro)
+moda_raro <- (alpha_post_raro - 1) / (alpha_post_raro + beta_post_raro - 2)
+mediana_raro <- qbeta(0.5, alpha_post_raro, beta_post_raro)
+
+cat("Media a posteriori:", round(media_raro, 4), "\n")
+cat("Moda a posteriori (MAP):", round(moda_raro, 4), "\n")
+cat("Mediana a posteriori:", round(mediana_raro, 4), "\n")
+```
+
+---
+
+## Visualizziamo la differenza
+
+```{r}
+#| echo: false
+#| fig-height: 4
+
+x_raro <- seq(0, 0.15, length.out = 300)
+y_raro <- dbeta(x_raro, alpha_post_raro, beta_post_raro)
+
+df_raro <- data.frame(x = x_raro, y = y_raro)
+
+ggplot(df_raro, aes(x = x, y = y)) +
+  geom_line(linewidth = 1.3, color = "steelblue") +
+  geom_vline(xintercept = media_raro, color = "coral", linewidth = 1, linetype = "dashed") +
+  geom_vline(xintercept = mediana_raro, color = "forestgreen", linewidth = 1, linetype = "dotted") +
+  geom_vline(xintercept = moda_raro, color = "purple", linewidth = 1) +
+  annotate("text", x = media_raro + 0.015, y = max(y_raro) * 0.9, 
+           label = paste0("Media = ", round(media_raro, 3)), color = "coral", size = 4) +
+  annotate("text", x = moda_raro + 0.015, y = max(y_raro) * 0.6, 
+           label = paste0("MAP = ", round(moda_raro, 3)), color = "purple", size = 4) +
+  labs(title = "Eventi rari: le stime divergono",
+       x = "Probabilità di tentativo (θ)", y = "Densità") +
+  theme_minimal(base_size = 14)
+```
+
+Con distribuzioni asimmetriche, la scelta della stima puntuale conta di più.
+
+---
+
+## Quale stima scegliere?
+
+| Situazione | Stima consigliata |
+|------------|-------------------|
+| Distribuzione simmetrica | Qualsiasi (sono equivalenti) |
+| Distribuzione asimmetrica | Mediana (robusta) |
+| Serve "il valore più probabile" | MAP |
+| Serve minimizzare l'errore medio | Media |
+| Incertezza sugli estremi | Mediana |
+
+---
+
+## Il messaggio fondamentale
+
+> Una stima puntuale **non sostituisce** la distribuzione completa.
+
+. . .
+
+La distribuzione a posteriori ci dice:
+
+- non solo **qual è** il valore più credibile,
+- ma anche **quanto siamo incerti** su quel valore.
+
+La stima puntuale è un **riassunto**, non la risposta completa.
+
+# Parte 5: lavorare con i campioni
+
+## Dal calcolo analitico ai campioni
+
+* Finora abbiamo usato formule esatte (possibili con le distribuzioni coniugate).
+
+* Ma in pratica, spesso lavoriamo con **campioni** estratti dalla distribuzione a posteriori (metodi MCMC).
+
+* Come calcoliamo le stime puntuali dai campioni?
+
+---
+
+## Estrarre campioni dalla posteriori
+
+```{r}
+# Estraiamo 10000 campioni dalla distribuzione posteriori Beta(27, 13)
+n_campioni <- 10000
+campioni <- rbeta(n_campioni, alpha_post_raro, beta_post_raro)
+
+# Visualizziamo i primi valori
+head(campioni, 10)
+```
+
+Ogni valore è un possibile valore del parametro, estratto con probabilità proporzionale alla sua densità a posteriori.
+
+---
+
+## Calcoliamo le stime dai campioni
+
+```{r}
+# Media: semplicemente la media dei campioni
+media_campioni <- mean(campioni)
+
+# Mediana: il valore centrale
+mediana_campioni <- median(campioni)
+
+# Moda: richiede stimare la densità
+densita <- density(campioni)
+moda_campioni <- densita$x[which.max(densita$y)]
+```
+
+---
+
+```{r}
+cat("Media (da campioni):", round(media_campioni, 3), "\n")
+cat("Mediana (da campioni):", round(mediana_campioni, 3), "\n")
+cat("Moda (da campioni):", round(moda_campioni, 3), "\n")
+```
+
+---
+
+## Confrontiamo con i valori esatti
+
+```{r}
+# Confronto
+confronto <- data.frame(
+  Statistica = c("Media", "Mediana", "Moda"),
+  Valore_esatto = round(c(media_raro, mediana_raro, moda_raro), 4),
+  Valore_campioni = round(c(media_campioni, mediana_campioni, moda_campioni), 4)
+)
+
+print(confronto)
+```
+
+Con 10000 campioni, le stime sono molto accurate!
+
+---
+
+## Visualizziamo i campioni
+
+```{r}
+#| echo: false
+#| fig-height: 4
+
+df_campioni <- data.frame(theta = campioni)
+
+ggplot(df_campioni, aes(x = theta)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 50, 
+                 fill = "steelblue", alpha = 0.7, color = "white") +
+  geom_density(linewidth = 1, color = "coral") +
+  geom_vline(xintercept = media_campioni, color = "darkred", 
+             linewidth = 1, linetype = "dashed") +
+  labs(title = "10000 campioni dalla distribuzione a posteriori",
+       subtitle = paste0("Media campionaria = ", round(media_campioni, 3)),
+       x = "θ (probabilità di remissione)", y = "Densità") +
+  theme_minimal(base_size = 14)
+```
+
+# Parte 6: la variabilità a posteriori
+
+## Non solo il centro, ma anche la dispersione
+
+Oltre alla tendenza centrale, è importante quantificare **quanto è dispersa** la distribuzione a posteriori.
+
+La **deviazione standard a posteriori** ci dice quanto siamo incerti.
+
+----
+
+Deviazione standard della distribuzione a posteriori:
+
+```{r}
+sd_post <- sqrt((alpha_post * beta_post) / 
+                ((alpha_post + beta_post)^2 * (alpha_post + beta_post + 1)))
+```
+
+SD teorica:
+
+```{r}
+cat("SD a posteriori (formula):", round(sd_post, 4), "\n")
+```
+
+SD dei campioni:
+
+```{r}
+cat("SD a posteriori (campioni):", round(sd(campioni), 4), "\n")
+```
+
+
+---
+
+## Interpretazione della deviazione standard
+
+Con una media di `r round(media_post, 2)` e una SD di `r round(sd_post, 2)`:
+
+- il 68% della massa a posteriori è circa tra `r round(media_post - sd_post, 2)` e `r round(media_post + sd_post, 2)`;
+- il 95% della massa a posteriori è circa tra `r round(media_post - 2*sd_post, 2)` e `r round(media_post + 1.96*sd_post, 2)`.
+
+Queste sono approssimazioni; nel prossimo segmento vedremo come calcolare intervalli di credibilità esatti.
+
+---
+
+## Riepilogo del segmento
+
+1. **Tre stime puntuali:** media, mediana, moda (MAP).
+
+2. **Coincidono** per distribuzioni simmetriche, **divergono** per distribuzioni asimmetriche.
+
+3. **La media** minimizza l'errore quadratico.
+
+4. **La mediana** è robusta agli estremi.
+
+5. **La moda (MAP)** è il valore più credibile.
+
+6. Con i **campioni MCMC**, le stime si calcolano facilmente con `mean()`, `median()` e `density()`.
+
+---
+
+## Cosa vedremo nel prossimo segmento
+
+**Segmento 2: intervalli di credibilità**
+
+- Intervallo a code uguali (ETI).
+- Intervallo a densità più alta (HDI).
+- Come rispondere a domande probabilistiche.
+- Applicazioni cliniche e di ricerca.

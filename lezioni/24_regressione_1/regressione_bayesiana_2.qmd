@@ -1,0 +1,681 @@
+---
+title: "Il modello di regressione lineare bayesiano"
+subtitle: "Implementazione pratica con brms — Segmento 2"
+version: 1.0
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+lang: it
+
+execute:
+  echo: true
+
+format:
+  revealjs:
+    theme: [default, ../revealjs.scss]
+    title-slide-attributes:
+      data-background-color: "#0072bc"
+    slide-number: c
+    show-slide-number: print
+    highlight-style: github
+    math: mathjax
+
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+library(brms)
+library(ggplot2)
+library(bayesplot)
+library(dplyr)
+set.seed(42)
+```
+
+## Obiettivi {.unnumbered .unlisted}
+
+1. Stimare un modello di regressione bayesiano con **brms**.
+2. **Interpretare** l'output del modello.
+3. Eseguire la **diagnostica** delle catene MCMC.
+4. Effettuare il **posterior predictive check**.
+5. Rispondere a **domande di ricerca** con la posterior.
+
+# Parte 1: preparare i dati
+
+## Il nostro esempio
+
+Continuiamo con l'esempio della relazione tra **stress percepito** e **qualità del sonno**.
+
+```{r}
+# Simuliamo i dati
+n <- 50
+stress <- round(rnorm(n, mean = 25, sd = 8))
+stress <- pmax(5, pmin(stress, 45))
+sonno <- 9 - 0.15 * stress + rnorm(n, 0, 1.2)
+sonno <- pmax(2, pmin(sonno, 10))
+
+dati <- data.frame(stress = stress, sonno = sonno)
+```
+
+---
+
+## Esploriamo i dati
+
+```{r}
+summary(dati)
+```
+
+```{r}
+cat("Correlazione:", round(cor(dati$stress, dati$sonno), 3))
+```
+
+---
+
+## Visualizzazione
+
+```{r}
+#| echo: false
+
+ggplot(dati, aes(x = stress, y = sonno)) +
+  geom_point(size = 3, alpha = 0.7, color = "steelblue") +
+  geom_smooth(method = "lm", se = TRUE, color = "coral", fill = "coral", alpha = 0.2) +
+  labs(title = "Stress percepito e qualità del sonno",
+       x = "Stress percepito (0-50)", 
+       y = "Qualità del sonno (1-10)") +
+  theme_minimal(base_size = 14)
+```
+
+---
+
+## Centriamo il predittore
+
+Per migliorare l'interpretabilità dell'intercetta:
+
+```{r}
+dati$stress_c <- dati$stress - mean(dati$stress)
+
+cat("Media dello stress:", round(mean(dati$stress), 1), "\n")
+cat("Lo stress centrato ha media:", round(mean(dati$stress_c), 4))
+```
+
+---
+
+```{r}
+#| echo: false
+
+ggplot(dati, aes(x = stress_c, y = sonno)) +
+  geom_point(size = 3, alpha = 0.7, color = "steelblue") +
+  geom_smooth(method = "lm", se = TRUE, color = "coral", fill = "coral", alpha = 0.2) +
+  labs(title = "Stress percepito e qualità del sonno",
+       x = "Stress percepito (centrato)", 
+       y = "Qualità del sonno (1-10)") +
+  theme_minimal(base_size = 14)
+```
+
+# Parte 2: stimare il modello con brms
+
+## La sintassi di brms
+
+`brms` usa una sintassi simile a `lm()`:
+
+```{r}
+#| output: false
+
+fit <- brm(
+  formula = sonno ~ stress_c,   # y ~ x
+  data = dati,
+  family = gaussian(),          # distribuzione Normale
+  seed = 42,
+  backend = "cmdstanr",
+  silent = 2,
+  refresh = 0
+)
+```
+
+---
+
+## Cosa fa brms?
+
+`brms` automaticamente:
+
+1. Traduce la formula in codice Stan.
+2. Specifica **prior di default** (debolmente informative).
+3. Esegue il campionamento MCMC.
+4. Restituisce le distribuzioni a posteriori.
+
+---
+
+## Vediamo i risultati
+
+```{r}
+summary(fit)
+```
+
+---
+
+## Interpretazione dell'output
+
+- **Intercept:** qualità del sonno media quando lo stress è al livello medio del campione. Stima: circa 5.5, IC 95%: [5.2, 5.7].
+
+- **stress_c:** variazione della qualità del sonno per ogni punto in più di stress. Stima: circa -0.17, IC 95%: [-0.20, -0.14].
+
+- **sigma:** deviazione standard residua. Stima: circa 1.0.
+
+---
+
+## Interpretiamo il coefficiente di regressione
+
+Il coefficiente **stress_c** ≈ -0.17 significa:
+
+> "Per ogni punto in più di stress percepito, la qualità del sonno diminuisce **in media** di 0.17 punti."
+
+. . .
+
+L'intervallo di credibilità al 95% **non include lo zero** → evidenza forte di un'associazione negativa.
+
+# Parte 3: diagnostica del modello
+
+## Verificare la convergenza
+
+Prima di interpretare i risultati, dobbiamo verificare che le catene MCMC siano **convergenti**.
+
+. . .
+
+Indicatori chiave:
+
+- **R-hat** ≈ 1.00 (< 1.01 è accettabile).
+- **ESS** (Effective Sample Size) > 400.
+- **Trace plot** senza trend.
+
+---
+
+## R-hat ed ESS: diagnostica della convergenza
+
+Utilizzando:
+
+```r
+summary(fit)
+```
+
+otteniamo le principali misure di diagnostica MCMC per ciascun parametro del modello.
+
+---
+
+### R-hat (Gelman–Rubin statistic)
+
+* **R-hat ≈ 1.00** per tutti i parametri;
+* indica che la variabilità *tra* le catene è simile a quella *entro* le catene;
+* suggerisce che le catene hanno raggiunto la stessa distribuzione limite.
+
+**Conclusione:** non vi sono evidenze di problemi di convergenza.
+
+---
+
+### ESS (Effective Sample Size)
+
+* **ESS > 400** per tutti i parametri;
+* l’ESS rappresenta il numero di campioni *indipendenti equivalenti*;
+* tiene conto dell’autocorrelazione nelle catene MCMC.
+
+**Conclusione:** la posterior è campionata con sufficiente precisione.
+
+---
+
+## Messaggio chiave
+
+> Valori di R-hat prossimi a 1 e un ESS elevato indicano che l’algoritmo MCMC ha esplorato in modo affidabile la distribuzione a posteriori.
+
+---
+
+## Trace plot
+
+R-hat ed ESS sono condizioni **necessarie**, ma non sempre **sufficienti**:
+è buona pratica affiancare queste misure a ispezioni grafiche (traceplot, autocorrelazioni).
+
+```{r}
+plot(fit, variable = c("b_Intercept", "b_stress_c", "sigma"))
+```
+
+---
+
+## Interpretazione del trace plot
+
+**Pannello sinistro (densità):** distribuzione a posteriori del parametro.
+
+**Pannello destro (traccia):** evoluzione delle catene MCMC.
+
+. . .
+
+Le catene sono **ben mescolate** (caterpillar plot) → il campionamento ha funzionato correttamente.
+
+# Parte 4: posterior predictive check
+
+## Il modello spiega bene i dati?
+
+Il **posterior predictive check** confronta:
+
+- i dati **osservati**;
+- i dati che il modello **genererebbe**.
+
+---
+
+## pp_check con densità
+
+```{r}
+#| fig-height: 4.5
+
+pp_check(fit, type = "dens_overlay", ndraws = 100)
+```
+
+---
+
+## Interpretazione
+
+- **Linea scura:** distribuzione dei dati osservati.
+- **Linee chiare:** distribuzioni dei dati simulati dal modello.
+
+. . .
+
+Le linee si sovrappongono bene → il modello è **adeguato**.
+
+---
+
+## pp_check con scatter plot
+
+```{r}
+#| fig-height: 4
+
+pp_check(fit, type = "scatter_avg", ndraws = 100)
+```
+
+I valori predetti sono vicini a quelli osservati.
+
+---
+
+## pp_check sui residui
+
+```{r}
+#| fig-height: 4
+
+pp_check(fit, type = "error_hist", ndraws = 10)
+```
+
+I residui sono distribuiti simmetricamente attorno allo zero.
+
+# Parte 5: estrarre e usare la posterior
+
+## Le distribuzioni a posteriori
+
+Possiamo estrarre i campioni dalla posterior per analisi personalizzate:
+
+```{r}
+# Estraiamo i campioni
+posterior_samples <- as_draws_df(fit)
+
+# Vediamo le prime righe
+head(posterior_samples[, 1:4])
+```
+
+---
+
+## Visualizzare la posterior di β
+
+```{r}
+#| fig-height: 4
+
+ggplot(posterior_samples, aes(x = b_stress_c)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 50, 
+                 fill = "coral", alpha = 0.7) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "black") +
+  labs(title = "Distribuzione a posteriori di β",
+       x = expression(beta), y = "Densità") +
+  theme_minimal(base_size = 14)
+```
+
+---
+
+## Calcolare probabilità specifiche
+
+**Domanda 1:** Qual è la probabilità che l'effetto sia negativo?
+
+```{r}
+prob_negativo <- mean(posterior_samples$b_stress_c < 0)
+cat("P(β < 0) =", round(prob_negativo, 4))
+```
+
+. . .
+
+Quasi **certezza** (>99.9%) che l'effetto sia negativo.
+
+---
+
+## Altre domande
+
+**Domanda 2:** Qual è la probabilità che l'effetto sia "rilevante" (|β| > 0.1)?
+
+```{r}
+prob_rilevante <- mean(abs(posterior_samples$b_stress_c) > 0.1)
+cat("P(|β| > 0.1) =", round(prob_rilevante, 3))
+```
+
+. . .
+
+**Domanda 3:** Qual è l'intervallo di credibilità al 90%?
+
+```{r}
+ic_90 <- quantile(posterior_samples$b_stress_c, c(0.05, 0.95))
+cat("IC 90%:", round(ic_90, 3))
+```
+
+<!-- # Parte 6: previsioni -->
+
+<!-- ## Prevedere per nuovi valori di stress -->
+
+<!-- Finora abbiamo stimato un modello di regressione che descrive la relazione tra **stress percepito** e **qualità del sonno**. -->
+
+<!-- Una volta stimato il modello, possiamo usarlo per **fare previsioni** a nuovi livelli di stress, anche non presenti nel campione osservato. -->
+
+<!-- Nel modello, la variabile di stress è stata **centrata sulla media**: -->
+
+<!-- $$ -->
+<!-- \text{stress}_c = \text{stress} - \overline{\text{stress}}. -->
+<!-- $$ -->
+
+<!-- Per questo motivo, quando specifichiamo nuovi valori di stress dobbiamo lavorare inizialmente sulla scala centrata (`stress_c`). -->
+
+<!-- --- -->
+
+<!-- ```{r} -->
+<!-- # Nuovi valori di stress sulla scala centrata -->
+<!-- nuovi_dati <- data.frame( -->
+<!--   stress_c = c(-10, 0, 10)  # sotto media, media, sopra media -->
+<!-- ) -->
+
+<!-- # Ricostruiamo la scala originale dello stress (solo per interpretazione) -->
+<!-- nuovi_dati$stress <- nuovi_dati$stress_c + mean(dati$stress) -->
+<!-- print(nuovi_dati) -->
+<!-- ``` -->
+
+<!-- **Interpretazione dei tre punti:** -->
+
+<!-- * `stress_c = -10`: stress significativamente **sotto la media**; -->
+<!-- * `stress_c = 0`: stress **medio**; -->
+<!-- * `stress_c = 10`: stress **sopra la media**. -->
+
+<!-- --- -->
+
+<!-- ## Previsione della media (fitted values) -->
+
+<!-- Il primo tipo di previsione riguarda il **valore atteso** della variabile risposta, cioè la **media della qualità del sonno** per un dato livello di stress. -->
+
+<!-- ```{r} -->
+<!-- pred_media <- fitted(fit, newdata = nuovi_dati) -->
+<!-- print(round(pred_media, 2)) -->
+<!-- ``` -->
+
+<!-- Questa funzione restituisce la **distribuzione a posteriori della media**: -->
+
+<!-- $$ -->
+<!-- E(\text{sonno} \mid \text{stress}) -->
+<!-- $$ -->
+
+<!-- --- -->
+
+<!-- ### Cosa include questa previsione? -->
+
+<!-- * incertezza sui parametri del modello ($\alpha$, $\beta$); -->
+<!-- * **non** include la variabilità individuale. -->
+
+<!-- Questa previsione risponde alla domanda: -->
+
+<!-- > “Qual è il livello medio atteso di qualità del sonno per individui con questo livello di stress?” -->
+
+<!-- --- -->
+
+<!-- ## Previsione per un nuovo individuo -->
+
+<!-- Spesso però siamo interessati a prevedere **l’esito di una singola persona**, non la media di una popolazione. -->
+
+<!-- ```{r} -->
+<!-- pred_individuo <- predict(fit, newdata = nuovi_dati) -->
+<!-- print(round(pred_individuo, 2)) -->
+<!-- ``` -->
+
+<!-- Questa funzione genera previsioni dalla **distribuzione predittiva a posteriori**: -->
+
+<!-- $$ -->
+<!-- p(\text{sonno}_{\text{nuovo}} \mid \text{stress}, \text{dati}). -->
+<!-- $$ -->
+
+<!-- --- -->
+
+<!-- ### Cosa include questa previsione? -->
+
+<!-- * incertezza sui parametri; -->
+<!-- * **variabilità individuale residua** ($\sigma$). -->
+
+<!-- Questa previsione risponde alla domanda: -->
+
+<!-- > “Che valore di qualità del sonno potrei osservare per una nuova persona con questo livello di stress?” -->
+
+<!-- --- -->
+
+<!-- ## Perché gli intervalli sono diversi? -->
+
+<!-- Confrontiamo esplicitamente le due previsioni: -->
+
+<!-- ```{r} -->
+<!-- #| echo: false -->
+
+<!-- cat("Per stress sotto media:\n") -->
+<!-- cat("  Media prevista:", round(pred_media[1, 1], 2),  -->
+<!--     "IC 95%: [", round(pred_media[1, 3], 2), ",", round(pred_media[1, 4], 2), "]\n") -->
+<!-- cat("  Individuo:", round(pred_individuo[1, 1], 2),  -->
+<!--     "IC 95%: [", round(pred_individuo[1, 3], 2), ",", round(pred_individuo[1, 4], 2), "]\n\n") -->
+
+<!-- cat("Per stress sopra media:\n") -->
+<!-- cat("  Media prevista:", round(pred_media[3, 1], 2),  -->
+<!--     "IC 95%: [", round(pred_media[3, 3], 2), ",", round(pred_media[3, 4], 2), "]\n") -->
+<!-- cat("  Individuo:", round(pred_individuo[3, 1], 2),  -->
+<!--     "IC 95%: [", round(pred_individuo[3, 3], 2), ",", round(pred_individuo[3, 4], 2), "]\n") -->
+<!-- ``` -->
+
+<!-- **Osservazione chiave:** -->
+
+<!-- * gli intervalli per la **media** sono più stretti; -->
+<!-- * gli intervalli per l’**individuo** sono più ampi. -->
+
+<!-- Questo accade perché la previsione individuale incorpora la variabilità naturale tra persone, mentre la media no. -->
+
+<!-- --- -->
+
+<!-- ## Visualizzare le previsioni -->
+
+<!-- Per chiarire ulteriormente la differenza, visualizziamo le **previsioni della media** su un continuum di valori di stress. -->
+
+<!-- ```{r} -->
+<!-- #| echo: false -->
+
+<!-- # Griglia di valori di stress (centrati) -->
+<!-- grid <- data.frame(stress_c = seq(-15, 15, length.out = 100)) -->
+<!-- grid$stress <- grid$stress_c + mean(dati$stress) -->
+
+<!-- # Previsioni della media con intervallo credibile -->
+<!-- pred_grid <- fitted(fit, newdata = grid, probs = c(0.025, 0.975)) -->
+<!-- grid$estimate <- pred_grid[, 1] -->
+<!-- grid$lower <- pred_grid[, 3] -->
+<!-- grid$upper <- pred_grid[, 4] -->
+
+<!-- ggplot() + -->
+<!--   geom_ribbon(data = grid, aes(x = stress, ymin = lower, ymax = upper), -->
+<!--               fill = "coral", alpha = 0.3) + -->
+<!--   geom_line(data = grid, aes(x = stress, y = estimate), -->
+<!--             color = "coral", linewidth = 1.2) + -->
+<!--   geom_point(data = dati, aes(x = stress, y = sonno), -->
+<!--              size = 3, alpha = 0.6, color = "steelblue") + -->
+<!--   labs(title = "Previsioni della media con intervallo di credibilità al 95%", -->
+<!--        x = "Stress percepito", y = "Qualità del sonno") + -->
+<!--   theme_minimal(base_size = 14) -->
+<!-- ``` -->
+
+<!-- --- -->
+
+<!-- ## Messaggio chiave  -->
+
+<!-- > `fitted()` risponde alla domanda *“qual è la media attesa?”* -->
+<!-- > `predict()` risponde alla domanda *“cosa osserverò per un individuo?”* -->
+
+<!-- Confondere queste due quantità è uno degli errori più comuni nell’interpretazione dei modelli di regressione. -->
+
+<!-- # Parte 7: specificare prior personalizzate -->
+
+<!-- ## Prior di default in brms -->
+
+<!-- Vediamo quali prior usa brms di default: -->
+
+<!-- ```{r} -->
+<!-- prior_summary(fit) -->
+<!-- ``` -->
+
+<!-- --- -->
+
+<!-- ## Specificare prior informative -->
+
+<!-- Se abbiamo conoscenze pregresse, possiamo specificarle: -->
+
+<!-- ```{r} -->
+<!-- #| output: false -->
+<!-- #| cache: true -->
+
+<!-- # Definiamo prior più informative -->
+<!-- prior_custom <- c( -->
+<!--   prior(normal(6, 2), class = "Intercept"), -->
+<!--   prior(normal(0, 0.3), class = "b"), -->
+<!--   prior(exponential(1), class = "sigma") -->
+<!-- ) -->
+
+<!-- fit_prior <- brm( -->
+<!--   formula = sonno ~ stress_c, -->
+<!--   data = dati, -->
+<!--   family = gaussian(), -->
+<!--   prior = prior_custom, -->
+<!--   seed = 42, -->
+<!--   backend = "cmdstanr", -->
+<!--   silent = 2, -->
+<!--   refresh = 0 -->
+<!-- ) -->
+<!-- ``` -->
+
+<!-- --- -->
+
+<!-- ## Confronto risultati -->
+
+<!-- ```{r} -->
+<!-- # Con prior di default -->
+<!-- fixef(fit) -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- # Con prior personalizzate -->
+<!-- fixef(fit_prior) -->
+<!-- ``` -->
+
+<!-- Con dati sufficienti, le prior hanno un impatto limitato. -->
+
+<!-- --- -->
+
+<!-- ## Prior predictive check -->
+
+<!-- Prima di vedere i dati, verificare se le prior sono sensate: -->
+
+<!-- ```{r} -->
+<!-- #| output: false -->
+<!-- #| cache: true -->
+
+<!-- # Campionamento solo dalle prior -->
+<!-- fit_prior_only <- brm( -->
+<!--   formula = sonno ~ stress_c, -->
+<!--   data = dati, -->
+<!--   family = gaussian(), -->
+<!--   prior = prior_custom, -->
+<!--   sample_prior = "only", -->
+<!--   seed = 42, -->
+<!--   backend = "cmdstanr", -->
+<!--   silent = 2, -->
+<!--   refresh = 0 -->
+<!-- ) -->
+<!-- ``` -->
+
+<!-- --- -->
+
+<!-- ## Visualizzare le prior predictive -->
+
+<!-- ```{r} -->
+<!-- #| fig-height: 4 -->
+
+<!-- pp_check(fit_prior_only, type = "dens", ndraws = 100) -->
+<!-- ``` -->
+
+<!-- Le prior generano dati plausibili (nel range 0-10)? -->
+
+# Riepilogo
+
+## Le funzioni chiave di brms
+
+| Funzione | Cosa fa |
+|----------|---------|
+| `brm()` | Stima il modello bayesiano |
+| `summary()` | Sintesi dei risultati |
+| `plot()` | Diagnostica visuale |
+| `pp_check()` | Posterior predictive check |
+| `fitted()` | Previsione della media |
+| `predict()` | Previsione per individui |
+
+---
+
+## Il flusso di lavoro
+
+1. **Preparare i dati** (centrare i predittori).
+2. **Stimare il modello** con `brm()`.
+3. **Verificare la convergenza** (R-hat, trace plot).
+4. **Validare il modello** con `pp_check()`.
+5. **Interpretare** i coefficienti e gli intervalli.
+6. **Rispondere alle domande** con la posterior.
+
+---
+
+## I punti chiave
+
+1. `brms` rende l'inferenza bayesiana **accessibile**.
+
+2. La diagnostica è **fondamentale** prima dell'interpretazione.
+
+3. Il posterior predictive check verifica l'**adeguatezza** del modello.
+
+4. Possiamo calcolare **qualsiasi probabilità** dalla posterior.
+
+<!-- 5. Le previsioni per **individui** sono più incerte di quelle per la **media**. -->
+
+---
+
+## Il messaggio fondamentale
+
+> Il modello di regressione bayesiano non solo stima la relazione tra variabili, ma **quantifica completamente l'incertezza** su questa relazione, permettendoci di rispondere direttamente a domande probabilistiche.
+
+---
+
+## Per la prossima lezione
+
+Materiale di studio: https://ccaudek.github.io/utet-companion/
+
+**Prossimo argomento:**
+
+La regressione multipla: come includere più predittori nel modello e interpretare i loro effetti.

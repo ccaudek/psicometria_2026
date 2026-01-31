@@ -1,0 +1,650 @@
+---
+title: "Distribuzioni continue"
+subtitle: "La distribuzione Beta e l'uso di R"
+version: 1.0
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+toc-depth: 2
+lang: it
+
+execute:
+  echo: true
+
+format:
+    revealjs:
+      theme: [default, ../revealjs.scss]
+      title-slide-attributes:
+        data-background-color: "#0072bc"
+      slide-number: c
+      show-slide-number: print
+      highlight-style: github
+      math: mathjax
+      mermaid:
+        theme: neutral
+      
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+```{r}
+#| echo: false
+#| output: false
+library(tibble)
+library(dplyr)
+library(knitr)
+library(kableExtra)
+```
+
+## Obiettivo {.unnumbered .unlisted}
+
+In questa seconda parte:
+
+1. Introdurremo la **distribuzione Beta**, fondamentale per l'inferenza bayesiana.
+2. Impareremo a usare **R** per calcolare probabilità e quantili.
+3. Risolveremo gli stessi esercizi della prima parte, ma con **R**.
+
+---
+
+## La distribuzione Beta: perché è importante?
+
+La **Beta** è una distribuzione continua definita sull'intervallo $[0, 1]$.
+
+Viene usata per modellare:
+
+- **probabilità** e **proporzioni**;
+- **credenze** su parametri che variano tra 0 e 1;
+- la **distribuzione a priori** nell'inferenza bayesiana.
+
+---
+
+## La formula della Beta
+
+Una variabile $\pi \sim \text{Beta}(\alpha, \beta)$ ha densità:
+
+$$
+f(\pi) = \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)} \pi^{\alpha-1}(1-\pi)^{\beta-1},
+$$
+dove $\Gamma$ è la funzione gamma (generalizzazione del fattoriale).
+
+* L'aspetto cruciale è capire cosa significano i parametri $\alpha$ e $\beta$.
+
+---
+
+## Interpretazione dei parametri
+
+I parametri $\alpha$ e $\beta$ possono essere interpretati come:
+
+- $\alpha$: numero di "**successi**" osservati (più uno);
+- $\beta$: numero di "**insuccessi**" osservati (più uno).
+
+
+---
+
+## Media della distribuzione Beta
+
+$$
+\mathbb{E}(\pi) = \frac{\alpha}{\alpha + \beta}.
+$$
+
+---
+
+## Forme della distribuzione Beta
+
+La Beta assume forme **molto diverse** al variare dei parametri:
+
+| $\alpha$ | $\beta$ | Forma |
+|----------|---------|-------|
+| 1 | 1 | Uniforme |
+| 2 | 2 | Campana simmetrica |
+| 5 | 2 | Asimmetrica a destra |
+| 2 | 5 | Asimmetrica a sinistra |
+| 0.5 | 0.5 | A U (estremi più probabili) |
+
+---
+
+## Idea di base 
+
+* Interpretiamo:
+
+  * $\alpha = \text{successi} + 1$
+  * $\beta = \text{insuccessi} + 1$
+* disegniamo la densità Beta
+* evidenziamo la **media** con una linea verticale
+
+---
+
+## Esempio 1 — 10 osservazioni, 2 successi
+
+```{r}
+#| echo: false
+library(ggplot2)
+
+# Griglia per l'asse x (probabilità)
+pi_vals <- seq(0, 1, length.out = 500)
+
+# Funzione di supporto per disegnare una Beta con media evidenziata
+plot_beta <- function(successi, n, titolo) {
+  alpha <- successi + 1
+  beta  <- (n - successi) + 1
+  
+  media <- alpha / (alpha + beta)
+  
+  df <- data.frame(
+    pi = pi_vals,
+    dens = dbeta(pi_vals, alpha, beta)
+  )
+  
+  ggplot(df, aes(x = pi, y = dens)) +
+    geom_line(linewidth = 1) +
+    geom_vline(xintercept = media, linetype = "dashed") +
+    labs(
+      title = titolo,
+      subtitle = paste0(
+        "successi = ", successi,
+        ", n = ", n,
+        "  →  α = ", alpha,
+        ", β = ", beta,
+        ", media = ", round(media, 3)
+      ),
+      x = expression(pi),
+      y = "densità"
+    ) +
+    theme_minimal()
+}
+```
+
+```{r}
+#| echo: false
+plot_beta(
+  successi = 2,
+  n = 10,
+  titolo = "Poche osservazioni, pochi successi"
+)
+```
+
+👉 Distribuzione: spostata verso lo 0, molto asimmetrica, incertezza elevata.
+
+---
+
+## Esempio 2 — 10 osservazioni, 8 successi
+
+```{r}
+#| echo: false
+plot_beta(
+  successi = 8,
+  n = 10,
+  titolo = "Poche osservazioni, molti successi"
+)
+```
+
+👉 Stessa numerosità del caso precedente, ma la massa si sposta verso 1.
+
+---
+
+## Esempio 3 — 10 osservazioni, 5 successi
+
+```{r}
+#| echo: false
+plot_beta(
+  successi = 5,
+  n = 10,
+  titolo = "Poche osservazioni, successi bilanciati"
+)
+```
+
+👉 Media ≈ 0.5, ma distribuzione ancora **larga** → pochi dati = molta incertezza.
+
+---
+
+## Esempio 4 — 100 osservazioni, 20 successi
+
+```{r}
+#| echo: false
+plot_beta(
+  successi = 20,
+  n = 100,
+  titolo = "Molte osservazioni, pochi successi"
+)
+```
+
+👉 Stessa proporzione del caso 1 (≈ 0.2), ma distribuzione **molto più concentrata**.
+
+---
+
+## Esempio 5 — 100 osservazioni, 80 successi
+
+```{r}
+#| echo: false
+plot_beta(
+  successi = 80,
+  n = 100,
+  titolo = "Molte osservazioni, molti successi"
+)
+```
+
+👉 Stessa proporzione del caso 2 (≈ 0.8), ma evidenza molto più forte.
+
+---
+
+## Messaggi chiave 
+
+* La **media** della Beta è sempre:
+  $$
+  \mathbb{E}(\pi) = \frac{\alpha}{\alpha+\beta}
+  $$
+* Il **numero totale di osservazioni** controlla:
+
+  * quanto la distribuzione è **concentrata**
+* Il **numero di successi** controlla:
+
+  * **dove** è centrata la distribuzione
+* Più dati → **meno incertezza**.
+
+---
+
+## Interpretazione psicologica
+
+* **Beta(1, 1):** totale incertezza — tutti i valori tra 0 e 1 sono ugualmente plausibili.
+
+* **Beta(10, 2):** dopo aver osservato 9 successi e 1 insuccesso, crediamo che la probabilità di successo sia alta (media ≈ 0.83).
+
+* **Beta(3, 7):** dopo 2 successi e 6 insuccessi, crediamo che la probabilità sia bassa (media ≈ 0.30).
+
+---
+
+## Esercizio concettuale sulla Beta
+
+Uno psicologo studia l'efficacia di una terapia. Prima di raccogliere dati, crede che la probabilità di miglioramento sia "attorno al 50%", ma è incerto.
+
+**Domanda:** quale distribuzione Beta rappresenta questa credenza iniziale?
+
+---
+
+### Soluzione
+
+Una credenza centrata su 0.5 con incertezza moderata può essere rappresentata da:
+
+**Beta(2, 2)** o **Beta(5, 5)**
+
+- Media: $\frac{\alpha}{\alpha+\beta} = 0.5$.
+- Più $\alpha + \beta$ è grande, più la distribuzione è concentrata.
+
+---
+
+```{r}
+#| echo: false
+plot_beta(
+  successi = 1,
+  n = 2,
+  titolo = "Beta(2, 2"
+)
+```
+
+---
+
+```{r}
+#| echo: false
+plot_beta(
+  successi = 4,
+  n = 8,
+  titolo = "Beta(5, 5)"
+)
+```
+
+---
+
+## Calcoli con la Beta: il problema delle tavole
+
+A differenza della Normale, **non esistono tavole standard** per la Beta.
+
+Ma non è un problema: usiamo **R**!
+
+> Questo è il grande vantaggio del software: possiamo lavorare con qualsiasi distribuzione, non solo quelle "tabulabili".
+
+---
+
+## Le funzioni di R per le distribuzioni
+
+R usa una convenzione sistematica per tutte le distribuzioni:
+
+| Prefisso | Significato | Esempio (Normale) |
+|----------|-------------|-------------------|
+| `d` | **densità** | `dnorm(x, mean, sd)` |
+| `p` | **probabilità** cumulata | `pnorm(x, mean, sd)` |
+| `q` | **quantile** | `qnorm(p, mean, sd)` |
+| `r` | **random** (simulazione) | `rnorm(n, mean, sd)` |
+
+---
+
+## Le funzioni per la Normale in R
+
+```{r}
+#| echo: true
+# Densità nel punto x = 100 per N(100, 15)
+dnorm(100, mean = 100, sd = 15)
+
+# Probabilità cumulata P(X <= 115)
+pnorm(115, mean = 100, sd = 15)
+
+# Quantile: quale x ha P(X <= x) = 0.95?
+qnorm(0.95, mean = 100, sd = 15)
+```
+
+---
+
+## Le funzioni per la Beta in R
+
+```{r}
+#| echo: true
+# Densità nel punto π = 0.5 per Beta(2, 5)
+dbeta(0.5, shape1 = 2, shape2 = 5)
+
+# Probabilità cumulata P(π <= 0.3)
+pbeta(0.3, shape1 = 2, shape2 = 5)
+
+# Quantile: quale π ha P(π <= π) = 0.90?
+qbeta(0.90, shape1 = 2, shape2 = 5)
+```
+
+---
+
+## Ripetiamo l'Esercizio 1 con R
+
+**Problema:** QI ~ $\mathcal{N}(100, 15)$. Trovare $P(X > 130)$.
+
+```{r}
+#| echo: true
+# Metodo 1: coda destra
+1 - pnorm(130, mean = 100, sd = 15)
+
+# Metodo 2: argomento lower.tail
+pnorm(130, mean = 100, sd = 15, lower.tail = FALSE)
+```
+
+> R conferma: circa il **2.3%** ha QI > 130.
+
+---
+
+## Ripetiamo l'Esercizio 2 con R
+
+**Problema:** Tempi di risposta ~ $\mathcal{N}(350, 40)$. Trovare $P(310 < X < 390)$.
+
+```{r}
+#| echo: true
+# Differenza di due probabilità cumulate
+pnorm(390, mean = 350, sd = 40) - pnorm(310, mean = 350, sd = 40)
+```
+
+> R conferma: circa il **68.3%** dei tempi cade nell'intervallo.
+
+---
+
+## Ripetiamo l'Esercizio 3 con R
+
+**Problema:** Test ansia ~ $\mathcal{N}(50, 10)$. Quale punteggio separa il 10% più alto?
+
+```{r}
+#| echo: true
+# Quantile di ordine 0.90 (lasciamo 10% sopra)
+qnorm(0.90, mean = 50, sd = 10)
+```
+
+> R conferma: il punteggio soglia è circa **62.8**.
+
+---
+
+## Ripetiamo l'Esercizio 4 con R
+
+**Problema:** Screening depressione ~ $\mathcal{N}(25, 8)$.
+
+```{r}
+#| echo: true
+# a) P(X > 35)
+pnorm(35, mean = 25, sd = 8, lower.tail = FALSE)
+
+# b) Soglia che lascia 5% sopra
+qnorm(0.95, mean = 25, sd = 8)
+```
+
+---
+
+## Ripetiamo l'Esercizio 5 con R
+
+**Problema:** Test cognitivo ~ $\mathcal{N}(100, 15)$. Intervallo per il 95% centrale.
+
+```{r}
+#| echo: true
+# Quantili di ordine 0.025 e 0.975
+qnorm(c(0.025, 0.975), mean = 100, sd = 15)
+```
+
+> L'intervallo è **[70.6, 129.4]**.
+
+---
+
+## Esercizio 6 — Pratica con la Beta
+
+Un terapeuta ha trattato 12 pazienti: 9 sono migliorati, 3 no.
+
+La sua credenza sulla probabilità di miglioramento segue una **Beta(10, 4)** (9+1 successi, 3+1 insuccessi).
+
+**Domanda a)** Qual è la probabilità stimata di miglioramento (media)?
+
+**Domanda b)** Con quale probabilità il tasso di successo supera 0.70?
+
+---
+
+### Soluzione Esercizio 6
+
+```{r}
+#| echo: true
+# a) Media della Beta(10, 4)
+alpha <- 10
+beta_param <- 4
+alpha / (alpha + beta_param)  # Formula
+
+# b) P(π > 0.70) con R
+pbeta(0.70, shape1 = 10, shape2 = 4, lower.tail = FALSE)
+```
+
+> C'è circa il **58%** di probabilità che il vero tasso di successo superi 0.70.
+
+---
+
+## Esercizio 7 — Confronto con credenze diverse
+
+Due ricercatori studiano la stessa terapia:
+
+- **Anna** (scettica): crede in una Beta(2, 8) — media 0.20.
+- **Bruno** (ottimista): crede in una Beta(8, 2) — media 0.80.
+
+**Domanda:** Per ciascuno, qual è la probabilità che il tasso di successo sia > 0.50?
+
+---
+
+### Soluzione Esercizio 7
+
+```{r}
+#| echo: true
+# Anna (scettica): Beta(2, 8)
+pbeta(0.50, shape1 = 2, shape2 = 8, lower.tail = FALSE)
+
+# Bruno (ottimista): Beta(8, 2)
+pbeta(0.50, shape1 = 8, shape2 = 2, lower.tail = FALSE)
+```
+
+Le credenze iniziali influenzano fortemente le conclusioni!
+
+---
+
+## Esercizio 8 — Intervallo di credibilità
+
+Un'indagine rileva che 15 partecipanti su 20 preferiscono un certo stimolo.
+
+Assumendo una Beta(16, 6) come distribuzione a posteriori:
+
+**Domanda:** Trova l'intervallo che contiene il 90% centrale della credenza.
+
+---
+
+### Soluzione Esercizio 8
+
+```{r}
+#| echo: true
+# Quantili di ordine 0.05 e 0.95
+qbeta(c(0.05, 0.95), shape1 = 16, shape2 = 6)
+```
+
+> Con il 90% di probabilità, la vera preferenza è tra **0.58 e 0.91**.
+
+---
+
+## Esercizio 9 — Scelta tra alternative (Beta)
+
+Un test di memoria viene somministrato a 50 soggetti. 35 superano la soglia critica.
+
+La distribuzione a posteriori è Beta(36, 16).
+
+**Quale affermazione è più supportata dai dati?**
+
+- A) Il tasso di successo è > 0.60.
+- B) Il tasso di successo è > 0.80.
+- C) Il tasso di successo è tra 0.65 e 0.75.
+
+---
+
+### Soluzione Esercizio 9
+
+```{r}
+#| echo: true
+# A) P(π > 0.60)
+pbeta(0.60, 36, 16, lower.tail = FALSE)
+
+# B) P(π > 0.80)
+pbeta(0.80, 36, 16, lower.tail = FALSE)
+
+# C) P(0.65 < π < 0.75)
+pbeta(0.75, 36, 16) - pbeta(0.65, 36, 16)
+```
+
+> L'affermazione **A** è la più supportata (≈ 90%).
+
+---
+
+## Visualizzare le distribuzioni in R
+
+```{r}
+#| echo: true
+#| eval: false
+# Normale
+curve(dnorm(x, 100, 15), from = 50, to = 150, 
+      main = "Normale(100, 15)", ylab = "Densità")
+
+# Beta
+curve(dbeta(x, 10, 4), from = 0, to = 1,
+      main = "Beta(10, 4)", ylab = "Densità")
+```
+
+> La visualizzazione aiuta a **capire** la distribuzione prima di fare calcoli.
+
+---
+
+## Confronto: tavole vs R
+
+| Operazione | Con le tavole | Con R |
+|------------|--------------|-------|
+| Standardizzare | Necessario | Non necessario |
+| Limiti di precisione | Sì (2 decimali) | No |
+| Distribuzioni disponibili | Solo Normale, t, χ² | Tutte |
+| Velocità | Lenta | Immediata |
+| Errori di lettura | Possibili | Impossibili |
+
+---
+
+## La densità come misura dell'incertezza
+
+**Concetto fondamentale per l'inferenza bayesiana**
+
+La curva di densità rappresenta il nostro **grado di credenza** su dove si trova il vero valore del parametro.
+
+- Picco alto e stretto → siamo **abbastanza certi**.
+- Curva piatta e larga → siamo **molto incerti**.
+
+---
+
+## Esempio: evoluzione dell'incertezza
+
+```{r}
+#| echo: false
+#| fig-height: 4
+par(mfrow = c(1, 3))
+curve(dbeta(x, 1, 1), from = 0, to = 1, main = "Prima: Beta(1,1)", 
+      ylab = "Densità", lwd = 2)
+curve(dbeta(x, 5, 5), from = 0, to = 1, main = "Dopo 8 obs: Beta(5,5)", 
+      ylab = "Densità", lwd = 2)
+curve(dbeta(x, 20, 20), from = 0, to = 1, main = "Dopo 38 obs: Beta(20,20)", 
+      ylab = "Densità", lwd = 2)
+par(mfrow = c(1, 1))
+```
+
+> Con più dati, la nostra incertezza **si riduce**.
+
+---
+
+## Riepilogo: le funzioni **R** essenziali
+
+**Per la Normale:**
+```r
+pnorm(x, mean, sd)     # P(X ≤ x)
+qnorm(p, mean, sd)     # Quantile di ordine p
+dnorm(x, mean, sd)     # Densità in x
+```
+
+**Per la Beta:**
+```r
+pbeta(x, shape1, shape2)   # P(X ≤ x)
+qbeta(p, shape1, shape2)   # Quantile di ordine p  
+dbeta(x, shape1, shape2)   # Densità in x
+```
+
+---
+
+## Cosa abbiamo imparato oggi
+
+1. Le **distribuzioni continue** usano la densità, non la massa.
+2. La **Normale** è definita da $\mu$ e $\sigma$; si usa la standardizzazione.
+3. La **Beta** è definita su $[0, 1]$ ed è perfetta per probabilità/proporzioni.
+4. **R** rende i calcoli semplici con `p`, `q`, `d`, `r` + nome distribuzione.
+5. La **densità** rappresenta il grado di incertezza (fondamentale per l'approccio bayesiano).
+
+---
+
+## Per la prossima lezione
+
+- Rivedere il materiale su: https://ccaudek.github.io/utet-prob/
+- Capitoli 12 (distribuzioni discrete) e 13 (distribuzioni continue)
+- Provare le funzioni **R** a casa con esempi propri
+
+> La pratica con **R** è **essenziale** per il resto del corso.
+
+---
+
+## Appendice: tavola della Normale standard
+
+La tavola riporta $\Phi(z) = P(Z \leq z)$ per $z \geq 0$.
+
+| $z$ | 0.00 | 0.01 | 0.02 | 0.03 | 0.04 | 0.05 | 0.06 |
+|-----|------|------|------|------|------|------|------|
+| 0.0 | .5000 | .5040 | .5080 | .5120 | .5160 | .5199 | .5239 |
+| 0.5 | .6915 | .6950 | .6985 | .7019 | .7054 | .7088 | .7123 |
+| 1.0 | .8413 | .8438 | .8461 | .8485 | .8508 | .8531 | .8554 |
+| 1.5 | .9332 | .9345 | .9357 | .9370 | .9382 | .9394 | .9406 |
+| 2.0 | .9772 | .9778 | .9783 | .9788 | .9793 | .9798 | .9803 |
+
+Per $z < 0$: usare $P(Z \leq -z) = 1 - P(Z \leq z)$

@@ -1,0 +1,525 @@
+---
+title: "Distribuzione predittiva a posteriori"
+subtitle: "Fare previsioni dopo aver osservato i dati — Segmento 1"
+version: 1.0
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+lang: it
+
+execute:
+  echo: true
+
+format:
+  revealjs:
+    theme: [default, ../revealjs.scss]
+    title-slide-attributes:
+      data-background-color: "#0072bc"
+    slide-number: c
+    show-slide-number: print
+    highlight-style: github
+    math: mathjax
+
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+```{r}
+#| echo: false
+library(ggplot2)
+set.seed(42)
+```
+
+## Obiettivi {.unnumbered .unlisted}
+
+1. Comprendere cos'è la **distribuzione predittiva a posteriori**.
+2. Capire la **differenza** rispetto alla distribuzione predittiva a priori.
+3. Imparare a **simulare** previsioni dopo aver osservato i dati.
+4. Applicare la posterior predictive a **esempi psicologici**.
+
+# Parte 1: dall'incertezza iniziale alle previsioni informate
+
+## Ricordiamo: la distribuzione predittiva a priori
+
+Nella lezione precedente abbiamo visto il **prior predictive check**:
+
+> "Prima di vedere i dati, che tipo di osservazioni mi aspetto?"
+
+Simulavamo dati estraendo i parametri dalla **distribuzione a priori**.
+
+---
+
+## La domanda di oggi
+
+Ora la domanda cambia:
+
+> "**Dopo** aver visto i dati, cosa mi aspetto di osservare in **futuro**?"
+
+. . .
+
+Questa è la **distribuzione predittiva a posteriori** (*posterior predictive distribution*).
+
+---
+
+## Un esempio concreto
+
+Immaginiamo di essere psicologi clinici che valutano un **nuovo protocollo di mindfulness** per l'ansia.
+
+- Abbiamo già condotto uno studio pilota con **25 pazienti**.
+- Di questi, **18 hanno mostrato miglioramento** clinicamente rilevante.
+- Ora vogliamo **prevedere** cosa succederà nei prossimi 30 pazienti.
+
+---
+
+## Due approcci a confronto
+
+**Approccio ingenuo:**  
+"18 su 25 = 72% di successo, quindi mi aspetto 72% × 30 ≈ 22 successi."
+
+. . .
+
+**Problema:** questo ignora l'**incertezza** sulla vera probabilità di successo.
+
+. . .
+
+**Approccio bayesiano:**  
+Incorpora sia i dati osservati sia l'incertezza residua sui parametri.
+
+---
+
+## L'idea chiave
+
+La distribuzione predittiva a posteriori **combina due fonti di variabilità**:
+
+1. **incertezza sui parametri** (non sappiamo esattamente quale sia θ);
+2. **variabilità nei dati** (anche conoscendo θ, i dati variano).
+
+👉 Entrambe contribuiscono all'incertezza sulle previsioni future.
+
+# Parte 2: la matematica (intuizione)
+
+Ecco una versione **più fluida, più chiara e più “da slide”**, con meno ripetizioni e una progressione concettuale più naturale. Ho mantenuto tutto il contenuto, ma l’ho reso più leggibile per studenti.
+
+---
+
+## La formula
+
+La **distribuzione predittiva a posteriori** per nuovi dati $\tilde{y}$ è:
+
+$$
+p(\tilde{y} \mid y)
+= \int p(\tilde{y} \mid \theta)\, p(\theta \mid y)\, d\theta.
+$$
+
+. . .
+
+* **$p(\theta \mid y)$**
+  è la **distribuzione a posteriori**: ciò che sappiamo su $\theta$ *dopo* aver osservato i dati;
+
+* **$p(\tilde{y} \mid \theta)$**
+  è il **modello dei dati**: come genereremmo nuovi dati se $\theta$ fosse noto;
+
+* **l’integrale**
+  rappresenta una **media ponderata** su tutti i valori possibili di $\theta$.
+
+---
+
+## L’idea chiave
+
+Come nella **distribuzione predittiva a priori**,
+costruiamo una media di molte distribuzioni.
+
+La differenza è che ora:
+
+* le distribuzioni riguardano **$\tilde{y}$**, cioè **dati futuri**;
+* la media è pesata dalla **distribuzione a posteriori** di $\theta$.
+
+---
+
+## Cosa stiamo facendo, passo per passo
+
+1. Consideriamo **tutti i possibili valori di $\theta$**;
+2. per ciascun valore, immaginiamo come potrebbero apparire i nuovi dati $\tilde{y}$;
+3. **pesiamo** ciascuna di queste possibilità in base a quanto è plausibile $\theta$,
+   secondo $p(\theta \mid y)$.
+
+👉 I valori di $\theta$ più compatibili con i dati osservati
+contano **di più** nella previsione.
+
+---
+
+## Collegamento con la *prior predictive distribution* 
+
+Concettualmente, facciamo **la stessa operazione** della distribuzione predittiva a priori:
+
+* una media di distribuzioni dei dati;
+* su tutti i valori possibili di $\theta$.
+
+L’unica differenza fondamentale è **come pesiamo questa media**:
+
+* prima dei dati → usiamo la **prior** $p(\theta)$;
+* dopo i dati → usiamo la **posterior** $p(\theta \mid y)$.
+
+---
+
+## Confronto con la *prior predictive distribution* 
+
+|             | Prior predictive                                   | Posterior predictive                                                             |
+| ----------- | -------------------------------------------------- | -------------------------------------------------------------------------------- |
+| **Formula** | $p(y) = \int p(y \mid \theta) p(\theta) d\theta$ | $p(\tilde{y} \mid y) = \int p(\tilde{y} \mid \theta) p(\theta \mid y) d\theta$ |
+| **Pesa su** | Prior $p(\theta)$                                  | Posterior $p(\theta \mid y)$                                                     |
+| **Quando**  | Prima dei dati                                     | Dopo i dati                                                                      |
+| **Scopo**   | Verificare il modello                              | Fare previsioni                                                                  |
+
+---
+
+### Messaggio da ricordare
+
+> La prior predictive controlla **se il modello ha senso**.
+
+> La posterior predictive dice **cosa ci aspettiamo di osservare**.
+
+---
+
+## Come si calcola in pratica?
+
+Non dobbiamo calcolare integrali. Usiamo la **simulazione**:
+
+1. estraiamo un valore di θ dalla **distribuzione a posteriori**;
+2. generiamo nuovi dati usando quel θ;
+3. ripetiamo molte volte.
+
+. . .
+
+È lo stesso schema del della distribuzione predittiva a priori, ma partiamo dalla **posterior** invece che dalla prior.
+
+# Parte 3: simulazione passo-passo
+
+## Torniamo all'esempio: mindfulness per l'ansia
+
+**Dati osservati:**
+
+- n = 25 pazienti;
+- y = 18 successi (miglioramento clinicamente significativo).
+
+**Prior:**
+
+- θ ~ Beta(3, 3) → credenza iniziale: il trattamento funziona in circa il 50% dei casi.
+
+---
+
+## Passo 1: calcoliamo la posterior
+
+Con il modello Beta-Binomiale, la posterior è analitica:
+
+$$
+\theta \mid y \sim \text{Beta}(\alpha + y, \beta + n - y)
+$$
+
+```{r}
+# Prior
+alpha_prior <- 3
+beta_prior <- 3
+
+# Dati osservati
+n_osservati <- 25
+successi_osservati <- 18
+
+# Posterior
+alpha_post <- alpha_prior + successi_osservati
+beta_post <- beta_prior + (n_osservati - successi_osservati)
+
+cat("Posterior: Beta(", alpha_post, ",", beta_post, ")\n")
+```
+
+---
+
+## Visualizziamo prior e posterior
+
+```{r}
+#| echo: false
+
+x <- seq(0, 1, length.out = 300)
+
+df_dist <- data.frame(
+  theta = rep(x, 2),
+  densita = c(dbeta(x, alpha_prior, beta_prior),
+              dbeta(x, alpha_post, beta_post)),
+  Distribuzione = rep(c("Prior: Beta(3,3)", "Posterior: Beta(21,10)"), each = 300)
+)
+
+ggplot(df_dist, aes(x = theta, y = densita, color = Distribuzione)) +
+  geom_line(linewidth = 1.2) +
+  scale_color_manual(values = c("steelblue", "coral")) +
+  labs(title = "Aggiornamento bayesiano",
+       subtitle = "18 successi su 25 pazienti",
+       x = "θ (probabilità di successo)", y = "Densità") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "bottom")
+```
+
+---
+
+## Passo 2: simuliamo **un** nuovo studio
+
+Immaginiamo di trattare **30 nuovi pazienti**. Quanti miglioreranno?
+
+```{r}
+# Simuliamo UN nuovo studio
+
+# 1. Estraiamo UN valore di theta dalla posterior
+theta_1 <- rbeta(n = 1, shape1 = alpha_post, shape2 = beta_post)
+
+# 2. Generiamo il numero di successi per 30 nuovi pazienti
+n_nuovi <- 30
+successi_1 <- rbinom(n = 1, size = n_nuovi, prob = theta_1)
+
+cat("Simulazione 1:\n")
+cat("  theta estratto:", round(theta_1, 3), "\n")
+cat("  successi previsti:", successi_1, "su", n_nuovi, "\n")
+```
+
+---
+
+## Ripetiamo: un secondo studio simulato
+
+```{r}
+# Un altro mondo possibile
+theta_2 <- rbeta(1, alpha_post, beta_post)
+successi_2 <- rbinom(1, n_nuovi, theta_2)
+
+cat("Simulazione 2:\n")
+cat("  theta estratto:", round(theta_2, 3), "\n")
+cat("  successi previsti:", successi_2, "su", n_nuovi, "\n")
+```
+
+Ogni simulazione dà risultati diversi perché:
+
+- θ varia (incertezza sul parametro);
+- i successi variano (variabilità binomiale).
+
+---
+
+## Passo 3: simuliamo **molti** studi futuri
+
+```{r}
+n_sim <- 5000
+
+# 1. Estraiamo n_sim valori di theta dalla posterior
+theta_sim <- rbeta(n_sim, alpha_post, beta_post)
+
+# 2. Per ogni theta, generiamo il numero di successi
+successi_sim <- rbinom(n_sim, size = n_nuovi, prob = theta_sim)
+```
+
+---
+
+```{r}
+# Vediamo i primi 10 risultati
+head(data.frame(
+  theta = round(theta_sim, 3),
+  successi = successi_sim
+), 10)
+```
+
+---
+
+## Cosa contiene `successi_sim`?
+
+È un vettore di 5000 numeri, ognuno rappresenta:
+
+> "In un possibile futuro, quanti pazienti su 30 migliorerebbero?"
+
+Questa è la **distribuzione predittiva a posteriori**.
+
+---
+
+## Visualizziamo la posterior predictive
+
+```{r}
+#| echo: false
+#| fig-height: 4.5
+
+df_pred <- data.frame(successi = successi_sim)
+
+ggplot(df_pred, aes(x = successi)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 31,
+                 fill = "coral", alpha = 0.7, color = "white") +
+  labs(title = "Distribuzione predittiva a posteriori",
+       subtitle = "Quanti successi su 30 nuovi pazienti?",
+       x = "Numero di successi previsti", y = "Densità") +
+  theme_minimal(base_size = 14)
+```
+
+---
+
+## Riassumiamo le previsioni
+
+```{r}
+cat("Previsioni per 30 nuovi pazienti:\n")
+cat("  Media:", round(mean(successi_sim), 1), "successi\n")
+cat("  Mediana:", median(successi_sim), "successi\n")
+cat("  Intervallo 95%:", quantile(successi_sim, 0.025), "-",
+    quantile(successi_sim, 0.975), "successi\n")
+```
+
+👉 Ci aspettiamo **tra 15 e 27 successi** nel 95% dei casi.
+
+# Parte 4: rispondere a domande cliniche
+
+## Domanda 1: qual è la probabilità di almeno 20 successi?
+
+```{r}
+# Proporzione di simulazioni con >= 20 successi
+prob_almeno_20 <- mean(successi_sim >= 20)
+
+cat("P(successi >= 20) =", round(prob_almeno_20 * 100, 1), "%\n")
+```
+
+. . .
+
+C'è circa il **70%** di probabilità che almeno 20 pazienti su 30 migliorino.
+
+---
+
+## Domanda 2: qual è la probabilità che il trattamento funzioni per più della metà?
+
+```{r}
+# Più di 15 successi su 30
+prob_maggioranza <- mean(successi_sim > 15)
+
+cat("P(successi > 15) =", round(prob_maggioranza * 100, 1), "%\n")
+```
+
+. . .
+
+C'è circa il **95%** di probabilità che più della metà dei pazienti migliori.
+
+---
+
+## Domanda 3: qual è la probabilità di meno di 10 successi?
+
+```{r}
+# Meno di 10 successi (scenario pessimistico)
+prob_pochi <- mean(successi_sim < 10)
+
+cat("P(successi < 10) =", round(prob_pochi * 100, 2), "%\n")
+```
+
+. . .
+
+Solo lo **0.04%** di probabilità di un risultato così deludente.
+
+---
+
+## Il valore pratico
+
+Queste domande sono **esattamente** quelle che interessano ai clinici:
+
+- "Posso aspettarmi che funzioni per la maggior parte dei pazienti?"
+- "Qual è lo scenario peggiore realistico?"
+- "Con quanta confidenza posso consigliare questo trattamento?"
+
+La distribuzione predittiva a posteriori fornisce **risposte probabilistiche dirette**.
+
+# Parte 5: confronto con la prior predictive
+
+## Cosa cambia dopo aver visto i dati?
+
+Confrontiamo le previsioni **prima** e **dopo** aver osservato i 18 successi su 25.
+
+```{r}
+# PRIOR predictive (prima dei dati)
+theta_prior_sim <- rbeta(n_sim, alpha_prior, beta_prior)
+successi_prior_sim <- rbinom(n_sim, n_nuovi, theta_prior_sim)
+
+# POSTERIOR predictive (dopo i dati)
+# (già calcolato: successi_sim)
+```
+
+---
+
+## Confronto visivo
+
+```{r}
+#| echo: false
+#| fig-height: 4.5
+
+df_confronto <- data.frame(
+  successi = c(successi_prior_sim, successi_sim),
+  Quando = rep(c("Prima dei dati\n(prior predictive)",
+                  "Dopo i dati\n(posterior predictive)"), each = n_sim)
+)
+
+ggplot(df_confronto, aes(x = successi, fill = Quando)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 31,
+                 alpha = 0.6, position = "identity", color = "white") +
+  scale_fill_manual(values = c("steelblue", "coral")) +
+  labs(title = "Prior vs Posterior Predictive",
+       subtitle = "Previsioni per 30 nuovi pazienti, prima e dopo aver osservato i dati",
+       x = "Numero di successi previsti", y = "Densità") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "bottom")
+```
+
+---
+
+## Confronto numerico
+
+```{r}
+cat("PRIOR predictive (prima dei dati):\n")
+cat("  Media:", round(mean(successi_prior_sim), 1), "\n")
+cat("  Intervallo 95%:", quantile(successi_prior_sim, 0.025), "-",
+    quantile(successi_prior_sim, 0.975), "\n\n")
+
+cat("POSTERIOR predictive (dopo i dati):\n")
+cat("  Media:", round(mean(successi_sim), 1), "\n")
+cat("  Intervallo 95%:", quantile(successi_sim, 0.025), "-",
+    quantile(successi_sim, 0.975), "\n")
+```
+
+---
+
+## Cosa impariamo?
+
+**Prima dei dati:**
+
+- Media: 15 successi (coerente con prior centrata su 0.5).
+- Intervallo molto ampio: 4-26 successi.
+
+**Dopo i dati:**
+
+- Media: 20 successi (riflette i dati osservati).
+- Intervallo più stretto: 15-27 successi.
+
+👉 I dati **riducono l'incertezza** e **spostano le previsioni**.
+
+# Riepilogo 
+
+## I punti chiave
+
+1. La **posterior predictive** risponde: "Cosa mi aspetto in futuro, dato ciò che ho osservato?"
+
+2. Si calcola **simulando**: estrai θ dalla posterior, genera dati, ripeti.
+
+3. Incorpora **due fonti di incertezza**: sui parametri e sui dati.
+
+4. Permette di rispondere a **domande pratiche** in termini probabilistici.
+
+5. Rispetto alla prior predictive, le previsioni sono **più precise** e **informate dai dati**.
+
+---
+
+## Nel prossimo segmento
+
+Vedremo:
+
+- La posterior predictive con **variabili continue**.
+- Il **posterior predictive check**: verificare se il modello spiega bene i dati.
+- Esempi con **punteggi di test psicologici**.
+- Come usare la posterior predictive per **decisioni cliniche**.

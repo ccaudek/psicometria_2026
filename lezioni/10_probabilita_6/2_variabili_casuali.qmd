@@ -1,0 +1,585 @@
+---
+title: "Variabili casuali"
+subtitle: "Funzioni di variabili casuali e calcoli in R"
+version: 0.8
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+toc-depth: 2
+lang: it
+
+execute:
+  echo: true
+
+format:
+    revealjs:
+      theme: [default, ../revealjs.scss]
+      title-slide-attributes:
+        data-background-color: "#0072bc"
+      slide-number: c
+      show-slide-number: print
+      highlight-style: github
+      math: mathjax
+      mermaid:
+        theme: neutral
+      
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+```{r}
+#| echo: false
+#| output: false
+library(tibble)
+library(dplyr)
+library(knitr)
+library(kableExtra)
+```
+
+## Obiettivo {.unnumbered .unlisted}
+
+In questa seconda parte:
+
+1. Introduciamo le **funzioni di variabili casuali**
+2. Impariamo a calcolare valore atteso e varianza **con R**
+3. Verifichiamo i concetti con **simulazioni**
+
+---
+
+## Funzioni di variabili casuali
+
+Se $X$ è una variabile casuale e $g$ è una funzione, allora $Y = g(X)$ è anch'essa una variabile casuale.
+
+**Esempi in psicologia:**
+
+- $X$ = punteggio grezzo → $Y = 10X + 50$ = punteggio T
+- $X$ = tempo di reazione (ms) → $Y = \log(X)$ = log-trasformazione
+- $X$ = numero di risposte corrette → $Y = X/n$ = proporzione
+
+---
+
+## Valore atteso di $g(X)$: caso discreto
+
+Se $X$ assume valori $x_1, \ldots, x_n$ con probabilità $p(x_i)$:
+
+$$
+\mathbb{E}[g(X)] = \sum_{i=1}^{n} g(x_i) \cdot p(x_i)
+$$
+
+**Attenzione:** in generale, $\mathbb{E}[g(X)] \neq g(\mathbb{E}[X])$
+
+> La media di una funzione **non è** la funzione della media!
+
+---
+
+## Esempio: il quadrato
+
+Sia $X$ con $\mathbb{E}(X) = 2$ e distribuzione:
+
+| $x$ | 0 | 2 | 4 |
+|-----|---|---|---|
+| $p(x)$ | 0.25 | 0.50 | 0.25 |
+
+**Calcolo $\mathbb{E}(X^2)$:**
+$$
+\mathbb{E}(X^2) = 0^2(0.25) + 2^2(0.50) + 4^2(0.25) = 0 + 2 + 4 = 6
+$$
+
+Ma $[\mathbb{E}(X)]^2 = 2^2 = 4 \neq 6$
+
+---
+
+## Il caso lineare è speciale
+
+Per le funzioni **lineari** $g(X) = a + bX$, vale:
+
+$$
+\mathbb{E}(a + bX) = a + b\mathbb{E}(X)
+$$
+
+Questa è l'unica classe di funzioni per cui vale l'uguaglianza!
+
+---
+
+## Disuguaglianza di Jensen
+
+Per funzioni **convesse** (come $x^2$, $e^x$):
+
+$$
+\mathbb{E}[g(X)] \geq g(\mathbb{E}[X])
+$$
+
+Per funzioni **concave** (come $\log(x)$, $\sqrt{x}$):
+
+$$
+\mathbb{E}[g(X)] \leq g(\mathbb{E}[X])
+$$
+
+> Implicazione pratica: la media dei logaritmi ≠ logaritmo della media!
+
+---
+
+## Calcoli in R: creare una distribuzione discreta
+
+R non ha una funzione specifica per v.c. discrete arbitrarie, ma possiamo usare i vettori:
+
+```{r}
+#| echo: true
+# Definire la distribuzione
+x <- c(0, 1, 2)           # Valori
+p <- c(0.70, 0.20, 0.10)  # Probabilità
+
+# Verificare che le probabilità sommino a 1
+sum(p)
+```
+
+---
+
+## Calcolare valore atteso in R
+
+```{r}
+#| echo: true
+# Valore atteso: somma di x * p(x)
+E_X <- sum(x * p)
+E_X
+```
+
+Confrontiamo con l'Esercizio 1 della prima parte: ✓
+
+---
+
+## Calcolare varianza in R
+
+```{r}
+#| echo: true
+# Media dei quadrati
+E_X2 <- sum(x^2 * p)
+E_X2
+
+# Varianza = E(X²) - [E(X)]²
+Var_X <- E_X2 - E_X^2
+Var_X
+
+# Deviazione standard
+sqrt(Var_X)
+```
+
+---
+
+## Ripetiamo l'Esercizio 3 con R
+
+Scala di ansia (1-5):
+
+```{r}
+#| echo: true
+x <- 1:5
+p <- c(0.10, 0.25, 0.35, 0.20, 0.10)
+
+# Valore atteso
+E_X <- sum(x * p)
+E_X
+
+# Varianza
+Var_X <- sum(x^2 * p) - E_X^2
+Var_X
+
+# Deviazione standard
+sqrt(Var_X)
+```
+
+---
+
+## Distribuzioni note in R
+
+Per le distribuzioni standard, R ha funzioni dedicate:
+
+| Distribuzione | Valore atteso | Varianza in R |
+|---------------|---------------|---------------|
+| Binomiale | `n * p` | `n * p * (1-p)` |
+| Poisson | `lambda` | `lambda` |
+| Normale | `mean` | `sd^2` |
+| Beta | Formula | Formula |
+
+---
+
+## Esempio: distribuzione Binomiale
+
+Lo studente con 3 esami (Esercizio 5):
+
+```{r}
+#| echo: true
+n <- 3
+theta <- 0.70
+
+# Valore atteso
+E_Y <- n * theta
+E_Y
+
+# Varianza
+Var_Y <- n * theta * (1 - theta)
+Var_Y
+```
+
+---
+
+## Simulazione: verificare il valore atteso
+
+La potenza di R sta nelle simulazioni. Verifichiamo che la media di tanti campioni converge al valore atteso:
+
+```{r}
+#| echo: true
+set.seed(42)  # Per riproducibilità
+
+# Simulare 10000 lanci di dado
+lanci <- sample(1:6, size = 10000, replace = TRUE)
+
+# Media campionaria
+mean(lanci)
+```
+
+Valore atteso teorico: 3.5 ✓
+
+---
+
+## Simulazione: convergenza al valore atteso
+
+```{r}
+#| echo: false
+#| fig-height: 4
+set.seed(42)
+n_max <- 5000
+lanci <- sample(1:6, size = n_max, replace = TRUE)
+medie_cumulative <- cumsum(lanci) / (1:n_max)
+
+plot(1:n_max, medie_cumulative, type = "l", 
+     xlab = "Numero di lanci", ylab = "Media cumulativa",
+     main = "Convergenza al valore atteso", col = "steelblue", lwd = 1.5)
+abline(h = 3.5, col = "red", lty = 2, lwd = 2)
+legend("topright", legend = c("Media cumulativa", "E(X) = 3.5"), 
+       col = c("steelblue", "red"), lty = c(1, 2), lwd = 2)
+```
+
+> Con più osservazioni, la media si avvicina a $\mathbb{E}(X)$.
+
+---
+
+## Simulazione della varianza
+
+```{r}
+#| echo: true
+# Varianza campionaria
+var(lanci)
+
+# Varianza teorica del dado
+sum((1:6 - 3.5)^2) / 6
+```
+
+---
+
+## Funzione `sample()` per v.c. discrete
+
+La funzione `sample()` è fondamentale:
+
+```{r}
+#| echo: true
+# Distribuzione personalizzata
+x <- c(0, 1, 2)
+p <- c(0.70, 0.20, 0.10)
+
+# Simulare 1000 osservazioni
+campione <- sample(x, size = 1000, replace = TRUE, prob = p)
+
+# Verificare
+mean(campione)  # Dovrebbe essere ~0.40
+var(campione)   # Dovrebbe essere ~0.44
+```
+
+---
+
+## Esercizio 8 — Simulazione del test
+
+Simula 10000 osservazioni dalla distribuzione del test di screening (Esercizio 1) e verifica che media e varianza campionarie si avvicinino ai valori teorici.
+
+---
+
+### Soluzione Esercizio 8
+
+```{r}
+#| echo: true
+set.seed(123)
+
+# Distribuzione
+x <- c(0, 1, 2)
+p <- c(0.70, 0.20, 0.10)
+
+# Simulazione
+campione <- sample(x, size = 10000, replace = TRUE, prob = p)
+
+# Confronto
+cat("Media campionaria:", mean(campione), 
+    "\nMedia teorica:", sum(x * p))
+cat("\n\nVarianza campionaria:", var(campione), 
+    "\nVarianza teorica:", sum(x^2 * p) - sum(x * p)^2)
+```
+
+---
+
+## Esercizio 9 — Funzione di v.c. in R
+
+Un punteggio $X$ segue questa distribuzione:
+
+| $x$ | 10 | 20 | 30 | 40 |
+|-----|-----|-----|-----|-----|
+| $p(x)$ | 0.1 | 0.3 | 0.4 | 0.2 |
+
+Sia $Y = \sqrt{X}$. Calcola $\mathbb{E}(Y)$ e verifica che $\mathbb{E}(\sqrt{X}) \neq \sqrt{\mathbb{E}(X)}$.
+
+---
+
+### Soluzione Esercizio 9
+
+```{r}
+#| echo: true
+x <- c(10, 20, 30, 40)
+p <- c(0.1, 0.3, 0.4, 0.2)
+
+# E(X)
+E_X <- sum(x * p)
+E_X
+
+# E(sqrt(X))
+E_sqrtX <- sum(sqrt(x) * p)
+E_sqrtX
+
+# sqrt(E(X))
+sqrt(E_X)
+
+# Verifica: sono diversi!
+E_sqrtX < sqrt(E_X)  # Funzione concava → disuguaglianza di Jensen
+```
+
+---
+
+## Esercizio 10 — Distribuzioni note in R
+
+Un ricercatore studia il numero di errori in un compito. Se ogni prova ha probabilità 0.15 di errore e ci sono 20 prove:
+
+a) Usa le formule della Binomiale per calcolare $\mathbb{E}(X)$ e $\mathbb{V}(X)$
+b) Simula 5000 esperimenti e verifica i risultati
+
+---
+
+### Soluzione Esercizio 10
+
+```{r}
+#| echo: true
+n <- 20
+theta <- 0.15
+
+# a) Valori teorici
+E_teorico <- n * theta
+Var_teorico <- n * theta * (1 - theta)
+cat("E(X) teorico:", E_teorico, "\nVar(X) teorica:", Var_teorico)
+```
+
+```{r}
+#| echo: true
+# b) Simulazione
+set.seed(456)
+errori <- rbinom(5000, size = n, prob = theta)
+cat("\nMedia simulata:", mean(errori), 
+    "\nVarianza simulata:", var(errori))
+```
+
+---
+
+## Esercizio 11 — Trasformazione in punteggio T
+
+I punteggi grezzi $X$ hanno $\mathbb{E}(X) = 25$ e $\sigma_X = 5$.
+
+Il punteggio T è definito come: $T = 50 + 10 \cdot \frac{X - 25}{5}$
+
+a) Semplifica la formula
+b) Trova $\mathbb{E}(T)$ e $\sigma_T$ usando le proprietà
+c) Verifica con una simulazione (assumi $X \sim \mathcal{N}(25, 5)$)
+
+---
+
+### Soluzione Esercizio 11 (teoria)
+
+**a) Semplificazione:**
+$$
+T = 50 + 10 \cdot \frac{X - 25}{5} = 50 + 2(X - 25) = 2X
+$$
+
+**b) Proprietà:**
+$$
+\mathbb{E}(T) = 2\mathbb{E}(X) = 2 \times 25 = 50
+$$
+$$
+\sigma_T = 2\sigma_X = 2 \times 5 = 10
+$$
+
+---
+
+### Soluzione Esercizio 11 (simulazione)
+
+```{r}
+#| echo: true
+set.seed(789)
+
+# Simulare X ~ N(25, 5)
+X <- rnorm(10000, mean = 25, sd = 5)
+
+# Calcolare T
+T <- 50 + 10 * (X - 25) / 5
+
+# Verificare
+cat("Media di T:", mean(T), "(atteso: 50)")
+cat("\nSD di T:", sd(T), "(atteso: 10)")
+```
+
+---
+
+## Esercizio 12 — Somma di v.c. indipendenti
+
+Due sottoscale indipendenti:
+
+- $A \sim \mathcal{N}(20, 4)$ (media 20, sd 4)
+- $B \sim \mathcal{N}(30, 5)$ (media 30, sd 5)
+
+Simula 10000 punteggi totali $T = A + B$ e verifica le proprietà della somma.
+
+---
+
+### Soluzione Esercizio 12
+
+```{r}
+#| echo: true
+set.seed(111)
+
+A <- rnorm(10000, mean = 20, sd = 4)
+B <- rnorm(10000, mean = 30, sd = 5)
+Total <- A + B
+
+# Valori teorici
+cat("E(T) teorico:", 20 + 30, "  Simulato:", mean(Total))
+cat("\nVar(T) teorica:", 16 + 25, "  Simulata:", var(Total))
+cat("\nSD(T) teorica:", sqrt(41), "  Simulata:", sd(Total))
+```
+
+---
+
+## Creare funzioni personalizzate in R
+
+Per calcoli ripetuti, conviene creare funzioni:
+
+```{r}
+#| echo: true
+# Funzione per valore atteso di v.c. discreta
+valore_atteso <- function(x, p) {
+  sum(x * p)
+}
+
+# Funzione per varianza
+varianza <- function(x, p) {
+  E_X <- sum(x * p)
+  E_X2 <- sum(x^2 * p)
+  E_X2 - E_X^2
+}
+```
+
+---
+
+## Uso delle funzioni personalizzate
+
+```{r}
+#| echo: true
+# Test di screening
+x <- c(0, 1, 2)
+p <- c(0.70, 0.20, 0.10)
+
+valore_atteso(x, p)
+varianza(x, p)
+sqrt(varianza(x, p))  # Deviazione standard
+```
+
+---
+
+## Visualizzare distribuzioni in R
+
+```{r}
+#| echo: true
+#| eval: false
+# Distribuzione di massa
+x <- c(0, 1, 2)
+p <- c(0.70, 0.20, 0.10)
+
+barplot(p, names.arg = x, col = "steelblue",
+        xlab = "Punteggio", ylab = "Probabilità",
+        main = "Distribuzione del test di screening")
+abline(v = which(x == 0.4), col = "red", lty = 2)  # Media
+```
+
+---
+
+## Visualizzazione della distribuzione
+
+```{r}
+#| echo: false
+#| fig-height: 4
+x <- c(0, 1, 2)
+p <- c(0.70, 0.20, 0.10)
+
+barplot(p, names.arg = x, col = "steelblue",
+        xlab = "Punteggio", ylab = "Probabilità",
+        main = "Distribuzione del test di screening",
+        ylim = c(0, 0.8))
+```
+
+---
+
+## Riepilogo: funzioni R essenziali
+
+**Per calcoli manuali:**
+```r
+sum(x * p)           # Valore atteso
+sum(x^2 * p) - E^2   # Varianza
+sqrt(varianza)       # Deviazione standard
+```
+
+**Per simulazioni:**
+```r
+sample(x, n, replace=TRUE, prob=p)  # V.c. discreta
+rbinom(n, size, prob)                # Binomiale
+rnorm(n, mean, sd)                   # Normale
+```
+
+---
+
+## Cosa abbiamo imparato oggi
+
+1. Il **valore atteso** è la media ponderata, interpretabile come media di infinite ripetizioni
+
+2. La **varianza** misura la dispersione: $\mathbb{V}(X) = \mathbb{E}(X^2) - [\mathbb{E}(X)]^2$
+
+3. Per **funzioni di v.c.**: $\mathbb{E}[g(X)] \neq g(\mathbb{E}[X])$ in generale
+
+4. **R** permette di calcolare facilmente e verificare con simulazioni
+
+5. Le **proprietà** (linearità, additività) sono fondamentali per l'inferenza
+
+---
+
+## Per la prossima lezione
+
+- Rivedere il materiale su: https://ccaudek.github.io/utet-prob/
+- Capitoli 6 (variabili casuali), 8 (proprietà), 9 (covarianza)
+- Esercitarsi con le simulazioni in R
+
+> Nel prossimo incontro: **probabilità congiunta** e **indipendenza statistica**.

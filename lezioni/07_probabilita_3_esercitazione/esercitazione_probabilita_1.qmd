@@ -1,0 +1,572 @@
+---
+title: "Esercitazione pratica – Probabilità (segmento 1)"
+subtitle: "Problemi di probabilità e probabilità condizionata (senza R)"
+version: 1.0
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+toc-depth: 2
+lang: it
+
+format:
+    revealjs:
+      theme: [default, ../revealjs.scss]
+      title-slide-attributes:
+        data-background-color: "#0072bc"
+      slide-number: c
+      show-slide-number: print
+      highlight-style: github
+      math: mathjax
+      mermaid:
+        theme: neutral
+      
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+## Obiettivi dell'esercitazione {.unnumbered .unlisted}
+
+In questa esercitazione lavoriamo **solo con carta, penna e ragionamento**.
+
+> Riferimento: https://ccaudek.github.io/utet-prob/ — Capitoli 1-8
+
+**Obiettivi:**
+
+- consolidare i concetti di probabilità visti a lezione,
+- imparare a tradurre problemi verbali in calcoli,
+- riconoscere gli errori intuitivi più comuni,
+- prepararsi per il teorema di Bayes.
+
+---
+
+## Struttura dell'esercitazione
+
+Per ogni esercizio:
+
+1. **leggi** il problema (1 minuto),
+2. **risolvi** in autonomia (3-5 minuti),
+3. **confronta** con la soluzione guidata.
+
+---
+
+## Riepilogo formule chiave
+
+| Concetto | Formula |
+|----------|---------|
+| Complemento | $P(A^c) = 1 - P(A)$ |
+| Prob. congiunta | $P(A \cap B) = P(A \mid B) \cdot P(B)$ |
+| Prob. condizionata | $P(A \mid B) = \frac{P(A \cap B)}{P(B)}$ |
+| Prob. totale | $P(A) = \sum_i P(A \mid B_i) \cdot P(B_i)$ |
+| Bayes | $P(H \mid E) = \frac{P(E \mid H) \cdot P(H)}{P(E)}$ |
+
+---
+
+## Esercizio 1 — Complemento
+
+In un esperimento di psicologia cognitiva, il **30%** degli stimoli contiene un target visivo.
+
+**Calcola:**  
+Qual è la probabilità che uno stimolo *non* contenga il target?
+
+*(2 minuti)*
+
+---
+
+### Soluzione Esercizio 1
+
+Applicando la regola del complemento:
+
+$$
+P(\text{no target}) = 1 - P(\text{target}) = 1 - 0.30 = 0.70
+$$
+
+**Concetto chiave:** le probabilità degli eventi complementari sommano sempre a 1.
+
+---
+
+## Esercizio 2 — Probabilità congiunta
+
+Nello stesso esperimento:
+
+- target presente: 30% degli stimoli;
+- se il target è presente, risposta corretta: 85%.
+
+**Calcola:**   
+$P(\text{target} \cap \text{risposta corretta}).$
+
+*(3 minuti)*
+
+---
+
+### Soluzione Esercizio 2
+
+Usando la regola del prodotto:
+
+$$
+P(\text{target} \cap \text{corretta}) = P(\text{corretta} \mid \text{target}) \cdot P(\text{target})
+$$
+
+$$
+= 0.85 \times 0.30 = 0.255
+$$
+
+**Risultato:**  
+il 25.5% di tutti i trial ha un target presente **e** una risposta corretta.
+
+---
+
+## Esercizio 3 — Probabilità totale
+
+Aggiungiamo un'informazione:
+
+- se il target è **assente**, la probabilità di risposta corretta è 0.90.
+
+**Calcola:**   
+$P(\text{risposta corretta})$ totale.
+
+*(4 minuti)*
+
+---
+
+### Soluzione Esercizio 3
+
+La risposta può essere corretta in due modi (partizione):
+
+$$
+\begin{align}
+P(\text{corretta}) &= P(\text{corretta} \mid \text{target}) \cdot P(\text{target}) \\ &\quad + P(\text{corretta} \mid \text{no target}) \cdot P(\text{no target})\\
+&= 0.85 \times 0.30 + 0.90 \times 0.70 \\
+&= 0.255 + 0.630 \\
+&= 0.885.
+\end{align}
+$$
+
+**Risultato:**  
+l'88.5% delle risposte totali è corretto.
+
+---
+
+## Esercizio 4 — Inversione della probabilità  
+*(Bayes informale)*
+
+Usando i dati precedenti, **calcola:**
+
+$$
+P(\text{target presente} \mid \text{risposta corretta})
+$$
+
+Usa il **metodo delle frequenze naturali**,  supponendo **1,000 trial**.
+
+*(5 minuti — qui avviene il passaggio chiave del ragionamento bayesiano)*
+
+---
+
+### Soluzione — Metodo delle frequenze naturali
+
+Su **1,000 trial**:
+
+| Condizione | N | Risposte corrette |
+|------------|---|------------------|
+| Target presente | 300 | 255 (85%) |
+| Target assente | 700 | 630 (90%) |
+| **Totale** | **1000** | **885** |
+
+La probabilità richiesta è:
+
+$$
+\begin{align}
+P(\text{target} \mid \text{corretta}) &= \frac{\text{corrette con target}}{\text{corrette totali}}\\
+&= \frac{255}{885} \approx 0.29.
+\end{align}
+$$
+
+---
+
+### Soluzione — Metodo della formula
+
+Applicando il teorema di Bayes:
+
+$$
+\begin{align}
+P(\text{target} \mid \text{corretta})
+&= \frac{P(\text{corretta} \mid \text{target})\,P(\text{target})}
+{P(\text{corretta})}\\
+&= \frac{0.85 \times 0.30}{0.885}
+\approx 0.29.
+\end{align}
+$$
+
+
+---
+
+### Interpretazione
+
+Una risposta corretta **non implica** che il target fosse presente.
+
+Anche se:
+
+- l’accuratezza è alta quando il target c’è (85%),
+- le risposte corrette **senza target** sono molte,
+  perché il target è relativamente raro (30%).
+
+**Messaggio chiave:**  
+una probabilità “alta” **non resta alta** dopo l’inversione.
+
+
+---
+
+## Esercizio 5 — Test diagnostico: setup
+
+Un test per un disturbo psicologico ha:
+
+- prevalenza: 10%,
+- sensibilità: 90% → $P(+ \mid D)$,
+- specificità: 80% → $P(- \mid D^c)$.
+
+**Calcola:**
+
+a) $P(+ \mid D^c)$ (falsi positivi);
+b) $P(+)$ (probabilità totale di test positivo).
+
+*(5 minuti)*
+
+---
+
+### Soluzione Esercizio 5a
+
+Il tasso di falsi positivi è il complemento della specificità **nello spazio delle persone sane**:
+
+$$
+P(+ \mid D^c) = 1 - P(- \mid D^c) = 1 - 0.80 = 0.20.
+$$
+
+**Attenzione:** il complemento va sempre calcolato dentro lo stesso spazio di riferimento.
+
+---
+
+### Soluzione Esercizio 5b
+
+Usando la probabilità totale:
+
+$$
+P(+) = P(+ \mid D) \cdot P(D) + P(+ \mid D^c) \cdot P(D^c)
+$$
+
+$$
+= 0.90 \times 0.10 + 0.20 \times 0.90 = 0.09 + 0.18 = 0.27
+$$
+
+**Risultato:** il 27% dei test sarà positivo.
+
+---
+
+## Esercizio 6 — Test diagnostico: Bayes
+
+Usando i dati dell'Esercizio 5:
+
+**Calcola:** $P(D \mid +)$ — probabilità di avere il disturbo dato test positivo.
+
+*(5 minuti)*
+
+---
+
+### Soluzione Esercizio 6 — Frequenze
+
+Su **1,000 persone**:
+
+| Gruppo | N | Test + |
+|--------|---|--------|
+| Disturbo | 100 | 90 |
+| No disturbo | 900 | 180 |
+| **Totale** | 1000 | **270** |
+
+$$
+P(D \mid +) = \frac{90}{270} = \frac{1}{3} \approx 0.333.
+$$
+
+---
+
+### Soluzione Esercizio 6 — Formula
+
+$$
+P(D \mid +) = \frac{P(+ \mid D) \cdot P(D)}{P(+)} = \frac{0.90 \times 0.10}{0.27} = \frac{0.09}{0.27} = \frac{1}{3}.
+$$
+
+**Interpretazione:** solo 1 persona su 3 con test positivo ha realmente il disturbo!
+
+---
+
+## Esercizio 7 — Effetto della prevalenza
+
+Ricalcola $P(D \mid +)$ con prevalenza del **2%** (stessi sensibilità e specificità).
+
+*(5 minuti)*
+
+---
+
+### Soluzione Esercizio 7
+
+**Nuova probabilità marginale:**
+
+$$
+P(+) = 0.90 \times 0.02 + 0.20 \times 0.98 = 0.018 + 0.196 = 0.214.
+$$
+
+**Teorema di Bayes:**
+
+$$
+P(D \mid +) = \frac{0.90 \times 0.02}{0.214} = \frac{0.018}{0.214} \approx 0.084.
+$$
+
+**Risultato:** solo l'8.4% dei positivi ha il disturbo!
+
+---
+
+### Confronto: effetto della prevalenza
+
+| Prevalenza | $P(D \mid +)$ |
+|------------|---------------|
+| 10% | 33.3% |
+| 2% | **8.4%** |
+
+> Più la condizione è rara, più i falsi positivi dominano.
+
+---
+
+## Esercizio 8 — Combinatoria: permutazioni
+
+In un esperimento di memoria di lavoro, **5 immagini** diverse (E, F, G, H, I) vengono presentate **una alla volta**, senza ripetizioni.
+
+**Calcola:**. 
+in quanti ordini diversi possono essere presentate le immagini?
+
+*(2 minuti)*
+
+---
+
+### Soluzione Esercizio 8
+
+Questo è un problema di **permutazioni**:
+
+$$
+P_5 = 5! = 5 \times 4 \times 3 \times 2 \times 1 = 120.
+$$
+
+**Risultato:**. 
+ci sono **120 sequenze diverse** possibili.
+
+Se tutte le sequenze sono equiprobabili:
+
+$$
+P(\text{una sequenza specifica}) = \frac{1}{120} \approx 0.008.
+$$
+
+---
+
+## Esercizio 9 — Combinatoria: disposizioni
+
+In un laboratorio, **7 studenti** devono essere assegnati a **3 postazioni diverse**, con ruoli distinti:
+
+* operatore,
+* osservatore,
+* annotatore.
+
+**Calcola:**  
+in quanti modi diversi è possibile assegnare i ruoli?
+
+*(3 minuti)*
+
+---
+
+### Soluzione Esercizio 9
+
+Questo è un problema di **disposizioni** (l’ordine conta):
+
+$$
+D_{7,3} = \frac{7!}{(7-3)!} = \frac{7!}{4!} = 7 \times 6 \times 5 = 210.
+$$
+
+**Ragionamento:**
+
+* 7 scelte per l’operatore;
+* 6 per l’osservatore;
+* 5 per l’annotatore.
+
+---
+
+## Esercizio 10 — Combinatoria: combinazioni
+
+Un ricercatore dispone di **12 stimoli** emotivi e vuole selezionarne **4** per costruire un set sperimentale.
+
+L’**ordine non conta**.
+
+**Calcola:**  
+quanti set diversi può costruire?
+
+*(3 minuti)*
+
+---
+
+### Soluzione Esercizio 10
+
+Questo è un problema di **combinazioni**:
+
+$$
+\binom{12}{4}
+= \frac{12!}{4! , 8!}
+= \frac{12 \times 11 \times 10 \times 9}{4 \times 3 \times 2 \times 1}
+= \frac{11880}{24}
+= 495.
+$$
+
+**Risultato:**  
+sono possibili **495 set** diversi.
+
+---
+
+## Esercizio 11 — Indipendenza
+
+In un esperimento di priming:
+
+- $P(\text{corretto}) = 0.75$,
+- $P(\text{corretto} \mid \text{prime congruente}) = 0.82$.
+
+**Domande:**
+
+a) I due eventi sono indipendenti?
+b) Quantifica l'effetto del prime
+
+*(3 minuti)*
+
+---
+
+### Soluzione Esercizio 11
+
+**a)** Gli eventi sono **dipendenti** perché:
+
+$$
+P(\text{corretto} \mid \text{prime}) = 0.82 \neq 0.75 = P(\text{corretto}).
+$$
+
+**b)** L'effetto del prime:
+
+$$
+\Delta = P(\text{corretto} \mid \text{prime}) - P(\text{corretto}) = 0.82 - 0.75 = 0.07.
+$$
+
+Il prime congruente aumenta la probabilità di risposta corretta di **7 punti percentuali**.
+
+---
+
+## Esercizio 12 — Problema completo
+
+Test per depressione:
+
+- prevalenza: 15%;
+- sensibilità: 85%;
+- specificità: 90%.
+
+**Calcola:**
+
+a) $P(+)$
+b) $P(D \mid +)$
+c) $P(D \mid -)$
+
+*(8 minuti)*
+
+---
+
+### Soluzione Esercizio 12a
+
+**Probabilità marginale:**
+
+$$
+P(+) = 0.85 \times 0.15 + 0.10 \times 0.85 = 0.1275 + 0.085 = 0.2125.
+$$
+
+---
+
+### Soluzione Esercizio 12b
+
+**Valore predittivo positivo:**
+
+$$
+P(D \mid +) = \frac{0.85 \times 0.15}{0.2125} = \frac{0.1275}{0.2125} \approx 0.60.
+$$
+
+Il 60% dei test positivi indica realmente depressione.
+
+---
+
+### Soluzione Esercizio 12c
+
+**Valore predittivo negativo:**
+
+Prima calcoliamo $P(-)$:
+
+$$
+P(-) = 1 - P(+) = 1 - 0.2125 = 0.7875.
+$$
+
+Poi:
+
+$$
+P(D \mid -) = \frac{P(- \mid D) \cdot P(D)}{P(-)} = \frac{0.15 \times 0.15}{0.7875} = \frac{0.0225}{0.7875} \approx 0.029.
+$$
+
+Solo il 2.9% dei test negativi ha realmente depressione.
+
+---
+
+## Riepilogo: errori comuni
+
+1. **Confondere** $P(A \mid B)$ con $P(B \mid A)$.
+
+2. **Ignorare** la prevalenza (*base rate neglect*).
+
+3. **Calcolare** il complemento nello spazio sbagliato.
+
+4. **Dimenticare** che indipendenza significa $P(A \mid B) = P(A)$.
+
+5. **Confondere** disposizioni e combinazioni.
+
+---
+
+## Strategia risolutiva
+
+```{mermaid}
+flowchart LR
+    A["Leggi il problema"] --> B{"Cosa serve?"}
+
+    B --> |"P(A)"| C["Complemento / Totale"]
+    B --> |"P(A∩B)"| D["Prodotto"]
+    B --> |"P(A|B)"| E{"Hai A∩B e B?"}
+
+    E --> |"Sì"| F["Definizione"]
+    E --> |"No"| G["Bayes"]
+
+    C --> H["Calcola"]
+    D --> H
+    F --> H
+    G --> H
+```
+
+---
+
+## Prossimo segmento
+
+Nel secondo segmento useremo **R** per:
+
+- simulare situazioni probabilistiche (Monte Carlo);
+- visualizzare spazi campionari complessi;
+- verificare i calcoli fatti a mano;
+- risolvere problemi non fattibili manualmente.
+
+---
+
+## Bibliografia

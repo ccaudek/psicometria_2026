@@ -1,0 +1,748 @@
+---
+title: "Il teorema di Bayes"
+subtitle: "Aggiornare le credenze alla luce dei dati"
+version: 1.0
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+toc-depth: 2
+lang: it
+
+format:
+    revealjs:
+      theme: [default, ../revealjs.scss]
+      title-slide-attributes:
+        data-background-color: "#0072bc"
+      slide-number: c
+      show-slide-number: print
+      highlight-style: github
+      math: mathjax
+      mermaid:
+        theme: neutral
+      
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+```{r}
+#| echo: false
+#| output: false
+library(tibble)
+library(dplyr)
+library(knitr)
+library(kableExtra)
+```
+
+## Obiettivo {.unnumbered .unlisted}
+
+In questa seconda parte:
+
+- deriveremo il **teorema di Bayes** dalla probabilità condizionata
+- esamineremo la differenza tra $P(E \mid H)$ e $P(H \mid E)$
+- applicheremo il teorema di Bayes a **problemi diagnostici** reali
+- esploreremo l'**aggiornamento sequenziale** delle credenze
+
+> Riferimento: https://ccaudek.github.io/utet-prob/ — Capitolo 8
+
+---
+
+## Derivazione del teorema di Bayes
+
+Dalla regola del prodotto sappiamo che:
+
+$$
+P(A \cap B) = P(A \mid B) \cdot P(B) = P(B \mid A) \cdot P(A)
+$$
+
+Isolando $P(A \mid B)$:
+
+$$
+\boxed{P(A \mid B) = \frac{P(B \mid A) \cdot P(A)}{P(B)}}
+$$
+
+Questo è il **teorema di Bayes**.
+
+---
+
+## La notazione H-E
+
+Per rendere trasparente il significato, usiamo:
+
+- $H$ = **Hypothesis** (ipotesi da valutare)
+- $E$ = **Evidence** (evidenza osservata)
+
+$$
+\boxed{P(H \mid E) = \frac{P(E \mid H) \cdot P(H)}{P(E)}}
+$$
+
+---
+
+## I quattro termini del teorema
+
+| Termine | Nome | Significato |
+|---------|------|-------------|
+| $P(H)$ | Prior | Credenza **prima** dell'evidenza |
+| $P(E \mid H)$ | Verosimiglianza | Quanto l'ipotesi spiega l'evidenza |
+| $P(E)$ | Marginale | Probabilità totale dell'evidenza |
+| $P(H \mid E)$ | Posterior | Credenza **dopo** l'evidenza |
+
+---
+
+## Il flusso dell'apprendimento
+
+```{mermaid}
+flowchart LR
+    A["Prior<br/>P(H)"] --> B["× Verosimiglianza<br/>P(E|H)"]
+    B --> C["÷ Marginale<br/>P(E)"]
+    C --> D["= Posterior<br/>P(H|E)"]
+```
+
+Il teorema di Bayes formalizza **come impariamo dall'esperienza**.
+
+---
+
+## La confusione fondamentale
+
+**Ciò che il test misura**
+
+$$
+P(E \mid H)
+= P(\text{Test+} \mid \text{Malato})
+$$
+→ **Sensibilità** (proprietà tecnica del test)
+
+**Ciò che il paziente chiede**
+
+$$
+P(H \mid E)
+= P(\text{Malato} \mid \text{Test+})
+$$
+→ **Valore predittivo positivo (VPP)**
+
+---
+
+## Punto chiave
+
+$$
+\boxed{P(E \mid H) \neq P(H \mid E)}
+$$
+
+Invertire condizione ed evento **cambia completamente la domanda**.  
+
+Le due probabilità possono essere **molto diverse**, soprattutto quando  la malattia è rara.
+
+---
+
+## Perché serve il teorema di Bayes
+
+* Il test fornisce $P(E \mid H)$.  
+* Il paziente vuole $P(H \mid E)$.
+
+👉 Il **teorema di Bayes** collega queste due quantità.
+
+---
+
+## Esercizio 1 — Calcolo del valore predittivo di un test
+
+Si valuta un test diagnostico per un disturbo d'ansia in una determinata popolazione, di cui si conoscono:
+
+- **Prevalenza del disturbo:** $P(H) = 0.10$  
+  (Probabilità a priori di avere il disturbo)
+
+- **Sensibilità del test:** $P(E \mid H) = 0.85$  
+  (Probabilità di risultare positivo se si ha il disturbo)
+
+- **Specificità del test:** $P(\neg E \mid \neg H) = 0.90$  
+  (Probabilità di risultare negativo se non si ha il disturbo)
+
+---
+
+### Obiettivo
+
+Calcolare il **valore predittivo positivo** (VPP) del test, cioè:
+
+$$
+P(H \mid E) = \;?
+$$
+
+Questo rappresenta la probabilità che un paziente con test positivo abbia effettivamente il disturbo.
+
+**Tempo stimato:** 5 minuti  
+*(Suggerimento: utilizzare il teorema di Bayes)*
+
+---
+
+### Soluzione Esercizio 1 — Passo 1
+
+**Identificare i termini:**
+
+- $P(H) = 0.10$
+- $P(\neg H) = 0.90$
+- $P(E \mid H) = 0.85$
+- $P(E \mid \neg H) = 1 - 0.90 = 0.10$ (falsi positivi)
+
+---
+
+### Soluzione Esercizio 1 — Passo 2
+
+**Calcolare $P(E)$ con la probabilità totale:**
+
+$$
+\begin{aligned}
+P(E) &= P(E \mid H) \cdot P(H) + P(E \mid \neg H) \cdot P(\neg H) \\
+&= 0.85 \times 0.10 + 0.10 \times 0.90 \\
+&= 0.085 + 0.090 = 0.175
+\end{aligned}
+$$
+
+---
+
+### Soluzione Esercizio 1 — Passo 3
+
+**Applicare Bayes:**
+
+$$
+P(H \mid E) = \frac{P(E \mid H) \cdot P(H)}{P(E)} = \frac{0.85 \times 0.10}{0.175}
+$$
+
+$$
+P(H \mid E) = \frac{0.085}{0.175} \approx 0.486
+$$
+
+**Risultato:** Solo il **48.6%** dei test positivi indica realmente il disturbo.
+
+---
+
+## Riflessione sul risultato
+
+Nonostante:
+
+- alta sensibilità (85%),
+- alta specificità (90%),
+
+il valore predittivo positivo è solo **~49%**.
+
+> Un test positivo lascia ancora una **considerevole incertezza** sulla diagnosi.
+
+---
+
+## Esercizio 2 — Frequenze naturali
+
+Risolvi l’Esercizio 1 usando frequenze riferite a **1,000 persone**.
+
+---
+
+### Soluzione Esercizio 2
+
+| Gruppo | N | Test + | Calcolo |
+|--------|---|--------|---------|
+| Con disturbo | 100 | 85 | 100 × 0.85 |
+| Senza disturbo | 900 | 90 | 900 × 0.10 |
+| **Totale** | 1000 | **175** | |
+
+La probabilità cercata è:
+
+$$
+P(H \mid E) = \frac{\text{Veri positivi}}{\text{Totale positivi}} = \frac{85}{175} \approx 0.486 \quad \checkmark
+$$
+
+
+**Interpretazione:** tra tutte le persone con test positivo, **meno della metà** ha davvero il disturbo.
+
+---
+
+### Visualizzazione — Albero delle frequenze
+
+```{mermaid}
+flowchart TD
+    Pop["1000 persone"] --> M["100 con disturbo"]
+    Pop --> S["900 senza disturbo"]
+    M --> VP["85 Test +<br/>(Veri Positivi)"]
+    M --> VN["15 Test −"]
+    S --> FP["90 Test +<br/>(Falsi Positivi)"]
+    S --> TN["810 Test −"]
+    VP --> Tot["175 Test + totali"]
+    FP --> Tot
+```
+
+---
+
+## Esercizio 2a
+
+Con una sensibilità dell’85%, perché il VPP è solo del 49%?
+
+---
+
+### Soluzione
+
+Perché il test agisce su **una popolazione in cui il disturbo è raro**.
+
+Su 1,000 persone:
+
+- **100** hanno il disturbo → **85 veri positivi**;
+- **900** non hanno il disturbo → **90 falsi positivi**.
+
+Quindi, tra i **175 test positivi**:
+
+- solo **85** sono veri positivi
+- ben **90** sono falsi positivi
+
+$$
+\text{VPP} = \frac{85}{175} \approx 0.49.
+$$
+
+**Messaggio chiave:** anche un test accurato produce molti falsi positivi, quando la **prevalenza è bassa**.
+
+> *Il problema non è il test.*
+> *È la rarità della condizione.*
+
+> *Per migliorare il VPP non basta un test migliore:
+> serve testare una popolazione più mirata.*
+
+---
+
+## Esercizio 3 — Effetto della prevalenza
+
+Ricalcola $P(H \mid E)$ per l'Esercizio2 ipotizzando, in questo caso, un prevalenza del **2%**.
+
+* Supponiamao che le caratteristiche del test, sensibilità e specificità, rimangano invariate.
+
+---
+
+### Soluzione Esercizio 3
+
+**Passo 1:** Nuova probabilità marginale
+
+$$
+P(E) = 0.85 \times 0.02 + 0.10 \times 0.98 = 0.017 + 0.098 = 0.115
+$$
+
+**Passo 2:** Applicare Bayes
+
+$$
+P(H \mid E) = \frac{0.85 \times 0.02}{0.115} = \frac{0.017}{0.115} \approx 0.148
+$$
+
+---
+
+### Confronto
+
+| Prevalenza | $P(H \mid E)$ |
+|------------|---------------|
+| 10% | 48.6% |
+| 2% | **14.8%** |
+
+La probabilità è crollata da **1 su 2** a **meno di 1 su 7**!
+
+---
+
+## Perché questo effetto drammatico?
+
+Con prevalenza al 2% su 1000 persone:
+
+- 20 malati → ~17 veri positivi
+- 980 sani → ~98 falsi positivi
+- **Totale positivi:** ~115
+
+I **falsi positivi** (98) sovrastano i **veri positivi** (17).
+
+---
+
+## Lezione fondamentale
+
+> Più una condizione è **rara**, meno possiamo fidarci di un singolo test positivo.
+
+Questo spiega perché negli screening si usano:
+
+- test di conferma,
+- panel di test multipli,
+- valutazione clinica integrata.
+
+---
+
+## Esercizio 4 — Calcolo a mano
+
+Consideriamo un test per l'ADHD negli studenti universitari in queste circostanze:
+
+- prevalenza: 5%,
+- sensibilità: 90%,
+- specificità: 95%.
+
+**Calcola $P(H \mid E)$ passo per passo.**
+
+---
+
+### Soluzione Esercizio 4
+
+**Dati:**
+
+- $P(H) = 0.05$, $P(\neg H) = 0.95$
+- $P(E \mid H) = 0.90$ (sensibilità)
+- $P(E \mid \neg H) = 0.05$ (1 - specificità)
+
+**Probabilità marginale:**
+
+$$
+\begin{align}
+P(E) &= 0.90 \times 0.05 + 0.05 \times 0.95 \\
+&= 0.045 + 0.0475 \\
+&= 0.0925.
+\end{align}
+$$
+
+---
+
+### Soluzione Esercizio 4 (continua)
+
+**Teorema di Bayes:**
+
+$$
+P(H \mid E) = \frac{0.90 \times 0.05}{0.0925} = \frac{0.045}{0.0925} \approx 0.486
+$$
+
+**Risultato:** anche con un test "molto buono" (sensibilità = 90%; specificità = 95%), solo il **48.6%** dei positivi ha realmente l'ADHD.
+
+---
+
+## Bayes come confronto tra ipotesi
+
+Un test non risponde a una domanda assoluta, ma **confronta due ipotesi alternative**:
+
+- $H_1$: *la persona ha il disturbo*,
+- $H_0$: *la persona non ha il disturbo*.
+
+Dopo aver osservato l’evidenza $E$ (test positivo), ci chiediamo: **quale ipotesi è più plausibile?**
+
+$$
+\frac{P(H_1 \mid E)}{P(H_0 \mid E)}
+= \frac{P(E \mid H_1)}{P(E \mid H_0)}
+\times
+\frac{P(H_1)}{P(H_0)}.
+$$
+
+---
+
+## I tre ingredienti del confronto
+
+$$
+\underbrace{\frac{P(H_1 \mid E)}{P(H_0 \mid E)}}_{\text{Quanto } H_1 \text{ è più plausibile di } H_0}
+=
+\underbrace{\frac{P(E \mid H_1)}{P(E \mid H_0)}}_{\text{Cosa dice il test}}
+\times
+\underbrace{\frac{P(H_1)}{P(H_0)}}_{\text{Cosa credevamo prima}}
+$$
+
+- **Odds a priori** → quanto il disturbo è raro;
+- **Rapporto di verosimiglianza (LR)** → *quanto il test discrimina*;
+- **Odds posteriori** → risultato finale del confronto.
+
+---
+
+## Perché il rapporto di verosimiglianza è cruciale
+
+Il rapporto di verosimiglianza risponde a una domanda chiave:
+
+> *Quanto è più probabile osservare questo test se la persona  
+> ha il disturbo piuttosto che se non lo ha?*
+
+- LR = 1 → il test **non informa**;
+- LR > 1 → l’evidenza favorisce $H_1$;
+- LR < 1 → l’evidenza favorisce $H_0$.
+
+---
+
+## Esercizio 5 — Rapporto di verosimiglianza positivo
+
+Per il test sull’ADHD dell’Esercizio 4, calcola il **rapporto di verosimiglianza positivo ($\text{LR}^+$)**:
+
+$$
+\text{LR}^+ = \frac{P(E \mid H)}{P(E \mid \neg H)}.
+$$
+
+**Interpreta:**  
+di quanto un test positivo rende $H$ più plausibile rispetto a $\neg H$?
+
+---
+
+### Soluzione Esercizio 5
+
+$$
+\text{LR}^+
+= \frac{P(E \mid H)}{P(E \mid \neg H)}
+= \frac{0.90}{0.05}
+= 18.
+$$
+
+**Interpretazione:**  un test positivo è **18 volte più probabile** in una persona con ADHD che in una persona senza ADHD.
+
+* Il test è **fortemente informativo**, ma una **bassa prevalenza** del disturbo può comunque limitare il VPP.
+
+* Il $\text{LR}^+$ misura quanto l’evidenza sposta il confronto a favore di $H,$ indipendentemente dalla prevalenza.
+
+---
+
+## Aggiornamento sequenziale
+
+Il teorema di Bayes non è un’operazione “una tantum”.  Può essere applicato **in sequenza**, man mano che arriva nuova evidenza:
+
+1. la **posterior** diventa la **prior** successiva;
+2. osserviamo nuova evidenza;
+3. aggiorniamo di nuovo le probabilità.
+
+---
+
+## Esercizio 6 — Due test consecutivi
+
+Partiamo da:
+
+- prior iniziale: $P(H)=0.05$;
+- dopo il **primo test positivo**: $P(H \mid E_1)=0.486.$
+
+Supponiamo che il **secondo test**:
+
+- sia indipendente dal primo **condizionatamente a $H$**;
+- abbia le stesse caratteristiche diagnostiche;
+- risulti anch’esso positivo.
+
+---
+
+**Calcola:**  
+
+$$
+P(H \mid E_1, E_2).
+$$
+
+---
+
+### Soluzione Esercizio 6
+
+La posterior del primo test diventa la nuova prior:
+
+$$
+P(H)=0.486.
+$$
+
+**Probabilità di un secondo test positivo:**
+
+$$
+P(E_2)
+= 0.90 \times 0.486 + 0.05 \times 0.514
+= 0.463.
+$$
+
+**Aggiornamento bayesiano:**
+
+$$
+P(H \mid E_1,E_2)
+= \frac{0.90 \times 0.486}{0.463}
+\approx 0.944.
+$$
+
+
+---
+
+### Effetto cumulativo dell’evidenza
+
+| Evidenza osservata | $P(H)$ |
+|-------------------|----------|
+| Prima di qualsiasi test | 5% |
+| Dopo 1° test positivo | 48.6% |
+| Dopo 2° test positivo | **94.4%** |
+
+**Messaggio chiave:**  evidenze indipendenti e concordanti **si rafforzano a vicenda**.
+
+---
+
+## Visualizzazione — Aggiornamento sequenziale
+
+```{mermaid}
+flowchart LR
+    A["Prior<br/>5%"] --> |"Test 1 +"| B["Posterior 1<br/>48.6%"]
+    B --> |"Test 2 +"| C["Posterior 2<br/>94.4%"]
+    C --> |"Test 3 +"| D["Posterior 3<br/>≈99.7%"]
+```
+
+L’evidenza **non si somma**: si **accumula attraverso aggiornamenti successivi**.
+
+---
+
+## Esercizio 7 — Test negativo
+
+Riprendiamo i dati dell’Esercizio 1:
+
+- prevalenza: $P(H)=0.10$;
+- sensibilità: $P(E\mid H)=0.85$;
+- specificità: $P(\neg E\mid \neg H)=0.90$.
+
+Se il test è **negativo**, qual è:
+
+$$
+P(H \mid \neg E)\ ?
+$$
+
+---
+
+### Soluzione Esercizio 7
+
+**Probabilità condizionate rilevanti:**
+
+- $P(\neg E \mid H)=0.15$  (falsi negativi);
+- $P(\neg E \mid \neg H)=0.90$  (veri negativi).
+
+**Probabilità totale di un test negativo:**
+
+$$
+P(\neg E)
+= 0.15 \times 0.10 + 0.90 \times 0.90
+= 0.825
+$$
+
+---
+
+### Applicazione del teorema di Bayes
+
+$$
+P(H \mid \neg E)
+= \frac{P(\neg E \mid H)\,P(H)}{P(\neg E)}
+= \frac{0.15 \times 0.10}{0.825}
+\approx 0.018
+$$
+
+**Interpretazione:**  
+un test negativo riduce la probabilità di malattia  dal **10%** a circa **1.8%**.
+
+---
+
+## Riepilogo — Come il test aggiorna le credenze
+
+| Situazione | $P(H)$ |
+|------------|----------|
+| Prima del test | 10% |
+| Dopo test positivo | 48.6% |
+| Dopo test negativo | **1.8%** |
+
+**Messaggio chiave:**  
+lo stesso test può **rafforzare** o **ridurre drasticamente**  la probabilità dell’ipotesi, a seconda dell’evidenza osservata.
+
+
+---
+
+## Esercizio 8 — Il problema completo
+
+In una clinica psicologica:
+
+- **Prevalenza:** il 15% dei pazienti ha depressione maggiore;
+- **Test di screening:**  
+  sensibilità = 80%, specificità = 85%.
+
+**Calcola:**
+
+a) $P(\text{Depressione} \mid \text{Test}+)$  
+b) $P(\text{Depressione} \mid \text{Test}-)$  
+c) Quanti **falsi positivi** su 200 pazienti?
+
+---
+
+### Soluzione 8a — Test positivo
+
+**Dati:**
+
+$$
+P(D)=0.15,\quad
+P(E\mid D)=0.80,\quad
+P(E\mid D^c)=0.15
+$$
+
+**Probabilità totale di test positivo:**
+
+$$
+P(E)
+= 0.80 \times 0.15 + 0.15 \times 0.85
+= 0.2475
+$$
+
+**Aggiornamento bayesiano:**
+
+$$
+P(D \mid E)
+= \frac{0.80 \times 0.15}{0.2475}
+\approx 0.49
+$$
+
+---
+
+### Soluzione 8b — Test negativo
+
+**Probabilità totale di test negativo:**
+
+$$
+P(\neg E) = 1 - 0.2475 = 0.7525
+$$
+
+**Aggiornamento bayesiano:**
+
+$$
+P(D \mid \neg E)
+= \frac{0.20 \times 0.15}{0.7525}
+\approx 0.04
+$$
+
+**Interpretazione:**  
+un test negativo riduce la probabilità di depressione  dal 15% a circa **4%**.
+
+---
+
+### Soluzione 8c — Falsi positivi (frequenze)
+
+Su **200 pazienti**:
+
+- senza depressione: $200 \times 0.85 = 170$;
+- falsi positivi: $170 \times 0.15 \approx 26$.
+
+**Risultato:** circa **26 falsi positivi** ogni 200 test.
+
+---
+
+## Il messaggio centrale
+
+> Il teorema di Bayes non elimina l’incertezza:  
+> la **quantifica** e la aggiorna in modo coerente.
+
+La conoscenza non cresce per rivelazioni improvvise,  ma per **successivi aggiornamenti** guidati dai dati.
+
+---
+
+## Perché Bayes è centrale in psicologia [@edwards1963bayesian]
+
+- **Diagnostica clinica:** interpretare test e questionari  
+- **Ricerca:** valutare ipotesi alla luce dei dati  
+- **Decision making:** aggiornare scelte con nuove informazioni  
+- **Modelli cognitivi:** descrivere come la mente aggiorna le credenze
+
+---
+
+## Riepilogo delle formule
+
+| Formula | Uso |
+|---------|-----|
+| $P(H \mid E) = \frac{P(E \mid H) P(H)}{P(E)}$ | Teorema di Bayes |
+| $P(E) = P(E \mid H)P(H) + P(E \mid \neg H)P(\neg H)$ | Prob. marginale |
+| $LR^+ = \frac{P(E \mid H)}{P(E \mid \neg H)}$ | Rapporto verosimiglianza |
+
+---
+
+## Per la prossima lezione
+
+- Rivedere: https://ccaudek.github.io/utet-prob/ — Capitoli 9-10
+- Argomento: **Variabili casuali** e **distribuzioni di probabilità**
+
+> Passeremo dal ragionamento su eventi al ragionamento su quantità numeriche.
+
+---
+
+## Bibliografia

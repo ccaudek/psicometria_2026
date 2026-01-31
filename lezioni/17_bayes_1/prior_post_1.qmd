@@ -1,0 +1,530 @@
+---
+title: "Prior, verosimiglianza e posterior"
+subtitle: "L'architettura dell'inferenza bayesiana — Segmento 1"
+version: 1.0
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+lang: it
+
+execute:
+  echo: true
+
+format:
+  revealjs:
+    theme: [default, ../revealjs.scss]
+    title-slide-attributes:
+      data-background-color: "#0072bc"
+    slide-number: c
+    show-slide-number: print
+    highlight-style: github
+    math: mathjax
+
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+```{r}
+#| echo: false
+set.seed(42)
+```
+
+## Obiettivi del segmento {.unnumbered .unlisted}
+
+1. Capire i **tre ingredienti** dell'inferenza bayesiana
+2. Imparare la **formula di Bayes** per i parametri
+3. Calcolare il posterior **a mano** in casi semplici
+4. Capire perché questo approccio è utile per lo psicologo
+
+---
+
+## Il problema dello psicologo (ripasso)
+
+Abbiamo visto che la **verosimiglianza** ci dice quanto i dati sono compatibili con diversi valori del parametro.
+
+Ma spesso abbiamo anche **informazioni pregresse**:
+
+- dalla letteratura scientifica,
+- dall'esperienza clinica,
+- da studi precedenti.
+
+Come **combinare** queste fonti di informazione?
+
+---
+
+## Un esempio concreto
+
+Uno psicologo clinico sta valutando un nuovo training per l'ansia sociale.
+
+**Cosa sa già (prima dello studio):**
+
+- la letteratura indica che training simili hanno un tasso di successo tra 40% e 70%;
+- la sua esperienza clinica suggerisce che il 50% è un valore tipico.
+
+**Cosa osserva (dati):**
+
+- Su 10 pazienti, 7 migliorano.
+
+---
+
+## La domanda bayesiana
+
+> "Date le mie conoscenze pregresse **e** i dati osservati, cosa posso concludere sulla probabilità di successo $\theta$?"
+
+L'inferenza bayesiana combina **entrambe** le fonti di informazione.
+
+
+# Parte 1: i tre ingredienti
+
+## Ingrediente 1: la distribuzione a priori (*prior*)
+
+Il **prior** rappresenta ciò che crediamo sul parametro **prima** di vedere i dati.
+
+$$
+P(\theta) = \text{Prior}.
+$$
+
+Nel nostro esempio: 
+
+> "Credo che $\theta$ sia probabilmente intorno a 0.50, ma potrebbe essere tra 0.30 e 0.70."
+
+---
+
+## Ingrediente 2: la verosimiglianza (*likelihood*)
+
+La **verosimiglianza** esprime quanto sono verosimili i diversi valori del parametro, avendo osservato i dati del campione: 
+
+$$
+\mathcal{L}(\theta \mid \text{dati}) = \text{Verosimiglianza}.
+$$
+
+Nel nostro esempio: 
+
+> "Avendo osservato 7 successi su 10 prove, qual è la verosimiglianza relativa dei diversi valori di $\theta$?"
+
+---
+
+## Ingrediente 3: la distribuzione a posteriori (*posterior*)
+
+Il **posterior** è ciò che crediamo sul parametro **dopo** aver visto i dati.
+
+$$
+P(\theta \mid \text{dati}) = \text{Posterior}.
+$$
+
+Nel nostro esempio: 
+
+> "Dopo aver osservato 7/10 successi, cosa credo ora su $\theta$?"
+
+---
+
+## La formula di Bayes
+
+Il teorema di Bayes ci dice come combinare questi ingredienti:
+
+$$
+\underbrace{P(\theta \mid \text{dati})}_{\text{Posterior}} = \frac{\underbrace{\mathcal{L}(\theta \mid \text{dati})}_{\text{Verosimiglianza}} \times \underbrace{P(\theta)}_{\text{Prior}}}{\underbrace{P(\text{dati})}_{\text{Costante}}}.
+$$
+
+---
+
+## Versione semplificata
+
+Poiché $P(\text{dati})$ è una costante (non dipende da $\theta$), possiamo scrivere:
+
+$$
+\text{Posterior} \propto \text{Verosimiglianza} \times \text{Prior}.
+$$
+
+Il simbolo $\propto$ significa "proporzionale a".
+
+---
+
+## In parole semplici
+
+$$
+\boxed{\text{Cosa credo ora} = \text{Cosa dicono i dati} \times \text{Cosa credevo prima}}
+$$
+
+L'inferenza bayesiana è un **aggiornamento razionale** delle credenze (sul parametro $\theta$) alla luce delle nuove evidenze.
+
+
+# Parte 2: un esempio con i calcoli a mano
+
+
+## Semplifichiamo il problema
+
+Per capire il meccanismo, usiamo un esempio con **pochi valori possibili**.
+
+Supponiamo che $\theta$ possa assumere solo 5 valori:
+
+$$
+\theta \in \{0.3, 0.4, 0.5, 0.6, 0.7\}.
+$$
+
+---
+
+## Passo 1: definire il prior
+
+Lo psicologo, basandosi sulla letteratura, assegna queste probabilità a priori:
+
+| $\theta$ | 0.3 | 0.4 | 0.5 | 0.6 | 0.7 |
+|----------|-----|-----|-----|-----|-----|
+| Prior $P(\theta)$ | 0.10 | 0.20 | 0.40 | 0.20 | 0.10 |
+
+Il prior è centrato su 0.5 (il valore più credibile a priori).
+
+---
+
+## Verifica: il prior è una distribuzione di probabilità legittima?
+
+```{r}
+prior <- c(0.10, 0.20, 0.40, 0.20, 0.10)
+sum(prior)
+```
+
+Sì, somma a 1. ✓
+
+---
+
+## Passo 2: calcolare la verosimiglianza
+
+Abbiamo osservato **7 successi su 10**.
+
+Per ogni valore di $\theta$, calcoliamo $\mathcal{L}(\theta \mid \text{dati})$:
+
+$$
+\mathcal{L}(\theta \mid y = 7; n = 10) = \binom{10}{7} \theta^7 (1-\theta)^3.
+$$
+
+---
+
+## Calcoli a mano
+
+| $\theta$ | $\theta^7$ | $(1-\theta)^3$ | $\binom{10}{7} \times \theta^7 \times (1-\theta)^3$ |
+|----------|------------|----------------|---------------------------------------------|
+| 0.3 | 0.00022 | 0.343 | $120 \times 0.00022 \times 0.343 = 0.009$ |
+| 0.4 | 0.0016 | 0.216 | $120 \times 0.0016 \times 0.216 = 0.042$ |
+| 0.5 | 0.0078 | 0.125 | $120 \times 0.0078 \times 0.125 = 0.117$ |
+| 0.6 | 0.028 | 0.064 | $120 \times 0.028 \times 0.064 = 0.215$ |
+| 0.7 | 0.082 | 0.027 | $120 \times 0.082 \times 0.027 = 0.267$ |
+
+---
+
+## Verifichiamo con R
+
+```{r}
+theta <- c(0.3, 0.4, 0.5, 0.6, 0.7)
+verosim <- dbinom(7, size = 10, prob = theta)
+round(verosim, 3)
+```
+
+I valori corrispondono! ✓
+
+---
+
+## Passo 3: calcolare il numeratore
+
+$$
+\text{Numeratore} = \text{Verosimiglianza} \times \text{Prior}.
+$$
+
+| $\theta$ | Verosimiglianza | Prior | Prodotto |
+|----------|-----------------|-------|----------|
+| 0.3 | 0.009 | 0.10 | 0.0009 |
+| 0.4 | 0.042 | 0.20 | 0.0084 |
+| 0.5 | 0.117 | 0.40 | 0.0468 |
+| 0.6 | 0.215 | 0.20 | 0.0430 |
+| 0.7 | 0.267 | 0.10 | 0.0267 |
+
+---
+
+## Verifichiamo con R
+
+```{r}
+prodotto <- verosim * prior
+round(prodotto, 4)
+```
+
+---
+
+## Passo 4: normalizzare per ottenere il posterior
+
+Il posterior deve sommare a 1. Dividiamo ogni valore per la somma totale:
+
+```{r}
+somma_prodotti <- sum(prodotto)
+somma_prodotti
+```
+
+```{r}
+posterior <- prodotto / somma_prodotti
+round(posterior, 3)
+```
+
+---
+
+## Verifica finale
+
+```{r}
+sum(posterior)
+```
+
+Il posterior somma a 1. ✓
+
+---
+
+## La tabella completa
+
+| $\theta$ | Prior | Verosimiglianza | Prodotto | **Posterior** |
+|----------|-------|-----------------|----------|---------------|
+| 0.3 | 0.10 | 0.009 | 0.0009 | **0.007** |
+| 0.4 | 0.20 | 0.042 | 0.0084 | **0.067** |
+| 0.5 | 0.40 | 0.117 | 0.0468 | **0.372** |
+| 0.6 | 0.20 | 0.215 | 0.0430 | **0.342** |
+| 0.7 | 0.10 | 0.267 | 0.0267 | **0.212** |
+
+---
+
+## Cosa è successo?
+
+```{r}
+#| echo: false
+library(ggplot2)
+library(patchwork)
+
+# Assumendo che prior, verosim, posterior e theta siano già definiti
+# Esempio di dati se non definiti:
+# theta <- seq(0, 1, by = 0.2)
+# prior <- c(0.1, 0.2, 0.3, 0.2, 0.1, 0.1)
+# verosim <- dbinom(9, 12, prob = theta)
+# posterior <- prior * verosim / sum(prior * verosim)
+
+# Funzione per creare un singolo grafico con etichette specifiche
+crea_grafico <- function(valori, titolo, colore) {
+  dati <- data.frame(theta = as.factor(theta), valore = valori)
+  
+  ggplot(dati, aes(x = theta, y = valore)) +
+    geom_col(fill = colore, width = 0.7) +
+    labs(
+      x = expression(theta),
+      y = "P",
+      title = titolo
+    ) +
+    theme_minimal() +
+    theme(
+      plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+      axis.text.x = element_text(angle = 45, hjust = 1, size = 8),
+      axis.title = element_text(size = 10)
+    )
+}
+
+# Creazione dei tre grafici nell'ordine specificato
+g_prior <- crea_grafico(prior, "Prior", "steelblue")
+g_verosim <- crea_grafico(verosim/sum(verosim), "Verosimiglianza (norm.)", "forestgreen")
+g_posterior <- crea_grafico(posterior, "Posterior", "coral")
+
+# Combina i grafici in ordine: Prior (sinistra), Verosimiglianza (centro), Posterior (destra)
+composizione <- g_prior + g_verosim + g_posterior
+
+# Aggiungi titolo generale
+composizione + 
+  plot_annotation(
+    title = "Inferenza Bayesiana",
+    theme = theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"))
+  )
+```
+
+---
+
+## Interpretazione
+
+- **Prior**: credevo che $\theta = 0.5$ fosse il valore più probabile (40%).
+- **Verosimiglianza**: i dati (7/10) suggeriscono $\theta = 0.7$.
+- **Posterior**: compromesso — ora credo che $\theta = 0.5$ o $\theta = 0.6$ siano i valori più probabili.
+
+I dati hanno **spostato** le mie credenze verso valori più alti.
+
+
+# Parte 3: significato per la psicologia
+
+
+## Perché l'approccio bayesiano è utile?
+
+1. **Incorpora la conoscenza pregressa**: non partiamo mai da zero.
+2. **Quantifica l'incertezza**: otteniamo una distribuzione, non un singolo numero.
+3. **Si aggiorna**: con nuovi dati, ricalcoliamo il posterior.
+4. **Risponde alla domanda giusta**: "Qual è la probabilità che $\theta$ sia in un certo intervallo?"
+
+---
+
+## Un esempio clinico: screening
+
+Uno psicologo deve decidere se un test di screening è abbastanza sensibile.
+
+* **Prior (dalla letteratura):** test simili hanno sensibilità tra 0.70 e 0.90.
+
+* **Dati:** su 20 pazienti con la condizione, 16 risultano positivi.
+
+**Domanda:** "Qual è la probabilità che la sensibilità sia almeno 0.75?".
+
+---
+
+## Dopo l'aggiornamento bayesiano
+
+È possibile calcolare direttamente
+
+$$
+P(\theta \geq 0.75 \mid \text{dati}).
+$$
+
+Si tratta di una **probabilità diretta sul parametro**, proprio il tipo di informazione più utile per supportare decisioni cliniche.
+
+---
+
+## Confronto con l'approccio frequentista
+
+| Domanda | Frequentista | Bayesiano |
+|---------|--------------|-----------|
+| "Qual è la probabilità che $\theta > 0.75$?" | Non risponde | Risponde direttamente |
+| "I dati sono incompatibili con $\theta = 0.75$?" | Risponde (valore-$p$) | Non è la domanda principale |
+
+L'approccio bayesiano risponde alla domanda che lo psicologo **effettivamente si pone**.
+
+---
+
+## Esercizio 1
+
+Un ricercatore sta studiando l'efficacia di un intervento breve per il panico.
+
+**Prior:**  
+basandosi su studi pilota, crede che la probabilità di successo sia:
+
+| $\theta$ | 0.4 | 0.5 | 0.6 |
+|----------|-----|-----|-----|
+| Prior | 0.25 | 0.50 | 0.25 |
+
+**Dati:** 4 successi su 6 pazienti.
+
+**Compito:** calcola il posterior.
+
+---
+
+## Soluzione Esercizio 1 — Passo 1
+
+Calcoliamo la verosimiglianza (4 successi su 6):
+
+```{r}
+theta_es1 <- c(0.4, 0.5, 0.6)
+prior_es1 <- c(0.25, 0.50, 0.25)
+
+verosim_es1 <- dbinom(4, size = 6, prob = theta_es1)
+round(verosim_es1, 3)
+```
+
+---
+
+## Soluzione Esercizio 1 — Passo 2
+
+Calcoliamo il prodotto:
+
+```{r}
+prodotto_es1 <- verosim_es1 * prior_es1
+round(prodotto_es1, 3)
+```
+
+---
+
+## Soluzione Esercizio 1 — Passo 3
+
+Normalizziamo:
+
+```{r}
+posterior_es1 <- prodotto_es1 / sum(prodotto_es1)
+round(posterior_es1, 3)
+```
+
+---
+
+## Soluzione Esercizio 1 — Interpretazione
+
+| $\theta$ | Prior | Posterior |
+|----------|-------|-----------|
+| 0.4 | 0.25 | 0.15 |
+| 0.5 | 0.50 | 0.44 |
+| 0.6 | 0.25 | 0.41 |
+
+I dati (4/6 = 67%) hanno spostato le credenze verso valori più alti di $\theta.$
+
+---
+
+## Esercizio 2
+
+Una psicologa valuta l'aderenza a un programma di mindfulness.
+
+**Prior:** Uniforme su $\theta \in \{0.5, 0.6, 0.7, 0.8\}$ (tutti ugualmente probabili).
+
+**Dati:** 6 pazienti su 8 completano il programma.
+
+**Compiti:**
+
+1. calcola il posterior;
+2. qual è la probabilità a posteriori che $\theta \geq 0.7$?
+
+---
+
+## Soluzione Esercizio 2 — Parte 1
+
+```{r}
+theta_es2 <- c(0.5, 0.6, 0.7, 0.8)
+prior_es2 <- rep(0.25, 4)  # Uniforme
+
+verosim_es2 <- dbinom(6, size = 8, prob = theta_es2)
+prodotto_es2 <- verosim_es2 * prior_es2
+posterior_es2 <- prodotto_es2 / sum(prodotto_es2)
+
+round(posterior_es2, 3)
+```
+
+---
+
+## Soluzione Esercizio 2 — Parte 2
+
+Probabilità che $\theta \geq 0.7$:
+
+```{r}
+# Sommiamo le probabilità per theta = 0.7 e theta = 0.8
+prob_ge_07 <- posterior_es2[3] + posterior_es2[4]
+prob_ge_07
+```
+
+C'è circa il **67%** di probabilità che l'aderenza sia almeno 70%.
+
+---
+
+## Riepilogo
+
+1. **Prior**: le nostre credenze prima di osservare i dati.
+
+2. **Verosimiglianza**: la plausibilità dei valori del parametro alla luce dei dati.
+
+3. **Posterior**: le nostre credenze aggiornate.
+
+4. **Formula**: $\text{Posterior} \propto \text{Verosimiglianza} \times \text{Prior}$.
+
+5. L'inferenza bayesiana risponde a domande **direttamente rilevanti** per la pratica psicologica.
+
+---
+
+## Per il prossimo segmento
+
+Vedremo:
+
+- Come passare da valori discreti a **distribuzioni continue**.
+- L'**approssimazione a griglia** per casi più realistici.
+- Come **visualizzare** l'aggiornamento bayesiano.

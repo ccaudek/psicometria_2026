@@ -1,0 +1,431 @@
+---
+title: "Distribuzioni discrete: Bernoulli, Binomiale, Poisson"
+subtitle: "Esercitazione pratica – Segmento 1 (esercizi a mano)"
+version: 1.0
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+toc-depth: 2
+lang: it
+
+format:
+    revealjs:
+      theme: [default, ../revealjs.scss]
+      title-slide-attributes:
+        data-background-color: "#0072bc"
+      slide-number: c
+      show-slide-number: print
+      highlight-style: github
+      math: mathjax
+      mermaid:
+        theme: neutral
+      
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+## Obiettivi del segmento {.unnumbered .unlisted}
+
+In questo segmento lavoriamo **senza R**. L’obiettivo non è fare calcoli complicati, ma imparare a rispondere a due domande fondamentali:
+
+1. **Che cosa sto contando?**
+2. **Quale distribuzione descrive meglio questa situazione?**
+
+---
+
+Alla fine del segmento dovreste essere in grado di:
+
+* riconoscere quando usare una distribuzione **Bernoulli**, **Binomiale** o **Poisson**;
+* tradurre una situazione concreta in una **variabile aleatoria discreta**;
+* impostare correttamente i calcoli di probabilità.
+
+> Le formule servono solo *dopo* aver capito il problema.
+
+---
+
+## Variabili aleatorie discrete: l’idea chiave
+
+Una **variabile aleatoria discreta** è una variabile che:
+
+* assume valori separati (0, 1, 2, …);
+* rappresenta un **conteggio**.
+
+Esempi tipici:
+
+* numero di risposte corrette;
+* numero di errori;
+* numero di eventi in un intervallo di tempo.
+
+---
+
+👉 Tutte le distribuzioni di oggi rispondono a **domande di conteggio**, ma in modi diversi.
+
+---
+
+## Distribuzione di Bernoulli — Una sola prova
+
+La distribuzione di **Bernoulli** descrive la situazione più semplice possibile:
+
+* **una sola prova**;
+* **due soli esiti possibili**.
+
+---
+
+Definiamo:
+
+* 1 = successo,
+* 0 = insuccesso.
+
+C’è **un solo parametro**:
+$$
+p = P(\text{successo}).
+$$
+
+Scriviamo:
+$$
+X \sim \text{Bernoulli}(p).
+$$
+
+---
+
+## Esercizio 1 — Una prova, due esiti
+
+**Contesto:**  
+in un singolo trial di un compito di attenzione:
+
+* il target è presente con probabilità $p = 0.30$.
+
+Definiamo:
+
+* $X = 1$ se il target è presente,
+* $X = 0$ se il target è assente.
+
+---
+
+**Domande:**
+
+1. Che distribuzione ha $X$?
+2. Quanto vale $P(X=1)$?
+3. Quanto vale $P(X=0)$?
+
+---
+
+### Soluzione e commento
+
+Qui abbiamo:
+
+* una sola prova,
+* due esiti.
+
+Quindi:
+$$
+X \sim \text{Bernoulli}(0.30).
+$$
+
+$$
+P(X=1)=0.30, \qquad P(X=0)=0.70.
+$$
+
+---
+
+👉 Primo concetto importante, il **complemento**:
+
+> se qualcosa accade con probabilità $p$, *non* accade con probabilità $1-p$.
+
+---
+
+## Distribuzione Binomiale — Più prove identiche
+
+La distribuzione **binomiale** descrive il **numero di successi** quando:
+
+* ripetiamo la *stessa* prova molte volte;
+* le prove sono **indipendenti**;
+* la probabilità di successo $p$ è sempre la stessa.
+
+Scriviamo:
+$$
+X \sim \text{Binomiale}(N,p).
+$$
+
+---
+
+Idea chiave:
+
+> la distribuzione binomiale conta **quante prove di Bernoulli valgono 1**.
+
+---
+
+## Esercizio 2 — Conteggio dei successi
+
+### Contesto
+
+In un esperimento:
+
+* $N = 20$ trial indipendenti;
+* probabilità di risposta corretta $p = 0.80$.
+
+Definiamo:
+
+* $X$ = numero di risposte corrette.
+
+---
+
+### Domande
+
+1. Che distribuzione ha $X$?
+2. $P(X=16)$?
+3. $P(X \ge 16)$?
+
+---
+
+### Soluzione 2a — Identificazione
+
+Stiamo contando il numero di **successi in un numero fissato di prove**:
+
+$$
+X \sim \text{Binomiale}(20,0.80).
+$$
+
+---
+
+### Soluzione 2b — Esattamente 16
+
+$$
+P(X=16)=\binom{20}{16}(0.80)^{16}(0.20)^4.
+$$
+
+Interpretazione:
+
+* scegliamo *quali* 16 trial sono corretti;
+* moltiplichiamo le probabilità dei successi e degli insuccessi.
+
+---
+
+La formula data è quella della **distribuzione binomiale**:
+$$
+P(X = 16) = \binom{20}{16} (0.80)^{16} (0.20)^{4}
+$$
+dove $X$ è il numero di successi in $n = 20$ prove indipendenti, con probabilità di successo $p = 0.80$.
+
+---
+
+### 1. Calcolo del coefficiente binomiale \(\binom{20}{16}\)
+Il coefficiente binomiale si calcola come:
+$$
+\binom{n}{k} = \frac{n!}{k! \, (n-k)!}
+$$
+Qui $n = 20$, $k = 16$ (quindi $n - k = 4$).
+
+$$
+\binom{20}{16} = \frac{20!}{16! \, 4!}
+$$
+
+---
+
+Possiamo semplificare:
+$$
+\frac{20!}{16! \, 4!} = \frac{20 \times 19 \times 18 \times 17 \times 16!}{16! \times (4 \times 3 \times 2 \times 1)} = \frac{20 \times 19 \times 18 \times 17}{4 \times 3 \times 2 \times 1}
+$$
+
+Calcoliamo il numeratore:
+$$
+20 \times 19 = 380, \quad 380 \times 18 = 6840, \quad 6840 \times 17 = 116280
+$$
+
+Calcoliamo il denominatore:
+$$
+4 \times 3 = 12, \quad 12 \times 2 = 24, \quad 24 \times 1 = 24
+$$
+
+---
+
+Quindi:
+$$
+\binom{20}{16} = \frac{116280}{24} = 4845
+$$
+
+---
+
+### 2. Prodotto dei tre termini
+$$
+P(X = 16) = 4845 \times (0.80)^{16} \times (0.20)^{4}
+$$
+Prima moltiplichiamo i due termini decimali:
+$$
+(0.80)^{16} \times (0.20)^4 \approx 0.028147497 \times 0.0016 \approx 0.0000450359952
+$$
+Ora moltiplichiamo per 4845:
+$$
+4845 \times 0.0000450359952 \approx 0.218199
+$$
+
+---
+
+### 3. Risultato finale
+$$
+\boxed{P(X = 16) \approx 0.2182}
+$$
+
+Quindi, la probabilità di ottenere **esattamente 16 successi** in 20 prove, con probabilità di successo $0.80$, è circa **0.2182**.
+
+---
+
+### Soluzione 2c — Almeno 16
+
+$$
+P(X\ge16)=\sum_{k=16}^{20}P(X=k)
+$$
+
+👉 Lo svoltimento "a mano" è lungo.
+
+👉 **Per questo nel prossimo segmento useremo R.**
+
+Ecco la versione corretta e migliorata delle tue slide, con maggiore coerenza logica e precisione terminologica.
+
+---
+
+## Esercizio 3 — Il cuore concettuale
+
+### Domanda chiave
+
+Perché nella formula della **distribuzione binomiale** compare un **coefficiente binomiale**?
+
+---
+
+### Soluzione
+
+* Ogni trial è una **variabile di Bernoulli**: esito $1$ (successo) o $0$ (insuccesso). Con $n$ trial indipendenti di probabilità di successo $p$, otteniamo $n$ prove Bernoulli indipendenti:
+  $$
+  B_1, B_2, \dots, B_n.
+  $$
+* La variabile binomiale è la **somma** dei successi:
+  $$
+  X = B_1 + B_2 + \dots + B_n.
+  $$
+
+Se $X=k$, significa che ci sono stati **esattamente** $k$ successi, ma **non sappiamo in quali prove** questi siano avvenuti.
+
+---
+
+### Il ruolo del coefficiente binomiale
+
+Dobbiamo quindi contare: **in quanti modi possibili** si possono avere $k$ successi in $n$ prove?
+
+La risposta è data proprio dal **coefficiente binomiale**:
+$$
+\binom{n}{k}.
+$$
+
+---
+
+### Perché moltiplicare per $\binom{n}{k}$?
+
+* Ogni **specifica sequenza** di $k$ successi e $(n-k)$ insuccessi ha la stessa probabilità:
+  $$
+  p^k \, (1-p)^{n-k}.
+  $$
+* Ci sono $\binom{n}{k}$ sequenze distinte che realizzano esattamente $k$ successi.
+* L'evento $\{X=k\}$ è l'**unione disgiunta** di tutti questi $\binom{n}{k}$ eventi elementari.
+
+---
+
+Per la regola della somma per eventi disgiunti, la probabilità totale è:
+$$
+P(X=k) = \binom{n}{k} \, p^k \, (1-p)^{n-k}.
+$$
+
+Il coefficiente binomiale **conta il numero di modi** in cui $k$ successi possono manifestarsi in $n$ prove indipendenti.
+
+---
+
+## Riassunto concettuale
+
+> Il coefficiente binomiale $\binom{n}{k}$ nella formula è la risposta diretta alla domanda combinatoria: **"In quanti modi diversi posso ottenere questo risultato?"**  
+> Senza di esso, calcoleremmo la probabilità di una **sola sequenza specifica**, non di **tutte le sequenze possibili** che portano a $k$ successi.
+
+---
+
+## Distribuzione di Poisson — Cambia la domanda
+
+La Poisson risponde a una domanda diversa:
+
+> *Quanti eventi accadono in un intervallo?*
+
+Non contiamo successi su prove, ma **eventi nel tempo o nello spazio**.
+
+---
+
+C’è un solo parametro:
+$$
+\lambda = \text{numero medio di eventi}.
+$$
+
+Diciamo:
+
+$$
+X \sim \text{Poisson}(\lambda).
+$$
+dove $X$ è il numero di eventi nell'intervallo.
+
+
+---
+
+## Esercizio 4 — Eventi nel tempo
+
+**Contesto:**  
+in un servizio di consulenza arrivano in media **2 pazienti all’ora**.
+
+Definiamo:
+
+* $X$ = numero di pazienti in un’ora.
+
+**Domande:**  
+
+1. Che distribuzione usare?
+2. Qual è il parametro?
+3. $P(X=0)$? $P(X=3)$?
+
+---
+
+### Soluzione e commento
+
+Qui usiamo:
+$$
+X \sim \text{Poisson}(\lambda = 2).
+$$
+
+$$
+P(X=k)= \frac{\lambda^k e^{-\lambda}}{k!} = \frac{2^k e^{-2}}{k!}, \quad k = 0, 1, 2, \dots
+$$
+
+In particolare:
+$$
+P(X=0)=e^{-2}, \qquad
+P(X=3)=\frac{2^3 e^{-2}}{3!}.
+$$
+
+---
+
+## Riepilogo finale {.unnumbered .unlisted}
+
+* **Bernoulli** → una prova, due esiti.
+* **Binomiale** → quanti successi su più prove.
+* **Poisson** → quanti eventi in un intervallo.
+
+La competenza chiave è **scegliere la distribuzione giusta**, non ricordare la formula.
+
+---
+
+### Ponte al segmento successivo
+
+Nel prossimo segmento useremo **R** per:
+
+* fare questi calcoli rapidamente;
+* visualizzare le distribuzioni;
+* esplorare cosa succede al variare dei parametri.
+

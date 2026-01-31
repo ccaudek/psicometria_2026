@@ -1,0 +1,669 @@
+---
+title: "Esercitazione: La verosimiglianza in R"
+subtitle: "Segmento 2 — Dati continui e combinazione di evidenze"
+version: 1.0
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+lang: it
+
+execute:
+  echo: true
+
+format:
+  revealjs:
+    theme: [default, ../revealjs.scss]
+    title-slide-attributes:
+      data-background-color: "#0072bc"
+    slide-number: c
+    show-slide-number: print
+    highlight-style: github
+    math: mathjax
+
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+```{r}
+#| echo: false
+set.seed(42)
+```
+
+## Obiettivi del segmento {.unnumbered .unlisted}
+
+1. Estendere la verosimiglianza ai **dati continui**.
+2. Capire come **combinare** evidenze da più osservazioni.
+3. Collegare la verosimiglianza all'inferenza **bayesiana**.
+
+
+# Parte 1: verosimiglianza per dati continui
+
+
+## Il contesto: scale psicometriche
+
+In psicologia usiamo spesso scale che producono punteggi **continui**:
+
+- scale di ansia (es. STAI: 20-80),
+- scale di depressione (es. BDI-II: 0-63),
+- scale di personalità (es. NEO-PI-R).
+
+Come stimiamo i parametri di queste distribuzioni?
+
+---
+
+## Esempio: punteggi al PHQ-9
+
+Il PHQ-9 misura la severità della depressione (0-27).
+
+Consideriamo un campione di 15 pazienti con depressione maggiore:
+
+```{r}
+# Punteggi PHQ-9 osservati
+punteggi <- c(18, 21, 15, 19, 22, 17, 20, 16, 23, 19, 
+              18, 21, 17, 20, 19)
+
+# Statistiche descrittive
+mean(punteggi)
+sd(punteggi)
+```
+
+---
+
+## La domanda statistica
+
+Assumiamo che i punteggi seguano una **distribuzione normale**.
+
+Abbiamo osservato un campione di pazienti con:
+
+* **media campionaria** = 19
+
+**Domanda chiave:**  
+qual è la **vera media** $\mu$ della popolazione da cui provengono questi pazienti?
+
+E soprattutto:
+
+> **qual è il grado di incertezza della nostra stima?**
+
+---
+
+## Un’idea fondamentale
+
+Valori diversi di $\mu$ sono **più o meno compatibili** con i dati osservati.
+
+La **verosimiglianza** ci dice:
+
+> quanto è plausibile un certo valore di $\mu$ con i dati del campione osservato.
+
+---
+
+## Verosimiglianza per la media ($\sigma$ noto)
+
+Assumiamo che la deviazione standard della popolazione sia **nota**
+(ad esempio dalla letteratura):
+
+$$
+\sigma = 2.5.
+$$
+
+La **verosimiglianza** della media $\mu$ è:
+
+$$
+\mathcal{L}(\mu)
+= \prod_{i=1}^{n}
+\frac{1}{\sqrt{2\pi}\sigma}
+\exp\!\left(-\frac{(x_i - \mu)^2}{2\sigma^2}\right).
+$$
+
+È il prodotto delle probabilità di osservare **tutti i dati**, dato $\mu$.
+
+---
+
+## Perché usiamo la *log*-verosimiglianza?
+
+* Il prodotto di molte probabilità diventa **numericamente molto piccolo**.
+* Il log trasforma il prodotto in una **somma**.
+* La forma della funzione **non cambia**, ma i calcoli diventano più semplici.
+
+> Massimizzare la verosimiglianza ⇔ massimizzare la **log-verosimiglianza**.
+
+---
+
+## Strategia computazionale
+
+Invece di risolvere formule complicate, facciamo così:
+
+1. proviamo **molti possibili valori** di $\mu$;
+2. calcoliamo, per ciascuno, la log-verosimiglianza;
+3. vediamo **quale valore di $\mu$** rende i dati più plausibili.
+
+---
+
+## Passo 1 — Una griglia di valori per $\mu$
+
+```{r}
+# Possibili valori della media
+mu_griglia <- seq(15, 23, by = 0.1)
+```
+
+```{r}
+head(mu_griglia)
+```
+
+Stiamo dicendo:
+
+> “proviamo valori di $\mu$ da 15 a 23, a piccoli passi”.
+
+---
+
+## Passo 2 — Funzione per la log-verosimiglianza
+
+```{r}
+calcola_loglik <- function(mu, dati, sigma) {
+  sum(dnorm(dati, mean = mu, sd = sigma, log = TRUE))
+}
+```
+
+Questa funzione:
+
+* calcola la **log-densità normale** di ogni osservazione;
+* assume una certa media $\mu$ e una $\sigma$ nota;
+* **somma** i contributi di tutte le osservazioni.
+
+---
+
+## Passo 3 — Valutare tutti i valori di $\mu$
+
+```{r}
+sigma_noto <- 2.5
+
+loglik <- sapply(
+  mu_griglia,
+  calcola_loglik,
+  dati = punteggi,
+  sigma = sigma_noto
+)
+```
+
+Ora abbiamo una **log-verosimiglianza per ogni valore di $\mu$**.
+
+---
+
+## Cosa abbiamo fatto? 
+
+1. Abbiamo elencato molti **valori plausibili** della media $\mu$.
+2. Per ciascuno, abbiamo chiesto: “Quanto bene questo valore spiega i dati osservati?”
+3. `dnorm(..., log = TRUE)`: calcola la probabilità (su scala logaritmica) di ogni dato
+4. `sum()`: combina tutte le osservazioni
+5. `sapply()`: ripete automaticamente il calcolo per **tutti** i valori di $\mu$
+
+Il risultato è una **curva di verosimiglianza** per la media.
+
+---
+
+### Messaggio chiave 
+
+> La verosimiglianza non ci dà *la* risposta,
+> ma ci mostra **quali valori di $\mu$ sono più compatibili con i dati**
+> e **quanto siamo incerti** della stima.
+
+---
+
+## Visualizziamo
+
+```{r}
+#| fig-height: 5
+plot(mu_griglia, loglik, type = "l", lwd = 2,
+     xlab = "Media (μ)", ylab = "Log-verosimiglianza",
+     main = "Verosimiglianza per la media dei punteggi PHQ-9")
+abline(v = mean(punteggi), col = "red", lty = 2)
+```
+
+---
+
+## Interpretazione clinica
+
+- La MLE è $\hat{\mu} = 19$ (la media campionaria).
+- La curva è abbastanza **stretta**: con 15 pazienti abbiamo buona precisione.
+- Valori di $\mu$ tra 18 e 20 sono i più plausibili.
+
+---
+
+## Esercizio 1: Confronto con popolazione generale
+
+Nella popolazione generale, il punteggio medio al PHQ-9 è circa 5.
+
+Il nostro campione clinico ha media 19. 
+
+**Compito:** verifica visivamente che $\mu = 5$ è **implausibile** alla luce dei  dati che abbiamo osservato (pazienti).
+
+---
+
+## Soluzione Esercizio 1
+
+```{r}
+#| fig-height: 4.5
+mu_ampia <- seq(0, 25, by = 0.1)
+loglik_ampia <- sapply(mu_ampia, calcola_loglik, dati = punteggi, sigma = sigma_noto)
+
+plot(mu_ampia, loglik_ampia, type = "l", lwd = 2,
+     xlab = "μ", ylab = "Log-verosimiglianza")
+abline(v = 5, col = "blue", lty = 2)   # Popolazione generale
+abline(v = 19, col = "red", lty = 2)   # Nostro campione
+legend("topleft", c("Pop. generale (μ=5)", "Nostro campione (μ=19)"),
+       col = c("blue", "red"), lty = 2)
+```
+
+---
+
+## Interpretazione
+
+La log-verosimiglianza per $\mu = 5$ è **molto più bassa** (quasi -150 punti!) rispetto alla log-verosimiglianza associata a $\mu = 19$.
+
+Questo conferma quantitativamente ciò che sapevamo: i pazienti con depressione hanno punteggi PHQ-9 molto più alti della popolazione generale.
+
+## Parte 2: Combinare osservazioni
+
+## Il principio fondamentale
+
+Supponiamo di osservare **$n$ individui diversi**, ciascuno con una propria osservazione:
+
+* $y_1$ = punteggio del **primo individuo**;
+* $y_2$ = punteggio del **secondo individuo**;
+* …
+* $y_n$ = punteggio dell’**$n$-esimo individuo**.
+
+---
+
+Assumendo che le osservazioni siano **indipendenti**, la verosimiglianza totale è il **prodotto** delle verosimiglianze individuali:
+
+$$
+\mathcal{L}(\theta \mid y_1, y_2, \ldots, y_n)
+=
+\mathcal{L}(\theta \mid y_1),
+\mathcal{L}(\theta \mid y_2),
+\cdots
+\mathcal{L}(\theta \mid y_n).
+$$
+
+---
+
+## Perché compare l’indice $i$?
+
+L’indice $i$ **non indica ripetizioni della stessa persona**, ma:
+
+> osservazioni provenienti da **individui diversi**,
+> ciascuno estratto dalla **stessa popolazione**.
+
+È proprio questa assunzione che giustifica il prodotto.
+
+---
+
+## Dalla moltiplicazione alla somma
+
+Per comodità di calcolo, lavoriamo con il logaritmo:
+
+$$
+\ell(\theta)
+= \log \mathcal{L}(\theta)
+= \ell_1(\theta) + \ell_2(\theta) + \cdots + \ell_n(\theta),
+$$
+dove ogni termine $\ell_i(\theta)$ rappresenta:
+
+> il contributo del **singolo individuo $i$** alla verosimiglianza totale.
+
+---
+
+### Messaggio chiave
+
+> Ogni individuo fornisce **un piccolo pezzo di informazione** su $\theta$.
+> La verosimiglianza totale è la somma di tutti questi contributi.
+
+
+## Esempio: aggiornamento sequenziale
+
+Immagina di raccogliere i dati un paziente alla volta.
+
+Come cambia la nostra stima man mano che arrivano nuovi dati?
+
+---
+
+## Simulazione
+
+```{r}
+#| fig-height: 4.5
+# Prendiamo i pazienti 3, 7, 15
+par(mfrow = c(1, 3))
+
+for (n_paz in c(3, 7, 15)) {
+  dati_parziali <- punteggi[1:n_paz]
+  loglik_parz <- sapply(mu_griglia, calcola_loglik, 
+                        dati = dati_parziali, sigma = sigma_noto)
+  # Normalizziamo per visualizzare meglio
+  lik_norm <- exp(loglik_parz - max(loglik_parz))
+  plot(mu_griglia, lik_norm, type = "l", lwd = 2,
+       main = paste("n =", n_paz), xlab = "μ", ylab = "L normalizzata")
+}
+```
+
+---
+
+## Cosa osserviamo?
+
+- Con **3 pazienti**: curva larga, molta incertezza.
+- Con **7 pazienti**: curva più stretta.
+- Con **15 pazienti**: curva stretta, stima precisa.
+
+L'informazione si **accumula** con ogni nuova osservazione.
+
+---
+
+## Esercizio 2: aggiungere un nuovo paziente
+
+Arriva un 16° paziente con punteggio PHQ-9 = 24 (molto alto).
+
+**Compito:** come cambia la verosimiglianza?
+
+---
+
+## Soluzione Esercizio 2
+
+```{r}
+#| fig-height: 4.5
+# Dati originali vs dati + nuovo paziente
+punteggi_nuovi <- c(punteggi, 24)
+
+loglik_orig <- sapply(mu_griglia, calcola_loglik, dati = punteggi, sigma = sigma_noto)
+loglik_nuovi <- sapply(mu_griglia, calcola_loglik, dati = punteggi_nuovi, sigma = sigma_noto)
+
+lik_orig <- exp(loglik_orig - max(loglik_orig))
+lik_nuovi <- exp(loglik_nuovi - max(loglik_nuovi))
+
+plot(mu_griglia, lik_orig, type = "l", lwd = 2,
+     xlab = "μ", ylab = "L normalizzata")
+lines(mu_griglia, lik_nuovi, col = "purple", lwd = 2)
+legend("topright", c("n = 15", "n = 16 (+paziente grave)"), 
+       col = c("black", "purple"), lwd = 2)
+```
+
+---
+
+## Interpretazione
+
+Il nuovo paziente "estremo":
+
+- **Sposta** leggermente la stima verso destra (media più alta)
+- Ma l'effetto è **moderato**: 15 osservazioni precedenti "pesano" di più
+
+Questo è un comportamento desiderabile: i dati precedenti "stabilizzano" la stima.
+
+---
+
+## Parte 3: Il ponte verso l'inferenza bayesiana
+
+---
+
+## Ricordiamo la formula di Bayes
+
+$$
+P(\theta \mid \text{dati}) \propto P(\text{dati} \mid \theta) \times P(\theta)
+$$
+
+Ovvero:
+
+$$
+\text{Posterior} \propto \text{Verosimiglianza} \times \text{Prior}
+$$
+
+---
+
+## Cosa aggiunge il prior?
+
+Il **prior** rappresenta ciò che sapevamo **prima** di vedere i dati.
+
+La **verosimiglianza** è ciò che i dati ci dicono.
+
+Il **posterior** combina le due fonti di informazione.
+
+---
+
+## Esempio: prior informativo
+
+Dalla letteratura sappiamo che i pazienti con depressione maggiore hanno tipicamente punteggi PHQ-9 tra 15 e 25.
+
+Possiamo codificare questa conoscenza come un prior:
+
+$$
+\mu \sim \text{Normale}(20, 3)
+$$
+
+---
+
+## Visualizziamo prior, verosimiglianza e posterior
+
+```{r}
+#| echo: false
+#| fig-height: 5
+mu_griglia <- seq(10, 28, by = 0.1)
+
+# Prior: Normale(20, 3)
+prior <- dnorm(mu_griglia, mean = 20, sd = 3)
+
+# Verosimiglianza (normalizzata)
+loglik <- sapply(mu_griglia, calcola_loglik, dati = punteggi, sigma = 2.5)
+lik <- exp(loglik - max(loglik))
+
+# Posterior (proporzionale a prior × likelihood)
+posterior <- prior * lik
+posterior <- posterior / sum(posterior) * length(mu_griglia) / (max(mu_griglia) - min(mu_griglia))
+
+# Normalizziamo tutto per visualizzare
+prior_norm <- prior / max(prior)
+lik_norm <- lik / max(lik)
+post_norm <- posterior / max(posterior)
+
+plot(mu_griglia, prior_norm, type = "l", lwd = 2, col = "blue",
+     xlab = "μ", ylab = "Densità (normalizzata)",
+     main = "Prior × Verosimiglianza = Posterior", ylim = c(0, 1.1))
+lines(mu_griglia, lik_norm, lwd = 2, col = "green")
+lines(mu_griglia, post_norm, lwd = 2, col = "red")
+legend("topright", c("Prior", "Verosimiglianza", "Posterior"),
+       col = c("blue", "green", "red"), lwd = 2)
+```
+
+---
+
+## Cosa osserviamo?
+
+- Il **prior** (blu) è centrato su 20
+- La **verosimiglianza** (verde) è centrata su 19
+- Il **posterior** (rosso) è un **compromesso** tra i due
+
+Il posterior è più vicino alla verosimiglianza perché i dati sono informativi.
+
+---
+
+## Esercizio 3: Prior debole vs forte
+
+Cosa succede se il prior è:
+
+a) **Debole**: $\mu \sim \text{Normale}(20, 10)$ (molta incertezza)
+b) **Forte**: $\mu \sim \text{Normale}(20, 1)$ (molta certezza)
+
+---
+
+## Soluzione: Prior debole
+
+```{r}
+#| echo: false
+#| fig-height: 4.5
+prior_debole <- dnorm(mu_griglia, mean = 20, sd = 10)
+posterior_debole <- prior_debole * lik
+posterior_debole <- posterior_debole / sum(posterior_debole)
+
+prior_forte <- dnorm(mu_griglia, mean = 20, sd = 1)
+posterior_forte <- prior_forte * lik
+posterior_forte <- posterior_forte / sum(posterior_forte)
+
+par(mfrow = c(1, 2))
+
+# Prior debole
+plot(mu_griglia, prior_debole/max(prior_debole), type = "l", col = "blue", lwd = 2,
+     main = "Prior debole (SD = 10)", xlab = "μ", ylab = "", ylim = c(0, 1.1))
+lines(mu_griglia, lik_norm, col = "green", lwd = 2)
+lines(mu_griglia, posterior_debole/max(posterior_debole), col = "red", lwd = 2)
+
+# Prior forte
+plot(mu_griglia, prior_forte/max(prior_forte), type = "l", col = "blue", lwd = 2,
+     main = "Prior forte (SD = 1)", xlab = "μ", ylab = "", ylim = c(0, 1.1))
+lines(mu_griglia, lik_norm, col = "green", lwd = 2)
+lines(mu_griglia, posterior_forte/max(posterior_forte), col = "red", lwd = 2)
+```
+
+---
+
+## Interpretazione
+
+- **Prior debole**: Il posterior è quasi identico alla verosimiglianza. I dati "dominano".
+
+- **Prior forte**: Il posterior è un compromesso. Il prior "resiste" ai dati.
+
+Nella pratica, di solito usiamo prior moderatamente informativi.
+
+---
+
+## Parte 4: Esercizio riassuntivo
+
+---
+
+## Scenario clinico completo
+
+Stai validando una nuova versione breve di un questionario sull'ansia sociale.
+
+**Studio pilota:**
+
+- 25 pazienti con diagnosi di fobia sociale
+- 20 risultano positivi al test (sensibilità = 80%)
+
+**Dalla letteratura:**
+
+- La sensibilità attesa per test simili è circa 85%
+
+---
+
+## Domande
+
+1. Costruisci la funzione di verosimiglianza per la sensibilità
+2. Il valore di letteratura (85%) è plausibile?
+3. Quanti pazienti servirebbero per avere una stima più precisa?
+
+---
+
+## Soluzione — Parte 1
+
+```{r}
+# Dati
+positivi <- 20
+n_pazienti <- 25
+
+# Verosimiglianza
+theta <- seq(0, 1, by = 0.01)
+verosim <- dbinom(positivi, n_pazienti, prob = theta)
+```
+
+---
+
+## Soluzione — Visualizzazione
+
+```{r}
+#| fig-height: 4.5
+plot(theta, verosim, type = "l", lwd = 2,
+     xlab = "Sensibilità (θ)", ylab = "Verosimiglianza",
+     main = "Validazione del test per fobia sociale")
+abline(v = 0.80, col = "blue", lty = 2)  # Nostra stima
+abline(v = 0.85, col = "red", lty = 2)   # Letteratura
+legend("topleft", c("MLE (0.80)", "Letteratura (0.85)"), 
+       col = c("blue", "red"), lty = 2)
+```
+
+---
+
+## Soluzione — Parte 2
+
+```{r}
+# Rapporto di verosimiglianza
+L_080 <- dbinom(20, 25, prob = 0.80)
+L_085 <- dbinom(20, 25, prob = 0.85)
+
+L_080 / L_085
+```
+
+Il valore 0.80 è circa 1.4 volte più verosimile di 0.85, ma 0.85 è ancora ragionevolmente plausibile.
+
+---
+
+## Soluzione — Parte 3
+
+```{r}
+#| fig-height: 4
+# Confronto: n = 25 vs n = 100 (stessa proporzione)
+verosim_25 <- dbinom(20, 25, prob = theta)
+verosim_100 <- dbinom(80, 100, prob = theta)
+
+plot(theta, verosim_25/max(verosim_25), type = "l", lwd = 2,
+     xlab = "θ", ylab = "L normalizzata")
+lines(theta, verosim_100/max(verosim_100), col = "darkgreen", lwd = 2)
+legend("topleft", c("n = 25", "n = 100"), col = c("black", "darkgreen"), lwd = 2)
+```
+
+Con 100 pazienti, l'incertezza si riduce notevolmente.
+
+---
+
+## Riepilogo finale
+
+1. La verosimiglianza funziona anche per **dati continui** (usando `dnorm()`)
+
+2. Con osservazioni indipendenti, le log-verosimiglianze si **sommano**
+
+3. Più dati raccogliamo, più la curva diventa **stretta**
+
+4. La verosimiglianza è il **ponte** verso l'inferenza bayesiana
+
+5. Nell'analisi bayesiana: **Posterior ∝ Prior × Verosimiglianza**
+
+---
+
+## Comandi R essenziali
+
+| Operazione | Codice R |
+|------------|----------|
+| Verosimiglianza binomiale | `dbinom(y, n, prob = theta)` |
+| Verosimiglianza normale | `dnorm(x, mean = mu, sd = sigma)` |
+| Log-verosimiglianza | `..., log = TRUE` |
+| Sommare contributi | `sum(dnorm(..., log = TRUE))` |
+| Trovare MLE | `theta[which.max(loglik)]` |
+
+---
+
+## Messaggio finale
+
+La verosimiglianza è lo strumento che ti permette di dire:
+
+> "Dati i risultati del mio studio, ecco quanto sono plausibili diversi valori del parametro che mi interessa."
+
+Questa è la base di **ogni** inferenza statistica moderna.
+
+---
+
+## Per la prossima lezione
+
+Materiale: https://ccaudek.github.io/utet-prob/
+
+**Prossimo argomento:**
+
+Prior, verosimiglianza e posterior: l'architettura completa dell'inferenza bayesiana.

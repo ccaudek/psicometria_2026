@@ -1,0 +1,555 @@
+---
+title: "Inferenza bayesiana su una media"
+subtitle: "Stima, incertezza e confronto con l'approccio frequentista — Segmento 1"
+version: 1.0
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+lang: it
+
+execute:
+  echo: true
+
+format:
+  revealjs:
+    theme: [default, ../revealjs.scss]
+    title-slide-attributes:
+      data-background-color: "#0072bc"
+    slide-number: c
+    show-slide-number: print
+    highlight-style: github
+    math: mathjax
+
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+library(ggplot2)
+library(dplyr)
+library(brms)
+library(bayesplot)
+set.seed(42)
+```
+
+## Obiettivi {.unnumbered .unlisted}
+
+1. Comprendere il problema dell'**inferenza su una media**.
+2. Calcolare e interpretare il **test t** per un campione.
+3. Vedere come un **outlier** può distorcere i risultati.
+4. Introdurre l'approccio **bayesiano robusto**.
+5. Confrontare le due filosofie inferenziali.
+
+# Parte 1: il problema
+
+## Una domanda semplice
+
+Un ricercatore misura il livello di **ansia di stato** in un campione di studenti universitari durante la sessione d’esami.
+
+. . .
+
+**Domanda:** Il livello medio di ansia in questa popolazione è diverso dal valore normativo (μ₀ = 40)?
+
+. . .
+
+Questa è forse la domanda più comune in psicologia: **confrontare una media con un valore di riferimento**.
+
+---
+
+## I dati
+
+```{r}
+# Dati simulati: ansia di stato (scala 20-80)
+ansia <- c(42, 45, 38, 51, 47, 44, 39, 48, 43, 46,
+           41, 50, 44, 47, 45, 42, 49, 43, 46, 44)
+
+n <- length(ansia)
+media <- mean(ansia)
+deviazione <- sd(ansia)
+
+cat("n =", n, "\n")
+cat("Media =", round(media, 2), "\n")
+cat("SD =", round(deviazione, 2), "\n")
+```
+
+---
+
+## Visualizziamo
+
+```{r}
+#| echo: false
+
+df <- data.frame(ansia = ansia)
+
+ggplot(df, aes(x = ansia)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 10, 
+                 fill = "steelblue", alpha = 0.7, color = "white") +
+  geom_vline(xintercept = 40, color = "red", linetype = "dashed", linewidth = 1) +
+  geom_vline(xintercept = media, color = "forestgreen", linewidth = 1.2) +
+  annotate("text", x = 40, y = 0.12, label = "Valore normativo\n(μ0 = 40)", 
+           color = "red", hjust = 1.1, size = 4) +
+  annotate("text", x = media, y = 0.12, label = paste0("Media campione\n(", round(media, 1), ")"), 
+           color = "forestgreen", hjust = -0.1, size = 4) +
+  labs(title = "Distribuzione dei punteggi di ansia",
+       x = "Ansia di stato", y = "Densità") +
+  theme_minimal(base_size = 14)
+```
+
+# Parte 2: l'approccio frequentista
+
+## Il test t per un campione
+
+L'approccio classico usa il **test t**:
+
+$$
+t = \frac{\bar{x} - \mu_0}{s / \sqrt{n}},
+$$
+
+dove:
+
+- $\bar{x}$ è la media campionaria
+- $\mu_0$ è il valore di riferimento (40)
+- $s$ è la deviazione standard campionaria
+- $n$ è la numerosità
+
+---
+
+## Calcolo "a mano"
+
+```{r}
+mu_0 <- 40  # Valore normativo
+
+# Errore standard
+se <- deviazione / sqrt(n)
+
+# Statistica t
+t_obs <- (media - mu_0) / se
+
+cat("Errore standard:", round(se, 3), "\n")
+cat("t osservato:", round(t_obs, 3), "\n")
+```
+
+---
+
+## Il valore-$p$
+
+```{r}
+# Gradi di libertà
+df <- n - 1
+
+# p-value (test a due code)
+p_value <- 2 * (1 - pt(abs(t_obs), df))
+
+cat("Gradi di libertà:", df, "\n")
+cat("p-value:", round(p_value, 4), "\n")
+```
+
+. . .
+
+Con p < 0.05, l'approccio frequentista conclude: **"rifiutiamo H₀"**.
+
+---
+ 
+## Verifica con R
+
+```{r}
+t.test(ansia, mu = 40)
+```
+
+---
+
+## Cosa significa questo risultato?
+
+L'interpretazione frequentista:
+
+> "Se la vera media fosse 40, la probabilità di osservare una differenza così estrema (o più estrema) è inferiore a 0.001."
+
+. . .
+
+**Ma attenzione:** questo NON dice:
+
+- quanto è probabile che μ = 40;
+- quanto è probabile che μ ≠ 40;
+- qual è il valore più plausibile di μ.
+
+# Parte 3: quando il test t inganna
+
+## Un nuovo scenario
+
+Immaginiamo di misurare il **tempo di reazione** (in ms) in un compito cognitivo.
+
+```{r}
+# Dati con un outlier
+tempi <- c(320, 315, 310, 318, 312, 318, 321, 310, 315, 322,
+           318, 312, 317, 319, 313, 324, 316, 329, 321, 890)
+
+cat("Media:", round(mean(tempi), 1), "ms\n")
+cat("Mediana:", median(tempi), "ms\n")
+```
+
+. . .
+
+Notiamo qualcosa di strano?
+
+---
+
+## Visualizziamo i dati
+
+```{r}
+#| echo: false
+#| fig-height: 4.5
+
+df_tempi <- data.frame(tempi = tempi)
+
+ggplot(df_tempi, aes(x = tempi)) +
+  geom_histogram(bins = 15, fill = "coral", alpha = 0.7, color = "white") +
+  geom_vline(xintercept = mean(tempi), color = "darkred", linewidth = 1.2) +
+  geom_vline(xintercept = median(tempi), color = "steelblue", linewidth = 1.2, linetype = "dashed") +
+  annotate("text", x = mean(tempi) + 20, y = 5, label = "Media", color = "darkred", size = 4) +
+  annotate("text", x = median(tempi) - 20, y = 5, label = "Mediana", color = "steelblue", size = 4) +
+  labs(title = "Distribuzione dei tempi di reazione",
+       subtitle = "Notare l'outlier a destra",
+       x = "Tempo di reazione (ms)", y = "Frequenza") +
+  theme_minimal(base_size = 14)
+```
+
+---
+
+## L'approccio "ingenuo"
+
+Poniamoci il problema di stabilire se la media della popolazione abbia un valore **minore di 320**.
+
+Un ricercatore "pigro" usa R **senza guardare i dati**:
+
+```{r}
+t.test(tempi, mu = 320, alternative = "less")
+```
+
+Questo testa formalmente:
+
+* **H₀:** μ $\geq$ 320;
+* **H₁:** μ < 320.
+
+---
+
+## Il risultato "non significativo"
+
+Con $p$ = 0.2629, il ricercatore conclude:
+
+> "Il tempo di reazione medio è **non** è significativamente minore di 320 ms."
+
+. . .
+
+**Ma è corretto?**
+
+L'outlier (890 ms) ha gonfiato la media e distorto il test.
+
+---
+
+## L'importanza di guardare i dati
+
+```{r}
+# Senza l'outlier
+tempi_puliti <- tempi[tempi < 500]
+
+cat("Senza outlier:\n")
+cat("  Media:", round(mean(tempi_puliti), 1), "ms\n")
+cat("  n =", length(tempi_puliti), "\n")
+```
+
+---
+
+```{r}
+t.test(tempi_puliti, mu = 320, alternative = "less")
+```
+
+Ora $p$ = 0.01584 → **risultato significativo**.
+
+---
+
+## Il problema delle correzioni "ad hoc"
+
+L'approccio frequentista richiede:
+
+1. identificare gli outlier (ma con quale criterio?);
+2. decidere se rimuoverli (ma quando è giustificato?);
+3. applicare trasformazioni (log? radice quadrata?);
+4. usare test non parametrici (ma perdono potenza...).
+
+. . .
+
+Tutte queste sono **decisioni arbitrarie** che influenzano il risultato -- si ricordino il problema dei **gradi di libertà del ricercatore** e la **crisi della replicabilità** dei risultati della ricerca psicologica.
+
+# Parte 4: l'approccio bayesiano
+
+## Un modello più naturale
+
+Invece di "correggere" i dati, possiamo usare un **modello più flessibile**.
+
+. . .
+
+L'idea: sostituire la distribuzione normale con la **distribuzione t di Student**, che ha code più pesanti.
+
+$$
+y_i \sim \text{Student-}t(\nu, \mu, \sigma),
+$$
+
+dove $\nu$ (gradi di libertà) controlla quanto le code sono "pesanti".
+
+---
+
+## Perché la t di Student?
+
+```{r}
+#| echo: false
+
+x <- seq(-5, 5, length.out = 200)
+
+df_dist <- data.frame(
+  x = rep(x, 3),
+  densita = c(dnorm(x), dt(x, df = 3), dt(x, df = 1)),
+  distribuzione = rep(c("Normale", "t (ν=3)", "t (ν=1, Cauchy)"), each = length(x))
+)
+
+ggplot(df_dist, aes(x = x, y = densita, color = distribuzione)) +
+  geom_line(linewidth = 1.2) +
+  scale_color_manual(values = c("steelblue", "coral", "forestgreen")) +
+  labs(title = "Normale vs t di Student",
+       subtitle = "La t ha code più pesanti → più tollerante agli outlier",
+       x = "x", y = "Densità", color = "Distribuzione") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "bottom")
+```
+
+---
+
+## Il modello bayesiano robusto
+
+```{r}
+#| output: false
+
+# Creiamo il dataframe
+dati_tempi <- data.frame(tempo = tempi)
+
+# Modello con distribuzione t di Student
+fit_robusto <- brm(
+  tempo ~ 1,
+  data = dati_tempi,
+  family = student(),  # Distribuzione t invece di Normale
+  seed = 42,
+  backend = "cmdstanr",
+  silent = 2,
+  refresh = 0
+)
+```
+
+---
+
+## Confrontiamo i due modelli
+
+```{r}
+#| output: false
+
+# Modello normale (standard)
+fit_normale <- brm(
+  tempo ~ 1,
+  data = dati_tempi,
+  family = gaussian(),
+  seed = 42,
+  backend = "cmdstanr",
+  silent = 2,
+  refresh = 0
+)
+```
+
+---
+
+## Risultati: modello normale
+
+```{r}
+summary(fit_normale)
+```
+
+---
+
+## Risultati: modello robusto (t di Student)
+
+```{r}
+summary(fit_robusto)
+```
+
+---
+
+## Confronto delle stime
+
+```{r}
+#| echo: false
+
+media_normale <- fixef(fit_normale)[1, 1]
+media_robusta <- fixef(fit_robusto)[1, 1]
+
+cat("Stima della media:\n")
+cat("  Modello normale:", round(media_normale, 1), "ms\n")
+cat("  Modello robusto:", round(media_robusta, 1), "ms\n")
+cat("  Media senza outlier:", round(mean(tempi_puliti), 1), "ms\n")
+cat("  Valore di riferimento: 320 ms\n")
+```
+
+. . .
+
+Il modello robusto **automaticamente** riduce l'influenza dell'outlier.
+
+---
+
+## Visualizziamo le posterior
+
+```{r}
+#| echo: false
+
+post_normale <- as_draws_df(fit_normale)
+post_robusta <- as_draws_df(fit_robusto)
+
+df_post <- data.frame(
+  media = c(post_normale$b_Intercept, post_robusta$b_Intercept),
+  modello = rep(c("Normale", "Robusto (t)"), each = nrow(post_normale))
+)
+
+ggplot(df_post, aes(x = media, fill = modello)) +
+  geom_density(alpha = 0.5) +
+  geom_vline(xintercept = 320, linetype = "dashed", color = "black", linewidth = 1) +
+  annotate("text", x = 320, y = 0.06, label = "Valore di\nriferimento", hjust = 1.1) +
+  scale_fill_manual(values = c("coral", "steelblue")) +
+  labs(title = "Distribuzioni a posteriori della media",
+       x = "Tempo di reazione medio (ms)", y = "Densità",
+       fill = "Modello") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "bottom")
+```
+
+---
+
+## Calcolo della probabilità
+
+```{r}
+# Probabilità che la media sia > 320 ms
+prob_normale <- mean(post_normale$b_Intercept > 320)
+prob_robusta <- mean(post_robusta$b_Intercept > 320)
+
+cat("P(μ > 320 ms):\n")
+cat("  Modello normale:", round(prob_normale * 100, 1), "%\n")
+cat("  Modello robusto:", round(prob_robusta * 100, 1), "%\n")
+```
+
+# Parte 5: la filosofia dietro i due approcci
+
+## L'approccio frequentista
+
+**Filosofia:**
+
+- I parametri sono numeri fissi ma sconosciuti.
+- Stimiamo usando i dati.
+- Il valore-$p$ misura quanto i dati sono "sorprendenti" sotto H₀.
+
+. . .
+
+**Problemi:**
+
+- Richiede assunzioni rigide (normalità).
+- Outlier = problema da "correggere".
+- Il risultato dipende da decisioni arbitrarie.
+
+---
+
+## L'approccio bayesiano
+
+**Filosofia:**
+
+- I parametri sono variabili casuali.
+- Esprimiamo incertezza con distribuzioni.
+- Possiamo scegliere modelli flessibili.
+
+. . .
+
+**Vantaggi:**
+
+- Modelli robusti integrati naturalmente.
+- Nessuna decisione arbitraria sugli outlier.
+- Risposte dirette: "Qual è la probabilità che μ > 320?"
+
+---
+
+## Le "correzioni" frequentiste
+
+| Problema | Soluzione frequentista | Problema della soluzione |
+|----------|------------------------|--------------------------|
+| Outlier | Rimozione | Quale criterio? |
+| Non normalità | Trasformazione | Quale trasformazione? |
+| Eteroschedasticità | Test robusti | Perdita di potenza |
+| Dipendenza | Correzioni | Assunzioni aggiuntive |
+
+. . .
+
+Ogni correzione introduce **nuove assunzioni** e **decisioni arbitrarie**.
+
+---
+
+## L'approccio bayesiano: un framework unificato
+
+Invece di "correggere", **modelliamo** il fenomeno:
+
+- Outlier? → Usa distribuzione con code pesanti (t di Student).
+- Non normalità? → Usa la distribuzione appropriata.
+- Eteroschedasticità? → Modella la varianza.
+- Dipendenza? → Modelli gerarchici.
+
+. . .
+
+Tutto dentro un **unico framework coerente**.
+
+# Riepilogo
+
+## I punti chiave
+
+1. Il **test t** assume normalità e può essere ingannato da outlier.
+
+2. L'approccio frequentista richiede **correzioni ad hoc**.
+
+3. L'approccio bayesiano permette modelli **naturalmente robusti**.
+
+4. La distribuzione **$t$ di Student** è più tollerante ai valori estremi.
+
+5. Dobbiamo **sempre guardare i dati** prima di qualsiasi analisi.
+
+---
+
+## Il messaggio fondamentale
+
+> "Non correggere i dati per adattarli al modello. Scegli un modello che si adatti ai dati."
+
+. . .
+
+L'approccio bayesiano ci permette di costruire modelli più realistici, senza dover prendere decisioni arbitrarie su cosa fare con i dati "problematici".
+
+---
+
+## Per il prossimo segmento
+
+Abbiamo visto come stimare una media in modo robusto.
+
+**Ma c'è un problema più profondo:**
+
+Quando stimiamo una media, stiamo descrivendo cosa succede "in media" nel gruppo.
+
+. . .
+
+**Ma cosa succede al singolo individuo?**
+
+Nel prossimo segmento vedremo perché questa distinzione è cruciale per la psicologia.

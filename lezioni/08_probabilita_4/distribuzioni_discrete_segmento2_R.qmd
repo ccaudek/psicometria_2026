@@ -1,0 +1,1139 @@
+---
+title: "Distribuzioni discrete: Bernoulli, Binomiale, Poisson"
+subtitle: "Esercitazione pratica – Segmento 2 (esercizi con R)"
+version: 1.0
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+toc-depth: 2
+lang: it
+
+execute:
+  echo: true
+
+format:
+    revealjs:
+      theme: [default, ../revealjs.scss]
+      title-slide-attributes:
+        data-background-color: "#0072bc"
+      slide-number: c
+      show-slide-number: print
+      highlight-style: github
+      math: mathjax
+      mermaid:
+        theme: neutral
+      
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+## Obiettivi del segmento {.unnumbered .unlisted}
+
+In questo secondo segmento usiamo **R** come “calcolatrice probabilistica” e come laboratorio per esplorare le distribuzioni.
+
+Faremo due cose:
+
+1. calcolare probabilità **esatte** con le funzioni di R;
+2. verificare e capire le formule con **simulazioni** (Monte Carlo).
+
+Regola di oggi:
+
+> ogni riga di codice deve corrispondere a un’idea probabilistica chiara.
+
+---
+
+## Setup (da eseguire una volta) {.unnumbered .unlisted}
+
+```{r}
+# Rendiamo i risultati replicabili
+set.seed(2026)
+
+# Dimensione della simulazione (grande = stime più stabili)
+Nsim <- 200000
+```
+
+  
+- `set.seed()` serve a ottenere gli stessi numeri casuali se rieseguiamo il codice.  
+- `Nsim` è il numero di “esperimenti” simulati.
+
+---
+
+## Ripasso rapidissimo: tre famiglie di funzioni in R
+
+Per molte distribuzioni, R usa una convenzione molto semplice:
+
+- `d...` = **massa di probabilità** (probabilità puntuale)  
+- `p...` = **cumulativa** (probabilità fino a un valore)  
+- `r...` = **random** (generazione di dati casuali)
+
+Esempi:
+
+- binomiale: `dbinom()`, `pbinom()`, `rbinom()`
+- Poisson: `dpois()`, `ppois()`, `rpois()`
+
+---
+
+## Esercizio 1 
+
+### Problema
+
+In un trial:
+
+- successo con probabilità `p = 0.30`.
+
+Calcoliamo con R:
+
+- $P(X=1)$
+- $P(X=0)$
+
+---
+
+### Soluzione 
+
+```{r}
+p <- 0.30
+
+# Bernoulli è una binomiale con size = 1
+P_X1 <- dbinom(x = 1, size = 1, prob = p)
+P_X0 <- dbinom(x = 0, size = 1, prob = p)
+```
+
+- `dbinom(x, size, prob)` restituisce $P(X=x)$ per $X \sim \text{Binomiale}(\text{size}, \text{prob})$.
+- se `size = 1`, stiamo considerando una distribuzione di Bernoulli.
+
+```{r}
+P_X1
+```
+
+```{r}
+P_X0
+```
+
+---
+
+
+Controllo concettuale:
+
+```{r}
+# La somma su tutti gli esiti possibili deve dare 1
+P_X1 + P_X0
+```
+
+---
+
+## Esercizio 2 
+
+**Problema**
+
+Simuliamo `Nsim` trial Bernoulli e stimiamo la frequenza di successi.  
+Poi la confrontiamo con `p = 0.30`.
+
+---
+
+### Soluzione guidata
+
+```{r}
+# rbinom genera 0/1: successi su prove
+X <- rbinom(n = Nsim, size = 1, prob = p)
+```
+
+  
+- `rbinom(..., size=1)` genera molte Bernoulli (0/1).
+- La media di una variabile 0/1 è la proporzione di 1 (successi).  
+  Quindi `mean(X)` stima $P(X=1)$.
+
+
+```{r}
+# La media di 0/1 è la proporzione di successi
+mean(X)
+```
+
+---
+
+## Esercizio 3 
+
+**Problema**
+
+In un esperimento con:
+
+- `n = 20` prove di Bernoulli indipendenti;
+- probabilità di successo `p = 0.80`.
+
+Calcolare:
+
+- $P(X=16)$
+
+---
+
+### Soluzione guidata
+
+```{r}
+n <- 20
+p <- 0.80
+k <- 16
+
+```
+
+- `dbinom(16, 20, 0.8)` calcola direttamente la probabilità che il numero di successi sia **esattamente** 16.
+
+```{r}
+P_Xeq16 <- dbinom(x = k, size = n, prob = p)
+P_Xeq16
+```
+
+Il valore ottenuto corrispone a quello che abbiamo trovato in precedenza svolgendo i calcoli "a mano". 
+
+---
+
+## Esercizio 4 
+
+**Problema**
+
+Calcolare:
+
+- $P(X \ge 16)$ con $X \sim \text{Binomiale}(20, 0.8)$.
+
+---
+
+### Soluzione 
+
+`pbinom(q, ...)` restituisce $P(X <= q)$:
+
+```{r}
+P_Xle15 <- pbinom(q = 15, size = n, prob = p)
+```
+
+Quindi $P(X >= 16) = 1 - P(X <= 15)$:
+
+```{r}
+P_Xge16 <- 1 - P_Xle15
+P_Xge16
+```
+
+- Questa è un’applicazione del **complemento** nello spazio giusto:  
+  $P(X \ge 16) = 1 - P(X \le 15)$.  
+- `pbinom()` evita di sommare a mano tante probabilità puntuali.
+
+---
+
+Verifichiamo:
+
+```{r}
+dbinom(x = 16, size = n, prob = p) +
+  dbinom(x = 17, size = n, prob = p) +
+  dbinom(x = 18, size = n, prob = p) +
+  dbinom(x = 19, size = n, prob = p) +
+  dbinom(x = 20, size = n, prob = p)
+```
+
+---
+
+L'operazione di sommare le probabilità per più valori consecutivi di $k$ può essere scritta in modo compatto usando la funzione `sum()` in R.  
+
+Invece di calcolare separatamente 
+
+$$P(X = 16) + P(X = 17) + \dots + P(X = 20)$$ 
+
+possiamo passare alla funzione `dbinom()` un **vettore** di valori per l'argomento `x` e sommare i risultati in un unico comando:
+
+```{r}
+sum(dbinom(x = 16:20, size = n, prob = p))
+```
+
+---
+
+**Interpretazione:**  
+
+* `16:20` crea il vettore `c(16, 17, 18, 19, 20)`.  
+* `dbinom()` calcola la densità binomiale per ciascuno di questi valori e restituisce un vettore di probabilità.  
+* `sum()` infine somma tutti gli elementi del vettore, restituendo la probabilità totale $P(X \geq 16)$.
+
+---
+
+## Esercizio 5 
+
+**Problema**
+
+Costruire la distribuzione completa di $X \sim \text{Binomiale}(20, 0.8)$ che include:
+
+- i valori possibili: 0, 1, ..., 20;
+- le rispettive probabilità: $P(X=k)$.
+
+---
+
+### Soluzione 
+
+```{r}
+# Calcoliamo tutte le probabilità puntuali in un vettore
+pk <- dbinom(x = 0:n, size = n, prob = p)
+```
+
+- `dbinom()` prende come argomento anche su un vettore: restituisce un vettore di probabilità; 
+- la tabella ci permette di “vedere” la distribuzione come un oggetto.
+
+---
+
+Per visualizzare la distribuzione binomiale, creiamo un data frame:
+
+```{r}
+tab_binom <- data.frame(k = 0:n, P = pk)
+tab_binom
+```
+
+---
+
+Controllo: la somma deve essere 1.
+
+```{r}
+sum(tab_binom$P)
+```
+
+---
+
+Grafico a barre:
+
+```{r}
+barplot(height = tab_binom$P, names.arg = tab_binom$k,
+        xlab = "k (numero di successi)",
+        ylab = "P(X = k)")
+```
+
+---
+
+Usiamo `ggplot2`:
+
+```{r}
+library(ggplot2)
+
+tab_binom |> 
+  ggplot(aes(x = k, y = P)) +
+    geom_col() +
+    labs(
+      x = "k (numero di successi)",
+      y = "P(X = k)"
+    )
+```
+
+---
+
+## Esercizio 6 — Simulazione Monte Carlo di una Binomiale
+
+**Obiettivo:**  
+**verificare empiricamente** la distribuzione binomiale attraverso simulazione, confrontando i risultati sperimentali con la teoria.
+
+---
+
+### 1. Contesto del problema {.unnumbered .unlisted}
+
+Vogliamo studiare il comportamento di una **variabile binomiale**:
+
+$$
+X \sim \text{Binomial}(n = 20, p = 0.80).
+$$
+
+**Approccio pratico:** invece di calcolare solo le probabilità teoriche, **simuliamo** migliaia di volte l'esperimento e osserviamo la distribuzione dei risultati.
+
+---
+
+**Perché simulare?**  
+
+La simulazione ci permette di:
+
+1. visualizzare concretamente la variabile aleatoria;
+2. verificare le proprietà teoriche;
+3. comprendere il concetto di "distribuzione" in modo empirico.
+
+---
+
+### 2. Schema della simulazione {.unnumbered .unlisted}
+
+```
+[Esperimento Base]  
+20 prove Bernoulli indipendenti (p = 0.80)  
+↓  
+Conta dei successi → Un valore di X  
+↓  
+[Ripeti Nsim volte]  
+↓  
+Distribuzione empirica di X
+```
+
+---
+
+### 3. Implementazione in R {.unnumbered .unlisted}
+
+**Generazione dei dati simulati**
+
+La funzione `rbinom()` genera direttamente il numero di successi:
+
+```{r}
+# Parametri
+n <- 20      # Numero di prove per esperimento
+p <- 0.80    # Probabilità di successo
+Nsim <- 10000 # Numero di simulazioni
+
+# Simulazione: Nsim valori dalla Binomiale(20, 0.80)
+X_sim <- rbinom(n = Nsim, size = n, prob = p)
+
+# Primi 10 valori generati
+head(X_sim, 10)
+```
+
+Ogni numero rappresenta il conteggio di successi in **un singolo esperimento** completo di 20 prove.
+
+---
+
+### 4. Analisi empirica: frequenza di un esito specifico {.unnumbered .unlisted}
+
+**Domanda:** qual è la frequenza relativa con cui otteniamo *esattamente* 16 successi?
+
+**Passo 1: Identificare i casi favorevoli**
+
+```{r}
+# Test logico: quali simulazioni hanno dato 16 successi?
+is_16 <- X_sim == 16
+
+# Visualizzazione parziale
+head(is_16, 10)
+```
+
+> `TRUE` indica una simulazione dove $X = 16$.
+
+---
+
+**Passo 2: Calcolare la frequenza relativa**
+
+```{r}
+# Proporzione di TRUE = frequenza relativa di X = 16
+freq_16 <- mean(is_16)
+freq_16
+```
+
+**Interpretazione:**  
+nelle 10,000 simulazioni, il 21.74% ha prodotto esattamente 16 successi.
+
+> **Nota:** `mean()` su un vettore logico calcola direttamente la proporzione di `TRUE`, poiché R converte `TRUE = 1` e `FALSE = 0`.
+
+---
+
+### 5. Confronto critico: simulazione vs teoria {.unnumbered .unlisted}
+
+```{r}
+# Confronto quantitativo
+confronto <- data.frame(
+  Metodo = c("Simulazione (Monte Carlo)", "Teoria (formula binomiale)"),
+  Probabilità = c(
+    mean(X_sim == 16),      # Stima empirica
+    dbinom(16, size = n, prob = p)  # Valore teorico esatto
+  )
+)
+
+confronto
+```
+
+---
+
+**Visualizzazione del confronto**
+
+```{r}
+confronto |>
+ggplot(aes(x = Metodo, y = Probabilità, fill = Metodo)) +
+  geom_col(width = 0.6) +
+  geom_text(aes(label = round(Probabilità, 4)), vjust = -0.5) +
+  labs(title = "Confronto: Stima Monte Carlo vs Teoria",
+       subtitle = "P(X = 16) per Binomiale(20, 0.80)") +
+  theme_minimal() +
+  ylim(0, 0.25)
+```
+
+---
+
+### 6. Interpretazione dei risultati {.unnumbered .unlisted}
+
+**Perché i valori sono simili ma non identici?**
+
+1. **Legge dei Grandi Numeri:**  
+   Con $N_{\text{sim}} = 10,000$, la stima empirica converge al valore teorico, ma non è ancora esatta.
+
+2. **Errore di simulazione (variabilità campionaria):**  
+   $$
+   \text{SE} \approx \sqrt{\frac{p(1-p)}{N_{\text{sim}}}} \approx 0.004.
+   $$
+   L'intervallo $0.2174 \pm 0.008$ contiene il valore teorico $0.2182$.
+
+---
+
+3. **Aumentando $N_{\text{sim}}$:**
+   ```{r}
+   # Con 1 milione di simulazioni
+   X_large <- rbinom(1e6, n, p)
+   mean(X_large == 16)  # Molto più vicino a 0.2182
+   ```
+
+---
+
+### 7. Riepilogo concettuale {.unnumbered .unlisted}
+
+| Concetto | Implementazione R | Significato |
+|----------|------------------|-------------|
+| **Simulazione binomiale** | `rbinom(Nsim, size, prob)` | Genera Nsim conteggi di successi |
+| **Condizione logica** | `X_sim == 16` | Identifica i casi con esattamente 16 successi |
+| **Frequenza relativa** | `mean(condizione)` | Stima Monte Carlo di $P(X = 16)$ |
+| **Valore teorico** | `dbinom(16, size, prob)` | Probabilità esatta dalla  binomiale |
+
+**Take-home message:**  
+la simulazione Monte Carlo ci permette di **validare empiricamente** i risultati teorici e di comprendere la variabilità intrinseca dei processi aleatori.
+
+---
+
+## Esercizio 7 — Modello Poisson per arrivi di pazienti
+
+**Contesto del problema**
+
+Un servizio di consulenza psicologica riceve pazienti secondo un processo stocastico con le seguenti caratteristiche:
+
+- **tasso medio di arrivo:** $\lambda = 2$ pazienti all'ora.
+- **ipotesi del modello Poisson:**
+
+  1. gli arrivi sono **indipendenti** tra loro;
+  2. la probabilità di arrivo è **costante** nell'intervallo temporale;
+  3. più di un arrivo **non** può verificarsi nello stesso istante.
+
+---
+
+**Variabile di interesse:** 
+
+$X$ = numero di pazienti che arrivano in **un'ora fissata**  
+
+Dunque:
+
+$$
+X \sim \text{Poisson}(\lambda = 2).
+$$
+
+---
+
+**Obiettivi.**  
+Calcolare tre probabilità per la gestione del servizio:
+
+1. **Probabilità di nessun arrivo:** $P(X = 0)$  
+   → Utile per valutare periodi di "inattività"
+
+2. **Probabilità di esattamente 3 arrivi:** $P(X = 3)$  
+   → Scenario di carico moderato-alto
+
+3. **Probabilità di al più 1 arrivo:** $P(X \leq 1)$  
+   → Scenario di bassa domanda (0 o 1 paziente)
+
+---
+
+**Soluzione in R**
+
+Impostazione del parametro
+
+```{r}
+# Tasso medio: 2 pazienti/ora
+lambda <- 2  
+```
+
+1. Probabilità di nessun arrivo $P(X = 0)$:
+
+```{r}
+P0 <- dpois(x = 0, lambda = lambda)
+P0
+```
+
+**Interpretazione:** c'è circa il **13.5% di probabilità** che in un'ora non arrivi alcun paziente.
+
+---
+
+2. Probabilità di esattamente 3 arrivi $P(X = 3)$
+
+```{r}
+P3 <- dpois(x = 3, lambda = lambda)
+P3
+```
+
+**Interpretazione:** c'è circa il **18.0% di probabilità** che in un'ora arrivino esattamente 3 pazienti.
+
+---
+
+3. Probabilità di al più 1 arrivo $P(X \leq 1)$:
+
+```{r}
+P_le1 <- ppois(q = 1, lambda = lambda)
+P_le1
+```
+
+**Interpretazione:** c'è circa il **40.6% di probabilità** che in un'ora arrivino **0 oppure 1** paziente.
+
+---
+
+### Visualizzazione della distribuzione di Poisson
+
+Passo 1: preparare i dati per il grafico.
+
+```{r}
+# 1. Creiamo una sequenza di valori possibili per k (numero di pazienti)
+k_valori <- 0:8  # Da 0 a 8 pazienti
+
+# 2. Calcoliamo le probabilità per ciascun valore di k
+probabilita <- dpois(k_valori, lambda = 2)
+
+# 3. Mettiamo i dati in una tabella (data frame)
+tabella <- data.frame(
+  pazienti = k_valori,    # Prima colonna: numero di pazienti
+  prob = probabilita      # Seconda colonna: probabilità
+)
+```
+
+---
+
+Visualizziamo la tabella per vedere i valori:
+
+```{r}
+tabella
+```
+
+**Spiegazione:**
+
+- `0:8` crea i numeri 0, 1, 2, ..., 8.
+- `dpois()` calcola la probabilità per ogni numero di pazienti.
+- `data.frame()` organizza i dati in una tabella ordinata.
+
+---
+
+Passo 2: creare il grafico a barre.
+
+```{r}
+tabella |> 
+ggplot(aes(x = pazienti, y = prob)) +
+  geom_col(width = 0.6) +
+  labs(title = "Distribuzione di Poisson (2 pazienti/ora in media)",
+       x = "Numero di pazienti in un'ora",
+       y = "Probabilità") 
+```
+
+---
+
+### Sintesi delle funzioni R utilizzate
+
+| Funzione | Uso | Formula matematica | Esempio |
+|----------|-----|-------------------|---------|
+| `dpois(x, lambda)` | Densità:$P(X = k)$ |$\frac{\lambda^k e^{-\lambda}}{k!}$ | `dpois(3, 2)` →$P(X = 3)$ |
+| `ppois(q, lambda)` | Distribuzione cumulativa:$P(X \leq q)$ |$\sum_{k=0}^q \frac{\lambda^k e^{-\lambda}}{k!}$ | `ppois(1, 2)` →$P(X \leq 1)$ |
+
+---
+
+### Riepilogo concettuale
+
+| Concetto | Formula | Calcolo R | Risultato |
+|----------|---------|-----------|-----------|
+| **Evento raro** |$P(X = 0)$ | `dpois(0, 2)` | 0.1353 |
+| **Evento moderato** |$P(X = 3)$ | `dpois(3, 2)` | 0.1804 |
+| **Evento cumulativo** |$P(X \leq 1)$ | `ppois(1, 2)` | 0.4060 |
+
+**Take-home message:** la distribuzione di Poisson è usata per modellare eventi rari e indipendenti nel tempo. 
+
+---
+
+## Esercizio 8 — Verifica Monte Carlo della distribuzione di Poisson
+
+**Obiettivo:**  
+**verificare empiricamente** la distribuzione di Poisson attraverso una simulazione.
+
+- **Teoria:** Sappiamo che per $\lambda = 2$:
+  - $P(X = 0) = 0.1353$,
+  - $P(X = 3) = 0.1804$.
+
+---
+
+- **Simulazione:** generiamo migliaia di valori casuali e calcoliamo le frequenze osservate.
+
+- **Confronto:** le frequenze osservate dovrebbero avvicinarsi alle probabilità teoriche.
+
+---
+
+**Procedura passo-passo**
+
+Passo 1: Impostare i parametri
+
+```{r}
+# Parametri della simulazione
+lambda <- 2         # Media: 2 pazienti all'ora
+Nsim <- 10000       # Numero di simulazioni (10,000)
+```
+
+**Spiegazione:** simuleremo 10,000 volte il conteggio di pazienti in un'ora, con una media di 2 pazienti.
+
+---
+
+Passo 2: generare i dati simulati.
+
+```{r}
+# Genera Nsim valori dalla distribuzione Poisson
+arrivi_simulati <- rpois(n = Nsim, lambda = lambda)
+
+# Visualizza i primi 20 valori
+head(arrivi_simulati, 20)
+```
+
+**Cosa significa?** Ogni numero rappresenta quanti pazienti sono "arrivati" in un'ora simulata.
+
+---
+
+Passo 3: calcolare le frequenze osservate.
+
+```{r}
+# Frequenza di 0 arrivi (ore senza pazienti)
+freq_0 <- mean(arrivi_simulati == 0)
+
+# Frequenza di 3 arrivi (ore con 3 pazienti)
+freq_3 <- mean(arrivi_simulati == 3)
+```
+
+```{r}
+# Mostra i risultati
+cat("Frequenza osservata di 0 arrivi:", freq_0, "\n")
+```
+
+```{r}
+cat("Frequenza osservata di 3 arrivi:", freq_3)
+```
+
+---
+
+**Come funziona:**
+
+- `arrivi_simulati == 0` crea una lista di TRUE/FALSE (TRUE dove ci sono 0 arrivi);
+- `mean()` calcola la percentuale di TRUE (perché TRUE=1, FALSE=0).
+
+---
+
+Passo 4: confronto diretto con la teoria.
+
+```{r}
+# Calcola le probabilità teoriche
+teoria_0 <- dpois(0, lambda)  # P(X = 0) teorica
+teoria_3 <- dpois(3, lambda)  # P(X = 3) teorica
+
+# Crea una tabella di confronto
+confronto <- data.frame(
+  Evento = c("0 arrivi", "3 arrivi"),
+  Simulazione = c(freq_0, freq_3),
+  Teoria = c(teoria_0, teoria_3),
+  Differenza = c(freq_0 - teoria_0, freq_3 - teoria_3)
+)
+
+# Mostra la tabella
+print(confronto)
+```
+
+**Interpretazione:** le frequenze osservate sono molto vicine ai valori teorici.
+
+---
+
+Se aumenti le simulazioni (Nsim = 100,000):
+
+```{r}
+arrivi_grandi <- rpois(100000, lambda)
+mean(arrivi_grandi == 0)  # Più vicino a 0.1353
+mean(arrivi_grandi == 3)  # Più vicino a 0.1804
+```
+**Nota:** più simulazioni = risultati più precisi!
+
+---
+
+**Cosa abbiamo imparato?**
+
+1. **`rpois(n, lambda)`** genera `n` valori casuali da una Poisson.
+2. **`mean(X == k)`** calcola la frequenza relativa dell'evento $X = k$.
+3. Le **simulazioni Monte Carlo** approssimano le probabilità teoriche.
+4. Più simulazioni = migliore approssimazione (legge dei grandi numeri).
+5. Possiamo **verificare** formule matematiche attraverso esperimenti simulati.
+
+Ecco la versione migliorata dell'esercizio, con ggplot2 semplice e didattico, e una struttura più chiara.
+
+---
+
+## Esercizio 9 — Esplorare come cambiano le distribuzioni
+
+**Obiettivo:**   
+**visualizzare** come cambiano la distribuzione Binomiale e Poisson al variare dei loro parametri.  
+
+---
+
+### Parte 1: Distribuzione Binomiale - Effetto di `p`
+
+Parametri fissi:
+
+- Numero di prove: $n = 20$ (fisso)
+- Variamo la probabilità di successo: $p = 0.2, 0.5, 0.8$
+
+---
+
+Codice per generare i dati:
+
+```{r}
+# Parametri
+n <- 20
+k_vals <- 0:n  # Valori possibili per k (da 0 a 20)
+
+# Calcola le probabilità per tre diversi valori di p
+pk_p02 <- dbinom(k_vals, size = n, prob = 0.2)  # p basso
+pk_p05 <- dbinom(k_vals, size = n, prob = 0.5)  # p intermedio
+pk_p08 <- dbinom(k_vals, size = n, prob = 0.8)  # p alto
+
+# Combina i dati in un'unica tabella
+dati_binom <- data.frame(
+  k = rep(k_vals, 3),
+  prob = c(pk_p02, pk_p05, pk_p08),
+  p = factor(rep(c("p = 0.2", "p = 0.5", "p = 0.8"), each = length(k_vals)))
+)
+```
+
+---
+
+Visualizza le prime righe:
+
+```{r}
+head(dati_binom, 10)
+```
+
+---
+
+### Visualizzazione con ggplot2 
+
+```{r}
+dati_binom |> 
+ggplot(aes(x = k, y = prob, fill = p)) +
+  geom_col(width = 0.7) +
+  facet_wrap(~ p, ncol = 3) +  # Tre grafici affiancati
+  labs(title = "Distribuzione Binomiale: effetto di p (n = 20)",
+       x = "Numero di successi (k)",
+       y = "P(X = k)") +
+  theme(legend.position = "none")  # Rimuove la legenda (ridondante)
+```
+
+---
+
+**Cosa osservare:**
+
+1. **p = 0.2**: La distribuzione è spostata a sinistra (pochi successi)
+2. **p = 0.5**: Distribuzione simmetrica attorno a k = 10
+3. **p = 0.8**: Distribuzione spostata a destra (molti successi)
+
+> **Regola pratica:** Il valore più probabile è $n \times p$.
+
+---
+
+### Versione alternativa: sovrapporre le distribuzioni
+
+```{r}
+ggplot(dati_binom, aes(x = k, y = prob, color = p)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 2) +
+  labs(title = "Confronto diretto: Binomiale con diversi p",
+       x = "Numero di successi (k)",
+       y = "P(X = k)",
+       color = "Probabilità\ndi successo") 
+```
+
+---
+
+## Parte 2: Distribuzione Poisson - Effetto di `λ`
+
+Codice per generare i dati
+
+```{r}
+# Valori di k da visualizzare
+k_vals <- 0:20
+
+# Calcola le probabilità per tre diversi lambda
+pk_l05 <- dpois(k_vals, lambda = 0.5)  # Lambda piccolo
+pk_l2  <- dpois(k_vals, lambda = 2)    # Lambda intermedio
+pk_l6  <- dpois(k_vals, lambda = 6)    # Lambda grande
+
+# Combina i dati
+dati_pois <- data.frame(
+  k = rep(k_vals, 3),
+  prob = c(pk_l05, pk_l2, pk_l6),
+  lambda = factor(rep(c("λ = 0.5", "λ = 2", "λ = 6"), each = length(k_vals)))
+)
+```
+
+---
+
+Visualizzazione:
+
+```{r}
+ggplot(dati_pois, aes(x = k, y = prob, fill = lambda)) +
+  geom_col(width = 0.7) +
+  facet_wrap(~ lambda, ncol = 3) +
+  labs(title = "Distribuzione di Poisson: effetto di λ",
+       x = "Numero di eventi (k)",
+       y = "P(X = k)") +
+  theme(legend.position = "none")
+```
+
+---
+
+**Cosa osservare:**
+
+1. **λ = 0.5**: Molta probabilità su 0 e 1 eventi.
+2. **λ = 2**: Distribuzione più bilanciata, picco attorno a k = 2.
+3. **λ = 6**: Distribuzione più "larga", picco attorno a k = 6.
+
+> **Regola pratica:** il valore più probabile è λ.
+
+---
+
+### Versione alternativa: sovrapporre le distribuzioni
+
+```{r}
+ggplot(dati_pois, aes(x = k, y = prob, color = lambda)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 2) +
+  labs(title = "Confronto diretto: Poisson con diversi λ",
+       x = "Numero di eventi (k)",
+       y = "P(X = k)",
+       color = "Tasso\nmedio (λ)") 
+```
+
+---
+
+## Parte 3: Confronto Binomiale vs Poisson
+
+Quando $n$ è grande e $p$ è piccolo, la Binomiale ≈ Poisson con $λ = np$
+
+```{r}
+#| echo: false
+# Parametri
+n_grande <- 100
+p_piccolo <- 0.05
+lambda_equiv <- n_grande * p_piccolo  # = 5
+
+# Calcola le distribuzioni
+k_vals <- 0:15
+binomiale <- dbinom(k_vals, size = n_grande, prob = p_piccolo)
+poisson <- dpois(k_vals, lambda = lambda_equiv)
+
+# Crea il data frame
+dati_confronto <- data.frame(
+  k = rep(k_vals, 2),
+  prob = c(binomiale, poisson),
+  Distribuzione = rep(c("Binomiale", "Poisson"), each = length(k_vals))
+)
+
+# Grafico di confronto
+ggplot(dati_confronto, aes(x = k, y = prob, color = Distribuzione)) +
+  geom_line(linewidth = 1.2, linetype = "solid") +
+  geom_point(aes(shape = Distribuzione), size = 3) +
+  labs(title = "Confronto Binomiale vs Poisson",
+       subtitle = "Binomiale(100, 0.05) vs Poisson(5)",
+       x = "k",
+       y = "P(X = k)") 
+```
+
+---
+
+## Sintesi delle osservazioni
+
+**Per la Binomiale (n = 20):**
+
+| p | Forma | Valore più probabile |
+|---|-------|---------------------|
+| 0.2 | Asimmetrica a sinistra | ~4 |
+| 0.5 | Simmetrica | ~10 |
+| 0.8 | Asimmetrica a destra | ~16 |
+
+---
+
+**Per la Poisson:**
+
+| λ | Forma | Valore più probabile |
+|---|-------|---------------------|
+| 0.5 | Molto concentrata su 0-1 | 0 |
+| 2 | Modestamente dispersa | 1-2 |
+| 6 | Ampia dispersione | 5-6 |
+
+---
+
+## Esercizio 10 — La scala temporale nella Poisson
+
+Nella distribuzione di Poisson, **λ è un tasso medio**, non un conteggio.
+
+Se conosco il tasso per un'ora, posso calcolare il tasso per qualsiasi intervallo:
+
+$$
+\lambda_t = \lambda \times t,
+$$
+
+dove $t$ è la durata in ore.
+
+---
+
+### Il contesto
+
+Un servizio di consulenza psicologica riceve pazienti senza appuntamento.
+
+**Dato:**  
+in media arrivano **2 pazienti all'ora**.
+
+Quindi: $\lambda = 2$ (pazienti/ora).
+
+---
+
+### Cosa significa λ = 2?
+
+**Attenzione:** $\lambda = 2$ **non** significa che arrivano sempre 2 pazienti.
+
+Significa che:
+
+- a volte ne arrivano 0, a volte 1, a volte 3, ecc.
+- **nel lungo periodo**, la media è 2 all'ora.
+
+---
+
+### Cambiamo l'intervallo di osservazione
+
+**Domande:**
+
+1. in **mezz'ora**, qual è il numero medio atteso di pazienti?
+2. in **due ore**, qual è il numero medio atteso?
+
+---
+
+### Calcolo del tasso per intervalli diversi
+
+Usiamo la formula $\lambda_t = \lambda \times t$:
+
+```{r}
+# Tasso base: 2 pazienti all'ora
+lambda <- 2
+
+# Mezz'ora (t = 0.5)
+lambda_30min <- lambda * 0.5
+
+# Due ore (t = 2)
+lambda_2h <- lambda * 2
+```
+
+---
+
+### I risultati
+
+```{r}
+lambda_30min
+lambda_2h
+```
+
+**Interpretazione:**
+
+- in **mezz'ora**, ci aspettiamo *in media* 1 paziente;
+- in **due ore**, ci aspettiamo *in media* 4 pazienti.
+
+---
+
+### Cosa cambia e cosa resta uguale
+
+**Non cambia:**
+
+- il meccanismo di arrivo dei pazienti;
+- il tasso base (2 pazienti/ora).
+
+**Cambia:**
+
+- la durata dell'osservazione;
+- il valore atteso del numero di arrivi.
+
+---
+
+### Una domanda intuitiva
+
+> È più probabile non vedere nessun paziente in 30 minuti o in 2 ore?
+
+---
+
+### La probabilità di zero arrivi
+
+Nella Poisson, $P(X = 0) = e^{-\lambda}$.
+
+Più alto è λ, più bassa è questa probabilità.
+
+```{r}
+# P(X = 0) nei tre scenari
+dpois(0, lambda = 1)    # 30 minuti
+dpois(0, lambda = 2)    # 1 ora
+dpois(0, lambda = 4)    # 2 ore
+```
+
+---
+
+### Interpretazione
+
+| Intervallo | λ | P(nessun arrivo) |
+|------------|---|------------------|
+| 30 minuti  | 1 | 37% |
+| 1 ora      | 2 | 14% |
+| 2 ore      | 4 | 2% |
+
+Più tempo osserviamo, più è **improbabile** che non arrivi nessuno.
+
+---
+
+### Un'analogia
+
+**Guardare la strada:**
+
+- per **1 minuto**: plausibile non vedere auto;
+- per **1 ora**: quasi impossibile non vederne.
+
+La Poisson formalizza questa intuizione.
+
+---
+
+### Riepilogo
+
+1. **λ è un tasso**, non un conteggio.
+2. Per cambiare intervallo: $\lambda_t = \lambda \times t$.
+3. Intervalli più lunghi → più eventi attesi.
+4. Eventi rari in intervalli brevi diventano probabili in intervalli lunghi.
+
+---
+
+### Formula chiave
+
+$$
+\boxed{\lambda_t = \lambda \times t}
+$$
+
+**Esempio:**
+
+- se λ = 2 pazienti/ora;
+- in 3 ore: $\lambda_3 = 2 \times 3 = 6$ pazienti attesi.
+
+---
+
+### Riepilogo finale {.unnumbered .unlisted}
+
+Oggi abbiamo usato R per:
+
+1. calcolare probabilità **esatte**:
+   - binomiale: `dbinom()`, `pbinom()`
+   - Poisson: `dpois()`, `ppois()`
+2. simulare dati e collegare simulazione e teoria:
+   - `rbinom()`, `rpois()`
+3. visualizzare la forma della distribuzione e capire l’effetto dei parametri.
+
+---
+
+Messaggio finale:
+
+> le distribuzioni discrete sono strumenti per descrivere conteggi.  
+> R ci permette di calcolare, controllare e capire questi strumenti in modo immediato.

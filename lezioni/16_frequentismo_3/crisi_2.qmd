@@ -1,0 +1,630 @@
+---
+title: "Dal laboratorio al mondo reale"
+subtitle: "Perché il sistema ha fallito — Segmento 2"
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+lang: it
+
+execute:
+  echo: true
+
+format:
+  revealjs:
+    theme: [default, ../revealjs.scss]
+    title-slide-attributes:
+      data-background-color: "#0072bc"
+    slide-number: c
+    show-slide-number: print
+    highlight-style: github
+    math: mathjax
+
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+library(ggplot2)
+library(dplyr)
+set.seed(42)
+```
+
+## Dove eravamo {.unnumbered .unlisted}
+
+**Parte 1:** abbiamo visto
+
+- La crisi di replicabilità: ~60% degli studi non si replica.
+- P-hacking: manipolazione delle analisi per ottenere p < .05.
+- HARKing: ipotesi formulate *dopo* aver visto i risultati.
+- Garden of forking paths: le scelte analitiche condizionano il risultato.
+
+---
+
+**Parte 2:** vedremo
+
+- Il **publication bias** e il suo ruolo critico.
+- Il **circolo vizioso** che mantiene il sistema.
+- **Open Science**: la risposta della comunità scientifica.
+- Il contributo dell'approccio **bayesiano**.
+
+# Parte 1: il *publication bias*
+
+## Il problema del cassetto
+
+::: {.callout-note}
+## File drawer problem (Rosenthal, 1979)
+
+Gli studi con risultati **non significativi** (p ≥ .05) hanno molte meno probabilità di essere pubblicati rispetto a quelli significativi.
+
+Restano nel "cassetto" del ricercatore — mai sottomessi o rifiutati dalle riviste.
+:::
+
+---
+
+## La dimensione del problema
+
+```{r}
+#| echo: false
+#| fig-height: 4.5
+
+# Dati basati su studi sul publication bias
+df_pub <- data.frame(
+  tipo = c("Studi con p < .05", "Studi con p ≥ .05"),
+  pubblicati = c(85, 15),
+  non_pubblicati = c(15, 85)
+)
+
+df_pub_long <- tidyr::pivot_longer(df_pub, cols = c(pubblicati, non_pubblicati),
+                                    names_to = "status", values_to = "percentuale")
+
+ggplot(df_pub_long, aes(x = tipo, y = percentuale, fill = status)) +
+  geom_col(position = "stack") +
+  geom_text(aes(label = paste0(percentuale, "%")), 
+            position = position_stack(vjust = 0.5), size = 5, color = "white") +
+  scale_fill_manual(values = c("coral", "steelblue"),
+                    labels = c("Non pubblicati", "Pubblicati")) +
+  labs(title = "Il destino degli studi in base al p-value",
+       subtitle = "Stime basate su meta-ricerche",
+       x = "", y = "Percentuale", fill = "") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "bottom")
+```
+
+---
+
+## Le cause del publication bias
+
+**Lato riviste:**
+
+- I risultati "positivi" sono più interessanti
+- I reviewer sono scettici sui risultati nulli
+- Le riviste cercano impatto e citazioni
+
+. . .
+
+**Lato ricercatori:**
+
+- "Non vale la pena sottomettere un risultato nullo"
+- Pressione a pubblicare risultati "interessanti"
+- Auto-censura preventiva
+
+---
+
+## Un esempio: gli antidepressivi
+
+**Turner et al. (2008)** hanno confrontato gli studi sugli antidepressivi **registrati alla FDA** con quelli **pubblicati**:
+
+```{r}
+#| echo: false
+#| fig-height: 3.5
+
+df_fda <- data.frame(
+  categoria = c("Favorevoli\n(FDA)", "Sfavorevoli\n(FDA)", 
+                "Favorevoli\n(Pubblicati)", "Sfavorevoli\n(Pubblicati)"),
+  n = c(38, 36, 37, 3),
+  fonte = c("FDA", "FDA", "Letteratura", "Letteratura")
+)
+
+ggplot(df_fda, aes(x = categoria, y = n, fill = fonte)) +
+  geom_col() +
+  geom_text(aes(label = n), vjust = -0.5, size = 5) +
+  scale_fill_manual(values = c("gray60", "coral")) +
+  labs(title = "Studi sugli antidepressivi: FDA vs letteratura",
+       subtitle = "La letteratura pubblicata è sistematicamente distorta",
+       x = "", y = "Numero di studi", fill = "") +
+  ylim(0, 45) +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "bottom")
+```
+
+---
+
+## Le conseguenze
+
+Degli studi registrati alla FDA:
+
+- **51%** favorevoli agli antidepressivi
+- **49%** sfavorevoli o ambigui
+
+. . .
+
+Nella letteratura pubblicata:
+
+- **94%** favorevoli
+- **6%** sfavorevoli
+
+. . .
+
+::: {.callout-warning}
+Un clinico che legge solo la letteratura pubblicata ha un'immagine **completamente distorta** dell'efficacia reale.
+:::
+
+---
+
+## Il funnel plot: visualizzare il bias
+
+```{r}
+#| echo: false
+#| fig-height: 4.5
+
+# Simulazione di un funnel plot con publication bias
+set.seed(123)
+n_studi <- 50
+effetto_vero <- 0.2
+
+# Studi senza bias
+effetti_tutti <- rnorm(n_studi, effetto_vero, sd = 0.3)
+errori_std <- runif(n_studi, 0.05, 0.25)
+
+# Aggiungiamo bias: rimuoviamo studi piccoli con effetti piccoli/negativi
+prob_pubblicazione <- ifelse(effetti_tutti > 0.1 | errori_std < 0.1, 0.9, 0.2)
+pubblicati <- rbinom(n_studi, 1, prob_pubblicazione) == 1
+
+df_funnel <- data.frame(
+  effetto = effetti_tutti,
+  se = errori_std,
+  pubblicato = pubblicati
+)
+
+ggplot(df_funnel, aes(x = effetto, y = se)) +
+  geom_point(aes(color = pubblicato, shape = pubblicato), size = 3, alpha = 0.7) +
+  geom_vline(xintercept = effetto_vero, linetype = "dashed", color = "darkgreen") +
+  geom_vline(xintercept = mean(df_funnel$effetto[df_funnel$pubblicato]), 
+             linetype = "solid", color = "coral", linewidth = 1) +
+  scale_y_reverse() +
+  scale_color_manual(values = c("gray60", "steelblue"), 
+                     labels = c("Non pubblicato", "Pubblicato")) +
+  scale_shape_manual(values = c(1, 16), 
+                     labels = c("Non pubblicato", "Pubblicato")) +
+  annotate("text", x = effetto_vero + 0.02, y = 0.26, 
+           label = "Effetto vero", color = "darkgreen", hjust = 0, size = 3.5) +
+  annotate("text", x = mean(df_funnel$effetto[df_funnel$pubblicato]) + 0.02, y = 0.23, 
+           label = "Media pubblicati", color = "coral", hjust = 0, size = 3.5) +
+  labs(title = "Funnel plot: il publication bias in azione",
+       subtitle = "Gli studi piccoli con effetti negativi 'scompaiono'",
+       x = "Effect size", y = "Errore standard", 
+       color = "", shape = "") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "bottom")
+```
+
+# Parte 2: il circolo vizioso
+
+## Come si sostiene il sistema
+
+```{r}
+#| echo: false
+#| fig-height: 5
+
+# Rappresentazione testuale del ciclo
+```
+
+Il sistema si auto-perpetua attraverso un ciclo di rinforzi:
+
+1. **Pressione a pubblicare** → incentivo a trovare p < .05
+2. **P-hacking / HARKing** → risultati "significativi" (ma distorti)
+3. **Publication bias** → solo i positivi vengono pubblicati
+4. **Letteratura distorta** → meta-analisi sovrastimano gli effetti
+5. **Repliche falliscono** → "crisi" ma il ciclo continua
+
+---
+
+## Gli incentivi perversi
+
+| Comportamento | Vantaggio per il ricercatore | Danno per la scienza |
+|---------------|------------------------------|----------------------|
+| P-hacking | Più pubblicazioni | Falsi positivi |
+| HARKing | Narrativa convincente | Ipotesi non testate |
+| Non pubblicare i nulli | Risparmio di tempo | Publication bias |
+| Campioni piccoli | Meno costi, più studi | Bassa potenza, Type M |
+
+. . .
+
+Il sistema **premia** comportamenti che **danneggiano** la scienza.
+
+---
+
+## "Publish or perish"
+
+La carriera accademica dipende dalle pubblicazioni:
+
+- Assunzioni basate sul numero di paper
+- Promozioni legate all'impact factor
+- Finanziamenti legati alla "produttività"
+
+. . .
+
+::: {.callout-warning}
+In questo contesto, p < .05 diventa una **valuta** — e come ogni valuta, può essere contraffatta.
+:::
+
+---
+
+## Il ruolo del peer review
+
+Il peer review dovrebbe essere un filtro di qualità, ma:
+
+- I reviewer non vedono i dati grezzi
+- Non possono rilevare il p-hacking
+- Non sanno quante analisi sono state provate
+- Spesso favoriscono risultati "interessanti"
+
+. . .
+
+Il peer review cattura errori **visibili**, non quelli **nascosti**.
+
+# Parte 3: Open Science
+
+## La risposta della comunità
+
+A partire dal 2011 (Simmons et al.) e accelerando dopo il 2015 (OSC), la psicologia ha sviluppato pratiche correttive.
+
+. . .
+
+**Open Science** = insieme di pratiche per aumentare **trasparenza** e **riproducibilità**
+
+---
+
+## I pilastri dell'Open Science
+
+:::: {.columns}
+::: {.column width="50%"}
+### Trasparenza
+
+- **Pre-registrazione** delle ipotesi
+- **Dati aperti** (Open Data)
+- **Materiali aperti** (Open Materials)
+- **Codice aperto** (Open Code)
+:::
+
+::: {.column width="50%"}
+### Rigore
+
+- **Registered Reports**
+- **Repliche** sistematiche
+- **Meta-analisi** pre-registrate
+- **Multi-lab studies**
+:::
+::::
+
+---
+
+## Pre-registrazione
+
+::: {.callout-note}
+## Definizione
+
+**Pre-registrazione:** Specificare ipotesi, metodo, e piano di analisi **prima** di raccogliere i dati, in un registro pubblico e con timestamp.
+:::
+
+. . .
+
+Piattaforme: [OSF](https://osf.io), [AsPredicted](https://aspredicted.org)
+
+---
+
+## Cosa include una pre-registrazione?
+
+1. **Ipotesi** specifiche e direzionali
+2. **Design** dello studio (n, gruppi, procedure)
+3. **Variabili** dipendenti e indipendenti (operazionalizzate)
+4. **Criteri di esclusione** dei partecipanti
+5. **Piano di analisi** completo (test, covariate, soglie)
+6. **Analisi esplorative** dichiarate come tali
+
+---
+
+## Perché funziona?
+
+```{r}
+#| echo: false
+#| fig-height: 4
+
+# Confronto pre-registrati vs non
+df_prereg <- data.frame(
+  tipo = c("Non pre-registrati", "Pre-registrati"),
+  perc_significativi = c(65, 35)
+)
+
+ggplot(df_prereg, aes(x = tipo, y = perc_significativi, fill = tipo)) +
+  geom_col(width = 0.5) +
+  geom_text(aes(label = paste0(perc_significativi, "%")), vjust = -0.5, size = 6) +
+  scale_fill_manual(values = c("coral", "steelblue")) +
+  labs(title = "Percentuale di risultati significativi",
+       subtitle = "Studi pre-registrati vs non pre-registrati (stime)",
+       x = "", y = "% risultati con p < .05") +
+  ylim(0, 80) +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "none")
+```
+
+La pre-registrazione **elimina** il vantaggio di p-hacking e HARKing.
+
+---
+
+## Registered Reports
+
+Un formato di pubblicazione rivoluzionario:
+
+1. **Stage 1:** Sottometti introduzione + metodo **prima** di raccogliere dati
+2. **Peer review** sul design, non sui risultati
+3. **In-principle acceptance:** Se il design è buono, il paper sarà pubblicato
+4. **Stage 2:** Raccogli dati, analizza, scrivi risultati
+5. **Pubblicazione:** Indipendentemente dal p-value
+
+---
+
+## Il vantaggio dei Registered Reports
+
+```{r}
+#| echo: false
+#| fig-height: 4
+
+df_rr <- data.frame(
+  tipo = c("Articoli tradizionali", "Registered Reports"),
+  perc_positivi = c(92, 44)
+)
+
+ggplot(df_rr, aes(x = tipo, y = perc_positivi, fill = tipo)) +
+  geom_col(width = 0.5) +
+  geom_text(aes(label = paste0(perc_positivi, "%")), vjust = -0.5, size = 6) +
+  scale_fill_manual(values = c("coral", "steelblue")) +
+  labs(title = "Risultati 'positivi' per tipo di pubblicazione",
+       subtitle = "I Registered Reports riflettono meglio la realtà",
+       x = "", y = "% risultati che supportano l'ipotesi") +
+  ylim(0, 100) +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "none")
+```
+
+Fonte: Scheel et al. (2021)
+
+---
+
+## Open Data e Open Code
+
+Condividere dati e codice permette:
+
+- **Verifica** delle analisi da parte di altri
+- **Rianalisi** con metodi diversi
+- **Meta-analisi** più accurate
+- **Rilevamento** di errori (anche onesti)
+
+. . .
+
+::: {.callout-note}
+Molte riviste ora **richiedono** la condivisione di dati e codice come condizione per la pubblicazione.
+:::
+
+# Parte 4: e l'approccio bayesiano?
+
+## I limiti strutturali del frequentismo
+
+Anche con tutte le pratiche Open Science, restano problemi **intrinseci** all'approccio frequentista:
+
+1. Il p-value risponde alla domanda **sbagliata**
+2. L'IC non dà probabilità sul parametro
+3. La dicotomia significativo/non significativo è arbitraria
+4. Non c'è modo naturale di **accumulare evidenza** tra studi
+
+---
+
+## Cosa offre l'approccio bayesiano?
+
+:::: {.columns}
+::: {.column width="50%"}
+### Risponde alle domande giuste
+
+- $P(\theta \mid \text{dati})$ invece di $P(\text{dati} \mid H_0)$
+- "Qual è la probabilità che l'effetto sia positivo?"
+- "Quanto è probabile che l'effetto sia clinicamente rilevante?"
+:::
+
+::: {.column width="50%"}
+### Gestisce meglio l'incertezza
+
+- Distribuzioni invece di stime puntuali
+- Intervalli credibili con interpretazione diretta
+- Aggiornamento naturale con nuovi dati
+:::
+::::
+
+---
+
+## Un confronto
+
+| Domanda | Frequentista | Bayesiano |
+|---------|--------------|-----------|
+| "L'effetto è diverso da zero?" | p-value | P(θ ≠ 0 \| dati) |
+| "Quanto è grande l'effetto?" | IC (interpretazione indiretta) | Posterior (interpretazione diretta) |
+| "L'effetto è clinicamente rilevante?" | Difficile da rispondere | P(θ > soglia \| dati) |
+| "Cosa sappiamo combinando più studi?" | Meta-analisi complessa | Aggiornamento sequenziale |
+
+---
+
+## L'approccio bayesiano elimina il p-hacking?
+
+**Non automaticamente.** Ma:
+
+- Richiede di **specificare i prior** — più difficile da manipolare post-hoc
+- Produce **distribuzioni**, non decisioni binarie — meno incentivo alla soglia
+- Permette di dire "i dati sono **inconclusivi**" — opzione non disponibile nel frequentismo
+- Si integra naturalmente con la **pre-registrazione** (prior pre-specificati)
+
+---
+
+## Un assaggio: posterior vs p-value
+
+```{r}
+#| echo: false
+#| fig-height: 4
+
+# Simulazione semplice di una posterior
+x <- seq(-0.5, 1.5, length.out = 1000)
+posterior <- dnorm(x, mean = 0.4, sd = 0.15)
+
+df_post <- data.frame(x = x, y = posterior)
+
+ggplot(df_post, aes(x = x, y = y)) +
+  geom_line(linewidth = 1.2, color = "steelblue") +
+  geom_area(alpha = 0.3, fill = "steelblue") +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "darkred", linewidth = 1) +
+  geom_area(data = subset(df_post, x > 0), alpha = 0.5, fill = "steelblue") +
+  annotate("text", x = 0.7, y = 2, 
+           label = paste0("P(θ > 0 | dati) = ", 
+                          round(pnorm(0, 0.4, 0.15, lower.tail = FALSE), 2)),
+           size = 5, color = "steelblue") +
+  labs(title = "Distribuzione a posteriori dell'effetto",
+       subtitle = "Possiamo calcolare direttamente la probabilità che ci interessa",
+       x = "Effect size (θ)", y = "Densità") +
+  theme_minimal(base_size = 14)
+```
+
+---
+
+## Cosa studierete nelle prossime lezioni
+
+Il resto del corso si concentrerà sull'**inferenza bayesiana**:
+
+1. **Prior, likelihood, posterior**: l'architettura bayesiana
+2. **Distribuzioni coniugate**: casi analitici
+3. **MCMC e Stan**: il calcolo computazionale
+4. **brms**: modelli bayesiani in R
+5. **Applicazioni**: confronti, regressione, modelli gerarchici
+
+---
+
+## Il messaggio di transizione
+
+> L'approccio frequentista ha dominato la psicologia per un secolo.
+> Ha prodotto conoscenza, ma anche una crisi di fiducia.
+
+. . .
+
+> L'approccio bayesiano non è una panacea, ma offre strumenti concettuali più adatti alle domande che i ricercatori vogliono realmente porre.
+
+. . .
+
+> La combinazione di **Open Science** (pratiche) e **statistica bayesiana** (strumenti) rappresenta la via più promettente per una psicologia più affidabile.
+
+# Riepilogo del modulo frequentista
+
+## Cosa abbiamo imparato in queste tre lezioni
+
+**Lezione 1:** La domanda del ricercatore vs la risposta frequentista
+
+- Il gap tra $P(H \mid D)$ e $P(D \mid H_0)$
+- Distribuzione campionaria ed errore standard
+- L'intervallo di confidenza e le sue (mis)interpretazioni
+
+---
+
+## Cosa abbiamo imparato (continua)
+
+**Lezione 2:** Il valore-p e cosa (non) significa
+
+- Le interpretazioni errate del p-value
+- Errori di Tipo I, II, **S** e **M**
+- La "maledizione del vincitore" con bassa potenza
+
+. . .
+
+**Lezione 3:** La crisi di replicabilità
+
+- P-hacking, HARKing, garden of forking paths
+- Publication bias e il circolo vizioso
+- Open Science come risposta
+
+---
+
+## Il messaggio fondamentale
+
+::: {.callout-important}
+## Take-home message
+
+Il problema non è che il frequentismo sia "sbagliato" — è che risponde a domande diverse da quelle che vorremmo porre, e il sistema di incentivi ha amplificato le sue debolezze fino a produrre una letteratura inaffidabile.
+
+La soluzione richiede sia **pratiche migliori** (Open Science) sia **strumenti concettuali diversi** (approccio bayesiano).
+:::
+
+---
+
+## Per approfondire
+
+**Sulla crisi di replicabilità:**
+
+- Open Science Collaboration (2015). Estimating the reproducibility of psychological science. *Science*.
+
+**Sulle cattive pratiche:**
+
+- Simmons, J. P., Nelson, L. D., & Simonsohn, U. (2011). False-positive psychology. *Psychological Science*.
+
+**Sull'Open Science:**
+
+- Nosek, B. A., et al. (2015). Promoting an open research culture. *Science*.
+
+---
+
+## Materiali del corso
+
+**Modulo frequentista:**
+[https://ccaudek.github.io/utet-frequentista/](https://ccaudek.github.io/utet-frequentista/)
+
+**Prossimo modulo — Inferenza bayesiana:**
+[https://ccaudek.github.io/utet-companion/](https://ccaudek.github.io/utet-companion/)
+
+---
+
+## Una citazione finale
+
+> "The first principle is that you must not fool yourself — and you are the easiest person to fool."
+>
+> — Richard Feynman
+
+. . .
+
+Il frequentismo, con le sue soglie arbitrarie e i suoi incentivi perversi, ha reso troppo facile **ingannarsi in buona fede**.
+
+L'Open Science e l'approccio bayesiano sono tentativi di costruire un sistema che renda **più difficile** auto-ingannarsi.
+
+---
+
+## Prossima lezione
+
+**Fondamenti della probabilità**
+
+- Eventi, spazi campionari, assiomi
+- Probabilità condizionata
+- Il teorema di Bayes: la base di tutto ciò che seguirà
+
+. . .
+
+Inizia il percorso verso l'inferenza bayesiana.

@@ -1,0 +1,745 @@
+---
+title: "Distribuzioni continue"
+subtitle: "La distribuzione Normale"
+version: 1.0
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+toc-depth: 2
+lang: it
+
+execute:
+  echo: true
+
+format:
+    revealjs:
+      theme: [default, ../revealjs.scss]
+      title-slide-attributes:
+        data-background-color: "#0072bc"
+      slide-number: c
+      show-slide-number: print
+      highlight-style: github
+      math: mathjax
+      mermaid:
+        theme: neutral
+      
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+```{r}
+#| echo: false
+#| output: false
+library(tibble)
+library(dplyr)
+library(knitr)
+library(kableExtra)
+```
+
+## Obiettivo {.unnumbered .unlisted}
+
+In questa prima parte della lezione introduciamo le **distribuzioni continue**, concentrandoci sulla **distribuzione Normale** (o Gaussiana).
+
+L'obiettivo è acquisire padronanza con:
+
+- il concetto di **densità** e la sua interpretazione;
+- il calcolo di **probabilità** tramite standardizzazione e tavole;
+- il significato di **quantili** e **funzione di ripartizione**.
+
+---
+
+## Ripasso: dalla massa alla densità
+
+Nelle distribuzioni **discrete**, ogni valore ha una probabilità specifica $P(X = x) > 0$.
+
+Nelle distribuzioni **continue**, la variabile può assumere **infiniti valori** in un intervallo. La conseguenza fondamentale è:
+
+$$
+P(X = x) = 0 \quad \text{per ogni singolo valore } x
+$$
+
+> La probabilità si accumula su **intervalli**, non su punti.
+
+---
+
+## La funzione di densità f(x)
+
+Per le variabili continue, la funzione di **densità di probabilità** (PDF) sostituisce la funzione di massa di probabilità.
+
+**Proprietà fondamentali:**
+
+1. $f(x) \geq 0$ per ogni $x$.
+2. L'area totale sotto la curva è 1: $\int_{-\infty}^{+\infty} f(x)\, dx = 1$.
+3. La probabilità di un intervallo è l'**area** sotto la curva:
+   $$
+   P(a < X < b) = \int_a^b f(x)\, dx.
+   $$
+
+---
+
+## Attenzione: densità ≠ probabilità
+
+La **densità** $f(x)$ **non è** una probabilità. 
+
+- Può essere $> 1$ in alcuni punti (la curva può essere "alta").
+- Ciò che conta è l'**area**, non l'altezza.
+
+**Esempio visivo:** una distribuzione uniforme su $[0, 0.5]$ ha densità $f(x) = 2$, perché l'area deve essere 1.
+
+---
+
+## La distribuzione Normale: introduzione storica
+
+La distribuzione Normale fu scoperta da **Gauss** nel 1809 studiando gli errori di misurazione. 
+
+**Quetelet** la applicò alle misure umane. 
+
+**Pearson** la chiamò "Normale", pur ammettendo che il nome suggerisce erroneamente che le altre distribuzioni siano "anormali".
+
+> È la distribuzione più importante in statistica per il **Teorema del Limite Centrale**.
+
+---
+
+## La formula della Normale
+
+Una variabile casuale $X$ segue una distribuzione Normale con parametri $\mu$ (media) e $\sigma$ (deviazione standard) se la sua densità è:
+
+$$
+f(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\left\{-\frac{(x-\mu)^2}{2\sigma^2}\right\}.
+$$
+
+Si scrive: $X \sim \mathcal{N}(\mu, \sigma)$.
+
+**Proprietà chiave:**
+
+- simmetrica rispetto a $\mu$;
+- forma a campana, con massimo in $x = \mu$.
+
+---
+
+## I parametri della Normale
+
+| Parametro | Simbolo | Significato |
+|-----------|---------|-------------|
+| Media | $\mu$ | Centro della distribuzione |
+| Deviazione standard | $\sigma$ | Dispersione attorno alla media |
+
+- $\mu$ può essere **qualsiasi numero reale**;
+- $\sigma$ deve essere **positivo**.
+
+---
+
+Per il quoziente di intelligenza abbiamo:
+
+```{r}
+#| echo: false
+
+library(ggplot2)
+
+mu <- 100
+sigma <- 15
+
+# Definiamo l'asse x
+x <- seq(40, 160, length.out = 200)
+
+# Calcoliamo la densità della gaussiana
+y <- dnorm(x, mean = mu, sd = sigma)
+
+# Creazione del grafico
+data.frame(x, y) |> 
+  ggplot(aes(x = x, y = y)) +
+  geom_line() +   # Aggiunge il profilo della curva
+  labs(
+    title = "Distribuzione Normale (Gaussiana)",
+    subtitle = "Media = 100, Deviazione Standard = 15",
+    x = "Valore",
+    y = "Densità"
+  )
+```
+---
+
+## Effetto dei parametri
+
+- **Cambiare $\mu$:** sposta la curva orizzontalmente (a destra o sinistra).
+- **Cambiare $\sigma$:** modifica la "larghezza" della campana:
+  - $\sigma$ piccolo → curva stretta e alta;
+  - $\sigma$ grande → curva larga e bassa.
+
+> L'area totale rimane sempre 1.
+
+---
+
+## La regola empirica (68-95-99.7)
+
+Per qualsiasi Normale $\mathcal{N}(\mu, \sigma)$:
+
+| Intervallo | Probabilità |
+|------------|-------------|
+| $[\mu - \sigma, \mu + \sigma]$ | ≈ 68.3% |
+| $[\mu - 2\sigma, \mu + 2\sigma]$ | ≈ 95.4% |
+| $[\mu - 3\sigma, \mu + 3\sigma]$ | ≈ 99.7% |
+
+> Un valore oltre $3\sigma$ dalla media è **eccezionale** (meno dello 0.3% dei casi).
+
+---
+
+## La Normale standard $Z$
+
+La **Normale standard** è la Normale con:
+
+$$
+\mu = 0, \quad \sigma = 1.
+$$
+
+Si indica con $Z \sim \mathcal{N}(0, 1)$.
+
+**Perché è importante?**
+
+Qualsiasi Normale può essere ricondotta alla standard tramite la **standardizzazione**.
+
+---
+
+## La standardizzazione
+
+Se $X \sim \mathcal{N}(\mu, \sigma)$, definiamo il **punteggio standard** (punteggio z):
+
+$$
+Z = \frac{X - \mu}{\sigma}.
+$$
+
+Allora $Z \sim \mathcal{N}(0, 1)$.
+
+**Interpretazione:** $z$ indica quante deviazioni standard $X$ dista dalla media.
+
+**Nota:** la standardizzazione si può applicare a **qualsiasi distribuzione**, non solo alla Normale.
+
+---
+
+## Esempio: interpretare un punteggio $z$
+
+Se un test ha $\mu = 100$ e $\sigma = 15$, e uno studente ottiene $X = 130$:
+
+$$
+z = \frac{130 - 100}{15} = \frac{30}{15} = 2.
+$$
+
+> Lo studente si trova **2 deviazioni standard** sopra la media.
+
+---
+
+## La funzione di ripartizione $\Phi(z)$
+
+La **funzione di ripartizione** (CDF) della Normale standard è:
+
+$$
+\Phi(z) = P(Z \leq z) = \int_{-\infty}^{z} \frac{1}{\sqrt{2\pi}} e^{-t^2/2}\, dt.
+$$
+
+Non ha formula chiusa → si usano il **software** o le **tavole**.
+
+---
+
+## Come usare le tavole della Normale
+
+Le tavole riportano $\Phi(z) = P(Z \leq z)$ per $z \geq 0$.
+
+**Procedura:**
+
+1. Standardizzare il valore: $z = (x - \mu)/\sigma$.
+2. Cercare $\Phi(z)$ nelle tavole.
+3. Interpretare il risultato come area/probabilità.
+
+---
+
+## Lettura delle tavole: esempio
+
+Cerchiamo $P(Z \leq 1.96)$:
+
+- Riga: 1.9
+- Colonna: 0.06
+- Intersezione: **0.9750**
+
+Quindi $P(Z \leq 1.96) = 0.975$, ovvero il 97.5% dei valori è sotto $z = 1.96$.
+
+---
+
+## Simmetria della Normale
+
+La Normale standard è **simmetrica** rispetto a 0:
+
+$$
+P(Z \leq -z) = 1 - P(Z \leq z).
+$$
+
+**Esempio:**
+$$
+P(Z \leq -1.96) = 1 - 0.975 = 0.025.
+$$
+
+---
+
+## Calcolo di probabilità per intervalli
+
+Per trovare $P(a < Z < b)$:
+
+$$
+P(a < Z < b) = \Phi(b) - \Phi(a).
+$$
+
+**Esempio:** $P(-1 < Z < 1)$
+$$
+P(-1 < Z < 1) = \Phi(1) - \Phi(-1) = 0.8413 - 0.1587 = 0.6826.
+$$
+
+---
+
+## Calcolo della coda destra
+
+Per trovare $P(Z > z)$:
+
+$$
+P(Z > z) = 1 - P(Z \leq z) = 1 - \Phi(z).
+$$
+
+**Esempio:** $P(Z > 1.645)$
+$$
+P(Z > 1.645) = 1 - 0.9500 = 0.05.
+$$
+
+---
+
+## I quantili
+
+Il **quantile** di ordine $p$ è il valore $z_p$ tale che:
+
+$$
+P(Z \leq z_p) = p.
+$$
+
+---
+
+**Quantili importanti:**
+
+| $p$ | $z_p$ |
+|-----|-------|
+| 0.50 | 0 |
+| 0.90 | 1.28 |
+| 0.95 | 1.645 |
+| 0.975 | 1.96 |
+| 0.99 | 2.33 |
+
+---
+
+## Schema riassuntivo del calcolo
+
+**Per qualsiasi Normale $\mathcal{N}(\mu, \sigma)$:**
+
+1. **Standardizzare:** $z = (x - \mu)/\sigma$.
+2. **Consultare le tavole** per $\Phi(z)$.
+3. **De-standardizzare** (se necessario): $x = \mu + z \cdot \sigma$.
+
+---
+
+## Esercizio 1 — Punteggi al test del QI
+
+Il QI nella popolazione segue $\mathcal{N}(\mu = 100, \sigma = 15)$.
+
+**Domanda:** Qual è la probabilità che una persona scelta a caso abbia un QI superiore a 130?
+
+---
+
+### Soluzione Esercizio 1
+
+**Passo 1: Standardizzare**
+
+$$
+z = \frac{130 - 100}{15} = \frac{30}{15} = 2.00.
+$$
+
+---
+
+```{r}
+#| echo: false
+
+library(ggplot2)
+
+# Definiamo i parametri della normale standardizzata
+mu <- 0
+sigma <- 1
+
+# Creiamo il grafico base
+ggplot(data.frame(x = c(-4, 4)), aes(x = x)) +
+  # Disegna la curva della densità di probabilità
+  stat_function(fun = dnorm, args = list(mean = mu, sd = sigma), 
+                color = "black", linewidth = 1) +
+  # Evidenzia l'area nell'intervallo [2, Inf]
+  stat_function(fun = dnorm, args = list(mean = mu, sd = sigma),
+                xlim = c(2, 4), # Usiamo 4 come limite pratico per la visualizzazione
+                geom = "area", fill = "red", alpha = 0.5) +
+  # Aggiunge etichette e tema pulito
+  labs(title = "Distribuzione Normale Standardizzata",
+       subtitle = "Area evidenziata per z >= 2",
+       x = "Punteggio z",
+       y = "Densità") +
+  theme_minimal()
+```
+
+---
+
+**Passo 2: Usare le tavole**
+
+$\Phi(2.00) = 0.9772.$
+
+**Passo 3: Calcolare la coda destra**
+
+$$
+P(X > 130) = 1 - 0.9772 = 0.0228.
+$$
+
+> Circa il **2.3%** della popolazione ha un QI superiore a 130.
+
+---
+
+## Esercizio 2 — Tempo di risposta
+
+I tempi di risposta a uno stimolo seguono $\mathcal{N}(\mu = 350 \text{ ms}, \sigma = 40 \text{ ms})$.
+
+**Domanda:** Qual è la probabilità che il tempo di risposta sia compreso tra 310 e 390 ms?
+
+---
+
+### Soluzione Esercizio 2
+
+**Standardizzare entrambi i limiti:**
+
+$$
+z_1 = \frac{310 - 350}{40} = -1.00 \quad\quad z_2 = \frac{390 - 350}{40} = 1.00.
+$$
+
+---
+
+```{r}
+#| echo: false
+
+# Carica la libreria
+library(ggplot2)
+
+# Definiamo i limiti dell'intervallo
+limit_inf <- -1
+limit_sup <- 1
+
+# Creazione del grafico
+ggplot(data.frame(x = c(-4, 4)), aes(x = x)) +
+  # Disegna l'area evidenziata
+  stat_function(
+    fun = dnorm,
+    xlim = c(limit_inf, limit_sup),
+    geom = "area",
+    fill = "skyblue",
+    alpha = 0.5
+  ) +
+  # Disegna la curva della normale standardizzata
+  stat_function(fun = dnorm, size = 1, color = "darkblue") +
+  # Aggiunge titoli e label
+  labs(
+    title = "Distribuzione Normale Standardizzata",
+    subtitle = "Area evidenziata nell'intervallo [-1, 1]",
+    x = "Z-score",
+    y = "Densità"
+  ) +
+  theme_minimal()
+```
+
+---
+
+**Consultare le tavole:**
+
+$\Phi(1.00) = 0.8413$ e $\Phi(-1.00) = 1 - 0.8413 = 0.1587.$
+
+**Calcolare l'area:**
+
+$$
+P(310 < X < 390) = 0.8413 - 0.1587 = 0.6826.
+$$
+
+> Circa il **68.3%** delle risposte cade in questo intervallo.
+
+---
+
+## Esercizio 3 — Trovare un quantile
+
+I punteggi a un test di ansia seguono $\mathcal{N}(\mu = 50, \sigma = 10)$.
+
+**Domanda:** Quale punteggio separa il 10% più alto della distribuzione?
+
+---
+
+### Soluzione Esercizio 3
+
+**Passo 1: Identificare il quantile**
+
+Cerchiamo $x$ tale che $P(X > x) = 0.10$, ovvero $P(X \leq x) = 0.90$.
+
+
+---
+
+```{r}
+#| echo: false
+# Carica la libreria necessaria
+library(ggplot2)
+
+# 1. Definizione dei parametri
+mu <- 50
+sigma <- 10
+p <- 0.90
+
+# 2. Calcolo del valore critico (90° percentile)
+# qnorm restituisce il valore x tale che P(X <= x) = 0.90
+valore_critico <- qnorm(p, mean = mu, sd = sigma)
+
+# 3. Creazione del grafico
+ggplot(data.frame(x = c(mu - 4*sigma, mu + 4*sigma)), aes(x = x)) +
+  # Disegna la curva normale
+  stat_function(fun = dnorm, args = list(mean = mu, sd = sigma), 
+                size = 1, color = "black") +
+  # Evidenzia l'area sotto il 90%
+  stat_function(fun = dnorm, args = list(mean = mu, sd = sigma),
+                xlim = c(mu - 4*sigma, valore_critico),
+                geom = "area", fill = "skyblue", alpha = 0.5) +
+  # Aggiunge una linea verticale sul valore critico
+  geom_vline(xintercept = valore_critico, linetype = "dashed", color = "red") +
+  # Etichette e stile
+  labs(title = paste("Distribuzione Normale N(", mu, ",", sigma, ")"),
+       subtitle = paste("Area evidenziata: 90% (Valore soglia =", round(valore_critico, 2), ")"),
+       x = "Valore", y = "Densità") +
+  theme_minimal()
+```
+
+---
+
+**Passo 2: Trovare $z_{0.90}$ nelle tavole**
+
+$z_{0.90} = 1.28.$
+
+**Passo 3: De-standardizzare**
+
+$$
+x = \mu + z \cdot \sigma = 50 + 1.28 \times 10 = 50 + 12.8 = 62.8.
+$$
+
+> Un punteggio di circa **63** separa il 10% più ansioso.
+
+---
+
+## Esercizio 4 — Applicazione clinica
+
+Un test di screening per la depressione ha punteggi $\mathcal{N}(\mu = 25, \sigma = 8)$ nella popolazione sana.
+
+**Domanda a)** Quale percentuale di persone sane ha un punteggio > 35?
+
+**Domanda b)** Quale soglia lascia sopra solo il 5% della popolazione sana?
+
+---
+
+### Soluzione Esercizio 4a
+
+**Standardizzare:**
+
+$$
+z = \frac{35 - 25}{8} = \frac{10}{8} = 1.25.
+$$
+
+**Consultare le tavole:**
+
+$\Phi(1.25) = 0.8944.$
+
+**Calcolare:**
+
+$$
+P(X > 35) = 1 - 0.8944 = 0.1056.
+$$
+
+> Circa il **10.6%** delle persone sane supera il punteggio 35.
+
+---
+
+```{r}
+#| echo: false
+
+# Carica la libreria necessaria
+library(ggplot2)
+
+# Definiamo i parametri
+mu <- 25
+sigma <- 8
+soglia <- 35
+
+# Creiamo il grafico
+ggplot(data.frame(x = c(mu - 4*sigma, mu + 4*sigma)), aes(x = x)) +
+  # Disegna la curva normale principale
+  stat_function(fun = dnorm, args = list(mean = mu, sd = sigma), 
+                size = 1, color = "black") +
+  # Evidenzia l'area da 35 a infinito
+  stat_function(fun = dnorm, args = list(mean = mu, sd = sigma),
+                xlim = c(soglia, mu + 4*sigma),
+                geom = "area", fill = "steelblue", alpha = 0.5) +
+  # Aggiunge una linea verticale sulla soglia
+  geom_vline(xintercept = soglia, linetype = "dashed", color = "red") +
+  # Etichette e stile
+  labs(title = expression(paste("Distribuzione Normale ", N, "(25, 8)")),
+       subtitle = paste("Area evidenziata: P(X >", soglia, ")"),
+       x = "Valore",
+       y = "Densità") +
+  theme_minimal()
+```
+
+---
+
+### Soluzione Esercizio 4b
+
+**Trovare il quantile:**
+
+Cerchiamo $z$ tale che $P(Z \leq z) = 0.95$.
+
+Dalle tavole: $z_{0.95} = 1.645.$
+
+**De-standardizzare:**
+
+$$
+x = 25 + 1.645 \times 8 = 25 + 13.16 = 38.16.
+$$
+
+> Una soglia di circa **38** lascia sopra solo il 5% dei sani (possibili falsi positivi).
+
+---
+
+```{r}
+#| echo: false
+
+# Caricamento della libreria
+library(ggplot2)
+
+# Definizione dei parametri
+mu <- 25
+sigma <- 8
+confidenza <- 0.05
+
+# Calcolo del valore critico per il 5% superiore
+# qnorm calcola il valore x tale che P(X > x) = 0.05
+z_critico <- qnorm(1 - confidenza, mean = mu, sd = sigma)
+
+# Creazione del grafico
+ggplot(data.frame(x = c(mu - 4*sigma, mu + 4*sigma)), aes(x = x)) +
+  # Disegna la curva normale
+  stat_function(fun = dnorm, args = list(mean = mu, sd = sigma), 
+                color = "black", size = 1) +
+  # Evidenzia l'area del 5% superiore
+  stat_function(fun = dnorm, args = list(mean = mu, sd = sigma),
+                xlim = c(z_critico, mu + 4*sigma),
+                geom = "area", fill = "red", alpha = 0.5) +
+  # Aggiunge una linea verticale per il valore critico
+  geom_vline(xintercept = z_critico, linetype = "dashed", color = "red") +
+  # Etichette e stile
+  labs(title = "Distribuzione Normale N(25, 8)",
+       subtitle = paste("Area evidenziata: 5% superiore (x >", round(z_critico, 2), ")"),
+       x = "Valore",
+       y = "Densità") +
+  theme_minimal()
+```
+
+---
+
+## Esercizio 5 — Intervallo simmetrico
+
+Per un test cognitivo con $\mathcal{N}(\mu = 100, \sigma = 15)$, trova l'intervallo che contiene il **95%** centrale dei punteggi.
+
+---
+
+### Soluzione Esercizio 5
+
+**Ragionamento:**  vogliamo lasciare il 2.5% in ciascuna coda.
+
+**Trovare i quantili:**
+
+- $z_{0.025} = -1.96$ (per simmetria: $z_{0.975} = 1.96$).
+
+**De-standardizzare:**
+
+$$
+x_{\text{inf}} = 100 - 1.96 \times 15 = 100 - 29.4 = 70.6.
+$$
+$$
+x_{\text{sup}} = 100 + 1.96 \times 15 = 100 + 29.4 = 129.4.
+$$
+
+> L'intervallo **[70.6, 129.4]** contiene il 95% centrale della popolazione.
+
+---
+
+```{r}
+#| echo: false
+
+# Carica la libreria
+library(ggplot2)
+
+# Parametri della distribuzione
+mu <- 100
+sigma <- 15
+
+# Calcolo dei limiti per il 95% centrale
+# qnorm(0.025) e qnorm(0.975)
+lower_95 <- qnorm(0.025, mean = mu, sd = sigma)
+upper_95 <- qnorm(0.975, mean = mu, sd = sigma)
+
+# Creazione del grafico
+ggplot(data.frame(x = c(mu - 4*sigma, mu + 4*sigma)), aes(x = x)) +
+  # Disegna l'area del 95% centrale
+  stat_function(
+    fun = dnorm,
+    args = list(mean = mu, sd = sigma),
+    xlim = c(lower_95, upper_95),
+    geom = "area",
+    fill = "skyblue",
+    alpha = 0.5
+  ) +
+  # Disegna la curva della densità completa
+  stat_function(
+    fun = dnorm, 
+    args = list(mean = mu, sd = sigma),
+    size = 1
+  ) +
+  # Aggiunge linee verticali ai limiti
+  geom_vline(xintercept = c(lower_95, upper_95), linetype = "dashed", color = "red") +
+  # Formattazione estetica
+  labs(
+    title = "Distribuzione Normale N(100, 15)",
+    subtitle = paste("Area evidenziata: 95% centrale [", round(lower_95, 2), ",", round(upper_95, 2), "]"),
+    x = "Valore",
+    y = "Densità"
+  ) +
+  theme_minimal()
+```
+
+
+---
+
+## Riepilogo
+
+In questa prima parte abbiamo appreso:
+
+1. La **densità** descrive la concentrazione di probabilità (non è una probabilità!).
+2. La **Normale** è definita da $\mu$ (media) e $\sigma$ (dev. standard).
+3. La **standardizzazione** $z = (x-\mu)/\sigma$ permette di usare le tavole
+4. Le **tavole** forniscono $\Phi(z) = P(Z \leq z)$.
+5. I **quantili** rispondono alla domanda inversa: dato $p$, trovare $x$.
+
+---
+
+## Prossima parte
+
+Nel secondo segmento introdurremo la **distribuzione Beta** e vedremo come R semplifica tutti questi calcoli.
