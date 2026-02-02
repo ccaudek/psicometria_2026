@@ -1,0 +1,201 @@
+id,genere,scuola_superiore,item_15,item_20,item_22,item_23
+P001,F,Liceo scienze umane,4,4,2,3
+P002,F,Liceo scientifico,3,4,3,3
+P003,F,Altro liceo,1,1,1,1
+P004,M,Altro liceo,1,1,1,3
+P005,F,Liceo scienze umane,3,2,3,2
+P006,F,Altro liceo,4,4,4,2
+P007,F,Altro liceo,1,2,1,2
+P008,F,Liceo classico,1,1,2,1
+P009,M,Altro liceo,1,1,1,1
+P010,F,Istituto tecnico/professionale,2,4,4,5
+P011,M,Liceo scientifico,2,3,3,3
+P012,M,Liceo classico,4,4,2,2
+P013,M,Altro liceo,3,3,3,4
+P014,F,Liceo scienze umane,1,1,2,3
+P015,F,Liceo scienze umane,2,2,3,2
+P016,F,Altro liceo,2,2,1,3
+P017,F,Liceo scientifico,2,3,3,3
+P018,M,Liceo scienze umane,4,4,3,1
+P019,F,Liceo scienze umane,2,2,2,1
+P020,M,Liceo scientifico,3,3,3,2
+P021,F,Altro liceo,4,4,3,4
+P022,F,Altro liceo,1,1,2,2
+P023,F,Liceo scientifico,3,2,1,2
+P024,F,Liceo scienze umane,2,3,1,2
+P025,Altro,Altro liceo,3,4,4,5
+P026,M,Liceo scientifico,2,3,2,4
+P027,M,Altro liceo,2,3,3,4
+P028,Altro,Altro liceo,3,2,3,2
+P029,F,Liceo scientifico,1,1,1,4
+P030,F,Altro liceo,3,2,3,4
+P031,F,Liceo scienze umane,2,3,1,3
+P032,F,Altro liceo,2,2,1,3
+P033,F,Liceo classico,2,1,1,1
+P034,F,Altro liceo,2,3,2,1
+P035,M,Liceo scientifico,2,2,1,4
+P036,M,Istituto tecnico/professionale,3,4,3,2
+P037,F,Altro liceo,3,3,3,4
+P038,F,Liceo scienze umane,3,3,3,1
+P039,M,Liceo scientifico,2,3,2,2
+P040,F,Altro liceo,3,2,2,4
+P041,F,Liceo classico,3,3,2,1
+P042,F,Altro liceo,3,2,1,3
+P043,F,Liceo classico,4,3,4,5
+P044,F,Liceo scienze umane,2,1,1,3
+P045,F,Liceo classico,2,1,1,2
+P046,F,Liceo classico,2,2,3,2
+P047,M,Istituto tecnico/professionale,3,1,2,1
+P048,F,Altro liceo,3,2,2,4
+P049,F,Altro liceo,2,1,2,2
+P050,M,Istituto tecnico/professionale,3,3,2,4
+P051,F,Altro liceo,3,3,4,1
+P052,F,Istituto tecnico/professionale,3,3,3,2
+P053,M,Istituto tecnico/professionale,3,4,4,4
+P054,F,Liceo classico,4,4,4,3
+P055,F,Liceo scientifico,2,2,3,1
+P056,F,Liceo classico,3,4,3,4
+P057,F,Istituto tecnico/professionale,1,2,2,3
+P058,F,Istituto tecnico/professionale,3,3,3,2
+P059,F,Altro liceo,2,3,3,3
+P060,M,Liceo scienze umane,2,2,2,4
+P061,M,Liceo scienze umane,3,4,4,5
+P062,F,Liceo scienze umane,3,3,2,2
+P063,F,Liceo scientifico,5,4,3,5
+P064,F,Liceo scienze umane,1,2,2,1
+P065,F,Istituto tecnico/professionale,4,4,4,4
+P066,F,Liceo classico,4,4,4,4
+P067,M,Liceo scienze umane,2,3,3,2
+P068,F,Liceo scienze umane,2,2,2,3
+P069,F,Liceo classico,1,2,2,2
+P070,F,Altro liceo,2,3,2,5
+P071,M,Istituto tecnico/professionale,5,5,5,3
+P072,Altro,Liceo scientifico,2,2,3,4
+P073,F,Liceo classico,4,3,4,3
+P074,F,Liceo classico,1,1,2,1
+P075,F,Liceo classico,1,2,3,2
+P076,F,Liceo scienze umane,4,3,3,4
+P077,M,Liceo scientifico,3,4,3,3
+P078,F,Altro liceo,3,3,3,1
+P079,F,Liceo scientifico,1,1,1,1
+P080,M,Liceo classico,4,4,4,5
+P081,F,Liceo classico,1,1,2,3
+P082,F,Liceo scienze umane,3,2,2,1
+P083,F,Istituto tecnico/professionale,2,2,1,3
+P084,F,Altro liceo,3,2,2,2
+P085,F,Liceo scienze umane,2,2,3,2
+P086,F,Istituto tecnico/professionale,3,2,2,3
+P087,F,Liceo scientifico,3,2,2,2
+P088,F,Liceo scientifico,1,2,1,4
+P089,F,Altro liceo,2,2,2,2
+P090,M,Liceo scientifico,3,4,3,1
+P091,F,Istituto tecnico/professionale,1,1,1,3
+P092,F,Liceo classico,2,2,4,3
+P093,F,Liceo classico,2,3,2,3
+P094,M,Liceo classico,4,4,4,4
+P095,M,Liceo classico,1,1,2,1
+P096,F,Istituto tecnico/professionale,5,4,5,3
+P097,M,Altro liceo,2,3,2,4
+P098,M,Liceo classico,4,5,5,3
+P099,F,Istituto tecnico/professionale,3,3,2,2
+P100,M,Liceo scientifico,2,2,2,1
+P101,F,Altro liceo,2,2,2,4
+P102,F,Altro liceo,3,2,3,3
+P103,M,Istituto tecnico/professionale,4,4,3,3
+P104,F,Liceo scientifico,3,4,4,5
+P105,F,Liceo scientifico,3,3,3,3
+P106,Altro,Liceo scientifico,2,2,2,2
+P107,Altro,Liceo classico,2,4,2,2
+P108,M,Liceo scienze umane,1,1,1,1
+P109,F,Istituto tecnico/professionale,3,2,2,3
+P110,F,Istituto tecnico/professionale,4,3,3,3
+P111,F,Liceo scienze umane,2,2,2,1
+P112,F,Istituto tecnico/professionale,4,4,4,3
+P113,F,Liceo scientifico,1,1,1,1
+P114,M,Altro liceo,4,5,4,4
+P115,F,Liceo scienze umane,4,5,4,3
+P116,F,Liceo scienze umane,3,3,4,2
+P117,F,Liceo scientifico,2,2,2,3
+P118,F,Liceo scientifico,1,2,2,1
+P119,F,Istituto tecnico/professionale,4,4,4,2
+P120,M,Liceo scienze umane,3,4,3,3
+P121,F,Liceo scienze umane,3,2,3,2
+P122,M,Liceo scientifico,3,3,3,3
+P123,F,Liceo classico,1,1,2,2
+P124,F,Liceo classico,3,3,2,2
+P125,M,Liceo scientifico,1,1,1,2
+P126,Altro,Altro liceo,3,1,2,1
+P127,F,Liceo scienze umane,4,4,4,2
+P128,F,Altro liceo,4,3,4,3
+P129,F,Liceo classico,4,4,4,2
+P130,F,Altro liceo,1,1,2,2
+P131,F,Liceo scientifico,2,4,3,1
+P132,M,Altro liceo,4,4,4,2
+P133,M,Liceo scientifico,2,3,3,3
+P134,F,Liceo classico,2,5,3,3
+P135,M,Liceo scienze umane,3,3,3,2
+P136,F,Liceo scienze umane,4,4,5,2
+P137,F,Liceo scienze umane,2,3,3,4
+P138,F,Liceo classico,4,4,5,4
+P139,Altro,Altro liceo,2,2,2,2
+P140,M,Liceo scienze umane,4,5,4,3
+P141,F,Altro liceo,3,2,2,3
+P142,F,Istituto tecnico/professionale,4,4,4,4
+P143,F,Istituto tecnico/professionale,3,3,2,4
+P144,M,Liceo classico,3,3,2,4
+P145,M,Liceo classico,3,3,3,4
+P146,M,Liceo scientifico,2,2,2,2
+P147,F,Liceo classico,4,3,3,5
+P148,F,Istituto tecnico/professionale,4,3,5,3
+P149,M,Liceo scienze umane,5,4,4,5
+P150,F,Liceo scienze umane,3,3,3,4
+P151,F,Liceo scienze umane,3,3,3,3
+P152,F,Liceo scienze umane,3,4,3,4
+P153,F,Liceo scientifico,3,4,3,2
+P154,M,Liceo classico,2,2,3,3
+P155,F,Liceo classico,2,3,2,3
+P156,F,Liceo scienze umane,4,3,3,4
+P157,F,Liceo scientifico,3,2,3,1
+P158,M,Liceo scientifico,3,2,3,3
+P159,F,Altro liceo,3,2,2,1
+P160,F,Altro liceo,4,3,3,5
+P161,F,Istituto tecnico/professionale,5,4,5,3
+P162,F,Istituto tecnico/professionale,4,3,4,4
+P163,F,Istituto tecnico/professionale,2,2,3,1
+P164,F,Liceo classico,2,3,2,2
+P165,M,Istituto tecnico/professionale,2,3,2,3
+P166,F,Liceo classico,1,2,1,2
+P167,M,Liceo scienze umane,4,3,4,4
+P168,F,Liceo scienze umane,4,4,4,3
+P169,F,Liceo scienze umane,4,4,4,3
+P170,F,Liceo scienze umane,3,3,3,2
+P171,F,Liceo scienze umane,4,4,4,3
+P172,F,Liceo classico,2,3,3,1
+P173,F,Liceo scienze umane,3,3,3,2
+P174,F,Istituto tecnico/professionale,5,5,5,4
+P175,F,Liceo classico,2,2,2,3
+P176,F,Liceo scienze umane,2,2,3,3
+P177,M,Istituto tecnico/professionale,4,4,5,2
+P178,F,Altro liceo,2,2,1,2
+P179,F,Altro liceo,3,3,3,3
+P180,M,Istituto tecnico/professionale,2,3,2,3
+P181,F,Istituto tecnico/professionale,1,2,2,1
+P182,M,Liceo scienze umane,4,4,5,2
+P183,F,Liceo scienze umane,3,3,3,1
+P184,M,Altro liceo,4,4,4,4
+P185,M,Istituto tecnico/professionale,2,3,2,3
+P186,F,Liceo scienze umane,2,3,2,5
+P187,F,Liceo scienze umane,4,5,5,2
+P188,M,Istituto tecnico/professionale,3,2,3,3
+P189,F,Liceo classico,4,4,4,3
+P190,Altro,Liceo classico,4,3,3,1
+P191,F,Liceo scientifico,3,4,4,2
+P192,M,Liceo scientifico,1,1,2,2
+P193,F,Liceo scientifico,2,3,2,4
+P194,F,Liceo classico,2,1,2,2
+P195,F,Liceo scienze umane,4,5,5,5
+P196,F,Istituto tecnico/professionale,4,2,3,3
+P197,F,Liceo classico,2,2,2,2
+P198,F,Liceo classico,2,1,1,3
+P199,F,Liceo scientifico,1,1,2,1
+P200,F,Istituto tecnico/professionale,3,3,3,2
