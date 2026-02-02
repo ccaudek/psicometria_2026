@@ -1,0 +1,784 @@
+---
+title: "Statistica descrittiva"
+subtitle: "Tendenza centrale, dispersione e forma"
+version: 1.0
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+lang: it
+
+execute:
+  echo: true
+  warning: false
+  message: false
+
+format:
+  revealjs:
+    theme: [default, ../revealjs.scss]
+    title-slide-attributes:
+      data-background-color: "#0072bc"
+    slide-number: c
+    show-slide-number: print
+    highlight-style: github
+    math: mathjax
+---
+
+```{r}
+#| echo: false
+library(tidyverse)
+```
+
+## I vostri dati
+
+Nella prima lezione avete compilato la **STARS** (*Statistical Anxiety Rating Scale*) — un questionario di 51 domande che misura l'ansia verso la statistica.
+
+. . .
+
+Per ciascuno di voi abbiamo calcolato un punteggio totale (**STARS_total**): la somma delle risposte a tutti i 51 item, su una scala da 51 (nessuna ansia) a 255 (massima ansia).
+
+. . .
+
+Oggi usiamo questi dati per capire come si **riassume** una distribuzione con pochi numeri.
+
+---
+
+## Tre domande fondamentali
+
+Di fronte a un insieme di dati, le prime domande sono:
+
+. . .
+
+1. **Dove** si concentrano i valori? → **tendenza centrale**
+
+. . .
+
+2. **Quanto** sono dispersi? → **variabilità**
+
+. . .
+
+3. **Che forma** ha la distribuzione? → **simmetria e code**
+
+. . .
+
+Queste tre domande bastano per avere un quadro sintetico dei dati.
+
+# Parte I: concetti e calcoli {background-color="#2c3e50" style="color: white;"}
+
+## Un sottocampione per calcolare a mano
+
+Per capire i concetti, lavoriamo prima su un **piccolo sottocampione** di 10 studenti.
+
+Punteggi STARS_total (già ordinati):
+
+$$112, 128, 133, 136, 145, 148, 151, 158, 164, 192$$
+
+. . .
+
+Sono 10 numeri. Li usiamo per fare tutti i calcoli **a mano**, passo per passo.
+
+---
+
+## 1. La media
+
+La **media** (o media aritmetica) è la somma dei valori divisa per il numero di osservazioni:
+
+$$\bar{x} = \frac{\sum_{i=1}^{n} x_i}{n}$$
+
+. . .
+
+Calcoliamo:
+
+$$\bar{x} = \frac{112 + 128 + 133 + 136 + 145 + 148 + 151 + 158 + 164 + 192}{10}$$
+
+. . .
+
+$$= \frac{1467}{10} = 146.7$$
+
+---
+
+## Che cosa ci dice la media?
+
+La media è il **baricentro** dei dati: il punto in cui la distribuzione "si bilancia".
+
+. . .
+
+Se immaginiamo i dati come pesi su un'asta, la media è il punto di equilibrio.
+
+. . .
+
+STARS_total = 146.7 significa che, in media, questi 10 studenti hanno un livello di ansia statistica **moderato** (su una scala 51–255).
+
+---
+
+## 2. La mediana
+
+La **mediana** è il valore che divide i dati ordinati in due metà uguali: il 50% sta sotto, il 50% sta sopra.
+
+. . .
+
+Con $n = 10$ (pari), la mediana è la media dei due valori centrali — il 5° e il 6°:
+
+$$\text{Med} = \frac{x_{(5)} + x_{(6)}}{2} = \frac{145 + 148}{2} = 146.5$$
+
+. . .
+
+Con $n$ dispari, la mediana sarebbe semplicemente il valore centrale.
+
+---
+
+## Media e mediana a confronto
+
+| | Valore |
+|:--|:---:|
+| Media | 146.7 |
+| Mediana | 146.5 |
+
+La media è leggermente **più alta** della mediana. Perché?
+
+. . .
+
+Guardiamo i dati: il punteggio **192** è piuttosto lontano dagli altri. La media "sente" questo valore estremo e viene tirata verso l'alto.
+
+. . .
+
+La mediana, invece, dipende solo dalla **posizione** dei valori, non dalla loro grandezza. È più **robusta** rispetto ai valori estremi.
+
+---
+
+## Un esperimento mentale
+
+Cosa succede se il punteggio 192 diventa **250**?
+
+. . .
+
+| | Prima | Dopo |
+|:---|:---:|:---:|
+| Media | 146.7 | **152.5** |
+| Mediana | 146.5 | **146.5** |
+
+. . .
+
+La media cambia di quasi 6 punti. La mediana **non cambia affatto**.
+
+Questo illustra un principio importante: la media è **sensibile ai valori estremi**, la mediana no.
+
+---
+
+## 3. La variabilità: perché ci serve
+
+Due gruppi possono avere la **stessa media** ma essere molto diversi:
+
+. . .
+
+:::: {.columns}
+::: {.column width="50%"}
+**Gruppo A**
+
+144, 145, 146, 147, 148
+
+Media = 146
+:::
+::: {.column width="50%"}
+**Gruppo B**
+
+100, 120, 146, 172, 192
+
+Media = 146
+:::
+::::
+
+. . .
+
+La media da sola non basta. Serve una misura di quanto i dati sono **dispersi** attorno alla media.
+
+---
+
+## La deviazione dalla media
+
+Per ciascun dato, calcoliamo quanto **si discosta** dalla media:
+
+$$d_i = x_i - \bar{x}$$
+
+---
+
+| $x_i$ | $x_i - 146.7$ |
+|:---:|:---:|
+| 112 | $-34.7$ |
+| 128 | $-18.7$ |
+| 133 | $-13.7$ |
+| 136 | $-10.7$ |
+| 145 | $-1.7$ |
+| 148 | $+1.3$ |
+| 151 | $+4.3$ |
+| 158 | $+11.3$ |
+| 164 | $+17.3$ |
+| 192 | $+45.3$ |
+
+---
+
+## Le deviazioni si annullano
+
+$$\sum_{i=1}^{n} (x_i - \bar{x}) = 0$$
+
+. . .
+
+Verifichiamolo:
+
+$$(-34.7) + (-18.7) + \ldots + (+17.3) + (+45.3) = 0$$
+
+. . .
+
+Questo è sempre vero, per **qualunque** insieme di dati. È una proprietà della media: le deviazioni positive e negative si compensano esattamente.
+
+. . .
+
+Quindi la somma delle deviazioni non è una buona misura della variabilità.
+
+---
+
+## La soluzione: elevare al quadrato
+
+Per evitare che le deviazioni si annullino, le **eleviamo al quadrato**:
+
+---
+
+| $x_i$ | $d_i$ | $d_i^2$ |
+|:---:|:---:|:---:|
+| 112 | $-34.7$ | 1204.09 |
+| 128 | $-18.7$ | 349.69 |
+| 133 | $-13.7$ | 187.69 |
+| 136 | $-10.7$ | 114.49 |
+| 145 | $-1.7$ | 2.89 |
+| 148 | $+1.3$ | 1.69 |
+| 151 | $+4.3$ | 18.49 |
+| 158 | $+11.3$ | 127.69 |
+| 164 | $+17.3$ | 299.29 |
+| 192 | $+45.3$ | 2052.09 |
+
+---
+
+## La varianza
+
+La **varianza** è la media delle deviazioni al quadrato:
+
+$$s^2 = \frac{\sum_{i=1}^{n}(x_i - \bar{x})^2}{n - 1}$$
+
+. . .
+
+$$s^2 = \frac{1204.09 + 349.69 + \ldots + 2052.09}{10 - 1} = \frac{4358.10}{9} = 484.23$$
+
+---
+
+## Perché $n - 1$ e non $n$?
+
+Dividiamo per $n - 1$ (e non per $n$) perché abbiamo "usato" i dati una volta per calcolare la media. Questa correzione (detta **correzione di Bessel**) rende la stima della variabilità non distorta.
+
+. . .
+
+Il dettaglio tecnico (i "gradi di libertà") lo riprenderemo più avanti. Per ora, basta ricordare: **si divide per $n - 1$**.
+
+---
+
+## La deviazione standard
+
+La varianza è espressa in unità al quadrato (punti²). Per tornare alla scala originale, calcoliamo la **radice quadrata**:
+
+$$s = \sqrt{s^2} = \sqrt{484.23} = 22.01$$
+
+. . .
+
+La **deviazione standard** ($s = 22.01$) ci dice che, mediamente, i punteggi si discostano dalla media di circa **22 punti**.
+
+---
+
+## Riepilogo: le misure calcolate
+
+| Misura | Formula | Valore |
+|:-------|:--------|:------:|
+| Media | $\bar{x} = \frac{\sum x_i}{n}$ | 146.7 |
+| Mediana | valore centrale | 146.5 |
+| Varianza | $s^2 = \frac{\sum(x_i - \bar{x})^2}{n-1}$ | 484.23 |
+| Dev. standard | $s = \sqrt{s^2}$ | 22.01 |
+
+---
+
+## 4. Altre misure di dispersione
+
+### Il campo di variazione (*range*)
+
+$$\text{Range} = x_{\max} - x_{\min} = 192 - 112 = 80$$
+
+È semplice, ma dipende solo dai due valori estremi — è molto sensibile agli *outlier*.
+
+---
+
+## I quartili e lo scarto interquartile (IQR)
+
+I **quartili** dividono i dati ordinati in quattro parti uguali:
+
+- $Q_1$ (25° percentile): il valore sotto il quale cade il 25% dei dati
+- $Q_2$ (50° percentile): è la mediana
+- $Q_3$ (75° percentile): il valore sotto il quale cade il 75% dei dati
+
+. . .
+
+Lo **scarto interquartile** è:
+
+$$\text{IQR} = Q_3 - Q_1$$
+
+Misura la dispersione del **50% centrale** dei dati — ignorando i valori estremi.
+
+---
+
+## 5. La forma della distribuzione
+
+Oltre a "dove" e "quanto", ci interessa **come** sono distribuiti i dati.
+
+. . .
+
+La **simmetria** (o asimmetria) descrive se la distribuzione è bilanciata o se ha una "coda" più lunga da un lato.
+
+. . .
+
+:::: {.columns}
+::: {.column width="33%"}
+**Asimmetria positiva**
+
+Coda a destra
+
+Media > Mediana
+:::
+::: {.column width="33%"}
+**Simmetrica**
+
+Code uguali
+
+Media ≈ Mediana
+:::
+::: {.column width="33%"}
+**Asimmetria negativa**
+
+Coda a sinistra
+
+Media < Mediana
+:::
+::::
+
+---
+
+## Nel nostro sottocampione
+
+Media (146.7) > Mediana (146.5): la distribuzione è **leggermente** asimmetrica a destra.
+
+. . .
+
+Ha senso: il punteggio 192 è più distante dalla media rispetto al punteggio 112. C'è una "coda" verso valori alti di ansia.
+
+. . .
+
+Ma la differenza è piccola (0.2 punti) — la distribuzione è quasi simmetrica. Vedremo se con tutti i 200 dati l'asimmetria è più marcata.
+
+---
+
+## Perché queste misure "bastano"?
+
+Con pochi numeri — media, deviazione standard, un'indicazione sulla simmetria — abbiamo una **descrizione sintetica** di un intero insieme di dati.
+
+. . .
+
+Questo è lo scopo della statistica descrittiva: **ridurre la complessità** senza perdere le informazioni essenziali.
+
+. . .
+
+Dopo la pausa vedremo come R calcola tutto questo sui dati reali degli studenti in quest'aula.
+
+# Parte II: i dati degli studenti in R {background-color="#2c3e50" style="color: white;"}
+
+## Importiamo i dati
+
+```{r}
+#| echo: false
+# Simulazione dei dati arricchiti (in una lezione reale, si userebbe read.csv)
+set.seed(2026)
+orig <- read.csv("stars_classe.csv")
+d <- orig
+```
+
+Nella pratica userete:
+
+```{r}
+#| eval: false
+d <- read.csv("stars_classe.csv")
+```
+
+. . .
+
+Diamo un'occhiata:
+
+```{r}
+head(d)
+```
+
+---
+
+## Struttura del dataset
+
+```{r}
+dim(d)
+names(d)
+```
+
+. . .
+
+Abbiamo **`r nrow(d)` studenti** e **`r ncol(d)` variabili**: il codice identificativo, genere, tipo di scuola superiore, autovalutazione in matematica, il punteggio totale STARS e le 6 sottoscale.
+
+---
+
+## Primo sguardo: `summary()`
+
+```{r}
+summary(d$STARS_total)
+```
+
+. . .
+
+In una sola riga abbiamo: minimo, primo quartile, mediana, media, terzo quartile, massimo.
+
+---
+
+## Media, mediana e deviazione standard
+
+```{r}
+mean(d$STARS_total)       # media
+median(d$STARS_total)     # mediana
+sd(d$STARS_total)         # deviazione standard
+```
+
+. . .
+
+Confrontiamo con il sottocampione di 10: la media ($\approx$ `r round(mean(d$STARS_total), 1)`) e la deviazione standard ($\approx$ `r round(sd(d$STARS_total), 1)`) sono simili ai valori calcolati a mano. Il sottocampione era rappresentativo!
+
+---
+
+## Varianza e deviazione standard: il legame
+
+```{r}
+var(d$STARS_total)           # varianza
+sd(d$STARS_total)^2          # sd al quadrato = varianza
+sqrt(var(d$STARS_total))     # radice della varianza = sd
+```
+
+In R: `var()` calcola la varianza (con $n-1$), `sd()` la deviazione standard.
+
+---
+
+## Range e IQR
+
+```{r}
+range(d$STARS_total)                # minimo e massimo
+diff(range(d$STARS_total))          # range = max - min
+
+quantile(d$STARS_total, c(0.25, 0.75))  # Q1 e Q3
+IQR(d$STARS_total)                       # scarto interquartile
+```
+
+---
+
+## L'istogramma dei dati degli studenti
+
+```r
+hist(d$STARS_total,
+  freq = FALSE,
+  col = "steelblue",
+  border = "white",
+  main = "STARS total — Classe",
+  xlab = "Punteggio STARS (51–255)",
+  ylab = "Densità",
+  breaks = 15
+)
+abline(v = mean(d$STARS_total), col = "red", lwd = 2, lty = 2)
+abline(v = median(d$STARS_total), col = "darkgreen", lwd = 2, lty = 2)
+legend("topright",
+  legend = c(
+    paste("Media =", round(mean(d$STARS_total), 1)),
+    paste("Mediana =", round(median(d$STARS_total), 1))
+  ),
+  col = c("red", "darkgreen"), lwd = 2, lty = 2
+)
+```
+
+---
+
+```{r}
+#| echo: false
+hist(d$STARS_total,
+  freq = FALSE,
+  col = "steelblue",
+  border = "white",
+  main = "STARS total — Classe",
+  xlab = "Punteggio STARS (51–255)",
+  ylab = "Densità",
+  breaks = 15
+)
+abline(v = mean(d$STARS_total), col = "red", lwd = 2, lty = 2)
+abline(v = median(d$STARS_total), col = "darkgreen", lwd = 2, lty = 2)
+legend("topright",
+  legend = c(
+    paste("Media =", round(mean(d$STARS_total), 1)),
+    paste("Mediana =", round(median(d$STARS_total), 1))
+  ),
+  col = c("red", "darkgreen"), lwd = 2, lty = 2
+)
+```
+
+---
+
+## Leggere l'istogramma
+
+La distribuzione dei punteggi STARS è:
+
+. . .
+
+- **Approssimativamente simmetrica**, con un lieve accumulo verso destra
+- La media (linea rossa) è leggermente **a destra** della mediana (linea verde)
+- Questo indica una lieve **asimmetria positiva**: qualche studente con ansia particolarmente alta "tira" la media verso l'alto
+
+---
+
+## Il boxplot: un'altra visualizzazione
+
+Il **boxplot** (o diagramma a scatola) riassume la distribuzione con cinque numeri:
+
+```r
+#| echo: false
+boxplot(d$STARS_total,
+  horizontal = TRUE,
+  col = "steelblue",
+  main = "Boxplot — STARS total",
+  xlab = "Punteggio STARS"
+)
+```
+
+---
+
+```{r}
+#| echo: false
+boxplot(d$STARS_total,
+  horizontal = TRUE,
+  col = "steelblue",
+  main = "Boxplot — STARS total",
+  xlab = "Punteggio STARS"
+)
+```
+
+---
+
+## Come si legge un boxplot
+
+- La **scatola** va da $Q_1$ a $Q_3$ → contiene il 50% centrale dei dati
+- La **linea interna** è la mediana
+- I **baffi** si estendono fino al dato più estremo entro $1.5 \times \text{IQR}$ dal bordo della scatola
+- I **punti** oltre i baffi sono potenziali outlier
+
+---
+
+## Confrontiamo le sottoscale
+
+Quali aspetti dell'ansia statistica sono più pronunciati in questo campione?
+
+```{r}
+#| echo: false
+# Calcoliamo le medie per item (scala 1-5) per rendere comparabili le sottoscale
+medie_item <- data.frame(
+  WS  = d$WS / 16,
+  IA  = d$IA / 11,
+  TCA = d$TCA / 8,
+  CSC = d$CSC / 7,
+  FAH = d$FAH / 4,
+  FST = d$FST / 5
+)
+
+boxplot(medie_item,
+  col = "steelblue",
+  main = "Sottoscale STARS (media per item, scala 1–5)",
+  ylab = "Punteggio medio per item",
+  names = c("Worth of\nStats", "Interpret.\nAnxiety",
+            "Test &\nClass", "Comput.\nSelf-Conc.",
+            "Fear Ask\nHelp", "Fear Stats\nTeacher")
+)
+abline(h = 3, col = "gray50", lty = 3)
+```
+
+---
+
+## Confronto per genere
+
+```r
+boxplot(STARS_total ~ genere, data = d,
+  col = c("lightyellow", "steelblue", "lightcoral"),
+  main = "STARS total per genere",
+  xlab = "Genere",
+  ylab = "Punteggio STARS"
+)
+```
+
+---
+
+```{r}
+#| echo: false
+boxplot(STARS_total ~ genere, data = d,
+  col = c("lightyellow", "steelblue", "lightcoral"),
+  main = "STARS total per genere",
+  xlab = "Genere",
+  ylab = "Punteggio STARS"
+)
+```
+
+. . .
+
+Notiamo differenze? Nelle prossime lezioni impareremo strumenti per stabilire se le differenze osservate sono **sistematiche** o dovute al caso.
+
+---
+
+## Confronto per tipo di scuola superiore
+
+```r
+boxplot(STARS_total ~ scuola_superiore, data = d,
+  col = "steelblue",
+  main = "STARS total per scuola superiore",
+  xlab = "",
+  ylab = "Punteggio STARS",
+  las = 2,         # etichette verticali
+  cex.axis = 0.8
+)
+```
+
+---
+
+```{r}
+#| echo: false
+
+boxplot(STARS_total ~ scuola_superiore, data = d,
+  col = "steelblue",
+  main = "STARS total per scuola superiore",
+  xlab = "",
+  ylab = "Punteggio STARS",
+  las = 2,         # etichette verticali
+  cex.axis = 0.8
+)
+```
+
+---
+
+## Ansia e autovalutazione in matematica
+
+```r
+plot(d$autovalutazione_math, d$STARS_total,
+  pch = 19,
+  col = adjustcolor("steelblue", alpha = 0.5),
+  main = "Ansia statistica e autovalutazione in matematica",
+  xlab = "Autovalutazione matematica (1–10)",
+  ylab = "STARS total"
+)
+```
+
+---
+
+```{r}
+#| echo: false
+plot(d$autovalutazione_math, d$STARS_total,
+  pch = 19,
+  col = adjustcolor("steelblue", alpha = 0.5),
+  main = "Ansia statistica e autovalutazione in matematica",
+  xlab = "Autovalutazione matematica (1–10)",
+  ylab = "STARS total"
+)
+```
+
+---
+
+Un'associazione negativa: 
+
+* chi si valuta meglio in matematica tende ad avere **meno** ansia statistica. 
+
+Lo quantificheremo con la **correlazione** in una lezione futura.
+
+---
+
+## Il riassunto numerico completo
+
+Numerosità del campione:
+
+```{r}
+length(d$STARS_total)
+```
+
+Media STARS:
+
+```{r}
+mean(d$STARS_total)
+```
+
+Mediana STARS:
+
+```{r}
+median(d$STARS_total)
+```
+
+---
+
+Deviazione standard:
+
+```{r}
+sd(d$STARS_total)
+```
+
+Valore minimo STARS:
+
+```{r}
+min(d$STARS_total)
+```
+
+Valore massimo STARS:
+
+```{r}
+max(d$STARS_total)
+```
+
+IQR STARS:
+
+```{r}
+IQR(d$STARS_total)
+```
+
+---
+
+## Il vocabolario della statistica descrittiva
+
+| Concetto | Domanda | Misure principali |
+|:---------|:--------|:-----------------|
+| Tendenza centrale | Dove si concentrano i dati? | Media ($\bar{x}$), Mediana |
+| Variabilità | Quanto sono dispersi? | Varianza ($s^2$), Dev. standard ($s$), IQR |
+| Forma | Come sono distribuiti? | Simmetria, confronto media vs mediana |
+
+. . .
+
+Queste misure, insieme all'**istogramma** e al **boxplot**, sono gli strumenti di base per descrivere qualunque distribuzione.
+
+---
+
+## Per approfondire
+
+Il materiale di questa lezione corrisponde a:
+
+- [Cap. 16 — Esplorare distribuzioni univariate](https://ccaudek.github.io/utet-eda/chapters/eda/03_exploring_univariate_data.html)
+- [Cap. 18 — Indicatori di tendenza centrale e variabilità](https://ccaudek.github.io/utet-eda/chapters/eda/06_loc_scale.html)
+
+. . .
+
+Nella prossima lezione: **sintassi R** — vettori, dataframe, operazioni di base, e i primi grafici con ggplot2.

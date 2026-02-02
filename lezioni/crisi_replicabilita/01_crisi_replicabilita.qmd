@@ -1,6 +1,7 @@
 ---
-title: Lezione 1
-subtitle: AA 2025-2026
+title: "La crisi della replicazione in psicologia"
+subtitle: "Quali implicazioni? Quali soluzioni?"
+version: 1.0
 author:
   - name: Corrado Caudek
     orcid: 0000-0002-1404-0420
@@ -8,15 +9,23 @@ author:
     affiliations: Università degli Studi di Firenze
 date: today
 date-format: long
-toc: true
+toc: false
 lang: it
-format:
-  html:
-    html-math-method: katex
-    code-tools: true
-    self-contained: true
+
 execute:
+  echo: true
   warning: false
+  message: false
+
+format:
+  revealjs:
+    theme: [default, ../revealjs.scss]
+    title-slide-attributes:
+      data-background-color: "#0072bc"
+    slide-number: c
+    show-slide-number: print
+    highlight-style: github
+    math: mathjax
 ---
 
 ```{r}
@@ -28,596 +37,344 @@ library(knitr)
 library(kableExtra)
 ```
 
-# Perché la statistica bayesiana?
 
-### Crisi della replicazione, limiti del frequentismo e una possibile via d’uscita
+# Crisi della replicazione, limiti del frequentismo e una possibile via d’uscita {background-color="#2c3e50" style="color: white;"}
 
----
+## La replicabilità dei risultati scientifici
 
-## 0. Obiettivi della lezione
-
-Alla fine di questa lezione gli studenti dovrebbero:
-
-* capire **che cosa si intende per crisi della replicazione in psicologia**;
-* distinguere tra **riproducibilità, robustezza e replicabilità**;
-* cogliere il legame tra **pratiche di ricerca**, **sistema di incentivi** e crisi di credibilità;
-* avere una prima idea del perché **il paradigma frequentista e il valore-p** sono problematici;
-* intuire **che cosa cambia con un approccio bayesiano** e perché può aiutare la psicologia a diventare una scienza più matura;
-* collegare tutto questo a **Open Science, trasparenza e collaborazione**.
-
----
-
-## 1. Il punto di partenza: la crisi di replicazione
-
-Per iniziare, possiamo porre agli studenti una domanda semplice:
+Partiamo da una domanda apparentemente semplice:
 
 > Se un effetto psicologico è reale, dovrebbe ricomparire quando ripetiamo lo studio?
 
-In teoria sì: la **replicabilità** è uno dei pilastri della scienza.
-Nella pratica, però, in psicologia non è andata così liscia.
-
-Negli ultimi 15–20 anni la disciplina ha attraversato quella che viene chiamata **crisi di replicazione**: grandi progetti internazionali che hanno provato a replicare effetti “classici” della psicologia hanno spesso ottenuto risultati molto più deboli o addirittura nulli.
-
-Questo ha sollevato domande molto scomode:
-
-* Quanti dei risultati che insegniamo a lezione sono davvero robusti?
-* Quanto possiamo fidarci di ciò che è pubblicato sulle riviste top?
-* Che cosa non funziona nel modo in cui facciamo ricerca?
+In linea di principio, sì: la **replicabilità** è uno dei pilastri del metodo scientifico.
+Nella pratica, però, in psicologia questo principio ha incontrato serie difficoltà.
 
 ---
 
-## 2. Tre concetti chiave: riproducibilità, robustezza, replicabilità
+## La crisi della replicazione
 
-Prima di parlare di “crisi”, è utile chiarire tre livelli diversi di controllo:
+Negli ultimi 15–20 anni, la disciplina ha attraversato quella che oggi chiamiamo **crisi della replicazione**.
 
-### 2.1 Riproducibilità (reproducibility)
+Grandi progetti internazionali hanno tentato di replicare risultati “classici” della psicologia, spesso ottenendo effetti molto più deboli o addirittura nulli.
+
+Questo ha sollevato domande scomode ma inevitabili:
+
+* Quanto sono davvero solidi i risultati che insegniamo e utilizziamo?
+* Quanto possiamo fidarci della letteratura pubblicata?
+* C’è qualcosa che non funziona nel modo in cui facciamo ricerca?
+
+---
+
+## Tre concetti chiave: riproducibilità, robustezza, replicabilità
+
+Prima di parlare di “crisi”, è fondamentale distinguere **tre livelli diversi** di controllo scientifico, spesso confusi tra loro.
+
+---
+
+### Riproducibilità (*reproducibility*)
+
+Domanda fondamentale:
+
+> Se utilizzo **gli stessi dati** e **lo stesso codice**, ottengo gli stessi risultati?
+
+* È il livello più basilare e tecnico.
+* Riguarda errori di codice, mancanza di documentazione, assenza di materiali.
+
+**Esempio**: scarico dati e script da OSF, rilancio le analisi e ottengo gli stessi valori di *t*, *F* e gli stessi grafici.
+
+👉 Se un risultato non è riproducibile, il problema è **a monte**.
+
+---
+
+### Robustezza (*robustness*)
 
 Domanda:
 
-> Se prendo **gli stessi dati** e **lo stesso codice**, ottengo gli stessi risultati?
+> Se modifico alcune scelte analitiche *ragionevoli* sugli stessi dati, il risultato regge?
 
-* È il livello più “tecnico”: riguarda problemi di documentazione, errori di codice, mancanza di materiali.
-* Esempio: scarico da OSF dati e script di uno studio, rilancio il codice e mi aspetto lo stesso F, lo stesso t, gli stessi grafici.
+* I dati sono gli stessi, ma cambiano:
 
-Se non riusciamo neanche a riprodurre i risultati con gli stessi dati, abbiamo un problema **di base**.
+  * criteri di esclusione,
+  * trasformazioni,
+  * modelli statistici.
 
----
+**Esempio**: l’effetto Stroop rimane anche usando un modello robusto invece dell’OLS?
 
-### 2.2 Robustezza (robustness)
+Un risultato robusto **non dipende** da una singola pipeline analitica.
 
-Domanda:
-
-> Se cambio alcune scelte analitiche **ragionevoli** sugli stessi dati, il risultato rimane?
-
-* Si lavora **sullo stesso dataset**, ma si provano:
-
-  * criteri di esclusione leggermente diversi,
-  * trasformazioni differenti,
-  * modelli statistici alternativi (es. OLS vs regressione robusta).
-* Esempio: l’effetto Stroop rimane significativo anche se cambio metodo di stima o trasformazione dei tempi di risposta.
-
-Un risultato robusto **non dipende** da una sola pipeline analitica specifica.
-Qui entra il problema del **“garden of forking paths”**: molte scelte possibili non dichiarate possono portare a risultati molto diversi.
+Qui emerge il problema del **garden of forking paths**: molte scelte possibili, spesso non dichiarate, che possono portare a conclusioni diverse.
 
 ---
 
-### 2.3 Replicabilità (replicability)
+### Replicabilità (*replicability*)
 
-Domanda:
+Domanda chiave:
 
-> Se raccolgo **nuovi dati indipendenti**, l’effetto si vede di nuovo?
+> Se raccolgo **nuovi dati indipendenti**, l’effetto emerge di nuovo?
 
-* Cambiano i partecipanti, spesso i contesti, talvolta i laboratori, ma la domanda di ricerca è la stessa.
-* È il test più severo: se un effetto è reale e generalizzabile, deve emergere di nuovo.
+* Cambiano i partecipanti, spesso il contesto e il laboratorio.
+* È il test più severo.
 
-Replicabilità = **gold standard** per dire che un fenomeno psicologico è robusto.
+👉 La replicabilità è il **gold standard** per affermare che un fenomeno è reale e generalizzabile.
 
-> Punto chiave da sottolineare agli studenti:
-> Un risultato può essere riproducibile ma non robusto, robusto nel dataset originale ma non replicabile in altri campioni.
+**Punto cruciale per gli studenti**:
+un risultato può essere riproducibile ma non robusto, robusto nel dataset originale ma non replicabile altrove.
 
 ---
 
-## 3. I numeri (preoccupanti) della crisi
+## I numeri (preoccupanti) della crisi
 
 Alcuni risultati emblematici:
 
 * **Reproducibility Project – Open Science Collaboration (2015)**
 
-  * 100 studi pubblicati su riviste prestigiose di psicologia.
-  * Solo circa **il 36%** delle repliche è significativo nella stessa direzione dell’originale.
-  * Gli effetti replicati tendono ad avere grandezza **molto ridotta** rispetto ai lavori originali.
+  * 100 studi da riviste top di psicologia
+  * solo ~36% delle repliche significative nella stessa direzione
+  * effetti replicati molto più piccoli
 
-* **Altri progetti**:
+* **Altri progetti** (Many Labs, Camerer et al.):
 
-  * Camerer et al. (2018) su psicologia ed economia comportamentale → tassi di replicazione migliori ma comunque lontani da 100%.
-  * Klein et al. (Many Labs) → alcuni effetti replicano, altri molto meno di quanto si credesse.
-  * In media, combinando progetti diversi, si stima un tasso di replicazione intorno a ~60–65%, con effetti replicati circa al **70% della dimensione originaria**.
+  * tassi di replicazione medi ~60–65%
+  * effetti replicati ≈ 70% della dimensione originale
 
-Messaggio da far passare:
-
-> Non è che “niente funziona”, ma molti risultati sono **più fragili**, più piccoli e più sensibili alle condizioni di quanto suggeriva la letteratura originale.
+👉 Messaggio chiave:
+non “niente funziona”, ma molti effetti sono **più fragili e più piccoli** di quanto suggeriva la letteratura.
 
 ---
 
-## 4. Una crisi che va oltre la psicologia
+## Una crisi che va oltre la psicologia
 
-Un’indagine su circa 1500 scienziati di diverse discipline (Baker, 2016) ha mostrato che:
+Un sondaggio su ~1500 scienziati (Baker, 2016):
 
-* circa il 90% ritiene che esista un problema di riproducibilità,
-* più della metà lo considera “grave”.
+* ~90% ritiene che esista un problema di riproducibilità
+* > 50% lo considera grave
 
-Quindi:
-
-* La psicologia **non è l’unica colpevole**, ma è stata una delle prime discipline a guardare con sistematicità questo problema.
-* La crisi ha favorito il movimento **Open Science** e una riflessione generale sui metodi scientifici.
+La psicologia non è un’eccezione, ma è stata tra le prime discipline a riconoscere sistematicamente il problema, favorendo il movimento **Open Science**.
 
 ---
 
-## 5. Come ci siamo arrivati? Una breve storia della crisi
+## Come ci siamo arrivati? Una breve storia
 
-Qui puoi proporre una timeline a slide, con pochi punti per anno.
+### 2005 – Ioannidis: *Why Most Published Research Findings Are False*
 
-### 5.1 2005 – Ioannidis e i falsi positivi
-
-* Articolo “Why Most Published Research Findings Are False”.
-* Argomento centrale: con
-
-  * campioni piccoli,
-  * uso distorto del valore-p,
-  * molta flessibilità analitica,
-  * incentivi alla “novità”,
-
-  è **strutturalmente probabile** che molti risultati pubblicati siano falsi positivi.
-* Sebbene l’articolo nasca nel contesto biomedico, i suoi argomenti si applicano benissimo alla psicologia.
-
----
-
-### 5.2 2011 – Il caso Bem (precognizione)
-
-* Studio “Feeling the Future” (Bem, 2011) sostiene evidenze di **precognizione** con protocolli che, formalmente, rispettavano le regole del NHST.
-* Valori-p “significativi”, rivista prestigiosa… ma risultato teoricamente implausibile.
-* Le repliche indipendenti falliscono.
-* Analisi successive mostrano:
-
-  * uso di **optional stopping**,
-  * flessibilità nelle analisi e nelle variabili,
-  * tipiche **Questionable Research Practices (QRPs)**.
-
-Messaggio che puoi sottolineare:
-
-> Se con il valore-p e un po’ di flessibilità posso “dimostrare” la precognizione, forse il problema non è solo nei ricercatori, ma anche **nel metodo inferenziale che usano**.
-
----
-
-### 5.3 2011 – Lo scandalo Stapel (dati fabbricati)
-
-* Diederik Stapel, psicologo sociale, inventa dati per decine di articoli.
-* Studi mai condotti, ma presentati con protocolli apparentemente rigorosi.
-* Temi socialmente rilevanti, alta visibilità.
-
-Questo caso mostra il lato estremo (frodi deliberate), ma rende visibili alcune **vulnerabilità sistemiche**:
-
-* assenza di controllo sui dati grezzi,
-* poca cultura della condivisione,
-* forte peso della reputazione e del numero di pubblicazioni.
-
----
-
-### 5.4 2011–2012 – Meta-ricerca e QRPs
-
-* Simmons, Nelson & Simonsohn (2011) mostrano quanto sia facile ottenere risultati significativi con un po’ di flessibilità non dichiarata nelle analisi:
-
-  * fermare la raccolta dati quando il risultato diventa “significativo”,
-  * selezionare a posteriori le variabili,
-  * provare molte analisi e riportare solo quelle riuscite.
-* John et al. (2012) indagano ~2000 ricercatori: oltre la metà ammette di usare almeno una QRP, spesso considerandola “normale”.
-
-Morale da passare alla classe:
-
-> Non serve uno scienziato disonesto per generare risultati ingannevoli: basta un sistema di incentivi distorto, strumenti statistici poco trasparenti e tanta flessibilità non documentata.
-
----
-
-### 5.5 2012–2015 – Riconoscimento istituzionale e grandi progetti
-
-* Numero speciale di *Perspectives on Psychological Science* (2012): la comunità discute apertamente di “crisi”.
-* Nasce l’**Open Science Collaboration**, che porterà al Reproducibility Project del 2015.
-* Progetti **Many Labs** mostrano il potere dei consorzi multi-lab con protocolli standardizzati.
-
----
-
-### 5.6 Frodi e cattiva condotta: la punta dell’iceberg
-
-Altri casi noti (Wansink, Lesné, accuse a Ariely e Gino) mostrano che:
-
-* il sistema **publish or perish** premia la quantità e la “novità”,
-* controlli deboli, assenza di open data e preregistrazione favoriscono derive problematiche.
-
-Importante per gli studenti:
-
-> Le frodi fanno notizia, ma la maggior parte dei problemi nasce da **pratiche discutibili ma diffuse**, non da pochi “cattivi”.
-
----
-
-## 6. Che cosa significa fallimento della replicazione?
-
-Un punto importante, da chiarire bene:
-
-* Un fallimento di replicazione **non implica automaticamente** che l’effetto non esista.
-* Può voler dire:
-
-  * che l’originale era un falso positivo (possibile con basse potenze e molta flessibilità),
-  * oppure che la replica è un falso negativo (poca potenza, differenze di contesto, misure poco sensibili),
-  * oppure che l’effetto dipende fortemente da moderatori (culturali, di setting, di campione).
-
-La scienza non è fatta di verdetti, ma di **stime** e **incertezza**:
-
-* un singolo studio – originale o di replica – non basta;
-* servono **repliche multiple** e cumulo delle evidenze.
-
----
-
-## 7. Le cause profonde della crisi
-
-### 7.1 Sistema di incentivi accademici
-
-* Logica “**publish or perish**”: carriera basata su numero di articoli, impact factor, risultati “positivi”.
-* Le riviste preferiscono risultati “nuovi”, “sorprendenti”, “significativi”.
-* Le repliche hanno scarso valore curriculare, gli studi con esito nullo sono difficili da pubblicare.
-
-Effetto collaterale:
-
-* i ricercatori hanno **incentivo** a:
-
-  * fare tanti studi piccoli,
-  * analizzare in modo flessibile,
-  * non pubblicare risultati nulli.
-
-Questa tensione tra interessi individuali e bene collettivo è uno dei motori della crisi.
-
----
-
-### 7.2 Bias cognitivi
-
-I ricercatori sono esseri umani, quindi:
-
-* **bias di conferma**: tendiamo a cercare evidenze che confermano le nostre ipotesi;
-* vediamo **pattern anche nel rumore**;
-* la **hindsight bias** (sapevo che andava così) ci porta a ricostruire le ipotesi a posteriori, come se fossero state pensate prima.
-
-Questi bias rendono “naturale”:
-
-* interpretare risultati borderline come conferme,
-* “dimenticare” gli studi che non tornano,
-* essere indulgenti verso le proprie scelte analitiche.
-
----
-
-### 7.3 File drawer problem e bias di pubblicazione
-
-* Gli studi con risultati non significativi o contrari alle ipotesi tendono a **finire nel cassetto**.
-* In letteratura, la percentuale di risultati “positivi” è sproporzionatamente alta (in psicologia > 90% in alcune analisi).
-* Questo produce una visione distorta: sembra che quasi tutto “funzioni”.
-
----
-
-### 7.4 Pratiche di ricerca discutibili (QRPs)
-
-Esempi (da ricordare agli studenti, torneranno spesso):
-
-* **p-hacking**: provare molte analisi fino a ottenere p < .05.
-* **HARKing**: Hypothesizing After the Results are Known – scrivere ipotesi dopo aver visto i dati, ma presentarle come predittive.
-* **optional stopping**: fermare la raccolta dati quando il risultato diventa significativo.
-* **cherry picking**: riportare solo alcune variabili / “condizioni” / analisi.
-
-Queste pratiche non sono necessariamente malafede, ma sono **distruttive per la credibilità** della scienza.
-
----
-
-### 7.5 Campioni troppo piccoli e bassa potenza
-
-In psicologia:
-
-* i campioni sono spesso **piccoli**, per vincoli di tempo, budget, accesso ai partecipanti;
-* molti fenomeni hanno effetti **modesti**, quindi servirebbero N grandi per rilevarli.
-
-Con bassa potenza:
-
-* aumentano i falsi negativi,
-* ma **tra i risultati significativi** cresce la probabilità di **falsi positivi** e di **sovrastima dell’effetto**.
-
-In meta-analisi e grandi repliche si vede spesso che gli effetti replicati sono molto più piccoli degli originali.
-
----
-
-### 7.6 Il problema della misurazione
-
-* I costrutti psicologici sono **latenti**: non si vedono direttamente.
-* Molte scale:
-
-  * hanno origine poco documentata,
-  * sono state modificate “a sentimento”,
-  * non riportano adeguatamente le loro proprietà psicometriche.
-
-Questo mina:
-
-* la **validità di costrutto**
-* la **validità interna** (effetti spurii, confondenti),
-* la **validità esterna** (difficoltà a generalizzare).
-
-Se misuriamo male, è difficile replicare, indipendentemente dal metodo statistico.
-
----
-
-## 8. Psicologia chiusa vs psicologia aperta
-
-Un’altra dimensione chiave è la **trasparenza**.
-
-### 8.1 Scienza chiusa
-
-* dati non condivisi (“sono miei”),
-* materiali e codici introvabili,
-* decisioni analitiche non documentate.
-
-Conseguenze:
-
-* impossibilità di riprodurre gli studi,
-* impossibilità di controllare errori, fraintendimenti o abusi,
-* ostacolo al progresso cumulativo.
-
----
-
-### 8.2 Open Science come risposta
-
-Strumenti e pratiche:
-
-* **Preregistrazione**: registrare pubblicamente ipotesi, disegno e piano di analisi prima di vedere i dati → riduce p-hacking e HARKing.
-* **Open data e open materials**: rendere disponibili dati e codici (nei limiti etici e legali).
-* **Registered Reports**: revisione e accettazione dell’articolo sulla base del protocollo, prima di conoscere i risultati.
-* **Progetti multi-lab** (es. Many Labs, ManyBabies): standardizzazione, grandi campioni, maggiore generalizzabilità.
-
-Messaggio da enfatizzare:
-
-> Open Science non è solo una “moda etica”: è la condizione operativa per una **psicologia cumulativa**.
-
----
-
-## 9. Il ruolo della teoria: dal collezionare effetti al costruire modelli
-
-La crisi ha mostrato anche un limite “cognitivo” della disciplina:
-
-* troppo focus sulla **dimostrazione di effetti** (“esiste o no l’effetto X?”),
-* poco impegno nella **costruzione di modelli teorici espliciti**.
-
-Per una psicologia matura serve:
-
-* definire chiaramente i costrutti,
-* formulare ipotesi **causali** e non solo associazioni,
-* progettare studi che distinguano tra modelli concorrenti,
-* usare i dati per **aggiornare e selezionare** tra teorie alternative.
-
-La replicazione, in questo quadro, non è il fine ultimo, ma uno strumento per scegliere tra modelli esplicativi.
-
----
-
-## 10. Il cuore del problema: la statistica frequentista e il valore-p
-
-Molti studiosi sostengono che, oltre a incentivi e cultura, c’è un problema più profondo: **il modo in cui facciamo inferenza statistica**.
-
-### 10.1 Che cosa fa davvero il valore-p?
-
-In un’analisi classica:
-
-* si formula un’**ipotesi nulla** (H₀, di solito “nessun effetto”),
-* si calcola una statistica (t, F, ecc.),
-* il valore-p è la **probabilità di osservare dati almeno così estremi, se H₀ è vera**.
-
-Quindi il valore-p risponde a:
-
-> P(dati | H₀ è vera)
-
-Non risponde invece alla domanda che più interessa intuitivamente i ricercatori:
-
-> *Quanto è plausibile la mia ipotesi alla luce dei dati?*
-> cioè P(ipotesi | dati).
-
-Questa è la **probabilità inversa**, che il frequentismo non fornisce direttamente.
-
----
-
-### 10.2 Decisioni binarie e significatività
-
-Con l’uso routinario di una soglia (p < .05):
-
-* i risultati vengono classificati come **significativi / non significativi**;
-* si tende a trattare la scienza come una sequenza di “verdetti”,
-* si sottovaluta l’**incertezza residua**.
-
-Problemi:
-
-* piccoli cambiamenti nel dato possono far passare un risultato da “non sig.” a “sig.” o viceversa;
-* in presenza di QRPs, è facile “spingere” p sotto la soglia;
-* con campioni enormi, anche effetti minuscoli possono diventare “significativi” (Lindley’s paradox).
-
----
-
-### 10.3 Perché questo alimenta la crisi?
-
-* Se il focus è “riuscire ad avere p < .05”, la flessibilità analitica diventa una tentazione continua;
-* la pubblicazione dipende dalla **dichiarazione di significatività**, non dalla qualità del disegno;
-* la comunità finisce per sopravvalutare l’evidenza a favore di ipotesi spesso debolmente supportate.
-
-Le riforme frequentiste (soglie più severe, sottolineare intervalli di confidenza, ecc.) aiutano, ma **non risolvono il problema concettuale**: il valore-p non dice quanto è plausibile la nostra ipotesi.
-
----
-
-## 11. Limiti strutturali della ricerca psicologica
-
-Perché tutto questo è particolarmente problematico in psicologia?
-
-1. **Campioni piccoli**:
-
-   * disturbi rari, popolazioni difficili da reclutare, vincoli logistici → N contenuti.
-
-2. **Forte variabilità individuale**:
-
-   * differenze biologiche, psicologiche, culturali,
-   * gli effetti tra persone sono spesso molto eterogenei.
-
-Con pochi dati “rumorosi”:
-
-* le stime sono instabili,
-* la potenza è bassa,
-* l’uso di test frequentisti standard è spesso fragile.
-
-Qui l’approccio bayesiano mostra la sua forza.
-
----
-
-## 12. Che cosa offre l’approccio bayesiano?
-
-### 12.1 Idea di base
-
-L’inferenza bayesiana si fonda sul **teorema di Bayes**:
-
-> combina **informazione a priori** (quello che sappiamo / crediamo prima)
-> con **dati osservati**,
-> per ottenere una **distribuzione a posteriori**: P(parametri | dati).
-
-Tradotto in linguaggio intuitivo:
-
-* non chiediamo “quanto sono estremi i dati se H₀ fosse vera?”, ma
-* “quanto diventano plausibili vari valori dell’effetto, **dopo** aver visto i dati?”.
-
-Quindi fornisce direttamente la **probabilità dell’ipotesi dato i dati**, che è ciò che molti ricercatori vorrebbero davvero sapere.
-
----
-
-### 12.2 Gradi di credenza, non verdetti
-
-In un’analisi bayesiana:
-
-* il risultato non è un sì/no, ma una **distribuzione**;
-* possiamo dire cose del tipo:
-
-  * “c’è il 90% di probabilità che l’effetto sia maggiore di 0”,
-  * “è molto probabile che l’effetto sia compreso tra 0.2 e 0.5”,
-  * “i nuovi dati hanno ridotto la mia incertezza, ma non l’hanno azzerata”.
-
-Questo:
-
-* spinge a ragionare in termini di **plausibilità**,
-* rende naturale parlare di **incertezza residua**,
-* evita l’ossessione per la soglia p < .05.
-
----
-
-### 12.3 Cumulatività: imparare nel tempo
-
-Un grande vantaggio:
-
-* l’**output di un’analisi** (la distribuzione a posteriori) può diventare l’**input dell’analisi successiva** (nuova prior).
-* la scienza diventa un processo esplicito di **aggiornamento continuo** delle credenze.
-
-Invece di “ricominciare da zero” a ogni studio:
-
-* si integra formalmente ciò che era stato trovato prima,
-* si rende trasparente **come** la precedente evidenza influenza la nuova analisi.
-
----
-
-### 12.4 Piccoli campioni e variabilità individuale
-
-Nei contesti tipici della psicologia:
+Con:
 
 * campioni piccoli,
-* forte eterogeneità tra individui,
+* flessibilità analitica,
+* uso distorto del valore-p,
+* incentivi alla novità,
 
-l’approccio bayesiano aiuta a:
-
-* **stabilizzare** le stime incorporando informazione a priori (anche “debole” o “regolarizzante”);
-* modellare esplicitamente:
-
-  * differenze tra soggetti,
-  * differenze tra studi, laboratori, contesti (modelli gerarchici);
-* quantificare in modo più realistico l’incertezza.
-
-Questo non “magicamente risolve” i problemi di dati scadenti, ma fornisce:
-
-* strumenti coerenti per **lavorare con l’incertezza**, anziché nasconderla.
+diventa **strutturalmente probabile** pubblicare falsi positivi.
 
 ---
 
-### 12.5 Non una bacchetta magica
+### 2011 – Il caso Bem (precognizione)
 
-È importante essere onesti con gli studenti:
+* Risultati “significativi” per un fenomeno teoricamente implausibile.
+* Repliche fallite.
+* QRPs evidenti (optional stopping, flessibilità).
 
-* l’approccio bayesiano **non** aggiusta:
-
-  * misure pessime,
-  * disegni sperimentali mal concepiti,
-  * teorie vaghe o sbagliate.
-* il principio “garbage in, garbage out” vale anche qui.
-
-Ma:
-
-* costringe a dichiarare **esplicitamente** le assunzioni (le prior),
-* incoraggia la modellizzazione,
-* restituisce stime probabilistiche che si prestano bene a ragionare su **replicabilità** e **cumulatività**.
+👉 Se con il valore-p posso “dimostrare” la precognizione, il problema non è solo nei ricercatori, ma anche **negli strumenti inferenziali**.
 
 ---
 
-## 13. Trasparenza, teoria e Bayes: verso un nuovo paradigma
+### 2011 – Il caso Stapel
 
-Mettiamo insieme i tre pilastri:
+* Dati fabbricati per decine di articoli.
+* Caso estremo, ma rivelatore di vulnerabilità sistemiche:
 
-1. **Open Science**:
-
-   * preregistrazione, open data, registered reports, collaborazioni multi-lab.
-2. **Rigore teorico**:
-
-   * modelli espliciti, ipotesi causali, uso dei dati per discriminare tra teorie.
-3. **Metodi bayesiani**:
-
-   * inferenza probabilistica sui parametri,
-   * integrazione delle evidenze,
-   * modellizzazione della variabilità e dell’incertezza.
-
-Questi elementi sono alla base di quella che molti chiamano una **Credibility Revolution**:
-
-* non un piccolo aggiustamento tecnico,
-* ma un cambiamento profondo nel modo di concepire la scienza psicologica.
+  * assenza di open data,
+  * fiducia cieca nell’autorità,
+  * scarsi controlli.
 
 ---
 
-## 14. Che cosa significa tutto questo per voi (studenti)?
+### 2011–2012 – QRPs e meta-ricerca
 
-Messaggio finale che puoi portare a casa con loro:
+* Simmons et al. (2011): facilità di ottenere p < .05 con flessibilità.
+* John et al. (2012): >50% dei ricercatori ammette almeno una QRP.
 
-* La crisi di replicazione **non è la fine** della psicologia, ma un segno di maturità: la disciplina è disposta a guardarsi criticamente.
-* Come futuri psicologi/ricercatori/professionisti, avete una scelta:
-
-  * prendere per buono ciò che c’è nei manuali,
-  * oppure imparare a **valutarne la solidità**: metodi, campioni, misure, trasparenza.
-
-Questa lezione e il corso nel suo complesso cercano di:
-
-* darvi strumenti concettuali e tecnici per **ragionare con l’incertezza** (in chiave bayesiana),
-* aiutarvi a capire **quando** fidarvi di un risultato e **quanto**,
-* mostrarvi come contribuire a una psicologia:
-
-  * più aperta,
-  * più collaborativa,
-  * più cumulativa.
+👉 Non serve malafede: bastano incentivi distorti e strumenti fragili.
 
 ---
 
-## 15. Collegamento alle prossime lezioni
+## Cause profonde della crisi
 
-Puoi chiudere collegando alla struttura del corso:
+### Sistema di incentivi
 
-* oggi abbiamo visto **perché** abbiamo bisogno di cambiare modo di analizzare i dati;
-* nelle prossime lezioni inizieremo a vedere **come funziona in pratica** l’inferenza bayesiana,
+* *Publish or perish*
+* Premiati risultati “positivi” e sorprendenti
+* Studi nulli e repliche penalizzati
+
+---
+
+### Bias cognitivi
+
+* bias di conferma
+* hindsight bias
+* pattern nel rumore
+
+I ricercatori non sono neutrali: sono esseri umani.
+
+---
+
+### Bias di pubblicazione
+
+* Studi nulli nel “cassetto”
+* In letteratura >90% di risultati positivi in alcune aree
+
+---
+
+### Campioni piccoli e bassa potenza
+
+* effetti psicologici spesso modesti
+* stime instabili
+* sovrastima degli effetti significativi
+
+---
+
+### Problemi di misurazione
+
+* costrutti latenti
+* scale poco validate
+* modifiche arbitrarie
+
+👉 Misurare male rende difficile replicare, qualunque statistica si usi.
+
+---
+
+## Psicologia chiusa vs Open Science
+
+### Scienza chiusa
+
+* dati non disponibili
+* materiali irreperibili
+* decisioni analitiche opache
+
+---
+
+### Open Science come risposta
+
+* preregistrazione
+* open data e open materials
+* registered reports
+* progetti multi-lab
+
+👉 Non è una moda etica, ma la base di una **scienza cumulativa**.
+
+---
+
+## Il ruolo della teoria
+
+La crisi ha mostrato un limite strutturale:
+
+* troppa attenzione agli “effetti”
+* poca costruzione di **modelli espliciti**
+
+Una psicologia matura:
+
+* formula ipotesi causali,
+* confronta modelli,
+* usa i dati per selezionare teorie.
+
+---
+
+## Il cuore del problema: il valore-p
+
+Il valore-p risponde a:
+
+> P(dati | H₀ vera)
+
+Non alla domanda che interessa davvero:
+
+> P(ipotesi | dati)
+
+Questa discrepanza alimenta:
+
+* decisioni binarie,
+* ossessione per p < .05,
+* fragilità inferenziale.
+
+---
+
+## Perché Bayes?
+
+### Idea centrale
+
+L’inferenza bayesiana combina:
+
+* conoscenza a priori
+* dati osservati
+
+per ottenere:
+
+> P(parametri | dati)
+
+---
+
+### Niente verdetti, ma distribuzioni
+
+* probabilità dell’effetto
+* intervalli credibili
+* incertezza esplicita
+
+---
+
+### Cumulatività
+
+* il risultato di oggi diventa la prior di domani
+* apprendimento esplicito nel tempo
+
+---
+
+### Piccoli campioni e variabilità
+
+* regolarizzazione
+* modelli gerarchici
+* gestione realistica dell’incertezza
+
+---
+
+### Non una bacchetta magica
+
+Bayes non salva:
+
+* misure pessime,
+* disegni scadenti,
+* teorie vaghe.
+
+Ma **costringe alla trasparenza**.
+
+---
+
+## Verso un nuovo paradigma
+
+Tre pilastri:
+
+1. Open Science
+2. Rigore teorico
+3. Metodi bayesiani
+
+→ **Credibility Revolution**
+
+---
+
+## Messaggio finale per gli studenti
+
+La crisi non è la fine della psicologia, ma un segno di maturità.
+
+Questo corso mira a:
+
+* insegnarvi a ragionare con l’incertezza,
+* valutare la solidità dei risultati,
+* contribuire a una psicologia più aperta e cumulativa.
+
+---
+
+## Collegamento alle prossime lezioni
+
+* oggi: **perché** serve cambiare approccio
+* prossime lezioni: **come** funziona l’inferenza bayesiana, passo dopo passo
 
   * partendo da esempi semplici,
   * introducendo R/RStudio e gli strumenti che useremo (es. `cmdstanr`, `posterior`, ecc.),

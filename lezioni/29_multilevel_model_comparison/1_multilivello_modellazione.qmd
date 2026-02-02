@@ -1,0 +1,607 @@
+---
+title: "Modelli multilivello e modellazione formale"
+subtitle: "Quando un modello unico non basta"
+version: 1.0
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+lang: it
+
+execute:
+  echo: true
+  warning: false
+  message: false
+
+format:
+  revealjs:
+    theme: [default, ../revealjs.scss]
+    title-slide-attributes:
+      data-background-color: "#0072bc"
+    slide-number: c
+    show-slide-number: print
+    highlight-style: github
+    math: mathjax
+---
+
+```{r}
+#| echo: false
+library(tidyverse)
+set.seed(2026)
+```
+
+## Dove siamo
+
+In questo corso abbiamo imparato a:
+
+- descrivere i dati (EDA),
+- ragionare con la probabilità,
+- aggiornare le credenze con il teorema di Bayes,
+- stimare un parametro (media, differenza tra gruppi, regressione).
+
+. . .
+
+Oggi facciamo un passo in più: cosa succede quando **i dati hanno una struttura gerarchica** — cioè quando le osservazioni sono raggruppate?
+
+---
+
+**Cosa sono i dati gerarchici?**  
+In psicologia, i dati sono **sempre** organizzati a più livelli:
+
+- **studenti** → classi → scuole;  
+- **misure ripetute** → partecipanti;  
+- **item** → sottoscale → partecipanti.  
+
+. . .
+
+Questa struttura crea **dipendenza statistica**: osservazioni dello stesso gruppo (es. stessa classe) tendono a essere più simili tra loro.  
+Trascurarla porta a **risultati distorti** e conclusioni non valide.
+
+# Il problema {background-color="#2c3e50" style="color: white;"}
+
+## Un esempio concreto
+
+Immaginiamo uno studio sull'ansia statistica in **5 università italiane**. In ciascuna si somministra la STARS a un campione di studenti.
+
+```{r}
+#| echo: false
+# Simulo dati con struttura multilivello
+n_univ <- 5
+nomi_univ <- c("Firenze", "Bologna", "Padova", "Roma", "Napoli")
+n_per_univ <- c(48, 32, 45, 36, 42)
+
+# Medie diverse per università (effetto del contesto)
+mu_univ <- c(148, 175, 142, 160, 153)
+sigma_within <- 22    # variabilità dentro ciascuna università
+sigma_between <- 7    # variabilità tra università
+
+dati_multi <- map2_dfr(1:n_univ, n_per_univ, function(i, n) {
+  tibble(
+    universita = nomi_univ[i],
+    STARS_total = round(rnorm(n, mu_univ[i], sigma_within))
+  )
+})
+```
+
+```{r}
+sample_n(dati_multi, size=8)
+```
+
+---
+
+## Primo sguardo ai dati
+
+```{r}
+#| echo: false
+ggplot(dati_multi, aes(x = universita, y = STARS_total, fill = universita)) +
+  geom_boxplot(alpha = 0.7) +
+  geom_jitter(width = 0.15, alpha = 0.3, size = 1) +
+  labs(title = "Punteggio STARS per università",
+       x = "", y = "STARS total") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+. . .
+
+Le distribuzioni si **sovrappongono molto**, ma le medie non sono identiche. Come modelliamo questa situazione?
+
+---
+
+## Strategia 1: ignorare i gruppi ("complete pooling")
+
+Facciamo finta che tutti gli studenti vengano dalla stessa popolazione e stimiamo **un'unica media**.
+
+```{r}
+dati_multi |>
+  summarise(
+    media_globale = mean(STARS_total),
+    sd_globale = sd(STARS_total),
+    n = n()
+  )
+```
+
+----
+
+**Problema**:  
+ignoriamo completamente le differenze tra università. Se un'università ha un corso di metodi particolarmente ansiogeno, il suo effetto viene "diluito" nella media globale.
+
+---
+
+## Strategia 2: analizzare ogni gruppo da solo ("no pooling")
+
+Stimiamo una media **separata** per ciascuna università, senza condividere informazioni tra gruppi.
+
+---
+
+```{r}
+dati_multi |>
+  group_by(universita) |>
+  summarise(
+    media = round(mean(STARS_total), 1),
+    sd = round(sd(STARS_total), 1),
+    n = n()
+  )
+```
+
+. . .
+
+**Problema**:  
+se un'università ha pochi studenti, la stima è molto incerta. E non sfruttiamo il fatto che tutte le università italiane hanno qualcosa in comune.
+
+---
+
+## Strategia 3: il compromesso multilivello ("partial pooling")
+
+L'idea chiave dei modelli multilivello:
+
+> Le medie dei gruppi non sono né identiche né completamente indipendenti. Vengono da una **distribuzione comune** le cui caratteristiche vengono stimate dai dati stessi.
+
+. . .
+
+Questo produce un effetto chiamato **shrinkage** (restringimento): le stime dei gruppi vengono "attirate" verso la media globale, ma non completamente — di più per i gruppi piccoli, di meno per quelli grandi.
+
+---
+
+## Shrinkage: un'intuizione visiva
+
+```{r}
+#| echo: false
+# Calcolo stime no-pooling e simulazione partial pooling
+library(dplyr)
+library(ggplot2)
+
+# (assumo che sigma_within e sigma_between esistano già)
+
+# Preparazione medie
+medie_no_pool <- dati_multi %>%
+  group_by(universita) %>%
+  summarise(media_no_pool = mean(STARS_total), n = n(), .groups = "drop")
+
+media_globale <- mean(dati_multi$STARS_total)
+
+# Stima approssimativa partial pooling
+medie_no_pool <- medie_no_pool %>%
+  mutate(
+    peso = n * (1 / sigma_within^2) / (n * (1 / sigma_within^2) + 1 / sigma_between^2),
+    media_partial = peso * media_no_pool + (1 - peso) * media_globale,
+    tipo_no = "No pooling",
+    tipo_part = "Partial pooling"
+  )
+
+# Dataset per il plot
+df_plot <- bind_rows(
+  medie_no_pool %>% select(universita, media = media_no_pool, n) %>% mutate(tipo = "No pooling (media del gruppo)"),
+  medie_no_pool %>% select(universita, media = media_partial, n) %>% mutate(tipo = "Partial pooling (multilivello)")
+)
+
+# Assicuriamoci che 'universita' sia fattore (mantiene l'ordine)
+df_plot$universita <- factor(df_plot$universita, levels = unique(df_plot$universita))
+
+# Plot corretto: usiamo x = -Inf per posizionare il testo sulla sinistra
+ggplot(df_plot, aes(x = universita, y = media, color = tipo, shape = tipo)) +
+  geom_hline(yintercept = media_globale, linetype = "dashed", color = "gray50") +
+  annotate("text", x = -Inf, y = media_globale + 1.2,
+           label = "Media globale", hjust = -0.05, size = 3.5, color = "gray40") +
+  geom_point(size = 4, position = position_dodge(0.4)) +
+  scale_color_manual(
+    values = c("No pooling (media del gruppo)" = "steelblue",
+               "Partial pooling (multilivello)" = "darkorange")
+  ) +
+  labs(title = "Effetto shrinkage: le stime multilivello 'si avvicinano' alla media globale",
+       x = "", y = "Media stimata STARS", color = "", shape = "") +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+```
+
+---
+
+## Perché lo shrinkage ha senso
+
+Lo shrinkage non è un trucco matematico: è una conseguenza logica del ragionamento bayesiano.
+
+. . .
+
+Se sappiamo che le università italiane condividono un contesto simile (bacino di reclutamento, programmi formativi affini e stessi metodi didattici), è **ragionevole** che un'università con una media anomala basata su pochi dati venga "corretta" verso la media comune.
+
+---
+
+* Con più dati, la correzione è minore: i dati parlano da soli.
+
+* Con pochi dati, la correzione è maggiore: ci affidiamo di più alle informazioni degli altri gruppi.
+
+. . .
+
+* Questo è esattamente il **bilanciamento prior–verosimiglianza** che abbiamo studiato, applicato a livello di gruppo.
+
+# La struttura del modello {background-color="#2c3e50" style="color: white;"}
+
+## Due livelli di analisi
+
+Un **modello multilivello** (o gerarchico) serve quando i dati hanno una **struttura a gruppi**.
+Nel nostro esempio:
+
+* gli **studenti** sono raggruppati dentro le **università**;
+* quindi le osservazioni non sono tutte indipendenti tra loro.
+
+Per questo il modello lavora su **almeno due livelli**.
+
+---
+
+## Livello 1 — variazione *dentro* i gruppi (within)
+
+**Domanda:**
+* *In che modo gli studenti differiscono tra loro all’interno della stessa università?*
+
+La formula è:
+
+$$
+y_{ij} = \mu_j + \varepsilon_{ij}.
+$$
+
+---
+
+Vediamo i termini uno per uno:
+
+* $\boldsymbol{y_{ij}}$
+  è il punteggio osservato dello **studente $i$** nella **università $j$**
+  (ad esempio: un punteggio di ansia, memoria, benessere psicologico, ecc.).
+
+* $\boldsymbol{\mu_j}$
+  è la **media della università (j)**
+  → rappresenta il livello “tipico” degli studenti di quella università.
+
+* $\boldsymbol{\varepsilon_{ij}}$
+  è lo **scarto individuale** dello studente $i$ rispetto alla media della sua università
+  → cattura le differenze individuali *dentro* lo stesso gruppo.
+
+---
+
+Assumiamo che questi scarti seguano una distribuzione normale:
+
+$$
+\varepsilon_{ij} \sim \text{Normale}(0, \sigma_w)
+$$
+con
+
+* **media = 0**: in media gli studenti non sono né sopra né sotto la media del gruppo;
+* **$\sigma_w$** (*within-group variability*): indica **quanto gli studenti differiscono tra loro dentro la stessa università**.
+
+👉 In parole semplici:
+$\boldsymbol{\sigma_w}$ misura la **variabilità individuale** all’interno dei gruppi.
+
+---
+
+## Livello 2 — variazione *tra* i gruppi (between)
+
+**Domanda:**  
+*In che modo le università differiscono tra loro?*
+
+Qui non guardiamo più i singoli studenti, ma le **medie delle università**:
+
+$$
+\mu_j \sim \text{Normale}(\mu_0, \sigma_b).
+$$
+
+---
+
+Anche qui, termine per termine:
+
+* $\boldsymbol{\mu_j}$
+  è la media della università $j$ (già vista nel Livello 1).
+
+* $\boldsymbol{\mu_0}$
+  è la **media generale**, cioè la media di *tutte* le università messe insieme.
+
+* $\boldsymbol{\sigma_b}$ (*between-group variability*):
+  indica **quanto le università differiscono tra loro**.
+
+👉 In parole semplici:
+$\boldsymbol{\sigma_b}$ misura l’**eterogeneità tra i gruppi**.
+
+---
+
+## Riassunto intuitivo delle due variabilità
+
+* $\boldsymbol{\sigma_w}$ → *quanto sono diversi gli studenti dentro la stessa università*.
+* $\boldsymbol{\sigma_b}$ → *quanto sono diverse le università tra loro*.
+
+Entrambe sono fondamentali per capire la struttura dei dati.
+
+---
+
+## Il ruolo di $\sigma_b$: perché è così importante
+
+Il parametro $\sigma_b$ controlla **quanta informazione viene condivisa tra i gruppi**.
+
+---
+
+### Caso 1 — $\sigma_b \approx 0$
+
+* Le università sono quasi identiche.
+* Le loro medie sono tutte molto simili.
+* Il modello si comporta come se ci fosse **un solo grande gruppo**.
+
+👉 Questo si chiama **complete pooling**.
+
+---
+
+### Caso 2 — $\sigma_b$ molto grande (rispetto a $\sigma_w$)
+
+* Le università sono molto diverse tra loro.
+* Ogni università è trattata quasi come un caso a sé.
+
+👉 Questo si chiama **no pooling**.
+
+---
+
+### Caso 3 — valori intermedi di $\sigma_b$
+
+* Le università sono diverse, ma non completamente
+* Ogni università:
+
+  * mantiene la propria identità,
+  * **beneficia delle informazioni delle altre**.
+
+👉 Questo è il **partial pooling** (la situazione più realistica nella pratica).
+
+---
+
+## Il punto chiave 
+
+* **Non siamo noi a decidere quanta informazione condividere tra i gruppi.**
+* **È il modello che lo impara dai dati stimando $\boldsymbol{\sigma_b}$.**
+
+Questo è uno dei grandi vantaggi dei modelli multilivello:
+
+* un compromesso automatico e guidato dai dati tra semplicità e flessibilità.
+
+---
+
+## Dove entra la psicologia
+
+In psicologia, i "gruppi" possono essere:
+
+. . .
+
+- **partecipanti** in uno studio con misure ripetute (ogni partecipante è un "gruppo" di trial);
+- **classi scolastiche** in uno studio su un intervento educativo;
+- **terapeuti** in uno studio sull'efficacia di una psicoterapia.
+
+. . .
+
+In ciascun caso, c'è una domanda che il modello multilivello aiuta a rispondere: **quanta della variabilità osservata è attribuibile al livello del gruppo?**
+
+---
+
+## La correlazione intra-classe (ICC)
+
+Un modo semplice di riassumere la struttura gerarchica è la **correlazione intra-classe** (*intraclass correlation coefficient*, ICC):
+
+$$
+\text{ICC} = \frac{\sigma_b^2}{\sigma_b^2 + \sigma_w^2}.
+$$
+
+. . .
+
+L'ICC esprime **la proporzione di variabilità totale attribuibile alle differenze tra gruppi**.
+
+---
+
+## Interpretazione dell’ICC
+
+* **ICC ≈ 0**
+  Le differenze tra i gruppi sono **trascurabili**: le osservazioni sono molto simili indipendentemente dal gruppo di appartenenza.
+  
+---
+
+## Interpretazione dell’ICC
+
+* **ICC ≈ 0.10**
+  Circa il **10% della variabilità totale** è dovuto a differenze **tra i gruppi**.
+  Questo valore è **abbastanza comune in psicologia** e indica un effetto di raggruppamento moderato ma non trascurabile.
+  
+---
+
+## Interpretazione dell’ICC
+
+* **ICC ≥ 0.20**
+  Una **quota consistente della variabilità** è spiegata dall’appartenenza al gruppo.
+  Questo segnala un **forte effetto di raggruppamento**.
+  *Per esempio, se i gruppi sono gli individui (misure ripetute), un ICC elevato indica grandi differenze individuali stabili nel tempo.*
+
+# Dalla modellazione statistica a quella formale {background-color="#2c3e50" style="color: white;"}
+
+## Oltre la statistica descrittiva
+
+Finora abbiamo usato i modelli soprattutto come strumenti per **riassumere i dati**:
+stimare una media, una differenza tra gruppi o una relazione di regressione.
+
+. . .
+
+In psicologia cognitiva e clinica, però, esiste un’altra tradizione di ricerca: la **modellazione formale**.
+Qui il modello non si limita a descrivere *cosa* osserviamo nei dati, ma cerca di spiegare **quale processo psicologico** li ha generati.
+
+---
+
+## Un esempio: l’apprendimento per rinforzo
+
+Immaginate un esperimento in cui un partecipante deve imparare quale di due pulsanti produce più spesso una ricompensa.
+
+. . .
+
+Un modello puramente statistico potrebbe limitarsi a dire:
+“la probabilità di scegliere il pulsante A è (p = 0.72)”.
+
+. . .
+
+Questa informazione è utile, ma descrive solo il **comportamento osservato**, non il **meccanismo mentale** che lo produce.
+
+---
+
+## I modelli meccanicistici
+
+Un **modello formale** (come il modello di Rescorla–Wagner) va oltre e propone una spiegazione del processo:
+
+> Il partecipante aggiorna, prova dopo prova, il valore atteso di ciascun pulsante sulla base dell’esito ottenuto, utilizzando un *tasso di apprendimento* $\alpha$ che determina quanto peso viene dato alle nuove informazioni.
+
+. . .
+
+In questo contesto, il parametro $\alpha$ non è soltanto un numero che “fa funzionare” il modello:
+rappresenta un’ipotesi esplicita su **come avviene l’apprendimento nella mente del partecipante**.
+
+---
+
+## Il framework: dalla teoria al modello al dato
+
+```{r}
+#| echo: false
+#| fig-width: 10
+#| fig-height: 4
+
+library(ggplot2)
+
+boxes <- tibble(
+  x = c(1, 3.5, 6, 8.5),
+  y = rep(0, 4),
+  label = c("Teoria\npsicologica", "Modello\nformale", "Predizioni\nosservabili", "Dati"),
+  fill = c("#2c3e50", "#e74c3c", "#f39c12", "#27ae60")
+)
+
+arrows_df <- tibble(
+  x_start = c(1.6, 4.1, 6.6),
+  x_end = c(2.9, 5.4, 7.9),
+  y = rep(0, 3)
+)
+
+ggplot() +
+  geom_rect(data = boxes,
+            aes(xmin = x - 0.7, xmax = x + 0.7, ymin = -0.4, ymax = 0.4),
+            fill = boxes$fill, color = "white", size = 0.5) +
+  geom_text(data = boxes, aes(x = x, y = y, label = label),
+            color = "white", fontface = "bold", size = 4, lineheight = 0.9) +
+  geom_segment(data = arrows_df,
+               aes(x = x_start, xend = x_end, y = y, yend = y),
+               arrow = arrow(length = unit(0.3, "cm")),
+               color = "gray30", size = 1) +
+  coord_cartesian(xlim = c(0, 10), ylim = c(-1, 1)) +
+  theme_void()
+```
+
+. . .
+
+Nella modellazione formale, il confronto con i dati è l'**ultimo** passo. Prima viene la teoria, poi il modello che la formalizza, poi le previsioni che ne derivano.
+
+---
+
+## Perché ci interessa?
+
+La modellazione formale è importante perché:
+
+. . .
+
+1. **Rende le teorie precise**: "le persone imparano dall'esperienza" è vago; "le persone aggiornano il valore atteso con tasso $\alpha$" è preciso e verificabile.
+
+. . .
+
+2. **Permette di distinguere teorie**: due teorie verbali possono sembrare simili, ma i loro modelli formali fare previsioni diverse.
+
+. . .
+
+3. **Si integra con l'approccio bayesiano**: i parametri del modello cognitivo possono essere stimati con le stesse tecniche bayesiane che abbiamo studiato.
+
+---
+
+## Il collegamento con i modelli multilivello
+
+Nella pratica, modellazione formale e modelli multilivello si incontrano spesso:
+
+. . .
+
+* Se stimiamo un modello di apprendimento per ciascun partecipante, otteniamo un $\alpha$ per persona. 
+
+* Ma le stime individuali possono essere molto rumorose (pochi trial per partecipante).
+
+---
+
+## Il collegamento con i modelli multilivello
+
+La soluzione? Un **modello gerarchico**: le $\alpha_j$ dei singoli partecipanti vengono da una distribuzione di gruppo.
+
+  $$\alpha_j \sim \text{Distribuzione}(\mu_\alpha, \sigma_\alpha)$$
+
+. . .
+
+*  Lo shrinkage migliora le stime individuali e $\sigma_\alpha$ ci dice quanta **eterogeneità** c'è nel tasso di apprendimento della popolazione.
+
+---
+
+## Modellazione formale in `brms`
+
+Per chi vuole approfondire: l'approccio si può implementare in `brms` per modelli relativamente semplici o in `Stan` per modelli cognitivi più complessi.
+
+. . .
+
+* Il companion ([Cap. 39–43](https://ccaudek.github.io/utet-companion/chapters/formal_models/01_statistical_models.html)) presenta esempi completi, incluso il modello di Rescorla-Wagner implementato in Stan con struttura gerarchica.
+
+. . .
+
+In questo corso, l'obiettivo è comprendere la **logica fondamentale**: i modelli formali traducono in linguaggio matematico le teorie psicologiche; i modelli multilivello gestiscono l'eterogeneità dei dati tra diversi livelli (es. individui, gruppi).
+
+# Riepilogo {background-color="#2c3e50" style="color: white;"}
+
+---
+
+## Le idee da portare a casa
+
+. . .
+
+**I dati psicologici sono quasi sempre raggruppati.** Ignorare la struttura gerarchica porta a conclusioni distorte.
+
+. . .
+
+**Tre strategie**: complete pooling (un'unica media), no pooling (medie separate), partial pooling (modello multilivello). Solo la terza usa tutta l'informazione disponibile.
+
+. . .
+
+**Lo shrinkage** è una conseguenza naturale del ragionamento bayesiano applicato ai gruppi: le stime vengono "bilanciate" tra informazione locale e globale.
+
+. . .
+
+**La modellazione formale** traduce le teorie psicologiche in modelli matematici con parametri interpretabili, e si integra naturalmente con l'approccio bayesiano e multilivello.
+
+---
+
+## Per approfondire
+
+- [Cap. 30 — Modelli multilivello](https://ccaudek.github.io/utet-companion/chapters/linear_models/12_multilevel.html): il modello completo con implementazione in brms
+
+- [Cap. 39–43 — Modellazione formale](https://ccaudek.github.io/utet-companion/chapters/formal_models/01_statistical_models.html): dal concetto di modello statistico al modello di Rescorla-Wagner
+
+. . .
+
+Questi capitoli contengono la formalizzazione matematica completa e il codice R riproducibile. Per l'esame è sufficiente quanto visto oggi: la **logica** del *partial pooling*, dello *shrinkage* e del legame tra modellazione formale e approccio bayesiano.

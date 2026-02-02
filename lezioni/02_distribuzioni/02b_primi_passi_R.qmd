@@ -1,0 +1,469 @@
+---
+title: "Primi passi con R"
+subtitle: "Importare dati, esplorare e riassumere"
+version: 1.0
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+lang: it
+
+execute:
+  echo: true
+
+format:
+  revealjs:
+    theme: [default, ../revealjs.scss]
+    title-slide-attributes:
+      data-background-color: "#0072bc"
+    slide-number: c
+    show-slide-number: print
+    highlight-style: github
+    math: mathjax
+---
+
+## Dove siamo
+
+Nella prima parte della lezione abbiamo visto l'**istogramma**: come rappresentare graficamente la distribuzione di un insieme di dati.
+
+. . .
+
+Ora affrontiamo una domanda più pratica:
+
+> Come facciamo a **portare i dati dentro R** e a **lavorarci**?
+
+---
+
+## Il problema: da dove vengono i dati?
+
+Nella ricerca psicologica, i dati raramente vengono digitati uno a uno nella console.
+
+Arrivano da:
+
+- questionari online (Google Forms, Qualtrics, ...)
+- software per esperimenti (PsychoPy, Gorilla, ...)
+- database clinici o scolastici
+
+. . .
+
+Il formato più comune è il file **CSV**: un file di testo in cui ogni riga è un soggetto e le colonne sono separate da virgole.
+
+---
+
+## Che cos'è un file CSV?
+
+CSV = *Comma-Separated Values* (valori separati da virgole).
+
+Un file CSV è un file di **testo semplice**. Aprendolo con un editor di testo vedremmo qualcosa come:
+
+```
+id,eta,genere,punteggio
+1,21,F,74
+2,23,M,68
+3,20,F,81
+4,22,M,72
+5,21,F,79
+```
+
+. . .
+
+La prima riga contiene i **nomi delle variabili** (colonne).
+
+Ogni riga successiva è un'**osservazione** (un soggetto).
+
+---
+
+## Creiamo un file CSV di esempio
+
+Per questa lezione, creiamo noi stessi un piccolo dataset — così sappiamo esattamente cosa contiene.
+
+```{r}
+# Creiamo un piccolo data.frame
+dati <- data.frame(
+  id         = 1:12,
+  eta        = c(21, 23, 20, 22, 21, 24, 19, 22, 20, 23, 21, 22),
+  genere     = c("F","M","F","M","F","M","F","M","F","M","F","M"),
+  punteggio  = c(74, 68, 81, 72, 79, 65, 85, 70, 77, 66, 80, 71)
+)
+```
+
+. . .
+
+Questo è un ipotetico campione di 12 studenti, con età, genere e punteggio a un test.
+
+---
+
+## Salvare il file CSV
+
+Ora salviamo il data.frame come file CSV:
+
+```{r}
+write.csv(dati, "esempio_dati.csv", row.names = FALSE)
+```
+
+. . .
+
+`write.csv()` scrive il contenuto del data.frame in un file di testo con estensione `.csv`.
+
+Il parametro `row.names = FALSE` evita di aggiungere una colonna con i numeri di riga (che non ci serve).
+
+---
+
+## Importare il file CSV in R
+
+Adesso facciamo l'operazione inversa — quella che farete nella pratica:
+
+```{r}
+d <- read.csv("esempio_dati.csv")
+```
+
+. . .
+
+`read.csv()` legge il file CSV e lo trasforma in un **data.frame** di R.
+
+Abbiamo dato il nome `d` a questo oggetto — un nome breve, comodo da scrivere.
+
+---
+
+## Che cos'è un data.frame?
+
+Un **data.frame** è il modo in cui R organizza una tabella di dati:
+
+- ogni **colonna** è una variabile
+- ogni **riga** è un'osservazione
+- le colonne possono contenere tipi diversi (numeri, testo, ...)
+
+. . .
+
+È l'oggetto fondamentale per l'analisi dei dati in R.
+
+---
+
+## Guardare i dati: `head()`
+
+La prima cosa da fare con dati nuovi è **guardarli**:
+
+```{r}
+head(d)
+```
+
+. . .
+
+`head()` mostra le prime 6 righe. È utile per avere un'idea di cosa c'è nel dataset, senza stampare tutto.
+
+---
+
+## Quante righe? Quante colonne?
+
+```{r}
+nrow(d)    # numero di righe (osservazioni)
+ncol(d)    # numero di colonne (variabili)
+```
+
+. . .
+
+Oppure, in un colpo solo:
+
+```{r}
+dim(d)     # dimensioni: righe × colonne
+```
+
+---
+
+## Nomi delle variabili
+
+```{r}
+names(d)
+```
+
+. . .
+
+Ci dice come si chiamano le colonne. Queste sono le **variabili** del nostro dataset.
+
+---
+
+## Accedere a una singola variabile: `$`
+
+Per estrarre una colonna dal data.frame, usiamo il simbolo `$`:
+
+```{r}
+d$punteggio
+```
+
+. . .
+
+Il risultato è un **vettore** — lo stesso tipo di oggetto che abbiamo visto nella lezione sull'istogramma.
+
+. . .
+
+Possiamo usare su questo vettore tutte le funzioni che conosciamo:
+
+```{r}
+length(d$punteggio)  # quanti valori?
+```
+
+---
+
+## Primi riassunti numerici
+
+R ha funzioni pronte per calcolare le statistiche più comuni:
+
+```{r}
+mean(d$punteggio)    # media
+```
+
+. . .
+
+```{r}
+median(d$punteggio)  # mediana
+```
+
+. . .
+
+```{r}
+sd(d$punteggio)      # deviazione standard
+```
+
+. . .
+
+Nella prossima lezione vedremo cosa significano esattamente questi numeri. Per ora, notiamo che con una sola riga di codice R calcola ciò che a mano richiederebbe molti passaggi.
+
+---
+
+## Un riassunto automatico: `summary()`
+
+```{r}
+summary(d)
+```
+
+. . .
+
+`summary()` produce un riassunto diverso per ciascuna colonna:
+
+- per le variabili **numeriche**: minimo, massimo, media, mediana, quartili
+- per le variabili **di testo**: conteggi per categoria
+
+---
+
+## L'istogramma sui dati importati
+
+Adesso possiamo collegare i due argomenti di oggi — usiamo `hist()` (che abbiamo imparato nella prima parte) sui dati importati:
+
+---
+
+```{r}
+#| fig-width: 7
+#| fig-height: 4.5
+hist(d$punteggio,
+  freq = FALSE,
+  col = "steelblue",
+  border = "white",
+  main = "Distribuzione dei punteggi",
+  xlab = "Punteggio al test",
+  ylab = "Densità"
+)
+```
+
+---
+
+## Leggere i dati da un URL
+
+Spesso i dati non sono sul nostro computer, ma su un sito web. R può leggere direttamente da un indirizzo web:
+
+```{r}
+#| eval: false
+url <- "https://example.com/dati_studio.csv"
+d <- read.csv(url)
+```
+
+. . .
+
+Basta passare l'indirizzo (URL) al posto del nome del file. Questo è utile per i dataset condivisi, come quelli che troverete su [ccaudek.github.io/utet-eda/](https://ccaudek.github.io/utet-eda/).
+
+---
+
+## Un esempio più realistico
+
+Carichiamo un dataset più grande, sempre simulato, per vedere come si comporta R con più dati:
+
+```{r}
+set.seed(42)
+n <- 400
+
+d2 <- data.frame(
+  id  = 1:n,
+  eta = round(rnorm(n, mean = 21, sd = 2)),
+  punteggio = round(rnorm(n, mean = 75, sd = 10))
+)
+```
+
+. . .
+
+Non preoccupatevi della funzione `rnorm()` per ora — genera numeri casuali. La riprenderemo quando parleremo di simulazioni.
+
+---
+
+## Come cambiano le cose con più dati
+
+```{r}
+summary(d2$punteggio)
+```
+
+---
+
+```{r}
+#| fig-width: 7
+#| fig-height: 4.5
+hist(d2$punteggio,
+  freq = FALSE,
+  col = "steelblue",
+  border = "white",
+  main = "400 osservazioni",
+  xlab = "Punteggio al test",
+  ylab = "Densità"
+)
+```
+
+---
+
+Con 400 osservazioni l'istogramma è più "liscio" — si avvicina di più a quella **curva di densità** di cui abbiamo parlato nella prima parte della lezione.
+
+---
+
+```{r}
+#| echo: false
+# Creiamo l'istogramma di densità
+hist(d2$punteggio,
+  freq = FALSE,           # Mostra densità invece di frequenze
+  col = "steelblue",
+  border = "white",
+  main = "Distribuzione dei punteggi - 400 osservazioni",
+  xlab = "Punteggio al test",
+  ylab = "Densità"
+)
+
+# Aggiungiamo la curva normale che approssima la distribuzione
+curve(dnorm(x, 
+            mean = mean(d2$punteggio),    # Media dei dati
+            sd = sd(d2$punteggio)),       # Deviazione standard dei dati
+      add = TRUE,                         # Aggiunge al grafico esistente
+      col = "darkred",                    # Colore della curva
+      lwd = 2,                            # Spessore linea
+      lty = 1)                            # Tipo di linea (continua)
+
+# Linea verticale sulla media
+abline(v = mean(d2$punteggio),
+       col = "darkgreen",
+       lwd = 2,
+       lty = 2)                           # Linea tratteggiata
+
+# Legenda per aiutare l'interpretazione
+legend("topright",
+       legend = c("Istogramma (dati)", 
+                  "Approssimazione normale",
+                  "Media dei dati"),
+       col = c("steelblue", "darkred", "darkgreen"),
+       lwd = c(NA, 2, 2),                 # NA per il riempimento
+       lty = c(NA, 1, 2),
+       fill = c("steelblue", NA, NA),     # Riempimento solo per l'istogramma
+       border = c("white", NA, NA),
+       bty = "n")                         # Senza riquadro della legenda
+
+# Informazioni statistiche nel grafico
+text(x = max(d2$punteggio) * 0.95, 
+     y = 0.022,
+     labels = paste0("Media = ", round(mean(d2$punteggio), 1), 
+                    "\nSD = ", round(sd(d2$punteggio), 1)),
+     adj = 1,                             # Allineamento a destra
+     cex = 0.8)                           # Dimensione testo
+```
+
+
+---
+
+## Il flusso di lavoro minimo
+
+Ricapitoliamo i passi essenziali per lavorare con i dati in R:
+
+. . .
+
+1. **Importare**: `d <- read.csv("file.csv")`
+
+. . .
+
+2. **Esplorare**: `head(d)`, `dim(d)`, `names(d)`, `summary(d)`
+
+. . .
+
+3. **Estrarre una variabile**: `d$nome_variabile`
+
+. . .
+
+4. **Calcolare**: `mean()`, `median()`, `sd()`, ...
+
+. . .
+
+5. **Visualizzare**: `hist(d$variabile, freq = FALSE)`
+
+---
+
+## Errori comuni (e come evitarli)
+
+```{r}
+#| error: true
+mean(d$Punteggio)   # P maiuscola: la variabile si chiama "punteggio"!
+```
+
+. . .
+
+R **distingue** tra maiuscole e minuscole. `punteggio` e `Punteggio` sono due nomi diversi.
+
+. . .
+
+Se non sapete come si chiama esattamente una variabile, usate `names(d)` per controllare.
+
+---
+
+## Un altro errore frequente
+
+```{r}
+#| error: true
+mean(genere)   # manca il nome del data.frame!
+```
+
+. . .
+
+Le variabili "vivono" dentro il data.frame. Per accedervi bisogna usare `d$genere`, non solo `genere`.
+
+---
+
+## Che cosa non abbiamo fatto 
+
+In questa lezione **non** abbiamo parlato di:
+
+- pulizia dei dati (data wrangling)
+- grafici avanzati (ggplot2)
+- cicli e condizioni logiche (simulazioni)
+
+. . .
+
+Tutto questo arriverà nelle prossime lezioni, quando ne avremo bisogno.
+
+Per ora, il flusso **importare → esplorare → riassumere → visualizzare** è sufficiente per iniziare a lavorare.
+
+---
+
+## Per approfondire
+
+Il materiale di questa lezione corrisponde ai seguenti capitoli del sito companion:
+
+- [Cap. 6 — Un approccio moderno all'analisi dei dati](https://ccaudek.github.io/utet-eda/chapters/R/01_r_syntax.html): oggetti, vettori, funzioni di base
+- [Cap. 16 — Esplorare distribuzioni univariate](https://ccaudek.github.io/utet-eda/chapters/eda/03_exploring_univariate_data.html): istogrammi, frequenze, densità
+
+. . .
+
+Nella prossima lezione: **statistica descrittiva** — media, mediana, varianza, deviazione standard, forma delle distribuzioni.
