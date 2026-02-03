@@ -1,5 +1,5 @@
 ---
-title: "La crisi della replicazione in psicologia"
+title: "La crisi della replicabilità in psicologia"
 subtitle: "Quali implicazioni per la professione dello psicologo?"
 version: 2.0
 author:
@@ -51,7 +51,7 @@ State per intraprendere un percorso che prevede l'apprendimento dell'inferenza b
 
 Lo scopo di questa lezione è convincervi che la risposta è sì — non per ragioni astratte, ma per ragioni che riguardano direttamente la vostra **futura pratica professionale** come psicologi.
 
-# La crisi della replicazione {background-color="#2c3e50" style="color: white;"}
+# La crisi della replicabilità {background-color="#2c3e50" style="color: white;"}
 
 ## Cosa significa "replicare"
 
@@ -65,19 +65,17 @@ Questo si chiama **replicabilità**, ed è il test più severo che possiamo appl
 
 Se invece l'effetto scompare quando proviamo a replicarlo, qualcosa non ha funzionato: o nell'originale, o nel metodo con cui lo abbiamo "dimostrato".
 
----
-
 ## I numeri della crisi
 
-Nel 2015, un grande progetto internazionale (Open Science Collaboration) ha tentato di replicare **100 studi** pubblicati su riviste di punta della psicologia.
+Nel 2015, un ambizioso progetto di ricerca internazionale – l’**Open Science Collaboration** – ha tentato di replicare **100 studi** pubblicati sulle più prestigiose riviste di psicologia.
 
 . . .
 
-Il risultato è stato sconfortante: solo circa il **36%** delle repliche ha prodotto un effetto significativo nella stessa direzione dell'originale. Gli effetti che si sono replicati erano in media della **metà** della dimensione originale.
+I risultati furono sconfortanti: soltanto **il 36% circa** delle repliche riuscì a produrre un effetto statisticamente significativo nella stessa direzione dello studio originale. Inoltre, gli effetti confermati si rivelarono in media **dimezzati** rispetto alle dimensioni inizialmente riportate.
 
-. . .
+---
 
-Progetti successivi (Many Labs, Camerer et al.) hanno confermato il quadro: i tassi di replicazione si aggirano intorno al 60–65%, con effetti sistematicamente più piccoli di quanto riportato nelle pubblicazioni originali.
+Successive iniziative – come il progetto *Many Labs* e il lavoro di **Camerer et al.** – hanno confermato questo quadro: i tassi di replicazione si attestano intorno al **60-65%**, e gli effetti replicati risultano sistematicamente più contenuti rispetto a quanto originariamente pubblicato.
 
 ---
 
@@ -91,7 +89,7 @@ Dice qualcosa di più sottile e, per certi versi, più preoccupante: **non sappi
 
 . . .
 
-Alcuni effetti si sono replicati benissimo. Altri — inclusi alcuni insegnati nei manuali — si sono rivelati molto più fragili di quanto si pensasse. Il problema è che, leggendo la letteratura, è spesso difficile distinguere gli uni dagli altri.
+Alcuni effetti si sono replicati benissimo. Altri — inclusi alcuni insegnati nei manuali — si sono rivelati molto più fragili di quanto si pensasse. Il problema è che, *leggendo la letteratura*, è spesso difficile distinguere gli uni dagli altri.
 
 # Cosa c'entra con voi {background-color="#e74c3c" style="color: white;"}
 
@@ -119,39 +117,42 @@ Immaginate di lavorare come psicologi clinici. Utilizzate un protocollo terapeut
 
 . . .
 
-Lo studio aveva un campione di 30 partecipanti, un $p$-value di .04, e un effetto definito "moderato". Il protocollo è diventato popolare, viene insegnato nei workshop, colleghi lo raccomandano.
+Lo studio aveva un campione di 30 partecipanti, un $p$-value di .04, e un effetto definito "moderato". Il protocollo è diventato popolare, viene insegnato nei workshop e i colleghi lo raccomandano.
 
 . . .
 
-Ma quell'effetto non è mai stato replicato. Nessuno ci ha riprovato, oppure chi ci ha provato non ha trovato nulla e il risultato è finito in un cassetto, perché le riviste preferiscono risultati "positivi".
+**Ma quell'effetto non è mai stato replicato.** Nessuno ci ha riprovato, oppure chi ci ha provato non ha trovato nulla e il risultato è finito in un cassetto, perché le riviste preferiscono risultati "significativi".
 
 ---
 
 ## Le conseguenze concrete
 
-Se la teoria su cui si basa il vostro intervento è giustificata da dati non replicabili, la possibilità che quell'intervento sia davvero efficace non è semplicemente "ridotta" — è praticamente **nulla**, superiore a quella di un effetto placebo.
+Se la teoria su cui si basa il vostro intervento è giustificata da dati non replicabili, la possibilità che quell'intervento sia davvero efficace non è semplicemente "ridotta" — è praticamente **nulla**, non diversa da quella di un effetto placebo.
 
 . . .
 
-Il vostro paziente investe tempo, denaro, speranza in un trattamento che non ha basi solide. Voi lo somministrate in buona fede, convinti di star facendo la cosa giusta.
+Il vostro paziente investe tempo, denaro e speranza in un trattamento che non ha basi solide. Voi lo somministrate in buona fede, convinti di stare facendo la cosa giusta.
+
+----
+
+## Le conseguenze concrete
+
+
+La crisi della replicazione ci dice che questa situazione non è un'eccezione rara. 
 
 . . .
 
-La crisi della replicazione ci dice che questa situazione non è un'eccezione rara. Per una quota significativa della letteratura psicologica, è la **norma**.
+Per una *quota rilevante* della letteratura psicologica, questa è la **norma**.
 
 ---
 
 ## Scenario 2: il report professionale
 
-Lavorate come psicologi in un'azienda. Il committente vi chiede di valutare l'efficacia di un programma di benessere per i dipendenti.
+Immaginate di lavorare come psicologi all’interno di un'azienda. Vi viene chiesto di valutare l’efficacia di un nuovo **programma di benessere** destinato ai dipendenti.
 
 . . .
 
-Raccogliete i dati, fate un test *t*, ottenete $p = .03$, scrivete: "Il programma ha un effetto significativo sul benessere".
-
-. . .
-
-Il committente — un'azienda che investe risorse — si aspetta che questa conclusione **regga** se il programma viene esteso ad altre sedi. E nel frattempo, il mondo delle organizzazioni è sempre più consapevole dei problemi di replicabilità.
+Dopo aver raccolto i dati, conducete un test *t* e ottenete un risultato di $p = .03$. Nella relazione scrivete: “Il programma ha un effetto significativo sul benessere dei partecipanti”.
 
 ---
 
@@ -161,11 +162,19 @@ Se l'effetto non regge su un campione diverso — e con campioni piccoli e metod
 
 . . .
 
-Non necessariamente perché leggerà articoli sulla crisi della replicazione. Più semplicemente, perché **il programma non funzionerà come promesso**. I risultati della prima sede non si ripeteranno nelle altre.
+Non necessariamente perché leggerà articoli sulla crisi della replicabilità. 
+
+Più semplicemente, perché **il programma non funzionerà come promesso**. I risultati della prima sede non si ripeteranno nelle altre.
+
+---
+
+## Cosa succede "dopo"
+
+A quel punto, la vostra **credibilità professionale** è in gioco. 
 
 . . .
 
-A quel punto, la vostra **credibilità professionale** è in gioco. Il problema non è stato il programma in sé: è stato il metodo con cui avete tratto le conclusioni — un metodo che non teneva conto della fragilità delle conclusioni basate su piccoli campioni e test dicotomici.
+Il problema non è stato il programma in sé: è stato il metodo con cui avete tratto le conclusioni — un metodo che non teneva conto della fragilità delle conclusioni basate su piccoli campioni e su test dicotomici.
 
 ---
 
@@ -179,23 +188,29 @@ Il paziente ha compilato un questionario standardizzato. Il punteggio è 72. Il 
 
 . . .
 
-Nell'approccio "ingenuo", la decisione è semplice: 72 > 70, quindi il paziente supera la soglia clinica e riceve una certa diagnosi (o una certa indicazione terapeutica).
+* Nell'approccio "ingenuo", la decisione è semplice: 72 > 70, quindi il paziente supera la soglia clinica e riceve una certa diagnosi (o una certa indicazione terapeutica).
 
 ---
 
 ## Ma i dati del singolo paziente sono rumorosi
 
-Pensateci un momento. Quel punteggio di 72 è il risultato di risposte che il paziente ha dato **in un momento specifico**, **in uno stato emotivo specifico**, con **una comprensione specifica** delle domande.
+Pensateci un momento. 
 
 . . .
 
-Il paziente potrebbe aver esagerato inconsapevolmente — o minimizzato, per desiderabilità sociale.
+Quel punteggio di 72 è il risultato di risposte che il paziente ha dato **in un momento specifico**, **in uno stato emotivo specifico** e con **una comprensione specifica** delle domande.
 
-Potrebbe non aver compreso correttamente alcune domande.
+---
 
-Potrebbe aver avuto una giornata particolarmente difficile — o particolarmente buona.
+## Ma i dati del singolo paziente sono rumorosi
 
-Potrebbe, semplicemente, ricordare male la frequenza o l'intensità dei propri sintomi.
+* Il paziente potrebbe aver esagerato inconsapevolmente — o minimizzato, per desiderabilità sociale.
+
+* Potrebbe non aver compreso correttamente alcune domande.
+
+* Potrebbe aver avuto una giornata particolarmente difficile — o particolarmente buona.
+
+* Potrebbe, semplicemente, ricordare male la frequenza o l'intensità dei propri sintomi.
 
 ---
 
@@ -209,7 +224,7 @@ La persona depressa tende a sovrastimare la frequenza e la gravità delle esperi
 
 . . .
 
-In altre parole: **proprio le persone di cui ci occupiamo sono quelle i cui dati sono meno affidabili**. Non per malafede, ma per la natura stessa della condizione che stiamo cercando di valutare.
+* In altre parole: **proprio le persone di cui ci occupiamo sono quelle i cui dati sono meno affidabili**. Non per malafede, ma per la natura stessa della condizione che stiamo cercando di valutare.
 
 ---
 
@@ -217,21 +232,27 @@ In altre parole: **proprio le persone di cui ci occupiamo sono quelle i cui dati
 
 Torniamo al punteggio di 72 con cut-off a 70.
 
-La differenza è di **2 punti** — ben dentro il margine di errore di misura di qualsiasi test psicologico.
+La differenza è di **2 punti** — ben dentro il *margine di errore di misura* di qualsiasi test psicologico.
 
 . . .
 
-Se il paziente rifacesse il test domani, potrebbe ottenere 68. O 75. L'errore standard di misura del test potrebbe essere 5 o più punti.
+Se il paziente rifacesse il test domani, potrebbe ottenere 68. O 75. 
 
-. . .
+* L'errore standard di misura del test potrebbe essere 5 o più punti.
 
-Eppure, sulla base di quel confronto secco tra 72 e 70, lo psicologo "ingenuo" prende una decisione: diagnosi, indicazione terapeutica, segnalazione. Una decisione che riguarda **quel singolo essere umano** — non un campione, non una media, non una distribuzione.
+---
+
+## La decisione "ingenua" e le sue conseguenze
+
+Eppure, basandosi su quel semplice confronto tra 72 e 70, lo psicologo – per così dire – “ingenuo” prende una decisione: formula una diagnosi, indica una terapia, valuta una segnalazione.
+
+Una decisione che riguarda **quel singolo essere umano**, con la sua storia e la sua unicità – non un campione, non una media, non una distribuzione astratta.
 
 ---
 
 ## Cosa serve davvero
 
-Per prendere decisioni razionali sul singolo paziente servono strumenti che tengano conto di **tre cose contemporaneamente**:
+Per prendere **decisioni razionali** sul *singolo paziente* servono strumenti che tengano conto di **tre cose contemporaneamente**:
 
 . . .
 
@@ -245,9 +266,11 @@ Per prendere decisioni razionali sul singolo paziente servono strumenti che teng
 
 3. **L'aggiornamento razionale**: come combinare le informazioni (imperfette) del test con le informazioni (imperfette) che già avevamo?
 
-. . .
+---
 
-Questa è, in essenza, la logica dell'inferenza bayesiana.
+## Cosa serve davvero
+
+Questa è, in essenza, **la logica dell'inferenza bayesiana**.
 
 # Come ci siamo arrivati {background-color="#2c3e50" style="color: white;"}
 
@@ -267,11 +290,13 @@ Se quello strumento può "dimostrare" la precognizione, il problema non è solo 
 
 ---
 
-## Le pratiche di ricerca questionabili
+## Le pratiche di ricerca discutibili
 
-Negli anni successivi, è emerso che molte pratiche diffuse — e spesso considerate normali — distorcono i risultati in modo sistematico.
+Negli anni successivi, è emerso che molte pratiche diffuse — e spesso considerate normali — **distorcono i risultati** in modo sistematico.
 
-. . .
+---
+
+## Le pratiche di ricerca discutibili
 
 **Optional stopping**: raccogliere dati finché il $p$-value non scende sotto .05, poi fermarsi. Sembra ragionevole, ma gonfia il tasso di falsi positivi.
 
@@ -295,15 +320,17 @@ Il valore-$p$ risponde a questa domanda:
 
 Ma la domanda che ci interessa — come ricercatori e come professionisti — è un'altra:
 
-> "Dato quello che ho osservato, quanto è plausibile che l'effetto esista, e di che entità?"
-
-. . .
-
-Queste due domande sono profondamente diverse. Confonderle porta a errori inferenziali che, come abbiamo visto, hanno conseguenze pratiche reali.
+> "Dato quello che ho osservato, quanto è plausibile che l'effetto esista e qual è la sua entità?"
 
 ---
 
-## Una distinzione cruciale
+## Il cuore tecnico del problema
+
+Queste due domande sono profondamente diverse. 
+
+Confonderle porta a errori inferenziali che, come abbiamo visto, hanno conseguenze pratiche reali.
+
+---
 
 | | Frequentismo | Approccio bayesiano |
 |:--|:--|:--|
