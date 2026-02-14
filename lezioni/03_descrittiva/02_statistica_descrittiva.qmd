@@ -1,7 +1,7 @@
 ---
 title: "Statistica descrittiva"
-subtitle: "Tendenza centrale, dispersione e forma"
-version: 1.0
+subtitle: "Quando i numeri nascondono (e quando rivelano) la realtà"
+version: 2.0
 author:
   - name: Corrado Caudek
     orcid: 0000-0002-1404-0420
@@ -33,17 +33,77 @@ format:
 library(tidyverse)
 ```
 
+# Il paradosso della sintesi statistica {background-color="#2c3e50" style="color: white;"}
+
+---
+
+## La domanda epistemologica di fondo
+
+Nella prima parte della lezione abbiamo imparato a **importare** e **visualizzare** i dati.
+
+. . .
+
+Ora affrontiamo una domanda più sottile:
+
+> **possiamo riassumere una distribuzione con pochi numeri senza perdere informazioni essenziali?**
+
+. . .
+
+La risposta breve è: **dipende**.
+
+. . .
+
+La risposta lunga è ciò che esploreremo oggi.
+
+---
+
+## Il problema del riassunto
+
+**Francis Anscombe** (1973) ha mostrato che quattro dataset con **identiche** statistiche descrittive possono avere distribuzioni completamente diverse.
+
+. . .
+
+**Datasaurus Dozen** (Matejka & Fitzmaurice, 2017) ha esteso questo risultato: 13 dataset con stessa media, stessa varianza, stessa correlazione — ma forme completamente diverse.
+
+. . .
+
+**Lezione epistemologica:** i riassunti numerici **nascondono** informazioni. La visualizzazione le **rivela**.
+
+---
+
+## Perché allora usare riassunti numerici?
+
+Se i grafici sono così informativi, perché non usare solo quelli?
+
+. . .
+
+**Ragioni pratiche:**
+
+* i numeri sono più facili da comunicare in abstract, tabelle o meta-analisi;
+* permettono confronti precisi tra gruppi;
+* sono essenziali per fare inferenza statistica.
+
+. . .
+
+**Ma attenzione:** i riassunti numerici sono **utili** solo se sappiamo *cosa rappresentano* e *quando possono ingannare*.
+
+. . .
+
+**Questo è il cuore della lezione di oggi.**
+
+---
+
 ## I vostri dati
 
 Nella prima lezione avete compilato la **STARS** (*Statistical Anxiety Rating Scale*) — un questionario di 51 domande che misura l'ansia verso la statistica.
 
 . . .
 
-Per ciascuno di voi abbiamo calcolato un punteggio totale (**STARS_total**): la somma delle risposte a tutti i 51 item, su una scala da 51 (nessuna ansia) a 255 (massima ansia).
+Per ciascuno di voi ho calcolato un punteggio totale (**STARS_total**): la somma delle risposte a tutti i 51 item, su una scala da 51 (nessuna ansia) a 255 (massima ansia).
 
 . . .
 
-Oggi usiamo questi dati per capire come si **riassume** una distribuzione con pochi numeri.
+Oggi usiamo questi dati per capire come si **riassume** una distribuzione — e quando il riassunto sia **ingannevole**.
 
 ---
 
@@ -53,19 +113,23 @@ Di fronte a un insieme di dati, le prime domande sono:
 
 . . .
 
-1. **Dove** si concentrano i valori? → **tendenza centrale**
+1. **dove** si concentrano i valori? → **tendenza centrale**;
 
 . . .
 
-2. **Quanto** sono dispersi? → **variabilità**
+2. **quanto** sono dispersi? → **variabilità**;
 
 . . .
 
-3. **Che forma** ha la distribuzione? → **simmetria e code**
+3. **che forma** ha la distribuzione? → **simmetria e code**.
 
 . . .
 
 Queste tre domande bastano per avere un quadro sintetico dei dati.
+
+. . .
+
+**Ma solo se le risposte sono interpretate correttamente.**
 
 # Parte I: concetti e calcoli {background-color="#2c3e50" style="color: white;"}
 
@@ -80,6 +144,10 @@ $$112, 128, 133, 136, 145, 148, 151, 158, 164, 192$$
 . . .
 
 Sono 10 numeri. Li usiamo per fare tutti i calcoli **a mano**, passo per passo.
+
+. . .
+
+**Perché a mano?** Perché capire *come* si calcolano questi numeri è essenziale per capire *cosa significano* — e quando possono ingannarci.
 
 ---
 
@@ -112,6 +180,49 @@ Se immaginiamo i dati come pesi su un'asta, la media è il punto di equilibrio.
 . . .
 
 STARS_total = 146.7 significa che, in media, questi 10 studenti hanno un livello di ansia statistica **moderato** (su una scala 51–255).
+
+. . .
+
+**Ma questo è vero solo se la distribuzione è simmetrica.**
+
+---
+
+## Il primo inganno: la media nasconde la forma
+
+Guardate questi due gruppi:
+
+:::: {.columns}
+::: {.column width="50%"}
+**Gruppo A**
+
+144, 145, 146, 147, 148
+
+Media = 146
+:::
+::: {.column width="50%"}
+**Gruppo B**
+
+100, 120, 146, 172, 192
+
+Media = 146
+:::
+::::
+
+. . .
+
+**Stessa media. Distribuzioni completamente diverse.**
+
+. . .
+
+Gruppo A: valori **concentrati** attorno alla media.  
+Gruppo B: valori **sparsi** su un ampio range.
+
+---
+
+**Lezione epistemologica:** 
+
+* la media da sola **non basta**;
+* serve una misura di dispersione.
 
 ---
 
@@ -150,6 +261,12 @@ La mediana, invece, dipende solo dalla **posizione** dei valori, non dalla loro 
 
 ---
 
+**Domanda epistemologica:** 
+
+quale delle due rappresenta meglio il "centro" di questa distribuzione?
+
+---
+
 ## Un esperimento mentale
 
 Cosa succede se il punteggio 192 diventa **250**?
@@ -166,6 +283,33 @@ Cosa succede se il punteggio 192 diventa **250**?
 La media cambia di quasi 6 punti. La mediana **non cambia affatto**.
 
 Questo illustra un principio importante: la media è **sensibile ai valori estremi**, la mediana no.
+
+---
+
+### Implicazione per la pratica professionale
+
+Se i vostri dati hanno outlier (es. un paziente con punteggio estremo), la media può essere **ingannevole**.
+
+---
+
+## Il legame con la crisi della replicabilità
+
+Molti studi che non si sono replicati avevano questo problema:
+
+. . .
+
+1. campioni piccoli ($n < 30$);
+2. presenza di outlier non riconosciuti;
+3. media riportata come **unico** riassunto;
+4. nessuna visualizzazione dei dati.
+
+. . .
+
+**Risultato:** la media rappresentava *male* il fenomeno sottostante.
+
+. . .
+
+**La replica, con altri partecipanti, mostrava una distribuzione diversa — e quindi una media diversa.**
 
 ---
 
@@ -196,6 +340,10 @@ Media = 146
 
 La media da sola non basta. Serve una misura di quanto i dati sono **dispersi** attorno alla media.
 
+. . .
+
+**Questa dispersione non è "rumore" da eliminare. È informazione essenziale sul fenomeno.**
+
 ---
 
 ## La deviazione dalla media
@@ -203,6 +351,14 @@ La media da sola non basta. Serve una misura di quanto i dati sono **dispersi** 
 Per ciascun dato, calcoliamo quanto **si discosta** dalla media:
 
 $$d_i = x_i - \bar{x}$$
+
+. . .
+
+**Domanda:** perché questo è utile?
+
+. . .
+
+**Risposta:** perché ci dice quanto ogni osservazione è "lontana" dal valore centrale. Questa distanza è la **base** di tutte le misure di variabilità.
 
 ---
 
@@ -231,7 +387,7 @@ Verifichiamolo:
 
 $$(-34.7) + (-18.7) + \ldots + (+17.3) + (+45.3) = 0$$
 
-. . .
+---
 
 Questo è sempre vero, per **qualunque** insieme di dati. È una proprietà della media: le deviazioni positive e negative si compensano esattamente.
 
@@ -239,11 +395,30 @@ Questo è sempre vero, per **qualunque** insieme di dati. È una proprietà dell
 
 Quindi la somma delle deviazioni non è una buona misura della variabilità.
 
+. . .
+
+**Problema tecnico:** come misuriamo la variabilità se le deviazioni si annullano?
+
 ---
 
 ## La soluzione: elevare al quadrato
 
 Per evitare che le deviazioni si annullino, le **eleviamo al quadrato**:
+
+. . .
+
+$$d_i^2 = (x_i - \bar{x})^2$$
+
+. . .
+
+Elevare al quadrato ha due effetti:
+
+1. **elimina** il segno negativo (tutti i quadrati sono positivi);
+2. **penalizza** le deviazioni grandi più di quelle piccole.
+
+. . .
+
+**Perché il quadrato e non il valore assoluto?** Ragioni matematiche (derivabilità) e statistiche (proprietà della distribuzione normale).
 
 ---
 
@@ -260,6 +435,10 @@ Per evitare che le deviazioni si annullino, le **eleviamo al quadrato**:
 | 164 | $+17.3$ | 299.29 |
 | 192 | $+45.3$ | 2052.09 |
 
+. . .
+
+Notate come il punteggio 192 (deviazione +45.3) contribuisce con **2052.09** alla somma — molto più di tutti gli altri.
+
 ---
 
 ## La varianza
@@ -272,6 +451,10 @@ $$s^2 = \frac{\sum_{i=1}^{n}(x_i - \bar{x})^2}{n - 1}$$
 
 $$s^2 = \frac{1204.09 + 349.69 + \ldots + 2052.09}{10 - 1} = \frac{4358.10}{9} = 484.23$$
 
+. . .
+
+**Interpretazione:** la varianza misura quanto, **in media**, i dati sono lontani dalla media (al quadrato).
+
 ---
 
 ## Perché $n - 1$ e non $n$?
@@ -280,7 +463,15 @@ Dividiamo per $n - 1$ (e non per $n$) perché abbiamo "usato" i dati una volta p
 
 . . .
 
+**Spiegazione intuitiva:** quando calcoliamo la media, "consumiamo" un grado di libertà. Ci restano $n - 1$ valori "liberi" di variare.
+
+. . .
+
 Il dettaglio tecnico (i "gradi di libertà") lo riprenderemo più avanti. Per ora, basta ricordare: **si divide per $n - 1$**.
+
+. . .
+
+**Implicazione pratica:** con campioni piccoli, questa correzione fa **molta** differenza.
 
 ---
 
@@ -296,6 +487,14 @@ La **deviazione standard** ($s = 22.01$) ci dice che, mediamente, i punteggi si 
 
 ---
 
+**Interpretazione epistemologica:** 
+
+la deviazione standard **quantifica l'incertezza** nella distribuzione. 
+
+Non è rumore — è la **variabilità intrinseca** del fenomeno.
+
+---
+
 ## Riepilogo: le misure calcolate
 
 | Misura | Formula | Valore |
@@ -304,6 +503,14 @@ La **deviazione standard** ($s = 22.01$) ci dice che, mediamente, i punteggi si 
 | Mediana | valore centrale | 146.5 |
 | Varianza | $s^2 = \frac{\sum(x_i - \bar{x})^2}{n-1}$ | 484.23 |
 | Dev. standard | $s = \sqrt{s^2}$ | 22.01 |
+
+. . .
+
+**Domanda critica:** questi quattro numeri bastano a descrivere completamente la distribuzione?
+
+. . .
+
+**Risposta:** dipende dalla **forma** della distribuzione.
 
 ---
 
@@ -317,21 +524,34 @@ $$\text{Range} = x_{\max} - x_{\min} = 192 - 112 = 80$$
 
 ---
 
-## I quartili e lo scarto interquartile (IQR)
+**Problema epistemologico:** 
+
+se avete un solo outlier estremo, il range "esplode" — ma non vi dice nulla sulla maggioranza dei dati.
+
+---
+
+## I quartili 
 
 I **quartili** dividono i dati ordinati in quattro parti uguali:
 
-- $Q_1$ (25° percentile): il valore sotto il quale cade il 25% dei dati
-- $Q_2$ (50° percentile): è la mediana
-- $Q_3$ (75° percentile): il valore sotto il quale cade il 75% dei dati
+- $Q_1$ (25° percentile): il valore sotto il quale cade il 25% dei dati;
+- $Q_2$ (50° percentile): è la mediana;
+- $Q_3$ (75° percentile): il valore sotto il quale cade il 75% dei dati.
 
-. . .
+---
+
+## Lo scarto interquartile (IQR)
 
 Lo **scarto interquartile** è:
 
 $$\text{IQR} = Q_3 - Q_1$$
 
 Misura la dispersione del **50% centrale** dei dati — ignorando i valori estremi.
+
+. . .
+
+* **Vantaggio:** robusto rispetto agli outlier. 
+* **Svantaggio:** ignora le code della distribuzione.
 
 ---
 
@@ -381,23 +601,31 @@ Ha senso: il punteggio 192 è più distante dalla media rispetto al punteggio 11
 
 . . .
 
-Ma la differenza è piccola (0.2 punti) — la distribuzione è quasi simmetrica. Vedremo se con tutti i 200 dati l'asimmetria è più marcata.
+**Implicazione:** quando media > mediana, state **sottorappresentando** la maggioranza dei dati (che sono più bassi della media).
+
+. . .
+
+**Domanda epistemologica:** quale delle due (media, mediana) è più "rappresentativa" del gruppo?
 
 ---
 
-## Perché queste misure "bastano"?
+## Perché la forma conta
 
-Con pochi numeri — media, deviazione standard, un'indicazione sulla simmetria — abbiamo una **descrizione sintetica** di un intero insieme di dati.
-
-. . .
-
-Questo è lo scopo della statistica descrittiva: **ridurre la complessità** senza perdere le informazioni essenziali.
+Molti test statistici tradizionali (test *t*, ANOVA) **assumono** che i dati siano approssimativamente normali (simmetrici, unimodali).
 
 . . .
 
-Dopo la pausa vedremo come R calcola tutto questo sui dati reali degli studenti in quest'aula.
+Se la distribuzione è fortemente asimmetrica:
 
-# Parte II: i dati degli studenti in R {background-color="#2c3e50" style="color: white;"}
+* la media potrebbe non essere rappresentativa;
+* i test potrebbero dare risultati inaffidabili;
+* le stime di incertezza potrebbero essere sbagliate.
+
+. . .
+
+**Lezione epistemologica:** conoscere la **forma** della distribuzione non è un dettaglio tecnico — è essenziale per fare inferenza corretta.
+
+# Parte II: applicazione ai dati reali {background-color="#2c3e50" style="color: white;"}
 
 ## Importiamo i dati
 
@@ -437,6 +665,10 @@ names(d)
 
 Abbiamo **`r nrow(d)` studenti** e **`r ncol(d)` variabili**: il codice identificativo, genere, tipo di scuola superiore, autovalutazione in matematica, il punteggio totale STARS e le 6 sottoscale.
 
+. . .
+
+**Nota metodologica:** questo campione è più grande del sottocampione di 10 — vedremo se le conclusioni cambiano.
+
 ---
 
 ## Primo sguardo: `summary()`
@@ -448,6 +680,14 @@ summary(d$STARS_total)
 . . .
 
 In una sola riga abbiamo: minimo, primo quartile, mediana, media, terzo quartile, massimo.
+
+. . .
+
+**Confronto epistemologico:** il sottocampione di 10 aveva media 146.7. Il campione completo ha media ~`r round(mean(d$STARS_total), 1)`. **Perché questa differenza?**
+
+. . .
+
+**Risposta:** <mark>variabilità campionaria</mark>. Con $n$ piccolo, la media è **instabile**.
 
 ---
 
@@ -463,6 +703,10 @@ sd(d$STARS_total)         # deviazione standard
 
 Confrontiamo con il sottocampione di 10: la media ($\approx$ `r round(mean(d$STARS_total), 1)`) e la deviazione standard ($\approx$ `r round(sd(d$STARS_total), 1)`) sono simili ai valori calcolati a mano. Il sottocampione era rappresentativo!
 
+. . .
+
+**Ma questo è un caso fortunato.** Con $n = 10$ **casuale**, avreste potuto ottenere valori molto diversi.
+
 ---
 
 ## Varianza e deviazione standard: il legame
@@ -475,6 +719,10 @@ sqrt(var(d$STARS_total))     # radice della varianza = sd
 
 In R: `var()` calcola la varianza (con $n-1$), `sd()` la deviazione standard.
 
+. . .
+
+**Ricordate:** varianza e deviazione standard misurano la **stessa cosa** (dispersione) su scale diverse (quadratica vs originale).
+
 ---
 
 ## Range e IQR
@@ -486,6 +734,10 @@ diff(range(d$STARS_total))          # range = max - min
 quantile(d$STARS_total, c(0.25, 0.75))  # Q1 e Q3
 IQR(d$STARS_total)                       # scarto interquartile
 ```
+
+. . .
+
+**Confronto:** range = `r diff(range(d$STARS_total))` vs IQR = `r round(IQR(d$STARS_total), 1)`. L'IQR è **molto più piccolo** — perché ignora i valori estremi.
 
 ---
 
@@ -544,9 +796,17 @@ La distribuzione dei punteggi STARS è:
 
 . . .
 
-- **Approssimativamente simmetrica**, con un lieve accumulo verso destra
-- La media (linea rossa) è leggermente **a destra** della mediana (linea verde)
-- Questo indica una lieve **asimmetria positiva**: qualche studente con ansia particolarmente alta "tira" la media verso l'alto
+- **approssimativamente simmetrica**, con un lieve accumulo verso destra;
+- la media (linea rossa) è leggermente **a destra** della mediana (linea verde);
+- questo indica una lieve **asimmetria positiva**: qualche studente con ansia particolarmente alta "tira" la media verso l'alto.
+
+---
+
+**Domanda critica:** se avessimo riportato *solo* la media (senza visualizzazione), avremmo colto questa asimmetria?
+
+. . .
+
+**Risposta:** no. Ecco perché la visualizzazione è epistemologicamente essenziale.
 
 ---
 
@@ -555,7 +815,6 @@ La distribuzione dei punteggi STARS è:
 Il **boxplot** (o diagramma a scatola) riassume la distribuzione con cinque numeri:
 
 ```r
-#| echo: false
 boxplot(d$STARS_total,
   horizontal = TRUE,
   col = "steelblue",
@@ -563,6 +822,10 @@ boxplot(d$STARS_total,
   xlab = "Punteggio STARS"
 )
 ```
+
+. . .
+
+**Vantaggio del boxplot:** mostra **simultaneamente** tendenza centrale (mediana), dispersione (IQR) e outlier.
 
 ---
 
@@ -580,16 +843,26 @@ boxplot(d$STARS_total,
 
 ## Come si legge un boxplot
 
-- La **scatola** va da $Q_1$ a $Q_3$ → contiene il 50% centrale dei dati
-- La **linea interna** è la mediana
-- I **baffi** si estendono fino al dato più estremo entro $1.5 \times \text{IQR}$ dal bordo della scatola
-- I **punti** oltre i baffi sono potenziali outlier
+- La **scatola** va da $Q_1$ a $Q_3$ → contiene il 50% centrale dei dati.
+- La **linea interna** è la mediana.
+- I **baffi** si estendono fino al dato più estremo entro $1.5 \times \text{IQR}$ dal bordo della scatola.
+- I **punti** oltre i baffi sono potenziali outlier.
+
+---
+
+**Implicazione epistemologica:** il boxplot identifica automaticamente gli outlier usando una **regola oggettiva** — non una decisione arbitraria del ricercatore.
+
+. . .
+
+Questo previene il "garden of forking paths": non potete decidere *dopo* aver visto i dati se un valore è "troppo estremo".
 
 ---
 
 ## Confrontiamo le sottoscale
 
 Quali aspetti dell'ansia statistica sono più pronunciati in questo campione?
+
+---
 
 ```{r}
 #| echo: false
@@ -614,6 +887,10 @@ boxplot(medie_item,
 abline(h = 3, col = "gray50", lty = 3)
 ```
 
+. . .
+
+**Interpretazione:** le sottoscale con mediana più alta (sopra 3) rappresentano gli aspetti dell'ansia più pronunciati.
+
 ---
 
 ## Confronto per genere
@@ -627,6 +904,10 @@ boxplot(STARS_total ~ genere, data = d,
 )
 ```
 
+. . .
+
+**Domanda epistemologica:** se osserviamo una differenza tra gruppi, è sistematica o dovuta al caso?
+
 ---
 
 ```{r}
@@ -639,9 +920,13 @@ boxplot(STARS_total ~ genere, data = d,
 )
 ```
 
-. . .
+---
 
 Notiamo differenze? Nelle prossime lezioni impareremo strumenti per stabilire se le differenze osservate sono **sistematiche** o dovute al caso.
+
+. . .
+
+**Anticipazione:** l'inferenza bayesiana ci darà la **probabilità** che la differenza sia reale — non solo un sì/no binario.
 
 ---
 
@@ -672,6 +957,14 @@ boxplot(STARS_total ~ scuola_superiore, data = d,
   cex.axis = 0.8
 )
 ```
+
+---
+
+**Osservazione:** i licei scientifici sembrano avere ansia statistica leggermente più bassa. **Ipotesi plausibile?** Sì, più esposizione alla matematica potrebbe ridurre l'ansia.
+
+. . .
+
+**Ma attenzione:** questa è un'**esplorazione**, non una conferma. Serve inferenza per concludere.
 
 ---
 
@@ -707,6 +1000,14 @@ Un'associazione negativa:
 * chi si valuta meglio in matematica tende ad avere **meno** ansia statistica. 
 
 Lo quantificheremo con la **correlazione** in una lezione futura.
+
+. . .
+
+**Domanda epistemologica:** questa associazione è **causale**? (es. migliorare in matematica riduce l'ansia?) O è **confusa**? (es. studenti più sicuri in generale valutano meglio sia matematica sia statistica?)
+
+. . .
+
+**Risposta:** l'esplorazione suggerisce le ipotesi. L'inferenza (con disegni appropriati) le valuta.
 
 ---
 
@@ -766,9 +1067,109 @@ IQR(d$STARS_total)
 | Variabilità | Quanto sono dispersi? | Varianza ($s^2$), Dev. standard ($s$), IQR |
 | Forma | Come sono distribuiti? | Simmetria, confronto media vs mediana |
 
-. . .
+---
 
 Queste misure, insieme all'**istogramma** e al **boxplot**, sono gli strumenti di base per descrivere qualunque distribuzione.
+
+. . .
+
+**Ma solo se interpretate nel contesto della visualizzazione.**
+
+# Collegamento con gli obiettivi epistemologici {background-color="#2c3e50" style="color: white;"}
+
+---
+
+## Cosa abbiamo imparato oggi (e perché conta)
+
+Oggi abbiamo imparato le **formule** per calcolare media, mediana, varianza e deviazione standard.
+
+. . .
+
+Ma l'obiettivo **epistemologico** era più profondo, ovvero capire che
+
+. . .
+
+> **i riassunti numerici sono utili, ma possono ingannare. La visualizzazione è essenziale per capire cosa c'è davvero nei dati.**
+
+. . .
+
+Questo è il **primo passo** verso un approccio rigoroso all'inferenza.
+
+---
+
+## Il legame con la crisi della replicabilità
+
+Molti studi che non si sono replicati avevano questo in comune:
+
+. . .
+
+1. **riassunti numerici senza visualizzazione** → pattern nascosti non riconosciuti;
+2. **media come unico riassunto** → distribuzioni asimmetriche o bimodali ignorate;
+3. **outlier non gestiti** → stime distorte;
+4. **variabilità non quantificata** → incertezza sottostimata.
+
+. . .
+
+**L'esplorazione sistematica previene tutti questi problemi.**
+
+---
+
+## L’importanza della variabilità 
+
+Nella pratica psicologica, **la variabilità individuale non è rumore da eliminare**.
+
+**È, piuttosto, il cuore stesso dell’informazione clinica e scientifica.**
+
+---
+
+- **Nel lavoro clinico**: la variabilità tra pazienti ci dice quanto un intervento possa essere generalizzato o debba invece essere personalizzato.
+- **Nella valutazione psicodiagnostica**: la dispersione dei punteggi in un test ne riflette la sensibilità e l’affidabilità nel catturare le differenze individuali.
+- **Nelle organizzazioni e nei gruppi**: la variabilità nelle risposte dei dipartimenti o dei team rivela se una policy o un training funziona in modo equo ed efficace per tutti, o solo per alcuni profili.
+
+---
+
+**Lezione epistemologica**: 
+
+trascurare la variabilità significa perdere di vista la complessità della mente e del comportamento umano, appiattendo ciò che per natura è dinamico e differenziato.
+
+---
+
+## Verso la prossima lezione
+
+Oggi abbiamo imparato a **riassumere** distribuzioni con numeri e grafici.
+
+. . .
+
+Nelle prossime lezioni:
+
+* capiremo come **la variabilità campionaria** influenza le nostre conclusioni;
+* vedremo come **la probabilità** formalizza l'incertezza;
+* inizieremo a costruire le basi per **l'inferenza bayesiana**.
+
+. . .
+
+Sempre con lo stesso spirito: **esplorare prima di concludere**, **visualizzare prima di riassumere** e **quantificare l'incertezza**.
+
+---
+
+## Un ultimo messaggio
+
+Queste competenze — importare, esplorare, riassumere, visualizzare — non sono "preliminari" all'analisi "seria".
+
+. . .
+
+**Sono il fondamento** di qualunque analisi rigorosa.
+
+. . .
+
+La differenza tra uno studio che si replica e uno che fallisce spesso sta qui:
+
+* chi esplora i dati sistematicamente **vede** i problemi prima di fare inferenza;
+* chi salta questo passaggio fa inferenza su pattern che non ha mai verificato.
+
+. . .
+
+**Open Science in pratica: trasparenza, riproducibilità e rigore.**
 
 ---
 
@@ -781,4 +1182,4 @@ Il materiale di questa lezione corrisponde a:
 
 . . .
 
-Nella prossima lezione: **sintassi R** — vettori, dataframe, operazioni di base, e i primi grafici con ggplot2.
+**Prossima lezione:** introduzione alla **sintassi R** più avanzata (vettori, dataframe, operazioni di base) e i primi grafici con **ggplot2** — verso una visualizzazione più sofisticata e informativa.

@@ -1,7 +1,7 @@
 ---
 title: "Prior, verosimiglianza e posterior"
 subtitle: "L'architettura dell'inferenza bayesiana — Segmento 2"
-version: 1.0
+version: 2.0
 author:
   - name: Corrado Caudek
     orcid: 0000-0002-1404-0420
@@ -31,6 +31,10 @@ csl: ../apa.csl
 
 ```{r}
 #| echo: false
+#| message: false
+#| warning: false
+library(ggplot2)
+library(tidyr)
 set.seed(42)
 ```
 
@@ -53,20 +57,21 @@ $$
 
 Abbiamo calcolato il posterior per **5 valori** di $\theta$.
 
-Ma nella realtà, $\theta$ può assumere **infiniti valori** tra 0 e 1.
+Ma nella realtà, $\theta$ può assumere **infiniti valori** tra 0 e 1. Come procedere?
 
 ---
 
 ## L'approssimazione numerica a griglia
 
-**Idea di base:**  
-anziché considerare infiniti valori del parametro $\theta$, se ne valutano un insieme finito e discreto, distribuito su una **griglia regolare**.
+Anziché considerare infiniti valori del parametro $\theta$, se ne valutano un insieme finito e discreto, distribuito su una **griglia regolare**.
 
-* Se la griglia è sufficientemente densa (ad esempio 101 punti ben spaziati), l’approssimazione risulta molto accurata e computazionalmente immediata.
+. . .
+
+Se la griglia è sufficientemente densa (ad esempio 101 punti ben spaziati), l'approssimazione risulta molto accurata e computazionalmente immediata. L'algoritmo è esattamente lo stesso che abbiamo usato con 5 valori — solo con più punti.
 
 # Parte 1: l'algoritmo passo per passo
 
-## I quattro passi dell’algoritmo
+## I quattro passi dell'algoritmo
 
 1. **Definire la griglia** di valori possibili per $\theta$.  
 2. **Calcolare il prior** $p(\theta)$ per ogni punto della griglia.  
@@ -119,7 +124,6 @@ prior <- dbeta(theta, shape1 = 5, shape2 = 5)
 
 ```{r}
 #| fig-height: 5
-library(ggplot2)
 
 g1 <- ggplot(
   data.frame(theta = theta, prior = prior), 
@@ -141,7 +145,11 @@ g1 <- ggplot(
 g1
 ```
 
-Il prior esprime la nostra conoscenza iniziale sul parametro $\theta$ prima di osservare i dati. Nello specifico, assegna maggiore probabilità ai valori centrali, suggerendo che ci aspettiamo che $\theta$ sia con buona probabilità compreso tra 0.3 e 0.7.
+---
+
+Il prior esprime la nostra conoscenza iniziale sul parametro $\theta$ prima di osservare i dati. 
+
+Nello specifico, assegna maggiore probabilità ai valori centrali, suggerendo che ci aspettiamo che $\theta$ sia con buona probabilità compreso tra 0.3 e 0.7.
 
 ---
 
@@ -223,7 +231,6 @@ g3
 
 ```{r}
 #| echo: false
-library(tidyr)
 
 # Normalizziamo per massimo per confrontare visivamente
 prior_norm <- prior / max(prior)
@@ -291,9 +298,9 @@ g4
 
 ## Cosa osserviamo?
 
-- **Prior** (blu): rappresenta la nostra conoscenza iniziale, concentrata attorno a θ ≈ 0.5.
-- **Verosimiglianza** (verde): riflette l'evidenza dei dati osservati (7 successi su 10), con picco a θ ≈ 0.7.
-- **Posterior** (rosso): è il **compromesso** tra informazione a priori e evidenza empirica, risultando centrato attorno a θ ≈ 0.6.
+- **Prior** (blu): rappresenta la nostra conoscenza iniziale, concentrata attorno a $\theta \approx 0.5$.
+- **Verosimiglianza** (verde): riflette l'evidenza dei dati osservati (7 successi su 10), con picco a $\theta \approx 0.7$.
+- **Posterior** (rosso): è il **compromesso** tra informazione a priori e evidenza empirica, risultando centrato attorno a $\theta \approx 0.6$.
 
 Il posterior agisce come una sintesi pesata: viene "attratto" verso i dati, ma risente anche dell'effetto regolarizzante del prior.
 
@@ -385,19 +392,41 @@ ggplot(df_campione_long, aes(x = theta, y = Posterior, color = Campione)) +
 
 Con più dati:
 
-- Il posterior diventa più **stretto** (meno incertezza).
-- Il posterior si **sposta** verso i dati (0.7).
-- L'influenza del prior **diminuisce**.
+- il posterior diventa più **stretto** (meno incertezza);
+- il posterior si **sposta** verso i dati (0.7);
+- l'influenza del prior **diminuisce**.
 
 ---
 
-## Messaggio importante
+## Un principio fondamentale {background-color="#2c3e50" style="color: white;"}
+
+. . .
 
 > "I dati vincono sempre, alla lunga."
 
-* Con pochi dati, il prior ha molta influenza.
+Con pochi dati, il prior ha molta influenza. Con molti dati, il posterior è dominato dalla verosimiglianza.
 
-* Con molti dati, il posterior è dominato dalla verosimiglianza.
+. . .
+
+Questo principio ha un nome tecnico: **consistenza asintotica** del posterior. All'aumentare dei dati, il posterior converge verso il valore vero del parametro, indipendentemente dal prior scelto (purché il prior assegni probabilità non nulla al valore vero).
+
+---
+
+## Un principio fondamentale {background-color="#2c3e50" style="color: white;"}
+
+Questo fatto risponde a un'obiezione comune: "Ma il prior non è soggettivo?" 
+
+. . .
+
+Sì, lo è — ma la sua influenza diminuisce con i dati. 
+
+. . .
+
+Con un campione abbastanza grande, due ricercatori con prior diversi arriveranno essenzialmente allo stesso posterior. Con pochi dati, il prior conta — ma questo riflette la realtà: con poca informazione, le conclusioni dipendono inevitabilmente dalle assunzioni. 
+
+. . .
+
+Il merito dell'approccio bayesiano è rendere queste assunzioni **esplicite e trasparenti**.
 
 # Parte 4: l'effetto del prior
 
@@ -488,7 +517,6 @@ ggplot(df_prior_long, aes(x = theta, y = Densità, color = Tipo_prior)) +
 
 ```{r}
 #| echo: false
-library(ggplot2)
 
 # Creare dataframe
 df_posterior <- data.frame(
@@ -542,11 +570,13 @@ ggplot(df_posterior_long, aes(x = theta, y = Posterior, color = Tipo_prior)) +
 
 ## Interpretazione
 
-- Con un **prior uniforme** (grigio), il posterior rispecchia fedelmente l'evidenza dei dati, concentrandosi attorno a θ ≈ 0.7.
-- Il **prior informativo** (blu) esercita un effetto regolarizzante, attirando la stima verso il suo centro (θ ≈ 0.5) e attenuando l'influenza dei dati.
+- Con un **prior uniforme** (grigio), il posterior rispecchia fedelmente l'evidenza dei dati, concentrandosi attorno a $\theta \approx 0.7$.
+- Il **prior informativo** (blu) esercita un effetto regolarizzante, attirando la stima verso il suo centro ($\theta \approx 0.5$) e attenuando l'influenza dei dati.
 - Il **prior scettico** (rosso), pur opponendo una certa resistenza, viene comunque modificato dall'evidenza osservata, mostrando uno spostamento verso valori maggiori.
 
-Con soli 10 osservazioni, il prior mantiene ancora un peso considerevole nel determinare la distribuzione finale.
+---
+
+Con soli 10 osservazioni, il prior mantiene ancora un peso considerevole nel determinare la distribuzione finale. Ma come abbiamo visto, con più dati le tre curve convergerebbero.
 
 # Parte 5: applicazione clinica
 
@@ -589,8 +619,6 @@ post_test <- (verosim_test * prior_test) / sum(verosim_test * prior_test)
 
 ```{r}
 #| echo: false
-library(ggplot2)
-library(tidyr)
 
 # Creare dataframe con le distribuzioni normalizzate
 df_test <- data.frame(
@@ -641,11 +669,11 @@ ggplot(df_test_long, aes(x = theta, y = Densità, color = Distribuzione)) +
 
 ---
 
-## Domanda clinica
+## Domanda clinica {background-color="#2c3e50" style="color: white;"}
 
 > **"Qual è la probabilità che la sensibilità del test sia almeno 0.75?"**
 
-Grazie all'approccio bayesiano possiamo fornire una risposta diretta ed esplicita:
+. . .
 
 ```{r}
 # Probabilità che θ ≥ 0.75
@@ -653,23 +681,31 @@ prob_ge_075 <- sum(post_test[theta >= 0.75])
 prob_ge_075
 ```
 
-**Risultato:** circa il 72% di probabilità che la sensibilità sia ≥ 0.75.
+. . .
+
+Circa il **72%** di probabilità che la sensibilità sia almeno 0.75. Questa è una risposta diretta a una domanda clinicamente rilevante.
+
+---
+
+## Domanda clinica {background-color="#2c3e50" style="color: white;"}
+
+Nel framework frequentista, la stessa domanda non avrebbe potuto essere formulata. Si sarebbe potuto calcolare un intervallo di confidenza, ma con l'avvertenza che *non* rappresenta la probabilità che il parametro sia nell'intervallo. 
+
+. . .
+
+L'approccio bayesiano fornisce esattamente il tipo di informazione che il clinico cerca per prendere decisioni.
 
 ---
 
 ## Fondamento della somma: dalla griglia all'integrale
 
-* Quando discretizziamo θ su una griglia di valori, il posterior è rappresentato da un insieme di probabilità puntuali.  
+Quando discretizziamo $\theta$ su una griglia di valori, il posterior è rappresentato da un insieme di probabilità puntuali. Per calcolare la probabilità su un intervallo, **sommiamo le probabilità dei singoli punti** in quell'intervallo:
 
-* Per calcolare la probabilità su un intervallo, **sommiamo le probabilità dei singoli punti** in quell'intervallo:
-
-  ```r
-  sum(post_test[theta >= 0.75])
-  ```
+```r
+sum(post_test[theta >= 0.75])
+```
 
 ---
-
-## Fondamento della somma: dalla griglia all'integrale
 
 Questa operazione approssima l'**integrale** della densità continua:
 
@@ -677,7 +713,7 @@ $$
 P(\theta \geq 0.75) = \int_{0.75}^{1} p(\theta \mid D) \, d\theta.
 $$
 
-Poiché la griglia è fitta (101 punti) e le probabilità sono già normalizzate, la somma fornisce un’ottima approssimazione dell’area sotto la curva.
+Poiché la griglia è fitta (101 punti) e le probabilità sono già normalizzate, la somma fornisce un'ottima approssimazione dell'area sotto la curva.
 
 ---
 
@@ -689,30 +725,23 @@ prob_ge_070 <- sum(post_test[theta >= 0.70])
 prob_ge_070
 ```
 
-**Risultato:**  
-circa l’88% di probabilità che la sensibilità sia ≥ 0.70.
+Circa l'88% di probabilità che la sensibilità sia almeno 0.70. 
 
-* Questa forma di inferenza **probabilistica** — che fornisce una *distribuzione completa* delle credenze anziché una singola *stima puntuale* — è direttamente utilizzabile per guidare le scelte cliniche e valutare l’appropriatezza del test in contesti reali.
+. . .
 
----
+Questa forma di inferenza probabilistica — che fornisce una *distribuzione completa* delle credenze anziché una singola stima puntuale — è direttamente utilizzabile per guidare le scelte cliniche e valutare l'appropriatezza del test in contesti reali.
 
-## Esercizio: stimare la propria competenza all'esame
+# Parte 6: esercizio — stimare la propria competenza
+
+## Il contesto
 
 Questo esercizio usa l'inferenza bayesiana per rispondere a una domanda che vi interessa direttamente:
 
 > "Sulla base della mia prestazione al test, qual è la probabilità che io abbia una competenza sufficiente per superare l'esame?"
 
----
+. . .
 
-## Il contesto
-
-L'esame consiste in **20 domande a scelta multipla**, ciascuna con 5 alternative.
-
-**Sistema di punteggio:**
-
-- risposta corretta: **+1 punto**;
-- risposta sbagliata: **−0.25 punti** (penalizzazione per scoraggiare il guessing);
-- risposta non data: **0 punti**.
+L'esame consiste in **20 domande a scelta multipla**, ciascuna con 5 alternative. Sistema di punteggio: risposta corretta +1 punto, risposta sbagliata −0.25 punti (penalizzazione per scoraggiare il guessing), risposta non data 0 punti.
 
 ---
 
@@ -724,110 +753,91 @@ Marco ha completato il test:
 - **5 risposte sbagliate**;
 - **3 risposte non date**.
 
-**Punteggio grezzo:** $12 \times 1 + 5 \times (-0.25) + 3 \times 0 = 12 - 1.25 = 10.75$.
+. . .
 
-Ma a noi interessa stimare la sua **vera competenza** $\theta$.
+**Punteggio grezzo:** $12 \times 1 + 5 \times (-0.25) + 3 \times 0 = 12 - 1.25 = 10.75$.
 
 ---
 
-## Cos'è θ in questo contesto?
-
-$\theta$ = probabilità che Marco **risponda correttamente** a una domanda *quando decide di rispondere*.
-
-- Se $\theta = 0.20$: Marco sta tirando a caso (1 su 5 alternative).
-- Se $\theta = 0.50$: Marco ha una competenza sufficiente.
-- Se $\theta = 0.80$: Marco ha un'ottima preparazione.
+Ma a noi interessa stimare la sua **vera competenza** $\theta$ = probabilità che Marco risponda correttamente a una domanda quando decide di rispondere.
 
 ---
 
 ## Il modello bayesiano
 
-**Vogliamo stimare $\theta$ combinando:**
+**Passo 1 — Prior:** dai dati degli anni passati sappiamo che molti studenti arrivano poco preparati, la competenza media si aggira intorno a 0.30, e solo una minoranza ha competenze elevate. Usiamo un **prior Beta(3, 7)**, con media $\frac{3}{10} = 0.30$.
 
-1. **prior**: cosa sappiamo sulla distribuzione delle competenze degli studenti?
-2. **verosimiglianza**: cosa ci dicono le risposte di Marco?
-
----
-
-## Passo 1: La distribuzione a priori
-
-Dai dati degli anni passati sappiamo che:
-
-- molti studenti arrivano all'esame poco preparati;
-- la competenza media si aggira intorno a 0.30;
-- solo una minoranza ha competenze elevate.
-
-Usiamo un **prior Beta(3, 7)**: asimmetrico, con media 0.30.
-
----
-
-## Perché Beta(3, 7)?
-
-La media di una distribuzione Beta(a, b) è:
-
-$$
-\text{Media} = \frac{a}{a + b} = \frac{3}{3 + 7} = 0.30.
-$$
-
-Questo riflette l'esperienza: la maggior parte degli studenti ha competenze modeste.
-
----
-
-## Visualizziamo il prior
-
-```{r}
-#| fig-height: 4.5
+```r
 theta <- seq(0, 1, length.out = 101)
 prior <- dbeta(theta, 3, 7)
 
-plot(theta, prior, type = "l", lwd = 2, col = "steelblue",
-     xlab = "Competenza (θ)", ylab = "Densità",
-     main = "Prior Beta(3, 7): competenza media = 0.30")
-abline(v = 0.3, col = "steelblue", lty = 2)
+ggplot(data.frame(theta = theta, prior = prior), aes(x = theta, y = prior)) +
+  geom_line(linewidth = 1.2, color = "steelblue") +
+  geom_vline(xintercept = 0.3, color = "steelblue", linetype = "dashed") +
+  labs(x = "Competenza (θ)", y = "Densità",
+       title = "Prior Beta(3, 7): competenza media = 0.30") +
+  theme_minimal(base_size = 14)
 ```
 
 ---
 
-## Passo 2: La verosimiglianza
+```{r}
+#| echo: false
+#| 
+theta <- seq(0, 1, length.out = 101)
+prior <- dbeta(theta, 3, 7)
 
-Marco ha risposto a 17 domande (12 + 5), lasciandone 3 in bianco.
-
-Delle 17 risposte date:
-
-- **12 corrette**;
-- **5 sbagliate**.
-
-Questo è un problema **binomiale**: 12 successi su 17 prove.
-
+ggplot(data.frame(theta = theta, prior = prior), aes(x = theta, y = prior)) +
+  geom_line(linewidth = 1.2, color = "steelblue") +
+  geom_vline(xintercept = 0.3, color = "steelblue", linetype = "dashed") +
+  labs(x = "Competenza (θ)", y = "Densità",
+       title = "Prior Beta(3, 7): competenza media = 0.30") +
+  theme_minimal(base_size = 14)
+```
 ---
 
-## Calcoliamo la verosimiglianza
+## Passo 2: la verosimiglianza
 
-```{r}
-# Dati di Marco
+Marco ha risposto a 17 domande (12 + 5), lasciandone 3 in bianco. Delle 17 risposte date, **12 corrette** e **5 sbagliate**. Questo è un problema **binomiale**: 12 successi su 17 prove.
+
+```r
 risposte_corrette <- 12
-risposte_date <- 17  # 12 corrette + 5 sbagliate
+risposte_date <- 17
 
-# Verosimiglianza per ogni valore di theta
 verosim <- dbinom(risposte_corrette, risposte_date, prob = theta)
+
+ggplot(data.frame(theta = theta, verosim = verosim), aes(x = theta, y = verosim)) +
+  geom_line(linewidth = 1.2, color = "forestgreen") +
+  geom_vline(xintercept = 12/17, color = "darkred", linetype = "dashed") +
+  annotate("text", x = 0.78, y = max(verosim) * 0.9, 
+           label = "MLE = 0.71", color = "darkred", size = 4) +
+  labs(x = "Competenza (θ)", y = "Verosimiglianza",
+       title = "Verosimiglianza: 12 corrette su 17 risposte") +
+  theme_minimal(base_size = 14)
 ```
 
 ---
-
-## Visualizziamo la verosimiglianza
 
 ```{r}
-#| fig-height: 4.5
-plot(theta, verosim, type = "l", lwd = 2, col = "forestgreen",
-     xlab = "Competenza (θ)", ylab = "Verosimiglianza",
-     main = "Verosimiglianza: 12 corrette su 17 risposte")
-abline(v = 12/17, col = "red", lty = 2)
-text(0.78, max(verosim)*0.9, "MLE = 0.71", col = "red")
+#| echo: false
+risposte_corrette <- 12
+risposte_date <- 17
+
+verosim <- dbinom(risposte_corrette, risposte_date, prob = theta)
+
+ggplot(data.frame(theta = theta, verosim = verosim), aes(x = theta, y = verosim)) +
+  geom_line(linewidth = 1.2, color = "forestgreen") +
+  geom_vline(xintercept = 12/17, color = "darkred", linetype = "dashed") +
+  annotate("text", x = 0.78, y = max(verosim) * 0.9, 
+           label = "MLE = 0.71", color = "darkred", size = 4) +
+  labs(x = "Competenza (θ)", y = "Verosimiglianza",
+       title = "Verosimiglianza: 12 corrette su 17 risposte") +
+  theme_minimal(base_size = 14)
 ```
 
 ---
 
-## Passo 3: La distribuzione a posteriori
+## Passo 3: la distribuzione a posteriori
 
 ```{r}
 # Posterior = Prior × Verosimiglianza (normalizzato)
@@ -842,44 +852,60 @@ posterior <- prodotto / sum(prodotto)
 ```{r}
 #| echo: false
 #| fig-height: 5
-# Normalizziamo per confrontare
-prior_norm <- prior / max(prior)
-verosim_norm <- verosim / max(verosim)
-post_norm <- posterior / max(posterior)
 
-plot(theta, prior_norm, type = "l", lwd = 2, col = "steelblue",
-     xlab = "Competenza (θ)", ylab = "Densità (normalizzata)",
-     main = "Stima bayesiana della competenza di Marco", ylim = c(0, 1.1))
-lines(theta, verosim_norm, lwd = 2, col = "forestgreen")
-lines(theta, post_norm, lwd = 2, col = "coral")
-legend("topright", c("Prior (popolazione)", "Verosimiglianza (dati)", "Posterior (stima)"),
-       col = c("steelblue", "forestgreen", "coral"), lwd = 2)
+# Normalizziamo per confrontare
+df_marco <- data.frame(
+  theta = theta,
+  Prior = prior / max(prior),
+  Verosimiglianza = verosim / max(verosim),
+  Posterior = posterior / max(posterior)
+)
+
+df_marco_long <- pivot_longer(
+  df_marco,
+  cols = c(Prior, Verosimiglianza, Posterior),
+  names_to = "Distribuzione",
+  values_to = "Densità"
+)
+
+df_marco_long$Distribuzione <- factor(
+  df_marco_long$Distribuzione,
+  levels = c("Prior", "Verosimiglianza", "Posterior"),
+  labels = c("Prior (popolazione)", "Verosimiglianza (dati)", "Posterior (stima)")
+)
+
+colori_marco <- c(
+  "Prior (popolazione)" = "steelblue",
+  "Verosimiglianza (dati)" = "forestgreen",
+  "Posterior (stima)" = "coral"
+)
+
+ggplot(df_marco_long, aes(x = theta, y = Densità, color = Distribuzione)) +
+  geom_line(linewidth = 1.2) +
+  scale_color_manual(values = colori_marco) +
+  labs(x = "Competenza (θ)", y = "Densità (normalizzata)",
+       title = "Stima bayesiana della competenza di Marco", color = "") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "top")
 ```
 
 ---
 
 ## Interpretazione
 
-- **Prior** (blu): prima del test, assumevamo che Marco fosse uno studente "tipico" (θ ≈ 0.30).
+- **Prior** (blu): prima del test, assumevamo che Marco fosse uno studente "tipico" ($\theta \approx 0.30$).
 - **Verosimiglianza** (verde): i suoi dati (12/17 = 71%) suggeriscono una competenza molto più alta.
 - **Posterior** (rosso): la stima aggiornata è un compromesso, spostato verso i dati.
 
-I dati di Marco hanno **aggiornato** in maniera considerevole le nostre credenze!
+I dati di Marco hanno **aggiornato** in maniera considerevole le nostre credenze.
 
 ---
 
-## Passo 4: Marco passerà l'esame?
+## Marco passerà l'esame?
 
-**Regola:** per superare l'esame, la competenza stimata deve superare il valore soglia di $\theta$ = 0.50, che rappresenta una competenza "sufficiente".
-
-$$\text{Soglia: } \theta \geq 0.50.$$
-
----
-
-## Calcoliamo la probabilità
+Per superare l'esame, la competenza stimata deve superare $\theta = 0.50$ (competenza "sufficiente").
 
 ```{r}
-# Probabilità che θ ≥ 0.50
 soglia <- 0.50
 prob_sufficiente <- sum(posterior[theta >= soglia])
 round(prob_sufficiente, 3)
@@ -894,30 +920,20 @@ Marco ha circa il **74%** di probabilità di avere una competenza sufficiente.
 ```{r}
 #| echo: false
 #| fig-height: 5
-plot(theta, posterior, type = "l", lwd = 2, col = "coral",
-     xlab = "Competenza (θ)", ylab = "Posterior",
-     main = "Probabilità di superare la soglia (θ ≥ 0.50)")
 
-# Colora l'area sopra la soglia
-idx_sopra <- theta >= soglia
-polygon(c(soglia, theta[idx_sopra], 1), 
-        c(0, posterior[idx_sopra], 0),
-        col = rgb(0, 0.5, 0, 0.3), border = NA)
-abline(v = soglia, col = "darkgreen", lty = 2, lwd = 2)
-text(0.7, max(posterior)*0.7, 
-     paste0("P(θ ≥ 0.50) = 74%"), 
-     col = "darkgreen", cex = 1.2)
+df_soglia <- data.frame(theta = theta, posterior = posterior)
+
+ggplot(df_soglia, aes(x = theta, y = posterior)) +
+  geom_line(linewidth = 1.2, color = "coral") +
+  geom_area(data = subset(df_soglia, theta >= soglia), 
+            fill = "forestgreen", alpha = 0.3) +
+  geom_vline(xintercept = soglia, color = "darkgreen", linetype = "dashed", linewidth = 1) +
+  annotate("text", x = 0.7, y = max(posterior) * 0.7,
+           label = "P(θ ≥ 0.50) = 74%", color = "darkgreen", size = 5) +
+  labs(x = "Competenza (θ)", y = "Posterior",
+       title = "Probabilità di superare la soglia (θ ≥ 0.50)") +
+  theme_minimal(base_size = 14)
 ```
-
----
-
-## Perché questo risultato?
-
-* Marco ha ottenuto 12/17 = 71% di risposte corrette.
-
-* Questo è **molto meglio** di quanto ci si può aspettare in base al prior (media 30%).
-
-* I dati hanno "vinto" sul prior perché l'evidenza è sufficientemente forte.
 
 ---
 
@@ -940,6 +956,7 @@ verosim_giovanni <- dbinom(10, 17, theta)
 verosim_luca <- dbinom(7, 17, theta)
 
 # Tre posterior (stesso prior per tutti)
+prior <- dbeta(theta, 3, 7)
 post_anna <- (prior * verosim_anna) / sum(prior * verosim_anna)
 post_giovanni <- (prior * verosim_giovanni) / sum(prior * verosim_giovanni)
 post_luca <- (prior * verosim_luca) / sum(prior * verosim_luca)
@@ -952,15 +969,25 @@ post_luca <- (prior * verosim_luca) / sum(prior * verosim_luca)
 ```{r}
 #| echo: false
 #| fig-height: 5
-plot(theta, post_anna, type = "l", lwd = 2, col = "darkgreen",
-     xlab = "Competenza (θ)", ylab = "Posterior",
-     main = "Confronto tra tre studenti", xlim = c(0, 1))
-lines(theta, post_giovanni, lwd = 2, col = "orange")
-lines(theta, post_luca, lwd = 2, col = "red")
-abline(v = soglia, lty = 2, lwd = 2)
-text(0.52, max(post_anna)*0.5, "Soglia", srt = 90)
-legend("topright", c("Anna (15/17)", "Giovanni (10/17)", "Luca (7/17)"),
-       col = c("darkgreen", "orange", "red"), lwd = 2)
+
+df_studenti <- data.frame(
+  theta = rep(theta, 3),
+  posterior = c(post_anna, post_giovanni, post_luca),
+  studente = rep(c("Anna (15/17)", "Giovanni (10/17)", "Luca (7/17)"), each = length(theta))
+)
+
+df_studenti$studente <- factor(df_studenti$studente,
+  levels = c("Anna (15/17)", "Giovanni (10/17)", "Luca (7/17)"))
+
+ggplot(df_studenti, aes(x = theta, y = posterior, color = studente)) +
+  geom_line(linewidth = 1.2) +
+  geom_vline(xintercept = soglia, linetype = "dashed", linewidth = 1) +
+  annotate("text", x = 0.52, y = max(post_anna) * 0.5, label = "Soglia", angle = 90, size = 3.5) +
+  scale_color_manual(values = c("darkgreen", "orange", "red")) +
+  labs(x = "Competenza (θ)", y = "Posterior",
+       title = "Confronto tra tre studenti", color = "") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "top")
 ```
 
 ---
@@ -996,35 +1023,9 @@ La prestazione di Giovanni (44%) è vicina alla soglia, quindi c'è molta incert
 
 ## Il ruolo del prior
 
-* Il prior Beta(3, 7) riflette che **la maggior parte degli studenti è poco preparata**.
+Il prior Beta(3, 7) riflette che **la maggior parte degli studenti è poco preparata**. Quando uno studente ottiene un buon risultato (come Anna), i dati "vincono" facilmente sul prior. Ma per Giovanni, la cui prestazione è modesta, il prior ha ancora influenza.
 
-* Quando uno studente ottiene un buon risultato (come Anna), i dati "vincono" facilmente sul prior.
-
-* Ma per Giovanni, la cui prestazione è modesta, il prior ha ancora influenza.
-
-<!-- --- -->
-
-<!-- ## Marco ha fatto bene a non rispondere? -->
-
-<!-- Marco ha lasciato 3 domande in bianco. È stata una scelta saggia? -->
-
-<!-- **Scenario ipotetico:** se Marco avesse risposto a caso alle 3 domande: -->
-
-<!-- - probabilità di indovinare ciascuna: 1/5 = 20%; -->
-<!-- - risultato atteso: ~0.6 corrette e ~2.4 sbagliate. -->
-
-<!-- --- -->
-
-<!-- ## Confronto delle strategie -->
-
-<!-- | Strategia | Corrette | Sbagliate | Totale risposte | Percentuale | -->
-<!-- |-----------|----------|-----------|-----------------|-------------| -->
-<!-- | Non rispondere (reale) | 12 | 5 | 17 | **71%** | -->
-<!-- | Rispondere a caso | ~12.6 | ~7.4 | 20 | **63%** | -->
-
-<!-- Rispondendo a caso, Marco avrebbe **abbassato** la sua percentuale di successo! La strategia di non rispondere quando non si sa è **razionalmente giustificata**. -->
-
-<!-- --- -->
+---
 
 ## Il messaggio
 
@@ -1034,31 +1035,46 @@ L'inferenza bayesiana permette di:
 2. **combinare** informazioni pregresse (prior) con i dati del test;
 3. **calcolare direttamente** la probabilità di superare una soglia.
 
-Questo è molto più informativo di un semplice punteggio!
+Questo è molto più informativo di un semplice punteggio.
 
 ---
 
 ## Nota sulla penalizzazione
 
-La penalizzazione (−0.25 per le risposte sbagliate) scoraggia il guessing.
+La penalizzazione (−0.25 per le risposte sbagliate) scoraggia il guessing. Se uno studente tira a caso su 5 alternative, il guadagno atteso è: $0.20 \times 1 + 0.80 \times (-0.25) = 0.20 - 0.20 = 0$.
 
-Se uno studente tira a caso su 5 alternative:
+Rispondere a caso non conviene — la penalizzazione è calibrata esattamente per annullare il vantaggio del guessing.
 
-- probabilità di indovinare: 1/5 = 0.20;
-- guadagno atteso: $0.20 \times 1 + 0.80 \times (-0.25) = 0.20 - 0.20 = 0$.
+
+# Riepilogo e percorso del corso
+
+## Il percorso fin qui {background-color="#27ae60" style="color: white;"}
+
+. . .
+
+**Lezioni 5-11** — Probabilità, distribuzioni, verosimiglianza: gli strumenti matematici.
+
+**Lezioni 14-16** — L'inferenza frequentista: cosa fa, come funziona, e perché ha generato una crisi di riproducibilità.
+
+**Lezione 17 (oggi)** — L'inferenza bayesiana: prior, verosimiglianza, posterior. Il calcolo a mano e l'approssimazione a griglia. L'effetto dei dati e del prior.
 
 ---
 
-## Riflessione finale
+## In sintesi
 
-Questo esercizio mostra che l'inferenza bayesiana risponde a domande **direttamente rilevanti**:
+Avete ora visto entrambi i paradigmi.
 
-> "Qual è la probabilità che la mia vera competenza sia sopra la soglia?"
+Il **frequentismo** risponde a:  
+$P(\text{dati} \mid H_0)$ — probabilità dei dati **assumendo vera** l'ipotesi nulla.
 
-Questa è la domanda che vi ponete davvero — e ora sapete come rispondere.
+Il **bayesianesimo** risponde a:  
+$P(\theta \mid \text{dati})$ — probabilità dei parametri **dopo aver osservato** i dati.
+
+. . .
+
+Il resto del corso sarà dedicato a sviluppare gli strumenti bayesiani che vi permetteranno di porre — e rispondere — domande più dirette e rilevanti per la ricerca.
 
 ---
-
 
 ## Riepilogo del segmento
 
@@ -1068,7 +1084,9 @@ Questa è la domanda che vi ponete davvero — e ora sapete come rispondere.
 
 3. Con **più dati**, il posterior è dominato dalla verosimiglianza.
 
-4. L'inferenza bayesiana fornisce **risposte dirette** alle domande cliniche.
+4. Il **prior è esplicito e trasparente** — a differenza delle assunzioni nascoste nel frequentismo.
+
+5. L'inferenza bayesiana fornisce **risposte dirette** alle domande cliniche e di ricerca.
 
 ---
 
@@ -1096,4 +1114,4 @@ Materiale di studio: https://ccaudek.github.io/utet-companion/
 
 "Quantificare e aggiornare l'incertezza. L'apprendimento sequenziale."
 
-Vedremo come il posterior di oggi diventa il prior di domani.
+Vedremo come il posterior di oggi diventa il prior di domani — il meccanismo che rende l'inferenza bayesiana un sistema di **apprendimento cumulativo**.

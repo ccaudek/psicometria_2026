@@ -1,7 +1,7 @@
 ---
 title: "Probabilità condizionata come aggiornamento"
 subtitle: "Dal linguaggio degli eventi all'idea di apprendere dai dati"
-version: 1.0
+version: 2.0
 author:
   - name: Corrado Caudek
     orcid: 0000-0002-1404-0420
@@ -38,14 +38,43 @@ library(knitr)
 library(kableExtra)
 ```
 
+# Un caso clinico per cominciare {background-color="#e74c3c" style="color: white;"}
+
+## Una mattina in ambulatorio
+
+Siete psicologi in un servizio di neuropsichiatria infantile. Un bambino di 8 anni, Marco, viene portato dalla madre perché "non riesce a stare fermo a scuola".
+
+. . .
+
+Prima ancora di incontrare Marco, avete già delle **informazioni preliminari**:
+
+- la prevalenza dell'ADHD nella popolazione scolastica è circa il 5%;
+- ma in un servizio specialistico, la prevalenza tra chi si presenta è molto più alta — circa il 30%.
+
+---
+
+**Domanda:**  
+la vostra stima sulla probabilità che Marco abbia l'ADHD è la stessa nei due contesti?
+
+. . .
+
+No: il **contesto informativo** cambia radicalmente la vostra valutazione. 
+
+Questa è l'essenza della probabilità condizionata.
+
+---
+
 ## Obiettivo {.unnumbered .unlisted}
 
 In questa lezione:
 
-- esamineremo la **probabilità condizionata** come aggiornamento delle credenze
-- definiremo formalmente $P(A \mid B)$ e le sue **proprietà**
-- introdurremo l'**indipendenza**, la **regola del prodotto** e la **probabilità totale**
-- applicheremo questi strumenti a problemi psicologici reali
+- esamineremo la **probabilità condizionata** come aggiornamento delle credenze;
+- definiremo formalmente $P(A \mid B)$ e le sue **proprietà**;
+- introdurremo l'**indipendenza**, la **regola del prodotto** e la **probabilità totale**;
+- applicheremo questi strumenti a problemi psicologici reali;
+- vedremo perché il **paradosso di Simpson** è una trappola concreta per chi valuta i trattamenti.
+
+---
 
 > Riferimento: https://ccaudek.github.io/utet-prob/ — Capitoli 6-7
 
@@ -55,9 +84,13 @@ In questa lezione:
 
 In psicologia, raramente ci troviamo a ragionare in situazioni in cui non abbiamo alcuna informazione. Quasi sempre abbiamo **informazioni parziali**:
 
+. . .
+
 - "Sapendo che il paziente ha ottenuto un esito positivo al test..."
 - "Dato che il partecipante è nel gruppo sperimentale..."
 - "Considerando che lo stimolo era congruente..."
+
+. . .
 
 La **probabilità condizionata** è lo strumento matematico che ci permette di formalizzare questo tipo di ragionamento.
 
@@ -71,11 +104,37 @@ flowchart LR
     B --> C["Credenza aggiornata:<br/>P(Disturbo | Test+) = ?"]
 ```
 
+. . .
+
 * Lo **stato clinico** del paziente rimane invariato.
 
 * Si modifica soltanto il nostro **stato epistemico** sulla sua condizione, attraverso l'integrazione formale del nuovo dato osservativo.
 
-**In sintesi:** la decisione clinica si basa non sulla realtà oggettiva in sé, ma sulla sua rappresentazione probabilistica, che viene iterativamente raffinata tramite l'evidenza empirica.
+. . .
+
+**In sintesi:** la decisione clinica si basa non sulla realtà oggettiva in sé, ma sulla sua *rappresentazione probabilistica*, che viene iterativamente raffinata tramite l'evidenza empirica.
+
+---
+
+## Il ragionamento clinico *è* ragionamento condizionato
+
+Ogni giorno, uno psicologo aggiorna le proprie valutazioni:
+
+. . .
+
+::: {style="font-size: 0.75em; line-height: 1.05;"}
+
+| Momento | Ciò che sapete | Stima |
+|---------|---------------|-------|
+| Prima della visita | Solo dati epidemiologici | $P(\text{ADHD}) = 0.05$ |
+| Dopo l'anamnesi | Madre riporta sintomi specifici | $P(\text{ADHD} \mid \text{Anamnesi})$ |
+| Dopo il test | Risultato positivo al CBCL | $P(\text{ADHD} \mid \text{Anamnesi, Test+})$ |
+| Dopo l'osservazione | Comportamento in seduta | $P(\text{ADHD} \mid \text{Anamnesi, Test+, Oss.})$ |
+:::
+
+. . .
+
+La valutazione clinica è una **catena di condizionamenti successivi**. Questo non è un'analogia: è esattamente ciò che la probabilità condizionata formalizza.
 
 ---
 
@@ -83,11 +142,15 @@ flowchart LR
 
 Quando scriviamo $P(A)$, in realtà abbreviamo $P(A \mid \mathcal{I})$, dove $\mathcal{I}$ è lo **sfondo informativo**.
 
+. . .
+
 Nel linguaggio quotidiano usiamo espressioni come:
 
 - "Data questa informazione..."
 - "Sapendo che..."
 - "Alla luce di..."
+
+. . .
 
 La probabilità condizionata non è un caso speciale: è la **forma generale** del ragionamento probabilistico.
 
@@ -146,16 +209,22 @@ In uno studio, 200 partecipanti sono classificati così:
 Dalla definizione:
 
 $$
-P(\text{Errore} \mid \text{Ansia Alta}) = \frac{P(\text{Errore} \cap \text{Ansia Alta})}{P(\text{Ansia Alta})}
+P(\text{Errore} \mid \text{Ansia Alta}) = \frac{P(\text{Errore} \cap \text{Ansia Alta})}{P(\text{Ansia Alta})}.
 $$
 
 Usando le frequenze:
 
 $$
-P(\text{Errore} \mid \text{Ansia Alta}) = \frac{45/200}{100/200} = \frac{45}{100} = 0.45
+P(\text{Errore} \mid \text{Ansia Alta}) = \frac{45/200}{100/200} = \frac{45}{100} = 0.45.
 $$
 
-**Interpretazione:** tra chi ha ansia alta, il 45% commette errori.
+---
+
+**Interpretazione:**  
+
+tra chi ha ansia alta, il 45% commette errori — rispetto al 30% nel gruppo con ansia bassa. 
+
+L'ansia *fornisce informazioni* sulla prestazione: conoscere il livello d'ansia cambia la nostra previsione.
 
 ---
 
@@ -181,7 +250,9 @@ $$
 
 Sia $P(\text{Ansia} \mid \text{Dormito male}) = 0.35$.
 
-**Calcola:** $P(\text{No Ansia} \mid \text{Dormito male})$.
+**Calcola:** 
+
+$$P(\text{No Ansia} \mid \text{Dormito male}).$$
 
 ---
 
@@ -228,12 +299,31 @@ P(\text{Nessuna malattia} \mid \text{Test+})
 \end{aligned}
 $$
 
-**Interpretazione:** tra tutti i soggetti con test positivo, il 92% non presenta la malattia, nonostante il risultato positivo del test.
-
+**Interpretazione:** tra tutti i soggetti con test positivo, *il 92% non presenta la malattia, nonostante il risultato positivo del test*.
 
 ---
 
-## Esercizio 4 — Quando il positivo non basta
+## Fermati e rifletti {background-color="#2c3e50" style="color: white;"}
+
+Il risultato dell'Esercizio 3 è controintuitivo per molte persone — anche per professionisti della salute.
+
+. . .
+
+Se un test è positivo, la prima reazione è pensare: *"Il paziente è probabilmente malato"*. Ma quando la malattia è rara, la maggior parte dei positivi sono **falsi allarmi**.
+
+---
+
+## Fermati e rifletti {background-color="#2c3e50" style="color: white;"}
+
+Questa confusione ha un nome in letteratura: **base-rate neglect** [@gigerenzer1995].
+
+Gigerenzer e colleghi hanno documentato che perfino medici esperti sovrastimano drasticamente la probabilità post-test quando ragionano in termini di percentuali anziché di frequenze.
+
+Torneremo su questo punto in modo sistematico nella seconda parte della lezione, con il **teorema di Bayes**.
+
+---
+
+## Esercizio 4 — Quando il risultato positivo non basta
 
 Un test:
 
@@ -261,7 +351,17 @@ P(\text{Falso positivo} \mid \text{Test+}) &= 1 - P(\text{Malattia} \mid \text{T
 \end{align}
 $$
 
-**Messaggio chiave:** un test può essere “buono” e tuttavia la maggior parte dei risultati positivi può essere attribuita a individui sani.
+**Messaggio chiave:** un test può essere "buono" e tuttavia la maggior parte dei risultati positivi può essere attribuita a individui sani.
+
+---
+
+### Implicazione per la pratica clinica
+
+Questo risultato ha conseguenze dirette:
+
+- se comunicate a un paziente *"il test è positivo"* senza contesto, potreste generare **ansia ingiustificata** nel 98% dei casi;
+- in uno screening di massa (es. disturbi dell'apprendimento nella scuola primaria), i **costi psicologici** dei falsi positivi — etichettamento precoce, ansia genitoriale, interventi non necessari — possono superare i benefici;
+- la decisione di fare screening non è solo tecnica: è una scelta che richiede di bilanciare sensibilità, specificità e **prevalenza**.
 
 ---
 
@@ -289,6 +389,8 @@ $$
 
 - se $P(\text{Ansia} \mid \text{Caffè}) \neq P(\text{Ansia})$: il consumo di caffè **fornisce informazioni** sull'ansia.
 
+Nella ricerca psicologica, quando diciamo che due variabili sono "associate" o "correlate", stiamo dicendo proprio questo: **non sono indipendenti**. Conoscere una cambia la nostra previsione sull'altra.
+
 ---
 
 ## Esercizio 5 - Verifica dell'indipendenza
@@ -311,7 +413,7 @@ P(\text{Corretto} \mid \text{Prime congruente}) = P(\text{Corretto}) = 0.80
 $$
 gli eventi **sono indipendenti**. Il prime congruente non modifica la probabilità di risposta corretta.
 
-**Implicazione:** In questo esperimento pilota, il priming non ha mostrato un effetto misurabile.
+**Implicazione:** in questo esperimento, il priming non ha mostrato un effetto misurabile.
 
 ---
 
@@ -357,9 +459,9 @@ $$
 Consideriamo uno studio sull'apprendimento:
 
 - il 40% dei partecipanti è assegnato alla condizione **feedback immediato**; gli altri alla condizione **feedback differito**;
-- nel gruppo che riceve **feedback immediato**, l’85% delle risposte è corretto.
+- nel gruppo che riceve **feedback immediato**, l'85% delle risposte è corretto.
 
-I due eventi **non sono indipendenti** (la correttezza dipende dal tipo di feedback ricevuto).
+I due eventi **non sono indipendenti** (l'accuratezza dipende dal tipo di feedback ricevuto).
 
 **Calcola:** 
 
@@ -464,9 +566,20 @@ $$
 
 ---
 
+### Osservazione cruciale
+
+Guardate la composizione di quel 16%:
+
+- **6.8%** proviene dai veri depressi (0.85 × 0.08)
+- **9.2%** proviene dai sani (0.10 × 0.92)
+
+Più della metà dei test positivi è generata da persone **senza depressione**. Questo non dipende dalla qualità del test: dipende dal fatto che i sani sono molti di più dei malati.
+
+---
+
 ## Esercizio 9 — Frequenze naturali
 
-Riformula l'Esercizio 6 usando **1000 persone**.
+Riformula l'Esercizio 8 usando **1000 persone**.
 
 ---
 
@@ -484,7 +597,9 @@ $$
 P(+) = \frac{160}{1000} = 0.16
 $$
 
-Le frequenze naturali rendono il calcolo **trasparente**.
+Le frequenze naturali rendono il calcolo **trasparente**. Notate come sia immediato "vedere" che dei 160 positivi, 92 sono falsi allarmi.
+
+Gigerenzer [-@gigerenzer1995] ha dimostrato che le frequenze naturali migliorano drasticamente l'accuratezza del ragionamento probabilistico, sia nei profani che nei professionisti clinici.
 
 ---
 
@@ -524,15 +639,23 @@ La contraddizione nasce da una **distribuzione non bilanciata** dei pazienti nei
 
 La differenza nella **composizione dei gruppi** (variabile confondente) domina e inverte l'apparente effetto della procedura a livello aggregato.
 
+---
+
+### Un esempio concreto in psicologia clinica
+
+Immaginate di confrontare due approcci terapeutici per la depressione — CBT e terapia psicodinamica — osservando i tassi di remissione. Se i pazienti più gravi vengono inviati preferenzialmente alla CBT (perché considerata più strutturata), il dato aggregato potrebbe favorire la psicodinamica semplicemente perché lavora con pazienti meno compromessi.
+
+Questo non è un esempio accademico: è esattamente il tipo di bias che si incontra negli studi osservazionali e nella pratica dei servizi, dove l'assegnazione ai trattamenti non è randomizzata.
 
 ---
 
-### Il meccanismo del paradosso
+### La lezione del paradosso di Simpson
 
 **La lezione:** 
 
-* l'analisi aggregata può essere **ingannevole**. 
+* L'analisi aggregata può essere **ingannevole**. 
 * L'indagine per sottogruppi omogenei è spesso essenziale per una valutazione corretta.
+* In termini probabilistici: **condizionare sulle variabili rilevanti** non è un optional, è una necessità.
 
 ---
 
@@ -665,6 +788,20 @@ Questo fenomeno è il **base-rate neglect** [@gigerenzer1995].
 
 ---
 
+## Perché questo conta nella vostra professione {background-color="#2c3e50" style="color: white;"}
+
+Come psicologi, userete test diagnostici quotidianamente — questionari per l'ansia, scale per la depressione, test neuropsicologici.
+
+. . .
+
+La tentazione sarà di pensare: *"Il test dice positivo, quindi il paziente ha il disturbo."* Ora sapete che questa inferenza è **sistematicamente sbagliata** quando la prevalenza è bassa.
+
+. . .
+
+Questo non è un esercizio astratto: è la differenza tra un'etichetta diagnostica corretta e un **falso positivo** che può avere conseguenze reali — stigma, trattamenti non necessari, ansia nel paziente e nella famiglia.
+
+---
+
 ## Messaggio conclusivo
 
 1. La **probabilità condizionata** formalizza l'aggiornamento delle credenze
@@ -686,6 +823,7 @@ Nel secondo segmento:
 - deriveremo il **teorema di Bayes**
 - calcoleremo $P(H \mid E)$ — la probabilità che ci interessa davvero
 - esploreremo l'**aggiornamento sequenziale** delle credenze
+- vedremo come un singolo strumento matematico connette diagnostica, ricerca e ragionamento clinico
 
 ---
 

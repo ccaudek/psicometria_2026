@@ -1,0 +1,1208 @@
+---
+title: "Flusso di lavoro riproducibile"
+subtitle: "Dimostrazione in R: gradi di libertà dello sperimentatore e crisi di replicabilità"
+version: 1.0
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+lang: it
+
+execute:
+  echo: true
+
+format:
+  revealjs:
+    theme: [default, ../revealjs.scss]
+    title-slide-attributes:
+      data-background-color: "#0072bc"
+    slide-number: c
+    show-slide-number: print
+    highlight-style: github
+    math: mathjax
+
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+## Obiettivo
+
+Mostrare con esempi minimi in R che:
+
+- piccole scelte analitiche (**gradi di libertà**) possono cambiare la conclusione
+- questo alimenta risultati “significativi” **per caso**
+- confondere **EDA** e **confermativa** porta a *fishing* (p-hacking/HARKing)
+- **la teoria** serve a vincolare le scelte (la statistica non la sostituisce)
+
+> ⚠️ Definizioni e distinzioni in questa demo sono **quiz-compatibili**.
+
+---
+
+## Definizione: gradi di libertà dello sperimentatore
+
+**Gradi di libertà dello sperimentatore**  
+: insieme delle scelte possibili (spesso non pre-specificate) su:
+
+- esclusioni (outlier, missing)
+- trasformazioni
+- costruzione di variabili (compositi)
+- modello statistico
+- regole di stopping (quando smettere di raccogliere dati)
+
+👉 Più gradi di libertà = più “bivi” nel *garden of forking paths*.
+
+---
+
+## Perché è un problema per la replicabilità
+
+Se le scelte sono guidate dall’esito (es. “cerco p < .05”):
+
+- aumenta la probabilità di falsi positivi
+- la “storia” si adatta al campione
+- in un nuovo campione l’effetto tende a sparire
+
+---
+
+## EDA vs confermativa (promemoria)
+
+- **EDA**: esplorare, generare ipotesi
+- **Confermativa**: testare ipotesi predefinite
+
+⚠️ Problema tipico:
+
+> fare EDA, ma *presentarla* come confermativa.
+
+---
+
+## Demo 1: outlier e conclusioni diverse
+
+Idea:
+
+- due condizioni (A, B)
+- dati con alcuni outlier
+- cambiamo la soglia di esclusione outlier
+- osserviamo che la conclusione (p-value) può cambiare
+
+---
+
+## Simuliamo due gruppi con outlier (con esito “didattico” controllato)
+
+Vogliamo ottenere **tre conclusioni diverse** a seconda della soglia:
+
+- **dataset completo**: *nessuna differenza* (p > .05)
+- **esclusione outlier con |z| > 2**: *effetto* (p < .05)
+- **esclusione outlier con |z| > 3**: *nessun effetto* (p > .05)
+
+Per essere sicuri che questo accada **sempre**, usiamo una simulazione
+che *cerca* un dataset che soddisfi questi criteri.
+
+---
+
+```{r}
+simulate_case <- function(seed_start = 2026, max_tries = 5000,
+                          n = 40, mu_A = 0, mu_B = 0.45,
+                          extreme_A = 10, extreme_B = -10,
+                          moderate_A = 6.3) {
+
+  for (k in 0:max_tries) {
+    set.seed(seed_start + k)
+
+    A <- rnorm(n, mean = mu_A, sd = 1)
+    B <- rnorm(n, mean = mu_B, sd = 1)
+
+    # Outlier estremi (molto influenti, tipicamente |z| > 3)
+    A[c(5, 12)] <- A[c(5, 12)] + extreme_A
+    B[7]        <- B[7] + extreme_B
+
+    # Outlier "moderato" (tipicamente 2 < |z| <= 3): rimosso da z=2 ma non da z=3
+    A[20] <- A[20] + moderate_A
+
+    dat1 <- data.frame(
+      y = c(A, B),
+      group = rep(c("A", "B"), each = n)
+    )
+
+    # p-value dataset completo
+    p0 <- t.test(y ~ group, data = dat1, var.equal = TRUE)$p.value
+
+    # z-score sul totale
+    z <- scale(dat1$y)[,1]
+
+    dat_z2 <- dat1[abs(z) <= 2, ]
+    dat_z3 <- dat1[abs(z) <= 3, ]
+
+    # p-value dopo esclusione outlier
+    p2 <- t.test(y ~ group, data = dat_z2, var.equal = TRUE)$p.value
+    p3 <- t.test(y ~ group, data = dat_z3, var.equal = TRUE)$p.value
+
+    if (p0 > 0.05 && p2 < 0.05 && p3 > 0.05) {
+      attr(dat1, "seed") <- seed_start + k
+      return(dat1)
+    }
+  }
+
+  stop("Nessun dataset trovato: prova ad aumentare max_tries o a cambiare moderate_A.")
+}
+
+dat1 <- simulate_case()
+attr(dat1, "seed")  # seed effettivo trovato
+```
+
+---
+
+```{r}
+summary(dat1$y)
+table(dat1$group)
+```
+
+---
+
+## Test $t$ senza rimozione outlier
+
+```{r}
+t0 <- t.test(y ~ group, data = dat1, var.equal = TRUE)
+t0$p.value
+t0$estimate
+```
+
+Interpretazione:
+
+> non c'è una "differenza statisticamente significativa". 
+
+---
+
+Ora considereremo
+
+- stesso dataset,
+- stessa domanda (“A e B differiscono?”),
+- una diversa soglia per dla gestione outlier.
+
+---
+
+## Rimozione outlier: soglia |z| > 2
+
+Definizione operativa (una delle tante):
+
+- calcolo z-score sul totale,
+- escludo casi con |z| > 2.
+
+```{r}
+z <- scale(dat1$y)[,1]
+dat_z2 <- dat1[abs(z) <= 2, ]
+
+nrow(dat1); nrow(dat_z2)
+```
+
+---
+
+```{r}
+t1 <- t.test(y ~ group, data = dat_z2, var.equal = TRUE)
+t1$p.value
+t1$estimate
+```
+
+---
+
+## Rimozione outlier: soglia |z| > 3
+
+Stessa logica, soglia diversa.
+
+```{r}
+dat_z3 <- dat1[abs(z) <= 3, ]
+
+nrow(dat1); nrow(dat_z3)
+t2 <- t.test(y ~ group, data = dat_z3, var.equal = TRUE)
+t2$p.value
+t2$estimate
+```
+
+---
+
+## Cosa abbiamo mostrato? 
+
+- La domanda è la stessa: “A e B differiscono?”.
+- I dati sono gli stessi (tranne esclusioni).
+- La conclusione può cambiare perché:
+  - criterio outlier è una **decisione analitica**,
+  - spesso non è predefinito.
+
+> ⚠️ Se scegliamo il criterio *dopo* aver visto i risultati, stiamo “ottimizzando” p.
+
+---
+
+## p-hacking e HARKing
+
+**p-hacking**  
+: modificare l’analisi (selezioni, trasformazioni, modelli) per ottenere p < .05.
+
+**HARKing**  
+: formulare (o riscrivere) ipotesi *dopo* aver visto i risultati, presentandole come a priori.
+
+---
+
+## Obiettivo di questa demo (aggiunta al Segmento 2)
+
+Mostrare con esempi minimi in R che:
+
+- piccole scelte analitiche (**gradi di libertà**) possono cambiare la conclusione
+- questo alimenta risultati “significativi” **per caso**
+- confondere **EDA** e **confermativa** porta a *fishing* (p-hacking/HARKing)
+- **la teoria** serve a vincolare le scelte (la statistica non la sostituisce)
+
+> ⚠️ Definizioni e distinzioni in questa demo sono **quiz-compatibili**.
+
+---
+
+## Definizione: gradi di libertà dello sperimentatore
+
+**Gradi di libertà dello sperimentatore**  
+: insieme delle scelte possibili (spesso non pre-specificate) su:
+- esclusioni (outlier, missing)
+- trasformazioni
+- costruzione di variabili (compositi)
+- modello statistico
+- regole di stopping (quando smettere di raccogliere dati)
+
+👉 Più gradi di libertà = più “bivi” nel *garden of forking paths*.
+
+---
+
+## Perché è un problema per la replicabilità
+
+Se le scelte sono guidate dall’esito (es. “cerco p < .05”):
+- aumenta la probabilità di falsi positivi
+- la “storia” si adatta al campione
+- in un nuovo campione l’effetto tende a sparire
+
+---
+
+## EDA vs confermativa (promemoria)
+
+- **EDA**: esplorare, generare ipotesi
+- **Confermativa**: testare ipotesi predefinite
+
+⚠️ Problema tipico:
+> fare EDA, ma *presentarla* come confermativa.
+
+---
+
+## Demo 1: outlier e conclusioni diverse
+
+Idea:
+- due condizioni (A, B)
+- dati con alcuni outlier
+- cambiamo la soglia di esclusione outlier
+- osserviamo che la conclusione (p-value) può cambiare
+
+---
+
+## Simuliamo due gruppi con outlier (con esito “didattico” controllato)
+
+Vogliamo ottenere **tre conclusioni diverse** a seconda della soglia:
+
+- **dataset completo**: *nessuna differenza* (p > .05)
+- **esclusione outlier con |z| > 2**: *effetto* (p < .05)
+- **esclusione outlier con |z| > 3**: *nessun effetto* (p > .05)
+
+Per essere sicuri che questo accada **sempre**, usiamo una simulazione
+che *cerca* un dataset che soddisfi questi criteri.
+
+```{r}
+simulate_case <- function(seed_start = 2026, max_tries = 5000,
+                          n = 40, mu_A = 0, mu_B = 0.45,
+                          extreme_A = 10, extreme_B = -10,
+                          moderate_A = 6.3) {
+
+  for (k in 0:max_tries) {
+    set.seed(seed_start + k)
+
+    A <- rnorm(n, mean = mu_A, sd = 1)
+    B <- rnorm(n, mean = mu_B, sd = 1)
+
+    # Outlier estremi (molto influenti, tipicamente |z| > 3)
+    A[c(5, 12)] <- A[c(5, 12)] + extreme_A
+    B[7]        <- B[7] + extreme_B
+
+    # Outlier "moderato" (tipicamente 2 < |z| <= 3): rimosso da z=2 ma non da z=3
+    A[20] <- A[20] + moderate_A
+
+    dat1 <- data.frame(
+      y = c(A, B),
+      group = rep(c("A", "B"), each = n)
+    )
+
+    # p-value dataset completo
+    p0 <- t.test(y ~ group, data = dat1, var.equal = TRUE)$p.value
+
+    # z-score sul totale
+    z <- scale(dat1$y)[,1]
+
+    dat_z2 <- dat1[abs(z) <= 2, ]
+    dat_z3 <- dat1[abs(z) <= 3, ]
+
+    # p-value dopo esclusione outlier
+    p2 <- t.test(y ~ group, data = dat_z2, var.equal = TRUE)$p.value
+    p3 <- t.test(y ~ group, data = dat_z3, var.equal = TRUE)$p.value
+
+    if (p0 > 0.05 && p2 < 0.05 && p3 > 0.05) {
+      attr(dat1, "seed") <- seed_start + k
+      return(dat1)
+    }
+  }
+
+  stop("Nessun dataset trovato: prova ad aumentare max_tries o a cambiare moderate_A.")
+}
+
+dat1 <- simulate_case()
+attr(dat1, "seed")  # seed effettivo trovato
+
+summary(dat1$y)
+table(dat1$group)
+```
+
+---
+
+## Test t senza rimozione outlier
+
+```{r}
+t0 <- t.test(y ~ group, data = dat1, var.equal = TRUE)
+t0$p.value
+t0$estimate
+```
+
+Interpretazione (da verbalizzare):
+- stesso dataset
+- stessa domanda (“A e B differiscono?”)
+- risultato dipende dalla gestione outlier
+
+---
+
+## Rimozione outlier: soglia |z| > 2
+
+Definizione operativa (una delle tante):
+- calcolo z-score sul totale
+- escludo casi con |z| > 2
+
+```{r}
+z <- scale(dat1$y)[,1]
+dat_z2 <- dat1[abs(z) <= 2, ]
+
+nrow(dat1); nrow(dat_z2)
+t1 <- t.test(y ~ group, data = dat_z2, var.equal = TRUE)
+t1$p.value
+t1$estimate
+```
+
+---
+
+## Rimozione outlier: soglia |z| > 3
+
+Stessa logica, soglia diversa.
+
+```{r}
+dat_z3 <- dat1[abs(z) <= 3, ]
+
+nrow(dat1); nrow(dat_z3)
+t2 <- t.test(y ~ group, data = dat_z3, var.equal = TRUE)
+t2$p.value
+t2$estimate
+```
+
+---
+
+## Cosa abbiamo mostrato? (Demo 1)
+
+- La domanda è la stessa: “A e B differiscono?”
+- I dati sono gli stessi (tranne esclusioni)
+- La conclusione può cambiare perché:
+  - criterio outlier è una **decisione analitica**
+  - spesso non è predefinito
+
+> ⚠️ Se scegliamo il criterio *dopo* aver visto i risultati, stiamo “ottimizzando” p.
+
+---
+
+## Quiz-compatibile: p-hacking e HARKing
+
+**p-hacking**  
+: modificare l’analisi (selezioni, trasformazioni, modelli) per ottenere p < .05.
+
+**HARKing**  
+: formulare (o riscrivere) ipotesi *dopo* aver visto i risultati, presentandole come a priori.
+
+---
+
+## Demo 2: variabile composita e conclusioni opposte
+
+Idea:
+
+- più indicatori di “benessere”,
+- costruiamo un composito (media di item/scale),
+- scegliamo sottoinsiemi diversi,
+- otteniamo conclusioni diverse (anche nel segno).
+
+⚠️ Qui costruiamo i dati in modo che:
+
+- con un composito “coerente” otteniamo **p < .05**
+- includendo anche indicatori problematici otteniamo **p > .05**
+- con un subset alternativo otteniamo **effetto opposto** (segno invertito)
+
+---
+
+## Simuliamo indicatori di benessere 
+
+Scenario: 8 indicatori.  
+
+- `i1–i4` misurano **benessere** (coerenti tra loro),  
+- `i5–i8` misurano in realtà **distress** (costrutto diverso / direzione opposta),  
+  ma vengono *trattati* come se fossero indicatori di benessere (errore tipico senza teoria chiara).
+  
+---
+
+```{r}
+set.seed(2027)
+
+n <- 80
+group <- rep(c("A", "B"), each = n/2)
+
+# Due tratti latenti distinti:
+# - wellbeing: B più alto
+# - distress:  B più alto (ma è "negativo" rispetto al benessere)
+wellbeing <- rnorm(n, 0, 1) + ifelse(group == "B", 0.55, 0)
+distress  <- rnorm(n, 0, 1) + ifelse(group == "B", 0.55, 0)
+
+make_item <- function(lat, loading, noise_sd = 1) loading * lat + rnorm(length(lat), 0, noise_sd)
+
+# Indicatori coerenti di benessere (effetto vero visibile)
+i1 <- make_item(wellbeing, loading = 0.9, noise_sd = 0.6)
+i2 <- make_item(wellbeing, loading = 0.8, noise_sd = 0.7)
+i3 <- make_item(wellbeing, loading = 0.85, noise_sd = 0.7)
+i4 <- make_item(wellbeing, loading = 0.75, noise_sd = 0.8)
+
+# Indicatori "problematici": misurano distress (dovrebbero essere invertiti o esclusi)
+# Qui li lasciamo in scala "negativa": valori alti = più distress = meno benessere
+i5 <- make_item(distress, loading = 0.85, noise_sd = 0.7)
+i6 <- make_item(distress, loading = 0.80, noise_sd = 0.8)
+i7 <- make_item(distress, loading = 0.75, noise_sd = 0.9)
+i8 <- make_item(distress, loading = 0.70, noise_sd = 0.9)
+
+dat2 <- data.frame(group, i1,i2,i3,i4,i5,i6,i7,i8)
+```
+
+---
+
+```{r}
+head(dat2)
+```
+
+---
+
+## Composito 1: solo indicatori coerenti di benessere (i1–i4)
+
+```{r}
+dat2$comp_wb <- rowMeans(dat2[, c("i1","i2","i3","i4")])
+
+t_wb <- t.test(comp_wb ~ group, data = dat2, var.equal = TRUE)
+t_wb$p.value
+```
+
+```{r}
+t_wb$estimate
+```
+
+---
+
+## Composito 2: includo anche indicatori di distress *senza* invertire (i1–i8)
+
+Questo è un errore concettuale comune: si sommano indicatori di costrutti diversi.
+
+```{r}
+# NOTA: qui NON invertiamo i5-i8
+dat2$comp_all <- rowMeans(dat2[, paste0("i", 1:8)])
+
+t_all <- t.test(comp_all ~ group, data = dat2, var.equal = TRUE)
+t_all$p.value
+```
+
+```{r}
+t_all$estimate
+```
+
+---
+
+## Composito 3: subset “alternativo” che può ribaltare il segno (i1,i2,i5,i6)
+
+Se metto insieme due indicatori di benessere con due indicatori di distress non invertiti,
+il composito può cambiare direzione.
+
+```{r}
+dat2$comp_alt <- rowMeans(dat2[, c("i1","i2","i5","i6")])
+
+t_alt <- t.test(comp_alt ~ group, data = dat2, var.equal = TRUE)
+t_alt$p.value
+```
+
+```{r}
+t_alt$estimate
+```
+
+---
+
+## Cosa abbiamo mostrato? 
+
+- La “variabile dipendente” non è un dato naturale: è una **costruzione**.
+
+. . .
+
+- Includere/escludere indicatori è una **decisione analitica**.
+- Senza una teoria chiara:
+  - si può scegliere il subset che “funziona”,
+  - e costruire una narrazione a posteriori.
+
+---
+
+## Il punto epistemico: la teoria vincola i gradi di libertà
+
+Senza teoria:
+
+- i costrutti sono ambigui,
+- gli indicatori sono “sostituibili”,
+- l’analisi diventa ricerca del risultato.
+
+---
+
+## Il punto epistemico: la teoria vincola i gradi di libertà
+
+Con la teoria:
+
+- si definisce il costrutto,
+- si giustifica la scelta degli indicatori,
+- si pre-specificano le analisi (**analisi confermativa**).
+
+---
+
+## *Fishing* nei dati: perché sembra funzionare
+
+Se provi molte analisi:
+
+- qualcuna darà $p$ < .05 *per caso*,
+- soprattutto con **effetti piccoli** e **misure rumorose**.
+
+> La statistica non può sostituire la teoria:  
+> può solo quantificare l’incertezza dato un modello e scelte definite.
+
+---
+
+## Ricordiamo
+
+Dati con **effetti piccoli** e **misure rumorose** sono la condizione **tipica** della ricerca psicologica.
+
+. . .
+
+Ma soprattutto,
+
+* sono quelli in cui le **assunzioni e le decisioni analitiche** hanno l’impatto maggiore;
+* sono quelli in cui l’inferenza frequentista può produrre **conclusioni instabili** se usata in modo automatico;
+* sono quelli in cui l’approccio bayesiano è particolarmente utile, perché **rende esplicite le assunzioni** e integra l’incertezza in modo coerente.
+
+---
+
+## Come interviene l’Open Science
+
+Buone pratiche (collegate ai problemi visti):
+
+- **pre-registrazione**: specificare a priori ipotesi e analisi;
+- **condivisione di codice**: verificabilità delle scelte;
+- **report riproducibile**: riduce errori e “aggiustamenti” invisibili;
+- **multiverse analysis** (idea): mostrare l’effetto di scelte plausibili.
+
+⚠️ Ma la causa di fondo può essere teorica:
+
+> teorie deboli → molte scelte arbitrarie → fishing.
+
+---
+
+## Dalla scienza "spazzatura" alla scienza solida
+
+**Comprendere e prevenire i vizi della ricerca: Data Fishing, Junk Science e Zombie Ideas**
+
+*Obiettivo: identificare le pratiche di ricerca che generano risultati sorprendenti ma inaffidabili e individuare gli strumenti per una scienza più solida e replicabile.*
+
+---
+
+## Perché questo punto è cruciale?
+
+La ricerca è particolarmente vulnerabile a conclusioni ingannevoli quando si combinano tre condizioni:
+
+*   **effetti piccoli o inesistenti**,
+*   **misure rumorose o indirette**,
+*   **ipotesi vaghe ed elastiche**.
+
+---
+
+In questo contesto, la pratica del **"data fishing"**  produce facilmente risultati sorprendenti ("effetto wow") ma **estremamente fragili**.
+
+* **La conseguenza sistematica** è la proliferazione di ciò che Andrew Gelman e altri chiamano **"Junk Science"** (scienza spazzatura).
+
+---
+
+## Cos'è il Data Fishing?
+
+> **Data Fishing (o P-Hacking):** esplorare sistematicamente diverse scelte analitiche, modelli, subset di dati o variabili di outcome, fino a quando non emerge un risultato "interessante" (es. *p* < 0.05), per poi costruire una narrazione *a posteriori* che lo giustifichi.
+
+**È tipicamente associato a:**
+
+*   **molti gradi di libertà analitici** (scelte non vincolate a priori).
+*   **selezione selettiva** dell'outcome, delle covariate o del campione.
+*   **reporting parziale**, mostrando solo le analisi "riuscite".
+
+---
+
+## Cos'è la Junk Science?
+
+> **Junk Science (definizione operativa):** risultati scientifici **falsi o estremamente fragili** che ottengono visibilità e credibilità perché soddisfano criteri "narrativi" piuttosto che scientifici.
+
+---
+
+**Caratteristiche distintive:**
+
+1.  sembrano **controintuitivi** o creano un forte **"effetto wow"**;
+2.  sono supportati da **evidenza statisticamente debole** (p-hacked);
+3.  **non reggono** a repliche indipendenti e rigorose;
+4.  vengono **mantenuti in vita** da incentivi accademici, media e storytelling persuasivo.
+
+> (Non replicabile, ma citabile) – A. Gelman
+
+---
+
+## Come nasce una "Zombie Idea"? 
+
+1.  **Teoria Debole** (ipotesi vaghe, costrutti mal definiti).
+2.  **Molti Gradi di Libertà** analitici (si provano molte analisi).
+3.  **Ricerca della Significatività** (consapevole o meno; p-hacking).
+4.  **Pubblicazione Selettiva** (bias verso la novità e risultati "positivi").
+5.  **Storia a Posteriori** (HARKing: ipotesi formulate dopo i risultati).
+6.  **Bassa Replicabilità** (l'effetto sparisce in studi successivi).
+7.  **"Zombie Idea"** (l'idea sopravvive nonostante le prove contrarie).
+
+---
+
+## Cosa sono le "Zombie Ideas"?
+
+> **Zombie Idea:** un'idea o un'affermazione che è stata **empiricamente confutata** (o non è mai stata solidamente supportata), ma che continua a "essere citata" nella cultura scientifica, divulgativa e popolare.
+
+---
+
+**Perché sopravvivono?**
+
+*   **Utilità narrativa:** sono semplici, memorabili e forniscono "una buona storia".
+*   **Incentivi istituzionali:** supportano un'ideologia, un prodotto o una carriera.
+*   **Inerzia cognitiva e mediativa:** sono radicate nei libri di testo e nel senso comune.
+
+---
+
+## Un Fenomeno trasversale
+
+La junk science può fiorire in **qualsiasi disciplina** dove si combinano:
+
+*   **effetti di piccola entità.**
+*   **dataset complessi** con molte variabili.
+*   **misure rumorose** o surrogate.
+*   **forti incentivi** alla pubblicazione di risultati "sensazionali".
+
+---
+
+**Discipline a rischio:**
+
+*   Psicologia Sociale
+*   Medicina (soprattutto nutrizione/epidemiologia)
+*   Neuroscienze (con neuro-imaging)
+*   Economia
+*   Scienze Politiche
+
+---
+
+## Esempi concreti di Zombie Ideas 
+
+**1. Vaccini e autismo**
+
+*   **Origine:** studio fraudolento di Wakefield (The Lancet, 1998).
+*   **Stato:** ritirato nel 2010. Ampiamente confutato da decine di studi successivi.
+*   **Perché è uno zombie?** Continua a influenzare le scelte vaccinali per paura, supportato da movimenti no-vax e aneddoti mediatici.
+
+---
+
+## Esempi concreti di Zombie Ideas 
+
+**2. MBTI e performance lavorativa**
+
+*   **Origine:** indicatore di personalità Myers-Briggs (basato su teorie non validate).
+*   **Problemi:** tipologie dicotomiche, bassa affidabilità test-retest, **validità predittiva per la performance lavorativa quasi nulla**.
+*   **Perché è uno zombie?** Enormemente popolare nelle HR per la sua semplicità, nonostante l'evidenza scientifica contraria.
+
+---
+
+## Dall'effetto "Wow" alla replica fallita
+
+**Lo studio originale ([Damisch et al., 2010](https://journals.sagepub.com/doi/abs/10.1177/0956797610372631)):**
+
+*   **Ipotesi:** un oggetto "fortunato" migliora la performance.
+*   **Risultato:** chi usa la "pallina fortunata" ottiene più *putt* (*d* = 0.81, un effetto grande).
+*   **Caratteristica:** 6 esperimenti, tutti con valori-*p* inferiori a .05.
+
+---
+
+**Le repliche (Calin-Jageman & Caldwell, 2014; Dickhäuser et al., 2020):**
+
+*   **Metodo:** due studi pre-registrati, ad alta potenza, svolti in collaborazione con gli autori originali.
+*   **Risultato:** **effetto vicino allo zero**. L'analisi (*p-curve*) dei dati originali suggerisce un probabile p-hacking.
+
+**Conclusione:** un classico caso di risultato **"appetibile mediaticamente" ma non replicabile**.
+
+---
+
+## Valutare la robustezza di uno studio
+
+Per capire se un risultato è solido o solo rumore, chiediti:
+
+*   **Teoria:** l'ipotesi era precisa e falsificabile, o elastica e vaga?
+*   **Outcome:** era unico e pre-specificato, o ne sono stati provati molti?
+*   **Campione:** la potenza statistica era sufficiente per rilevare un effetto piccolo?
+
+---
+
+## Valutare la robustezza di uno studio
+
+*   **Misura:** l'outcome era affidabile e valido?
+*   **Analisi:** era pre-registrata, o è stata adattata ai dati?
+*   **Reporting:** gli autori forniscono gli script delle analisi statistiche svolte?
+*   **Repliche:** esistono repliche indipendenti e pre-registrate?
+
+---
+
+## Tre antidoti
+
+1.  **Teoria solida e previsioni rischiose**
+    *   Costrutti ben definiti.
+    *   Predizioni *precise* e *falsificabili* (non "qualcosa cambierà").
+    
+. . .
+
+2.  **Disegno confermativo (non solo esplorativo)**
+    *   **Pre-registrazione:** definire ipotesi, piano analitico e outcome primario *prima* di vedere i dati.
+    *   Separare chiaramente le analisi esplorative da quelle confermative.
+    
+---
+
+3.  **Open Science**
+    *   Condivisione di dati, codice e materiali.
+    *   Incentivare le repliche.
+    *   Registered reports (la peer review avviene *prima* della raccolta dati).
+
+---
+
+## Teoria e metodo: un binomio inseparabile
+
+**Senza una teoria solida:**
+
+*   ogni pattern nei dati può essere "spiegato" *a posteriori*;
+*   si seleziona rumore statistico e si costruisce una storia plausibile;
+*   la replicazione diventa impossibile o inutile.
+
+---
+
+**Con una teoria solida e metodi rigorosi:**
+
+*   si riducono drasticamente i **gradi di libertà del ricercatore**;
+*   la distinzione tra esplorazione e conferma è chiara;
+*   un fallimento nella replica è un'informazione preziosa sul fenomeno o sulla teoria.
+
+> **"La statistica quantifica l'incertezza *dato* un modello. La teoria ci dice *quale* modello ha senso testare."**
+
+---
+
+## Take-Home Message
+
+*   I risultati "wow" e controintuitivi in contesti rumorosi sono quasi sicuramente falsi.
+*   La **junk science** nasce da una catena di pratiche discutibili, dal data fishing al reporting selettivo.
+*   Le **zombie ideas** sopravvivono per inerzia narrativa e istituzionale, non per supporto empirico.
+*   L'antidoto è una **scienza pre-registrata, aperta e incentrata sulla teoria**, che privilegi la credibilità a lungo termine alla sorpresa a breve termine.
+
+---
+
+## Perché la crisi della replicabilità ha tardato a emergere?
+
+Un fatto storico sorprendente:
+
+* critiche *molto simili* a quelle attuali
+* erano già presenti **decenni fa**
+* ma **non hanno prodotto riforme sistemiche**
+
+Domanda chiave:
+
+> Perché la crisi è esplosa solo dopo il 2010 (Gelman & Vazire, 2021)?
+
+---
+
+## Il ruolo del contesto storico
+
+* Intorno al **2010**
+* cambia il modo di pensare nelle scienze comportamentali
+* non per nuove idee *in sé*
+* ma perché il campo era **pronto al cambiamento**.
+
+👉 Le idee contano, ma soprattutto **conta il contesto**.
+
+---
+
+## Le critiche c’erano già (molto prima)
+
+Già tra anni ’60–’90
+
+* Campbell, Cronbach, Meehl e Petrinovich (1990)
+
+criticavano:
+
+* mismatch tra **statistica e teoria**,
+* uso rituale dei test,
+* debolezza dei costrutti,
+* inferenze eccessive da dati rumorosi.
+
+⚠️ Ma rappresentavano una **minoranza**.
+
+---
+
+## Domanda cruciale (Gelman & Vazire, 2021)
+
+Se le argomentazioni erano solide:
+
+* **perché sono state ignorate?**
+* **cosa ha impedito la riforma?**
+* **perché il sistema ha continuato a funzionare “come se nulla fosse”?**
+
+---
+
+## Prima risposta: il successo rafforza lo status quo
+
+Nei campi accademici:
+
+* pubblicazioni
+* premi
+* visibilità mediatica
+* libri di successo
+
+👉 sono **segnali di successo**, non di verità.
+
+---
+
+Se il sistema “premia”:
+
+* risultati nuovi
+* storie interessanti
+* conclusioni forti
+
+allora **non c’è incentivo al cambiamento**.
+
+---
+
+## Seconda risposta: le critiche erano “negative”
+
+Molte critiche dicevano:
+
+* “servono teorie più forti”
+* “servono misure migliori”
+* “servono inferenze più caute”
+
+---
+
+Problema:
+
+* sono **diagnosi corrette**
+* ma **non indicano una procedura operativa chiara**
+
+👉 È difficile riformare un sistema solo con “non fate così”.
+
+---
+
+## Terza risposta: la psicologia *stava funzionando*
+
+Tra 1970 e 2000:
+
+* grandi progressi in:
+
+  * psicologia dello sviluppo, CBT, giudizio e decisione
+* forte influenza su:
+
+  * economia comportamentale, neuroscienze
+
+Conclusione scomoda:
+
+> I metodi statistici erano **subottimali**, ma **non bloccavano il progresso**.
+
+---
+
+## Quarta risposta: nessuna pressione esterna
+
+In altri campi:
+
+* le crisi arrivano spesso da **campi vicini**
+
+Esempio:
+
+* la statistica cambia con il machine learning,
+
+---
+
+In psicologia, per molto tempo:
+
+* non c’era una forza che rendesse costoso continuare come prima.
+
+👉 Il sistema poteva permettersi di ignorare le critiche, perché funzionava abbastanza bene da non dover cambiare.
+
+---
+
+## Allora perché tutto cambia dopo il 2010?
+
+Gelman & Vazire (2021) propongono una combinazione di fattori.
+
+Non **una causa**, ma una **congiuntura**.
+
+---
+
+## Fattore 1: social media e connessione tra critici
+
+Prima:
+
+* ricercatori scettici isolati,
+* 1–2 persone per dipartimento.
+
+---
+
+Dopo:
+
+* blog,
+* Twitter/X,
+* forum,
+* scambio rapido di idee.
+
+Effetto chiave:
+
+> rendere **visibile** un dissenso che già esisteva.
+
+---
+
+## Fattore 2: tecnologia e Open Science
+
+Cambiamenti pratici:
+
+* condivisione di dati e codice,
+* preregistrazioni,
+* repository,
+* software open source.
+
+---
+
+Ora diventa **legittimo** chiedere:
+
+* “fammi vedere i dati”,
+* “fammi vedere le analisi”.
+
+👉 La trasparenza diventa **tecnicamente possibile**.
+
+---
+
+## Fattore 3: dati più economici, repliche possibili
+
+* Survey online.
+* Campioni di convenienza.
+* Costi più bassi.
+
+Conseguenza:
+
+* repliche ad alta potenza diventano fattibili,
+* i risultati fragili **vengono smascherati**.
+
+---
+
+Senza questi strumenti:
+
+> la crisi **non avrebbe potuto emergere**.
+
+---
+
+## Fattore 4: crisi di generalizzabilità 
+
+Aumenta la consapevolezza epistemologica che:
+
+* **campioni WEIRD** (Western, Educated, Industrialized, Rich, Democratic)
+* **operazionalizzazioni ristrette** dei costrutti
+* **setting sperimentali decontestualizzati**
+
+---
+
+compromettono sistematicamente:
+
+* **la validità esterna** (generalizzabilità cross-culturale e ecologica)
+* **l'ampiezza teorica** (breadth dei costrutti psicologici)
+* **la validità di costrutto** (ecological validity delle misurazioni)
+
+👉 genera un **paradigma di auto-critica metodologica** che trascende la sola replicabilità, interrogandosi sulla **portata nomologica** delle teorie psicologiche.
+
+---
+
+## Fattore 5: insider–outsider
+
+Ruolo chiave di ricercatori che:
+
+* possiedono **competenza e credibilità** sufficienti per essere ascoltati;
+* operano **ai margini del campo** o in **aree adiacenti**;
+* non dipendono completamente dagli **incentivi dominanti** del sistema.
+
+---
+
+Questa posizione consente di:
+
+* riconoscere problemi strutturali,
+* nominarli esplicitamente,
+* proporre alternative senza eccessivi costi reputazionali.
+
+👉 **Abbastanza dentro per capire, abbastanza fuori per criticare.**
+
+---
+
+Ecco una versione **più analitica e meno impressionistica**, che chiarisce meglio il *meccanismo causale* ed è più solida anche in ottica d’esame.
+
+---
+
+## Fattore 6: pressione mediatica e “wow science”
+
+A partire dagli anni 2000:
+
+* forte **popolarizzazione della psicologia**
+  (divulgazione, best seller, TED talks, media generalisti)
+* crescente domanda di spiegazioni:
+
+  * semplici,
+  * immediate,
+  * applicabili alla vita quotidiana.
+  
+---
+
+Questa domanda ha prodotto un effetto sistemico:
+
+* **premia risultati “forti” e controintuitivi**,
+* riduce la tolleranza per incertezza e risultati nulli,
+* aumenta l’accettazione di **evidenza debole ma narrativamente efficace**.
+
+👉 Un contesto ideale per la proliferazione della **junk science**.
+
+---
+
+## Forse una crisi era inevitabile
+
+Ipotesi di Gelman & Vazire (2021):
+
+* le criticità metodologiche erano **presenti da tempo**;
+* il sistema ha continuato a funzionare nonostante tali limiti;
+* col tempo si è accumulata una **discrepanza crescente** tra:
+
+  * ambizioni teoriche,
+  * forza dell’evidenza empirica.
+
+---
+
+Intorno al 2010 questa discrepanza è diventata **visibile e condivisa**.
+
+> Non è che prima mancassero le critiche,
+> è che solo allora il sistema **non poteva più assorbirle senza cambiare**.
+
+---
+
+## Collegamento con la lezione
+
+Quello che abbiamo visto oggi:
+
+* data fishing
+* gradi di libertà
+* junk science
+* zombie ideas
+* Open Science
+
+👉 **non sono “mode” recenti**,
+ma risposte tardive a problemi strutturali.
+
+---
+
+## Messaggio finale
+
+* La statistica **non può compensare** una teoria debole.
+* La trasparenza **non può sostituire** una domanda di ricerca ben posta.
+* Le pratiche di Open Science **non generano** teoria.
+
+Ma:
+
+> aenza una teoria che vincoli le ipotesi,
+> l’analisi seleziona rumore
+> e la ricerca scientifica scivola verso la **junk science**.
+
+---
+
+## Per l’esame (punti chiave)
+
+* Perché le critiche metodologiche sono state ignorate a lungo?
+* Quali fattori hanno reso possibile la crisi dopo il 2010?
+* Che ruolo hanno tecnologia e social media?
+* Perché il “successo” può ritardare l’autocritica?
+* In che senso la crisi è *strutturale* e non solo metodologica?
+
+---
+
+## Per l’esame: definizioni chiave
+
+Saper definire e distinguere:
+
+- data fishing
+- junk science (operativa)
+- zombie idea
+- gradi di libertà dello sperimentatore
+- EDA vs confermativa
+- p-hacking vs HARKing
+- ruolo di preregistrazione e repliche
+
+---
+
+## Domande Moodle (esempi)
+
+1. Quale catena descrive meglio la nascita della junk science?
+2. Che cos’è una “zombie idea”?
+3. In che senso la teoria riduce i gradi di libertà?
+4. Quale pratica di Open Science è più direttamente collegata alla distinzione EDA/confermativa?
+5. “Not replicable, but citable”: cosa significa?
+
+
+
+
+---
+
+## Riepilogo (da sapere per l’esame)
+
+- definizione di *gradi di libertà dello sperimentatore*
+- differenza EDA / confermativa
+- definizione di p-hacking e HARKing
+- perché outlier rules e compositi sono decisioni analitiche
+- ruolo della teoria nel vincolare le scelte
+- collegamento con pratiche di Open Science
+
+---
+
+## Domande tipiche d’esame (Moodle)
+
+- Quale tra queste è una “decisione analitica”?
+- In cosa differiscono EDA e analisi confermativa?
+- Che cos’è il p-hacking?
+- Perché la scelta degli indicatori in un composito è critica?
+- Quale pratica di Open Science riduce i gradi di libertà?

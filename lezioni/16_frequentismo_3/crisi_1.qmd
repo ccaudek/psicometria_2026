@@ -37,6 +37,34 @@ library(dplyr)
 set.seed(42)
 ```
 
+# Da dove veniamo e dove andiamo {background-color="#e74c3c" style="color: white;"}
+
+## Il modulo frequentista: il quadro completo
+
+Nelle lezioni precedenti abbiamo costruito, pezzo per pezzo, gli strumenti dell'inferenza frequentista:
+
+. . .
+
+**Lezione 14** — L'inversione logica: il frequentismo calcola $P(\text{dati} \mid H_0)$ invece di $P(H \mid \text{dati})$. La distribuzione campionaria e l'errore standard. L'intervallo di confidenza e le sue interpretazioni (errate).
+
+. . .
+
+**Lezione 15** — Il valore-$p$: cosa misura davvero. Errori di Tipo I e II, ma anche di Tipo S e M. La "maledizione del vincitore" con bassa potenza.
+
+---
+
+## Oggi: il sistema ha fallito {background-color="#e74c3c" style="color: white;"}
+
+. . .
+
+Avete gli strumenti concettuali per capire *perché* il sistema ha fallito. L'inversione logica, la soglia arbitraria, i campioni piccoli e la maledizione del vincitore — non sono solo problemi astratti. Si sono combinati con *pratiche di ricerca discutibili* e incentivi perversi per produrre una letteratura scientifica in larga parte inaffidabile.
+
+. . .
+
+Questa è la lezione in cui tutti i pezzi si incastrano. Dopo oggi, saremo pronti per l'inferenza bayesiana — l'alternativa concettuale.
+
+---
+
 ## Obiettivi {.unnumbered .unlisted}
 
 1. Comprendere la portata della **crisi di replicabilità** in psicologia.
@@ -111,17 +139,29 @@ Gli effetti nelle repliche erano in media la **metà** di quelli originali.
 
 ---
 
+## Questo lo avevamo previsto {background-color="#2c3e50" style="color: white;"}
+
+. . .
+
+Ricordate la "maledizione del vincitore" dalla lezione precedente? Con bassa potenza, gli studi che raggiungono la significatività sono quelli in cui il rumore casuale ha gonfiato la stima (errore di Tipo M). Le repliche, condotte senza il filtro della significatività statistica ($p < .05$), producono stime più vicine all'effetto reale — e quindi più piccole.
+
+. . .
+
+Il dimezzamento degli effetti non è un mistero: è la conseguenza matematica che abbiamo illustrato con una simulazione. La crisi di replicabilità, in questo senso, era *prevedibile*.
+
+---
+
 ## Cosa significa "crisi"?
 
 Non stiamo parlando di:
 
 - qualche studio isolato che non si replica;
-- errori occasionali di singoli ricercatori;
-- problemi di un sottocampo specifico.
+- gli errori occasionali di singoli ricercatori;
+- i problemi di un sottocampo specifico.
 
 . . .
 
-Stiamo parlando di un **problema sistemico** che mette in discussione decenni di letteratura scientifica psicologica.
+<mark>Stiamo parlando di un **problema sistemico** che mette in discussione decenni di letteratura scientifica psicologica.</mark>
 
 ---
 
@@ -150,7 +190,7 @@ Stiamo parlando di un **problema sistemico** che mette in discussione decenni di
 | Effetto | Claim originale | Replica |
 |---------|-----------------|---------|
 | **Ego depletion** | L'autocontrollo si esaurisce | $d$ ≈ 0 |
-| **Power posing** | Posture di potere aumentano testosterone | Non si replica |
+| **Power posing** | Posture di potere aumentano il testosterone | Non si replica |
 | **Priming sociale** | Parole sulla vecchiaia rallentano il cammino | Non si replica |
 | **Effetto Lady Macbeth** | Senso di colpa → desiderio di lavarsi | Non si replica |
 
@@ -166,7 +206,7 @@ Questi erano effetti pubblicati su **Science**, su **Psychological Science** e s
 
 . . .
 
-La risposta sta nelle **pratiche** di ricerca — non (solo) nella malafede.
+La risposta sta nelle **pratiche** di ricerca — non (solo) nella malafede. Nelle prossime sezioni vedremo tre meccanismi principali: il p-hacking, l'HARKing e il *garden of forking paths*.
 
 # Parte 2: il p-hacking
 
@@ -175,21 +215,21 @@ La risposta sta nelle **pratiche** di ricerca — non (solo) nella malafede.
 ::: {.callout-note}
 ## Definizione
 
-Il **p-hacking** consiste nel manipolare dati, analisi o procedure di raccolta dati fino a ottenere un p-value inferiore a 0.05.
+Il **p-hacking** consiste nel manipolare dati, analisi o procedure di raccolta dati fino a ottenere un valore-$p$ inferiore a 0.05.
 :::
 
 . . .
 
-Non richiede falsificazione dei dati — basta **flessibilità** nelle scelte analitiche.
+Non richiede falsificazione dei dati — è sufficiente la **flessibilità** nelle scelte analitiche del ricercatore.
 
 ---
 
 ## Le forme del p-hacking
 
 1. **Escludere selettivamente** partecipanti o outlier.
-2. **Aggiungere covariate** finché p < .05.
+2. **Aggiungere covariate** finché $p$ < .05.
 3. **Testare più variabili dipendenti** e riportare solo quella significativa.
-4. **Fermare la raccolta dati** appena p < .05.
+4. **Fermare la raccolta dati** appena $p$ < .05.
 5. **Trasformare variabili** (log, radice quadrata) fino a ottenere la significatività.
 6. **Dividere/unire gruppi** in modi diversi.
 
@@ -197,7 +237,7 @@ Non richiede falsificazione dei dati — basta **flessibilità** nelle scelte an
 
 ## Una simulazione: quanto è facile?
 
-Simuliamo uno studio dove **non c'è nessun effetto reale**:
+Simuliamo uno studio dove **non c'è alcun effetto reale**:
 
 ```{r}
 set.seed(123)
@@ -209,19 +249,27 @@ gruppo <- rep(c("A", "B"), each = n/2)
 # Generiamo 10 VD casuali (nessun effetto reale)
 vd <- matrix(rnorm(n * 10), nrow = n, ncol = 10)
 colnames(vd) <- paste0("VD_", 1:10)
+```
 
+---
+
+```{r}
+vd |> head()
+```
+
+---
+
+```{r}
 # Testiamo tutte le VD
 p_values <- sapply(1:10, function(i) {
   t.test(vd[gruppo == "A", i], vd[gruppo == "B", i])$p.value
 })
 ```
 
----
-
 ```{r}
 data.frame(Variabile = paste0("VD_", 1:10), 
            p_value = round(p_values, 3),
-           Significativo = ifelse(p_values < 0.05, "Sì ⚠️", "No"))
+           Significativo = ifelse(p_values < 0.05, "Sì", "No"))
 ```
 
 ---
@@ -230,80 +278,44 @@ data.frame(Variabile = paste0("VD_", 1:10),
 
 ```{r}
 cat("Variabili significative (p < .05):", sum(p_values < 0.05), "su 10\n")
-cat("Probabilità attesa per caso:", "0.5 (= 10 × 0.05)\n")
+cat("Probabilità attesa per caso (in media):", 10 * 0.05, "= 0.5\n")
 ```
 
 . . .
 
 ::: {.callout-warning}
-Anche senza alcun effetto reale, testando 10 variabili abbiamo circa il **40% di probabilità** di trovarne almeno una significativa!
+Anche in assenza di qualsiasi effetto reale, testando 10 variabili indipendenti si ha circa il **40% di probabilità** di osservare *almeno un* risultato significativo ($p$ < 0.05). La probabilità esatta è:
+
+$$1 - (1 - 0.05)^{10} \approx 0.401$$
 :::
 
 ---
 
+## La matematica del p-hacking
 
+Quando testiamo **una sola ipotesi** con $\alpha = 0.05$, abbiamo il 5% di probabilità di ottenere un risultato "significativo" per puro caso. Questo è un **falso positivo** — l'errore di Tipo I che abbiamo studiato nella lezione scorsa.
 
+. . .
 
-
-
-
-
-
-##  La matematica del p-hacking
-
-**Il punto di partenza: una singola ipotesi**
-
-Quando testiamo **una sola ipotesi** con livello di significatività:
-
-$$
-\alpha = 0.05
-$$
-questo significa:
-
-- **se H₀ è vera**
-- abbiamo il **5% di probabilità**
-- di ottenere un risultato “significativo” **per puro caso**.
-
-👉 Questo è un **falso positivo**.
-
----
-
-## Probabilità di NON ottenere un falso positivo
-
-Se la probabilità di un falso positivo è 0.05, allora la probabilità dell'evento complementare è:
+La probabilità di *non* ottenere un falso positivo è semplicemente l'evento complementare:
 
 $$
 P(\text{nessun FP}) = 1 - 0.05 = 0.95.
 $$
 
-Quindi:
-
-- con **un test**
-- abbiamo il **95% di probabilità** di *non* commettere un falso positivo.
-
 ---
 
 ## Cosa succede se facciamo più test?
 
-Supponiamo ora di testare:
+Supponiamo ora di testare **k ipotesi indipendenti**, tutte con $\alpha = 0.05$.
 
-- **k ipotesi indipendenti**,
-- tutte con $\alpha = 0.05$.
+. . .
 
-Domanda chiave:
+Qual è la probabilità che **nessuno** dei test produca un falso positivo?
 
-> Qual è la probabilità che **nessuno** dei test produca un falso positivo?
+. . .
 
----
-
-## Probabilità che TUTTI i test siano “puliti”
-
-Se i test sono **indipendenti**:
-
-- la probabilità che il primo non dia FP è 0.95,
-- lo stesso vale per il secondo, il terzo, …
-
-Quindi la probabilità che **tutti e k** i test non diano FP è:
+Se i test sono indipendenti, la probabilità che **tutti e k** i test non diano un FP è:
 
 $$
 P(\text{nessun FP in k test}) = (0.95)^k = (1 - 0.05)^k.
@@ -311,28 +323,9 @@ $$
 
 ---
 
-## Dal “nessun FP” ad “almeno un FP”
+## La probabilità di almeno un falso positivo
 
-Gli eventi:
-
-- “**nessun falso positivo**”,
-- “**almeno un falso positivo**”,
-
-sono **complementari**.
-
-👉 Se uno NON accade, accade l’altro.
-
----
-
-## Uso della probabilità complementare
-
-Per definizione:
-
-$$
-P(\text{almeno un FP}) = 1 - P(\text{nessun FP}).
-$$
-
-Sostituendo il risultato di prima:
+Poiché "nessun falso positivo" e "almeno un falso positivo" sono eventi complementari:
 
 $$
 P(\text{almeno un FP}) = 1 - (1 - 0.05)^k.
@@ -340,56 +333,31 @@ $$
 
 ---
 
-## Interpretazione intuitiva
+## La probabilità di almeno un falso positivo (continuazione)
 
-- Ogni singolo test ha solo il **5%** di rischio,
-- ma ripetere molti test **accumula il rischio**.
+Questa formula mostra come il rischio si accumula rapidamente:
 
-👉 Più ipotesi proviamo:
+- $k = 1$ → $P = 5\%$
+- $k = 5$ → $P \approx 23\%$
+- $k = 10$ → $P \approx 40\%$
+- $k = 20$ → $P \approx 64\%$
 
-- più è **probabile** trovare *qualcosa* di “significativo”,
-- anche se **tutte le H₀ sono vere**.
-
----
-
-## Slide — Esempio numerico concreto
-
-Se testiamo:
-
-- $k = 1$ → $P = 5\%$,
-- $k = 5$ → $P \approx 22.6\%$,
-- $k = 10$ → $P \approx 40.1\%$,
-- $k = 20$ → $P \approx 64.2\%$.
-
-👉 Con molti test, il falso positivo diventa **probabile**, non raro.
+Con 20 test indipendenti, la probabilità di trovare almeno un falso positivo supera il 60% — anche se *tutti* gli effetti sono nulli.
 
 ---
 
-## Collegamento con il p-hacking
+## Il collegamento con il p-hacking
 
-Il *p*-hacking consiste nel:
+Il p-hacking consiste nel provare molte analisi, molte variabili, molte trasformazioni.
 
-- provare molte analisi,
-- molte variabili,
-- molte trasformazioni.
 
-👉 Ogni tentativo aumenta **k**,
-👉 e quindi aumenta la probabilità di
+. . .
 
-> ottenere un risultato “significativo” **per puro caso**.
+Ogni tentativo aumenta $k$, e quindi aumenta la probabilità di ottenere un risultato "significativo" per puro caso.
 
----
+. . .
 
-## Messaggio finale
-
-Un singolo test con $\alpha = 0.05$ è controllato.
-
-Molti test **senza correzione**:
-
-- rendono il valore-$p$ **fuorviante**,
-- anche in assenza totale di effetti reali.
-
-👉 Questa formula rende visibile il problema.
+Un singolo test con $\alpha = 0.05$ è controllato. Molti test senza correzione rendono il valore-$p$ **fuorviante** (*aumentano a dismisura la probabilità di ottenere un risultato "significativo" anche totale in assenza  di effetti reali*).
 
 ---
 
@@ -424,7 +392,7 @@ Nel famoso paper "False-Positive Psychology", gli autori dimostrano che con scel
 
 . . .
 
-**Risultato:** $p$ = .04 (!!)
+**Risultato:** $p$ = .04.
 
 ---
 
@@ -443,7 +411,7 @@ Nessuna frode, nessun dato inventato — solo **flessibilità analitica**.
 
 ---
 
-## I gradi di libertà del ricercatore
+## I gradi di libertà del ricercatore {background-color="#2c3e50" style="color: white;"}
 
 ::: {.callout-important}
 ## Researcher degrees of freedom
@@ -458,6 +426,13 @@ Ogni studio comporta **decine di decisioni** che potrebbero essere prese diversa
 
 Ognuna di queste scelte può influenzare il valore-$p$.
 :::
+
+---
+
+## I gradi di libertà del ricercatore {background-color="#2c3e50" style="color: white;"}
+
+
+La lezione precedente ci ha mostrato che il valore-$p$ assume un'analisi completamente specificata *prima* di vedere i dati. Quando questa assunzione viene violata — anche in buona fede — l'interpretazione del valore-$p$ perde validità.
 
 # Parte 3: HARKing
 
@@ -478,8 +453,8 @@ Presentare ipotesi formulate **dopo** aver visto i risultati come se fossero sta
 **Cosa è successo realmente:**
 
 1. Studio sull'effetto di $X$ su $Y$.
-2. X non ha effetto su $Y$ ($p$ = .34).
-3. Ma X ha effetto su $Z$ ($p$ = .02) — scoperto esplorando i dati.
+2. $X$ non ha effetto su $Y$ ($p$ = .34).
+3. Ma $X$ ha effetto su $Z$ ($p$ = .02) — scoperto esplorando i dati.
 4. L'articolo riporta: "Abbiamo ipotizzato che $X$ influenzi $Z$".
 
 ---
@@ -487,8 +462,8 @@ Presentare ipotesi formulate **dopo** aver visto i risultati come se fossero sta
 ## Il problema
 
 - L'ipotesi su $Z$ non era pre-specificata.
-- Testare più variabili aumenta i falsi positivi.
-- Il lettore pensa che fosse una predizione a priori.
+- Testare più variabili aumenta i falsi positivi (la matematica che abbiamo appena visto).
+- Il lettore pensa che fosse una predizione a priori — e valuta il $p = .02$ come se fosse l'unico test effettuato.
 
 ---
 
@@ -594,7 +569,7 @@ Scelte da fare:
 1. Come misurare la creatività? (Test A, Test B, combinazione?).
 2. Come misurare l'umore? (Scala X, Scala Y, item singoli?).
 3. Partecipanti sotto i 18 anni: includere o escludere?
-4. Outlier: definirli come ±2 SD, ±3 SD, o con altri criteri?
+4. Outlier: definirli come ±2 SD, ±3 SD o con altri criteri?
 5. Covariate: includere età? genere? entrambi? nessuno?
 
 ---
@@ -609,7 +584,7 @@ $$
 
 . . .
 
-Ma il valore-$p$ viene calcolato come se ci fosse **un solo percorso predeterminato**.
+Ma il valore-$p$ viene calcolato come se ci fosse **un solo percorso predeterminato**. Il valore-$p$ di 0.05 "controlla" l'errore di Tipo I solo se l'analisi era completamente specificata prima di vedere i dati. Con 243 percorsi, il tasso di errore reale è enormemente più alto.
 
 ---
 
@@ -627,7 +602,7 @@ Ma il valore-$p$ viene calcolato come se ci fosse **un solo percorso predetermin
 
 . . .
 
-Il secondo è più insidioso perché il ricercatore è **in buona fede**.
+Il secondo è più insidioso perché il ricercatore è **in buona fede**. Non ha "provato 10 analisi" — ne ha fatta una sola. Ma quella scelta è stata influenzata, consciamente o meno, dai dati stessi.
 
 ---
 
@@ -696,6 +671,20 @@ ggplot(df_analisi, aes(x = reorder(analisi, p_value), y = p_value, fill = signif
 . . .
 
 Perché $H_0$ è stata scelta dopo avere visto i dati (fallacia del cecchino texano).
+
+---
+
+## Il garden of forking paths e l'approccio bayesiano {background-color="#2c3e50" style="color: white;"}
+
+. . .
+
+Nell'approccio bayesiano, il ricercatore deve specificare un modello *e* i prior prima dell'analisi. Questo non elimina completamente il problema — si possono scegliere prior a proprio vantaggio — ma la trasparenza richiesta dal framework bayesiano rende le scelte *visibili* e quindi criticabili. 
+
+---
+
+## Il garden of forking paths e l'approccio bayesiano {background-color="#2c3e50" style="color: white;"}
+
+Inoltre, l'approccio bayesiano non dipende dalla nozione di "cosa sarebbe successo in esperimenti ipotetici con un'analisi predeterminata". Produce una distribuzione a posteriori che è funzione *solo* dei dati osservati e del modello specificato — non dei percorsi analitici alternativi che si sarebbero potuti seguire.
 
 ---
 

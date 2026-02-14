@@ -1,7 +1,7 @@
 ---
 title: "Distribuzioni discrete: Bernoulli, Binomiale, Poisson"
 subtitle: "Esercitazione pratica – Segmento 2 (esercizi con R)"
-version: 1.0
+version: 2.0
 author:
   - name: Corrado Caudek
     orcid: 0000-0002-1404-0420
@@ -34,16 +34,30 @@ csl: ../apa.csl
 
 ## Obiettivi del segmento {.unnumbered .unlisted}
 
-In questo secondo segmento usiamo **R** come “calcolatrice probabilistica” e come laboratorio per esplorare le distribuzioni.
+In questo secondo segmento usiamo **R** come "calcolatrice probabilistica" e come laboratorio per esplorare le distribuzioni.
+
+. . .
 
 Faremo due cose:
 
 1. calcolare probabilità **esatte** con le funzioni di R;
 2. verificare e capire le formule con **simulazioni** (Monte Carlo).
 
+. . .
+
 Regola di oggi:
 
-> ogni riga di codice deve corrispondere a un’idea probabilistica chiara.
+> ogni riga di codice deve corrispondere a un'idea probabilistica chiara.
+
+---
+
+## Perché R è indispensabile per uno psicologo
+
+Nel segmento precedente abbiamo visto che calcolare a mano $P(X \geq 16)$ per una binomiale richiede cinque calcoli separati. In un contesto reale — dove i test hanno 50, 100 o più item — il calcolo a mano è impraticabile.
+
+. . .
+
+R vi permette di passare dalla domanda alla risposta in una riga di codice. Ma soprattutto, le **simulazioni** vi danno un modo concreto per *verificare* che la teoria funziona — e per sviluppare un'intuizione su come si comportano le distribuzioni.
 
 ---
 
@@ -59,7 +73,7 @@ Nsim <- 200000
 
   
 - `set.seed()` serve a ottenere gli stessi numeri casuali se rieseguiamo il codice.  
-- `Nsim` è il numero di “esperimenti” simulati.
+- `Nsim` è il numero di "esperimenti" simulati.
 
 ---
 
@@ -78,40 +92,38 @@ Esempi:
 
 ---
 
-## Esercizio 1 
+## Esercizio 1 — Screening e probabilità di un singolo esito
 
 ### Problema
 
-In un trial:
-
-- successo con probabilità `p = 0.30`.
+Somministrate un test di screening per la difficoltà di lettura a un singolo bambino. In base ai dati normativi, la probabilità di risultare positivo nella popolazione scolastica è `p = 0.15`.
 
 Calcoliamo con R:
 
-- $P(X=1)$
-- $P(X=0)$
+- $P(X=1)$ (test positivo)
+- $P(X=0)$ (test negativo)
 
 ---
 
 ### Soluzione 
 
 ```{r}
-p <- 0.30
+p <- 0.15
 
 # Bernoulli è una binomiale con size = 1
-P_X1 <- dbinom(x = 1, size = 1, prob = p)
-P_X0 <- dbinom(x = 0, size = 1, prob = p)
+P_pos <- dbinom(x = 1, size = 1, prob = p)
+P_neg <- dbinom(x = 0, size = 1, prob = p)
 ```
 
 - `dbinom(x, size, prob)` restituisce $P(X=x)$ per $X \sim \text{Binomiale}(\text{size}, \text{prob})$.
 - se `size = 1`, stiamo considerando una distribuzione di Bernoulli.
 
 ```{r}
-P_X1
+P_pos
 ```
 
 ```{r}
-P_X0
+P_neg
 ```
 
 ---
@@ -121,17 +133,17 @@ Controllo concettuale:
 
 ```{r}
 # La somma su tutti gli esiti possibili deve dare 1
-P_X1 + P_X0
+P_pos + P_neg
 ```
 
 ---
 
-## Esercizio 2 
+## Esercizio 2 — Simulazione Bernoulli e frequenze
 
 **Problema**
 
-Simuliamo `Nsim` trial Bernoulli e stimiamo la frequenza di successi.  
-Poi la confrontiamo con `p = 0.30`.
+Simuliamo `Nsim` screening Bernoulli e stimiamo la frequenza di risultati positivi.  
+Poi la confrontiamo con `p = 0.15`.
 
 ---
 
@@ -143,7 +155,7 @@ X <- rbinom(n = Nsim, size = 1, prob = p)
 ```
 
   
-- `rbinom(..., size=1)` genera molte Bernoulli (0/1).
+- `rbinom(..., size=1)` genera molte prove di Bernoulli (0/1).
 - La media di una variabile 0/1 è la proporzione di 1 (successi).  
   Quindi `mean(X)` stima $P(X=1)$.
 
@@ -155,14 +167,19 @@ mean(X)
 
 ---
 
-## Esercizio 3 
+**Interpretazione:** su `r format(Nsim, big.mark=".")` bambini (simulati) sottoposti a screening, la proporzione di positivi è molto vicina al 15% teorico. 
+
+. . .
+
+In un vero programma di screening scolastico con migliaia di bambini, questo è esattamente il tipo di informazione che serve per stimare quante valutazioni di approfondimento saranno necessarie.
+
+---
+
+## Esercizio 3 — Punteggio esatto in un test neuropsicologico
 
 **Problema**
 
-In un esperimento con:
-
-- `n = 20` prove di Bernoulli indipendenti;
-- probabilità di successo `p = 0.80`.
+Un paziente risponde a 20 item indipendenti di una batteria neuropsicologica. Per un soggetto con capacità nella norma, la probabilità di risposta corretta per ciascun item è $p = 0.80$.
 
 Calcolare:
 
@@ -186,17 +203,19 @@ P_Xeq16 <- dbinom(x = k, size = n, prob = p)
 P_Xeq16
 ```
 
-Il valore ottenuto corrispone a quello che abbiamo trovato in precedenza svolgendo i calcoli "a mano". 
+Il valore ottenuto corrisponde a quello che abbiamo trovato in precedenza svolgendo i calcoli "a mano". 
 
 ---
 
-## Esercizio 4 
+## Esercizio 4 — Prestazione "nella norma"
 
 **Problema**
 
 Calcolare:
 
 - $P(X \ge 16)$ con $X \sim \text{Binomiale}(20, 0.8)$.
+
+Questa è una domanda che ha un significato clinico diretto: "Qual è la probabilità che un soggetto nella norma ottenga **almeno** 16/20?"
 
 ---
 
@@ -215,13 +234,13 @@ P_Xge16 <- 1 - P_Xle15
 P_Xge16
 ```
 
-- Questa è un’applicazione del **complemento** nello spazio giusto:  
+- Questa è un'applicazione del **complemento** nello spazio giusto:  
   $P(X \ge 16) = 1 - P(X \le 15)$.  
 - `pbinom()` evita di sommare a mano tante probabilità puntuali.
 
 ---
 
-Verifichiamo:
+Verifichiamo sommando le probabilità puntuali:
 
 ```{r}
 dbinom(x = 16, size = n, prob = p) +
@@ -247,15 +266,19 @@ sum(dbinom(x = 16:20, size = n, prob = p))
 
 ---
 
-**Interpretazione:**  
+**Spiegazione:**  
 
 * `16:20` crea il vettore `c(16, 17, 18, 19, 20)`.  
 * `dbinom()` calcola la densità binomiale per ciascuno di questi valori e restituisce un vettore di probabilità.  
 * `sum()` infine somma tutti gli elementi del vettore, restituendo la probabilità totale $P(X \geq 16)$.
 
+. . .
+
+**Significato clinico:** circa il 63% dei soggetti con capacità nella norma otterrà almeno 16/20. Se un paziente ottiene 12/20, possiamo chiederci: "Quanto è probabile questo punteggio per un soggetto nella norma?" — ed è esattamente il tipo di ragionamento che fonda i **cut-off** diagnostici.
+
 ---
 
-## Esercizio 5 
+## Esercizio 5 — Visualizzare la distribuzione binomiale
 
 **Problema**
 
@@ -273,8 +296,8 @@ Costruire la distribuzione completa di $X \sim \text{Binomiale}(20, 0.8)$ che in
 pk <- dbinom(x = 0:n, size = n, prob = p)
 ```
 
-- `dbinom()` prende come argomento anche su un vettore: restituisce un vettore di probabilità; 
-- la tabella ci permette di “vedere” la distribuzione come un oggetto.
+- `dbinom()` prende come argomento anche un vettore: restituisce un vettore di probabilità; 
+- la tabella ci permette di "vedere" la distribuzione come un oggetto.
 
 ---
 
@@ -299,7 +322,7 @@ Grafico a barre:
 
 ```{r}
 barplot(height = tab_binom$P, names.arg = tab_binom$k,
-        xlab = "k (numero di successi)",
+        xlab = "k (numero di risposte corrette)",
         ylab = "P(X = k)")
 ```
 
@@ -314,10 +337,14 @@ tab_binom |>
   ggplot(aes(x = k, y = P)) +
     geom_col() +
     labs(
-      x = "k (numero di successi)",
+      x = "k (numero di risposte corrette)",
       y = "P(X = k)"
     )
 ```
+
+---
+
+**Osservate:** la distribuzione è concentrata intorno a $n \times p = 20 \times 0.80 = 16$. Questo è il punteggio "atteso" per un soggetto nella norma.
 
 ---
 
@@ -356,9 +383,9 @@ La simulazione ci permette di:
 [Esperimento Base]  
 20 prove Bernoulli indipendenti (p = 0.80)  
 ↓  
-Conta dei successi → Un valore di X  
+Contare i successi → Un valore di X  
 ↓  
-[Ripeti Nsim volte]  
+[Ripetere Nsim volte]  
 ↓  
 Distribuzione empirica di X
 ```
@@ -415,7 +442,7 @@ freq_16
 ```
 
 **Interpretazione:**  
-nelle 10,000 simulazioni, il 21.74% ha prodotto esattamente 16 successi.
+nelle 10.000 simulazioni, circa il 22% ha prodotto esattamente 16 successi.
 
 > **Nota:** `mean()` su un vettore logico calcola direttamente la proporzione di `TRUE`, poiché R converte `TRUE = 1` e `FALSE = 0`.
 
@@ -440,7 +467,21 @@ confronto
 
 **Visualizzazione del confronto**
 
+```r
+confronto |>
+ggplot(aes(x = Metodo, y = Probabilità, fill = Metodo)) +
+  geom_col(width = 0.6) +
+  geom_text(aes(label = round(Probabilità, 4)), vjust = -0.5) +
+  labs(title = "Confronto: Stima Monte Carlo vs Teoria",
+       subtitle = "P(X = 16) per Binomiale(20, 0.80)") +
+  theme_minimal() +
+  ylim(0, 0.25)
+```
+
+---
+
 ```{r}
+#| echo: false
 confronto |>
 ggplot(aes(x = Metodo, y = Probabilità, fill = Metodo)) +
   geom_col(width = 0.6) +
@@ -491,14 +532,15 @@ la simulazione Monte Carlo ci permette di **validare empiricamente** i risultati
 
 ---
 
-## Esercizio 7 — Modello Poisson per arrivi di pazienti
+## Esercizio 7 — Modello Poisson per gli arrivi in un servizio
 
 **Contesto del problema**
 
-Un servizio di consulenza psicologica riceve pazienti secondo un processo stocastico con le seguenti caratteristiche:
+Un servizio di consulenza psicologica riceve pazienti senza appuntamento. Il responsabile del servizio vi chiede di aiutarlo a **pianificare il personale**: quanti psicologi servono nelle diverse fasce orarie?
 
-- **tasso medio di arrivo:** $\lambda = 2$ pazienti all'ora.
-- **ipotesi del modello Poisson:**
+---
+
+Il tasso medio di arrivo è $\lambda = 2$ pazienti all'ora. Le ipotesi del modello Poisson sono:
 
   1. gli arrivi sono **indipendenti** tra loro;
   2. la probabilità di arrivo è **costante** nell'intervallo temporale;
@@ -519,16 +561,16 @@ $$
 ---
 
 **Obiettivi.**  
-Calcolare tre probabilità per la gestione del servizio:
+Calcolare tre probabilità utili per la gestione del servizio:
 
 1. **Probabilità di nessun arrivo:** $P(X = 0)$  
-   → Utile per valutare periodi di "inattività"
+   → Quante ore "vuote" aspettarsi? Si può usare quel tempo per altre attività?
 
 2. **Probabilità di esattamente 3 arrivi:** $P(X = 3)$  
-   → Scenario di carico moderato-alto
+   → Un solo psicologo può gestire 3 pazienti all'ora?
 
 3. **Probabilità di al più 1 arrivo:** $P(X \leq 1)$  
-   → Scenario di bassa domanda (0 o 1 paziente)
+   → Quanto spesso il carico è basso abbastanza per un solo operatore?
 
 ---
 
@@ -548,7 +590,9 @@ P0 <- dpois(x = 0, lambda = lambda)
 P0
 ```
 
-**Interpretazione:** c'è circa il **13.5% di probabilità** che in un'ora non arrivi alcun paziente.
+. . .
+
+**Interpretazione:** c'è circa il **13.5% di probabilità** che in un'ora non arrivi alcun paziente. Su un turno di 8 ore, ci si aspetta circa un'ora vuota — tempo che può essere dedicato alla documentazione clinica.
 
 ---
 
@@ -559,7 +603,7 @@ P3 <- dpois(x = 3, lambda = lambda)
 P3
 ```
 
-**Interpretazione:** c'è circa il **18.0% di probabilità** che in un'ora arrivino esattamente 3 pazienti.
+**Interpretazione:** c'è circa il **18.0% di probabilità** che in un'ora arrivino esattamente 3 pazienti. Se un singolo psicologo può gestire al massimo 2 pazienti all'ora, serve prevedere un supporto aggiuntivo.
 
 ---
 
@@ -570,7 +614,7 @@ P_le1 <- ppois(q = 1, lambda = lambda)
 P_le1
 ```
 
-**Interpretazione:** c'è circa il **40.6% di probabilità** che in un'ora arrivino **0 oppure 1** paziente.
+**Interpretazione:** c'è circa il **40.6% di probabilità** che in un'ora arrivino **0 oppure 1** pazienti. Per circa il 40% del tempo, un solo psicologo sarebbe sufficiente.
 
 ---
 
@@ -600,6 +644,8 @@ Visualizziamo la tabella per vedere i valori:
 tabella
 ```
 
+---
+
 **Spiegazione:**
 
 - `0:8` crea i numeri 0, 1, 2, ..., 8.
@@ -621,12 +667,114 @@ ggplot(aes(x = pazienti, y = prob)) +
 
 ---
 
+### Domanda per il responsabile del servizio
+
+Con questo grafico possiamo rispondere a una domanda operativa concreta:
+
+> "Quale organico serve per coprire **almeno il 95%** delle ore senza sovraccarico?"
+
+```{r}
+# Probabilità cumulativa: P(X <= k) per ogni k
+ppois(0:6, lambda = 2)
+```
+
+Con 4 slot/ora (cioè capacità di accogliere fino a 4 pazienti), copriamo il ~95% delle ore. Questa è una decisione organizzativa fondata sui dati.
+
+---
+
+### Domanda operativa chiave
+
+Il responsabile del servizio non chiede una probabilità astratta, ma qualcosa del tipo:
+
+> **“Quanti pazienti all’ora devo essere in grado di gestire per non andare in crisi quasi mai?”**
+
+Formalizziamo “quasi mai” come:
+
+* *almeno il 95% delle ore* senza sovraccarico.
+
+---
+
+### Traduzione statistica della domanda
+
+Dire *“non andare in sovraccarico”* significa:
+
+> il numero di pazienti che arrivano in un’ora **non supera la capacità del servizio**.
+
+---
+
+Se la capacità è $k$ pazienti/ora, questo evento è:
+$$
+X \le k.
+$$
+
+Quindi la domanda diventa:
+
+> per quale valore di $k$ vale
+> $$P(X \le k) \ge 0.95\ ?$$
+
+---
+
+### Uso della Poisson cumulativa
+
+Calcoliamo la probabilità cumulativa per diversi valori di $k$:
+
+```r
+ppois(0:6, lambda = 2)
+```
+
+Questo comando restituisce:
+
+* $P(X \le 0)$
+* $P(X \le 1)$
+* …
+* $P(X \le 6)$
+
+cioè: **quanta parte delle ore è coperta se posso gestire fino a $k$ pazienti**.
+
+---
+
+### Interpretazione dei risultati
+
+Leggendo i valori cumulativi (approssimativamente):
+
+| Capacità (k pazienti/ora) | $P(X \le k)$ | Significato operativo              |
+| ------------------------- | ------------ | ---------------------------------- |
+| 2                         | ~0.68        | sovraccarico nel 32% delle ore     |
+| 3                         | ~0.86        | sovraccarico nel 14% delle ore     |
+| 4                         | ~0.95        | sovraccarico solo nel 5% delle ore |
+| 5                         | ~0.98        | margine molto ampio                |
+
+---
+
+### Conclusione gestionale
+
+👉 **Con una capacità di 4 pazienti all’ora**, il servizio riesce a gestire **circa il 95% delle ore** senza sovraccarico.
+
+Questo non significa che:
+
+* non arriveranno mai più di 4 pazienti,
+* oppure che il modello sia “vero”.
+
+Significa che:
+
+> **stiamo prendendo una decisione organizzativa consapevole, basata su un livello di rischio esplicito**.
+
+---
+
+### Messaggio chiave della slide
+
+* La Poisson **non serve solo a fare calcoli**.
+* Serve a **trasformare l’incertezza in decisioni operative**, con un rischio quantificato.
+* Qui la distribuzione di Poisson diventa uno strumento di **pianificazione reale**, non solo teoria.
+
+---
+
 ### Sintesi delle funzioni R utilizzate
 
 | Funzione | Uso | Formula matematica | Esempio |
 |----------|-----|-------------------|---------|
-| `dpois(x, lambda)` | Densità:$P(X = k)$ |$\frac{\lambda^k e^{-\lambda}}{k!}$ | `dpois(3, 2)` →$P(X = 3)$ |
-| `ppois(q, lambda)` | Distribuzione cumulativa:$P(X \leq q)$ |$\sum_{k=0}^q \frac{\lambda^k e^{-\lambda}}{k!}$ | `ppois(1, 2)` →$P(X \leq 1)$ |
+| `dpois(x, lambda)` | Densità: $P(X = k)$ | $\frac{\lambda^k e^{-\lambda}}{k!}$ | `dpois(3, 2)` → $P(X = 3)$ |
+| `ppois(q, lambda)` | Distribuzione cumulativa: $P(X \leq q)$ | $\sum_{k=0}^q \frac{\lambda^k e^{-\lambda}}{k!}$ | `ppois(1, 2)` → $P(X \leq 1)$ |
 
 ---
 
@@ -634,11 +782,9 @@ ggplot(aes(x = pazienti, y = prob)) +
 
 | Concetto | Formula | Calcolo R | Risultato |
 |----------|---------|-----------|-----------|
-| **Evento raro** |$P(X = 0)$ | `dpois(0, 2)` | 0.1353 |
-| **Evento moderato** |$P(X = 3)$ | `dpois(3, 2)` | 0.1804 |
-| **Evento cumulativo** |$P(X \leq 1)$ | `ppois(1, 2)` | 0.4060 |
-
-**Take-home message:** la distribuzione di Poisson è usata per modellare eventi rari e indipendenti nel tempo. 
+| **Evento raro** | $P(X = 0)$ | `dpois(0, 2)` | 0.1353 |
+| **Evento moderato** | $P(X = 3)$ | `dpois(3, 2)` | 0.1804 |
+| **Evento cumulativo** | $P(X \leq 1)$ | `ppois(1, 2)` | 0.4060 |
 
 ---
 
@@ -647,7 +793,7 @@ ggplot(aes(x = pazienti, y = prob)) +
 **Obiettivo:**  
 **verificare empiricamente** la distribuzione di Poisson attraverso una simulazione.
 
-- **Teoria:** Sappiamo che per $\lambda = 2$:
+- **Teoria:** sappiamo che per $\lambda = 2$:
   - $P(X = 0) = 0.1353$,
   - $P(X = 3) = 0.1804$.
 
@@ -661,7 +807,7 @@ ggplot(aes(x = pazienti, y = prob)) +
 
 **Procedura passo-passo**
 
-Passo 1: Impostare i parametri
+Passo 1: impostare i parametri
 
 ```{r}
 # Parametri della simulazione
@@ -738,14 +884,14 @@ print(confronto)
 
 ---
 
-Se aumenti le simulazioni (Nsim = 100,000):
+Se aumentiamo le simulazioni (Nsim = 100,000):
 
 ```{r}
 arrivi_grandi <- rpois(100000, lambda)
 mean(arrivi_grandi == 0)  # Più vicino a 0.1353
 mean(arrivi_grandi == 3)  # Più vicino a 0.1804
 ```
-**Nota:** più simulazioni = risultati più precisi!
+**Nota:** più simulazioni = risultati più precisi.
 
 ---
 
@@ -756,8 +902,6 @@ mean(arrivi_grandi == 3)  # Più vicino a 0.1804
 3. Le **simulazioni Monte Carlo** approssimano le probabilità teoriche.
 4. Più simulazioni = migliore approssimazione (legge dei grandi numeri).
 5. Possiamo **verificare** formule matematiche attraverso esperimenti simulati.
-
-Ecco la versione migliorata dell'esercizio, con ggplot2 semplice e didattico, e una struttura più chiara.
 
 ---
 
@@ -809,7 +953,21 @@ head(dati_binom, 10)
 
 ### Visualizzazione con ggplot2 
 
+```r
+dati_binom |> 
+ggplot(aes(x = k, y = prob, fill = p)) +
+  geom_col(width = 0.7) +
+  facet_wrap(~ p, ncol = 3) +  # Tre grafici affiancati
+  labs(title = "Distribuzione Binomiale: effetto di p (n = 20)",
+       x = "Numero di successi (k)",
+       y = "P(X = k)") +
+  theme(legend.position = "none")  # Rimuove la legenda (ridondante)
+```
+
+---
+
 ```{r}
+#| echo: false
 dati_binom |> 
 ggplot(aes(x = k, y = prob, fill = p)) +
   geom_col(width = 0.7) +
@@ -824,17 +982,43 @@ ggplot(aes(x = k, y = prob, fill = p)) +
 
 **Cosa osservare:**
 
-1. **p = 0.2**: La distribuzione è spostata a sinistra (pochi successi)
-2. **p = 0.5**: Distribuzione simmetrica attorno a k = 10
-3. **p = 0.8**: Distribuzione spostata a destra (molti successi)
+1. **p = 0.2**: la distribuzione è spostata a sinistra (pochi successi);
+2. **p = 0.5**: distribuzione simmetrica attorno a k = 10;
+3. **p = 0.8**: distribuzione spostata a destra (molti successi).
 
-> **Regola pratica:** Il valore più probabile è $n \times p$.
+> **Regola pratica:** il valore più probabile è $n \times p$.
+
+---
+
+**Significato per l'assessment:** queste tre distribuzioni rappresentano tre scenari diversi per un test a 20 item. 
+
+. . .
+
+* Se $p = 0.2$, il test è molto difficile (la maggior parte dei soggetti risponde correttamente solo a 3-5 item). 
+* Se $p = 0.8$, il test è facile (la maggior parte ottiene 15-18 corretti). 
+
+. . .
+
+La scelta della **difficoltà degli item** determina la forma della distribuzione dei punteggi — e quindi la capacità del test di discriminare tra soggetti diversi.
 
 ---
 
 ### Versione alternativa: sovrapporre le distribuzioni
 
+```r
+ggplot(dati_binom, aes(x = k, y = prob, color = p)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 2) +
+  labs(title = "Confronto diretto: Binomiale con diversi p",
+       x = "Numero di successi (k)",
+       y = "P(X = k)",
+       color = "Probabilità\ndi successo") 
+```
+
+---
+
 ```{r}
+#| echo: false
 ggplot(dati_binom, aes(x = k, y = prob, color = p)) +
   geom_line(linewidth = 1.2) +
   geom_point(size = 2) +
@@ -871,7 +1055,20 @@ dati_pois <- data.frame(
 
 Visualizzazione:
 
+```r
+ggplot(dati_pois, aes(x = k, y = prob, fill = lambda)) +
+  geom_col(width = 0.7) +
+  facet_wrap(~ lambda, ncol = 3) +
+  labs(title = "Distribuzione di Poisson: effetto di λ",
+       x = "Numero di eventi (k)",
+       y = "P(X = k)") +
+  theme(legend.position = "none")
+```
+
+---
+
 ```{r}
+#| echo: false
 ggplot(dati_pois, aes(x = k, y = prob, fill = lambda)) +
   geom_col(width = 0.7) +
   facet_wrap(~ lambda, ncol = 3) +
@@ -893,9 +1090,30 @@ ggplot(dati_pois, aes(x = k, y = prob, fill = lambda)) +
 
 ---
 
+**Significato clinico:** il valore di $\lambda$ cambia completamente il profilo dell'evento. 
+
+* Un paziente con $\lambda = 0.5$ crisi di panico a settimana ha un profilo molto diverso da uno con $\lambda = 6$. 
+
+La Poisson ci permette di quantificare queste differenze e di monitorare i cambiamenti nel tempo durante il trattamento.
+
+---
+
 ### Versione alternativa: sovrapporre le distribuzioni
 
+```r
+ggplot(dati_pois, aes(x = k, y = prob, color = lambda)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 2) +
+  labs(title = "Confronto diretto: Poisson con diversi λ",
+       x = "Numero di eventi (k)",
+       y = "P(X = k)",
+       color = "Tasso\nmedio (λ)") 
+```
+
+---
+
 ```{r}
+#| echo: false
 ggplot(dati_pois, aes(x = k, y = prob, color = lambda)) +
   geom_line(linewidth = 1.2) +
   geom_point(size = 2) +
@@ -1087,14 +1305,14 @@ Più tempo osserviamo, più è **improbabile** che non arrivi nessuno.
 
 ---
 
-### Un'analogia
+### Un'applicazione clinica
 
-**Guardare la strada:**
+Lo stesso principio si applica al monitoraggio clinico:
 
-- per **1 minuto**: plausibile non vedere auto;
-- per **1 ora**: quasi impossibile non vederne.
+- Se un paziente con disturbo di panico ha in media $\lambda = 3$ crisi al mese, la probabilità di passare **un'intera settimana** senza crisi ($\lambda_{\text{sett}} = 0.75$) è $e^{-0.75} \approx 47\%$.
+- Dopo un mese di trattamento, se $\lambda$ scende a 1 crisi/mese, la probabilità di una settimana senza crisi sale a $e^{-0.25} \approx 78\%$.
 
-La Poisson formalizza questa intuizione.
+La Poisson ci permette di **quantificare il miglioramento clinico** in termini di probabilità di periodi liberi da sintomi.
 
 ---
 
@@ -1129,11 +1347,27 @@ Oggi abbiamo usato R per:
    - Poisson: `dpois()`, `ppois()`
 2. simulare dati e collegare simulazione e teoria:
    - `rbinom()`, `rpois()`
-3. visualizzare la forma della distribuzione e capire l’effetto dei parametri.
+3. visualizzare la forma della distribuzione e capire l'effetto dei parametri.
 
 ---
 
-Messaggio finale:
+## Perché tutto questo conta per la nostra professione {background-color="#2c3e50" style="color: white;"}
 
-> le distribuzioni discrete sono strumenti per descrivere conteggi.  
+Le distribuzioni discrete non sono astrazioni matematiche. Sono il linguaggio con cui si descrivono i **dati che incontrerete ogni giorno**:
+
+. . .
+
+- I **punteggi ai test** sono conteggi (binomiale).
+- Le **frequenze dei sintomi** sono conteggi (Poisson).
+- Le **decisioni diagnostiche** (positivo/negativo) sono esiti binari (Bernoulli).
+
+---
+
+## Perché tutto questo conta per la nostra professione {background-color="#2c3e50" style="color: white;"}
+
+R è lo strumento che ci permette di passare **dalla teoria alla pratica**: dal modello matematico alla risposta alla domanda clinica. Il calcolo a mano migliora la comprensione; R ci fornisce potenza operativa. Servono entrambi.
+
+. . .
+
+> Le distribuzioni discrete sono strumenti per descrivere conteggi.  
 > R ci permette di calcolare, controllare e capire questi strumenti in modo immediato.

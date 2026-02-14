@@ -1,7 +1,7 @@
 ---
 title: "Sintassi R"
 subtitle: "Vettori, dataframe, dplyr e ggplot2"
-version: 1.0
+version: 2.0
 author:
   - name: Corrado Caudek
     orcid: 0000-0002-1404-0420
@@ -33,13 +33,43 @@ format:
 library(tidyverse)
 ```
 
+# Una sfida professionale {background-color="#e74c3c" style="color: white;"}
+
+## Lo scenario
+
+Immaginate di essere al primo anno di tirocinio in un servizio di salute mentale.
+
+. . .
+
+Il vostro supervisore vi consegna un foglio Excel con i dati di **80 pazienti** che hanno completato un programma di gruppo per l'ansia sociale. Per ciascun paziente avete il punteggio a un questionario *prima* e *dopo* il trattamento, più alcune variabili demografiche.
+
+. . .
+
+Vi chiede: **"Funziona il trattamento? E per chi funziona di più — uomini o donne?"**
+
+---
+
+## Come rispondereste oggi?
+
+Aprire Excel, calcolare medie a mano colonna per colonna, creare grafici con il mouse...
+
+. . .
+
+Alla fine della lezione di oggi saprete fare tutto questo — e molto di più — **in meno di 10 righe di codice**.
+
+. . .
+
+Non è una questione estetica: è una questione di **riproducibilità**. Se il supervisore vi chiede "ma come hai calcolato questi numeri?", il codice R è la risposta. Un foglio Excel pieno di clic non lo è.
+
+---
+
 ## Come usare questa lezione
 
 Questa lezione è un **repertorio di strumenti** R. Non dovete memorizzare la sintassi.
 
 . . .
 
-**All'esame potrete usare i vostri appunti** e gli snippet di codice che vi sarete trascritti.
+All'esame potrete usare gli **snippet di codice** che vi sarete trascritti.
 
 . . .
 
@@ -99,13 +129,23 @@ x - y     # 2-1, 5-0, 8-2, 3-4
 
 ---
 
-## Perché questo è così utile?
+## Il "superpotere" rispetto al foglio di calcolo
 
-Pensiamo alla statistica descrittiva. Per calcolare le **deviazioni dalla media**, dovremmo prendere ogni dato, sottrarre la media e ripetere $n$ volte.
+In Excel, per calcolare le deviazioni dalla media di 10 valori dovreste:
 
 . . .
 
-In R, basta scrivere:
+1. Calcolare la media in una cella (es. `=MEDIA(A1:A10)`).
+2. In un'altra colonna, scrivere `=A1-$B$1` e poi **trascinare la formula** per 10 righe.
+3. In un'altra colonna ancora, elevare al quadrato: `=C1^2`, trascinare di nuovo...
+
+. . .
+
+Con 10 dati è fattibile. Con 800 pazienti, diventa un incubo di celle e di errori nascosti.
+
+---
+
+## In R: una riga fa tutto
 
 ```{r}
 x <- c(112, 128, 133, 136, 145, 148, 151, 158, 164, 192)
@@ -116,7 +156,7 @@ deviazioni
 
 . . .
 
-Una sola riga di codice fa il lavoro di un intero ciclo.
+Una sola riga di codice fa il lavoro di un intero foglio di calcolo. E se i dati cambiano, basta rieseguire il codice — nessuna cella da ritrascinare.
 
 ---
 
@@ -167,9 +207,9 @@ Il segreto è che **sotto il $\Sigma$ c'è un'operazione che si ripete per ciasc
 
 Quindi:
 
-1. La formula dice "per ciascun $i$, calcola $x_i - \bar{x}$" → in R: `x - mean(x)` (vettorializzato)
-2. La formula dice "poi eleva al quadrato" → in R: `(...)^2`
-3. La formula dice "poi somma tutto" → in R: `sum(...)`
+1. la formula dice "per ciascun $i$, calcola $x_i - \bar{x}$" → in R: `x - mean(x)` (vettorializzato);
+2. la formula dice "poi eleva al quadrato" → in R: `(...)^2`;
+3. la formula dice "poi somma tutto" → in R: `sum(...)`.
 
 . . .
 
@@ -200,7 +240,7 @@ Una sola riga — nessun ciclo, nessun indice $i$. R applica la formula a tutti 
 
 # Dove si trovano i dati? {background-color="#2c3e50" style="color: white;"}
 
-## Il problema della directory di lavoro
+## Il problema (e la soluzione pratica)
 
 Uno degli ostacoli più frequenti per chi inizia con R è:
 
@@ -208,21 +248,17 @@ Uno degli ostacoli più frequenti per chi inizia con R è:
 
 . . .
 
-Quando scriviamo `read.csv("dati.csv")`, R cerca il file nella **directory di lavoro** (*working directory*).
-
-. . .
+R cerca i file nella **directory di lavoro** (*working directory*):
 
 ```{r}
 getwd()    # mostra la directory di lavoro corrente
 ```
 
-Se il file non è lì, R dà errore.
-
 ---
 
-## Soluzione 1: mettere i dati dove si trova il codice
+## La regola d'oro
 
-La strategia più semplice: salvare il file CSV **nella stessa cartella** dello script R (o del file .qmd).
+Per questo corso: salvate il file CSV **nella stessa cartella** dello script R.
 
 ```
 mia_cartella/
@@ -232,73 +268,14 @@ mia_cartella/
 
 . . .
 
-In questo caso, basta:
-
 ```{r}
 #| eval: false
 d <- read.csv("stars_classe.csv")
 ```
 
-Questa è spesso la soluzione più pratica per esercizi e homework.
-
----
-
-## Soluzione 2: i Progetti di RStudio
-
-Un **Progetto RStudio** (.Rproj) fissa automaticamente la directory di lavoro alla cartella del progetto.
-
 . . .
 
-Come si crea:
-
-1. *File → New Project → New Directory → New Project*
-2. Scegliete un nome e una posizione
-3. RStudio crea un file `.Rproj` nella cartella
-
-. . .
-
-Da quel momento, ogni volta che aprite il progetto (doppio clic sul file `.Rproj`), R "sa" dove cercare i file.
-
----
-
-## Soluzione 3: il pacchetto `here`
-
-Se avete sottocartelle (es. `dati/`, `script/`), il pacchetto **here** costruisce i percorsi in modo portabile:
-
-```
-mio_progetto/
-  ├── mio_progetto.Rproj
-  ├── script/
-  │     └── analisi.R
-  └── dati/
-        └── stars_classe.csv
-```
-
-. . .
-
-```{r}
-#| eval: false
-library(here)
-d <- read.csv(here("dati", "stars_classe.csv"))
-```
-
-. . .
-
-`here()` parte sempre dalla radice del progetto, indipendentemente da dove si trova lo script. Questo evita errori quando condividete il progetto con qualcun altro.
-
----
-
-## Quale soluzione usare?
-
-| Situazione | Soluzione consigliata |
-|:-----------|:---------------------|
-| Esercizio singolo, homework | File nella stessa cartella |
-| Progetto con più file/cartelle | Progetto RStudio + `here()` |
-| Condivisione con altri | Progetto RStudio + `here()` |
-
-. . .
-
-Per questo corso, la prima soluzione è quasi sempre sufficiente.
+Quando i vostri progetti diventeranno più complessi (più cartelle, collaborazione con altri), imparerete a usare i **Progetti RStudio** e il pacchetto **here**. Per ora, la regola di "tutto nella stessa cartella" è sufficiente per gli homework e le esercitazioni.
 
 # Il dataframe e `$` {background-color="#2c3e50" style="color: white;"}
 
@@ -466,6 +443,20 @@ d |>
 
 ---
 
+## Pensare da psicologi, non da programmatori
+
+Guardate la tabella che abbiamo appena ottenuto. 
+
+. . .
+
+Le medie dei due gruppi sono diverse — ma basta questo per concludere che c'è una differenza reale? Cosa ci dice la deviazione standard? E la dimensione dei gruppi?
+
+. . .
+
+Per ora, ci limitiamo a **descrivere**. Ma imparate fin d'ora a non saltare alle conclusioni: nella seconda parte del corso vedremo come l'inferenza bayesiana permette di quantificare quanto siamo *incerti* su queste differenze.
+
+---
+
 ## Raggruppare per scuola superiore
 
 ```{r}
@@ -540,7 +531,7 @@ head(d[, c("id", "STARS_total", "STARS_z")], 5)
 
 Nella ricerca psicometrica, spesso si hanno le risposte ai **singoli item** e bisogna calcolare il punteggio di una sottoscala.
 
-. . .
+---
 
 La sottoscala **FAH** (*Fear of Asking for Help*) della STARS è composta da 4 item. Carichiamo i dati a livello di item:
 
@@ -588,6 +579,16 @@ mutate(FAH_media = (item_15 + item_20 + item_22 + item_23) / 4)
 . . .
 
 Il $\Sigma$ diventa una somma di colonne; la divisione per $k$ è una normale divisione. L'aritmetica vettorializzata fa il resto: il calcolo viene applicato a **ciascuna riga** automaticamente.
+
+---
+
+## Perché questo è rilevante per la professione
+
+Calcolare punteggi di sottoscala è un'operazione che farete **costantemente**: lo scoring di questionari come il BDI-II, l'SCL-90, o il Big Five richiede esattamente questo tipo di operazioni.
+
+. . .
+
+Con `mutate()` potete creare punteggi per centinaia di pazienti in un istante — e soprattutto, il codice è **documentato e ripetibile**. Se un collega vi chiede "come hai calcolato il punteggio?", gli mostrate il codice. Non "ho sommato queste colonne in Excel e poi ho trascinato la formula".
 
 # Visualizzazione con ggplot2 {background-color="#2c3e50" style="color: white;"}
 
@@ -770,6 +771,28 @@ ggplot(d, aes(x = autovalutazione_math, y = STARS_total)) +
 
 ---
 
+## Leggere un grafico come psicologi
+
+Fermiamoci un momento su questo scatterplot. Cosa osservate?
+
+. . .
+
+La relazione è **negativa**: chi si valuta meglio in matematica tende ad avere meno ansia statistica. Ma guardate la **dispersione** dei punti intorno alla retta.
+
+. . .
+
+Domande da porsi sempre davanti a un grafico:
+
+- La relazione è forte o debole? (Quanta dispersione c'è intorno alla retta?)
+- Ci sono **outlier** che "trascinano" la retta?
+- La retta cattura bene il pattern, o la relazione è curvilinea?
+
+---
+
+Un grafico racconta molto di più di una correlazione $r$ = ... — e può rivelare problemi che un singolo numero nasconde.
+
+---
+
 ## Combinare dplyr e ggplot
 
 Possiamo usare la pipe per preparare i dati e poi passarli direttamente a ggplot:
@@ -850,21 +873,47 @@ ggplot(d, aes(x = reorder(scuola_superiore, STARS_total),
 
 ---
 
-## Ricapitolando: il flusso
+## Torniamo allo scenario iniziale
 
-1. **Importare** → `read.csv()` (+ progetto RStudio o `here()`)
-
-2. **Esplorare** → `head()`, `summary()`, `dim()`, `names()`
-
-3. **Trasformare** → `mutate()` per creare nuove variabili
-
-4. **Riassumere** → `group_by()` + `summarise()`
-
-5. **Visualizzare** → `ggplot()` + `geom_*()`
+Ricordate la domanda del supervisore? *"Funziona il trattamento? Per chi funziona di più?"*
 
 . . .
 
-Questo flusso è sufficiente per la grande maggioranza delle analisi descrittive.
+Se aveste un dataframe `pazienti` con le colonne `pre`, `post` e `genere`, ora sapete già come rispondere:
+
+```{r}
+#| eval: false
+pazienti |>
+  mutate(miglioramento = pre - post) |>
+  group_by(genere) |>
+  summarise(
+    media_migl = mean(miglioramento),
+    sd_migl = sd(miglioramento),
+    n = n()
+  )
+```
+
+. . .
+
+Cinque righe di codice — leggibili, riproducibili, documentate. È esattamente questo il tipo di competenza che vi servirà nella professione.
+
+---
+
+## Ricapitolando: il flusso di lavoro
+
+1. **Importare** → `read.csv()` (+ progetto RStudio o `here()`).
+
+2. **Esplorare** → `head()`, `summary()`, `dim()`, `names()`.
+
+3. **Trasformare** → `mutate()` per creare nuove variabili.
+
+4. **Riassumere** → `group_by()` + `summarise()`.
+
+5. **Visualizzare** → `ggplot()` + `geom_*()`.
+
+. . .
+
+Questo flusso di lavoro è sufficiente per la grande maggioranza delle analisi descrittive.
 
 ---
 
@@ -900,4 +949,4 @@ Questo flusso è sufficiente per la grande maggioranza delle analisi descrittive
 
 . . .
 
-Nella prossima lezione: **fondamenti della probabilità** — eventi, spazi campionari, assiomi.
+Nella prossima lezione: **fondamenti della probabilità** — eventi, spazi campionari e assiomi.

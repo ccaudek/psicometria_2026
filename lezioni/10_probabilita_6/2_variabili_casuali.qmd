@@ -1,7 +1,7 @@
 ---
 title: "Variabili casuali"
 subtitle: "Funzioni di variabili casuali e calcoli in R"
-version: 0.8
+version: 2.0
 author:
   - name: Corrado Caudek
     orcid: 0000-0002-1404-0420
@@ -32,554 +32,965 @@ bibliography: ../references.bib
 csl: ../apa.csl
 ---
 
+
 ```{r}
 #| echo: false
 #| output: false
-library(tibble)
-library(dplyr)
-library(knitr)
-library(kableExtra)
+library(ggplot2)
+set.seed(42)
 ```
 
-## Obiettivo {.unnumbered .unlisted}
+# Trasformare i dati, trasformare le domande {background-color="#e74c3c" style="color: white;"}
 
-In questa seconda parte:
+## Un caso quotidiano
 
-1. Introduciamo le **funzioni di variabili casuali**
-2. Impariamo a calcolare valore atteso e varianza **con R**
-3. Verifichiamo i concetti con **simulazioni**
+Un vostro collega vi chiede di confrontare le prestazioni di un paziente su due test diversi:
 
----
+. . .
 
-## Funzioni di variabili casuali
+- **Test di memoria:** punteggio grezzo = 42 (media pop. = 50, DS = 8)
+- **Test di attenzione:** punteggio grezzo = 28 (media pop. = 35, DS = 5)
 
-Se $X$ è una variabile casuale e $g$ è una funzione, allora $Y = g(X)$ è anch'essa una variabile casuale.
+. . .
 
-**Esempi in psicologia:**
-
-- $X$ = punteggio grezzo → $Y = 10X + 50$ = punteggio T
-- $X$ = tempo di reazione (ms) → $Y = \log(X)$ = log-trasformazione
-- $X$ = numero di risposte corrette → $Y = X/n$ = proporzione
+In quale dei due il paziente è "più deficitario"? 
 
 ---
 
-## Valore atteso di $g(X)$: caso discreto
+Non potete rispondere confrontando 42 con 28 — le scale sono diverse. Dovete **trasformare** i punteggi in una scala comune.
 
-Se $X$ assume valori $x_1, \ldots, x_n$ con probabilità $p(x_i)$:
+. . .
 
-$$
-\mathbb{E}[g(X)] = \sum_{i=1}^{n} g(x_i) \cdot p(x_i)
-$$
+Memoria: $z = (42 - 50)/8 = -1.00$. 
 
-**Attenzione:** in generale, $\mathbb{E}[g(X)] \neq g(\mathbb{E}[X])$
+Attenzione: $z = (28 - 35)/5 = -1.40$.
 
-> La media di una funzione **non è** la funzione della media!
+. . .
 
----
-
-## Esempio: il quadrato
-
-Sia $X$ con $\mathbb{E}(X) = 2$ e distribuzione:
-
-| $x$ | 0 | 2 | 4 |
-|-----|---|---|---|
-| $p(x)$ | 0.25 | 0.50 | 0.25 |
-
-**Calcolo $\mathbb{E}(X^2)$:**
-$$
-\mathbb{E}(X^2) = 0^2(0.25) + 2^2(0.50) + 4^2(0.25) = 0 + 2 + 4 = 6
-$$
-
-Ma $[\mathbb{E}(X)]^2 = 2^2 = 4 \neq 6$
+Il paziente è più deficitario nell'attenzione. Questa è una **trasformazione di variabile casuale** — il tema di questa seconda parte.
 
 ---
 
-## Il caso lineare è speciale
+## Obiettivi della lezione {.unnumbered .unlisted}
 
-Per le funzioni **lineari** $g(X) = a + bX$, vale:
-
-$$
-\mathbb{E}(a + bX) = a + b\mathbb{E}(X)
-$$
-
-Questa è l'unica classe di funzioni per cui vale l'uguaglianza!
+1. Capire cosa succede quando **trasformiamo** una variabile casuale.
+2. Calcolare **media** e **varianza** usando R.
+3. Verificare i calcoli con **simulazioni**.
 
 ---
 
-## Disuguaglianza di Jensen
+## Un'idea semplice
 
-Per funzioni **convesse** (come $x^2$, $e^x$):
-
-$$
-\mathbb{E}[g(X)] \geq g(\mathbb{E}[X])
-$$
-
-Per funzioni **concave** (come $\log(x)$, $\sqrt{x}$):
+Se $X$ è una variabile casuale e applichiamo una funzione $g$, otteniamo una **nuova** variabile casuale:
 
 $$
-\mathbb{E}[g(X)] \leq g(\mathbb{E}[X])
+Y = g(X).
 $$
 
-> Implicazione pratica: la media dei logaritmi ≠ logaritmo della media!
+**Esempio:** se $X$ è un punteggio grezzo, possiamo creare $Y = 2X + 10$.
 
 ---
 
-## Calcoli in R: creare una distribuzione discreta
+## Perché ci interessa?
 
-R non ha una funzione specifica per v.c. discrete arbitrarie, ma possiamo usare i vettori:
+In psicologia trasformiamo spesso i dati:
+
+| Trasformazione | Formula | Uso tipico |
+|----------------|---------|------------|
+| Punteggio z | $Z = \frac{X - \mu}{\sigma}$ | Standardizzare |
+| Punteggio T | $T = 50 + 10Z$ | Scale psicometriche |
+| Logaritmo | $Y = \log(X)$ | Tempi di reazione |
+
+Ogni volta che calcolate un punteggio z, costruite un T-score, o applicate una trasformazione logaritmica, state creando una nuova variabile casuale a partire da una esistente.
+
+---
+
+## La domanda chiave
+
+> Se conosco la media di $X$, posso calcolare facilmente la media di $Y = g(X)$?
+
+**Dipende dalla funzione.**
+
+---
+
+## Caso facile: trasformazioni lineari
+
+Per $Y = a + bX$, la risposta è **sì**:
+
+$$
+\mathbb{E}(a + bX) = a + b \cdot \mathbb{E}(X).
+$$
+
+La media "passa attraverso" la trasformazione lineare.
+
+---
+
+## Esempio concreto
+
+Un test ha media $\mathbb{E}(X) = 25$.
+
+Creiamo $Y = 10 + 2X$.
+
+Qual è $\mathbb{E}(Y)$?
+
+$$
+\mathbb{E}(Y) = 10 + 2 \times 25 = 60.
+$$
+
+---
+
+## Caso difficile: trasformazioni non lineari
+
+Per funzioni come $\sqrt{X}$ o $\log(X)$, **non** possiamo fare lo stesso.
+
+$$
+\mathbb{E}[\sqrt{X}] \neq \sqrt{\mathbb{E}[X]}.
+$$
+
+La media della radice **non è** la radice della media.
+
+---
+
+## Un esempio numerico
+
+Consideriamo tre valori: $X = \{1, 4, 9\}$, tutti equiprobabili.
+
+**Media di X:**
+
+$$
+\mathbb{E}(X) = \frac{1 + 4 + 9}{3} = \frac{14}{3} \approx 4.67.
+$$
+
+**Radice della media:**
+
+$$
+\sqrt{\mathbb{E}(X)} = \sqrt{4.67} \approx 2.16.
+$$
+
+---
+
+## Continuiamo l'esempio
+
+**Media delle radici:**
+
+$$
+\mathbb{E}(\sqrt{X}) = \frac{\sqrt{1} + \sqrt{4} + \sqrt{9}}{3} = \frac{1 + 2 + 3}{3} = 2.
+$$
+
+**Confronto:**
+
+- $\sqrt{\mathbb{E}(X)} \approx 2.16$.
+- $\mathbb{E}(\sqrt{X}) = 2$.
+
+I due valori sono **diversi**!
+
+---
+
+## La regola generale (disuguaglianza di Jensen)
+
+Per funzioni **concave** (come $\sqrt{x}$ e $\log(x)$):
+
+$$
+\mathbb{E}[g(X)] \le g(\mathbb{E}[X]).
+$$
+
+Per funzioni **convesse** (come $x^2$):
+
+$$
+\mathbb{E}[g(X)] \ge g(\mathbb{E}[X]).
+$$
+
+---
+
+## Perché questo conta per la ricerca psicologica {background-color="#2c3e50" style="color: white;"}
+
+Questa non è solo una curiosità matematica — ha conseguenze pratiche serie.
+
+. . .
+
+**Esempio:** i tempi di reazione (TR) hanno spesso valori estremi che "trascinano" la media aritmetica. La soluzione classica è lavorare con $\log(\text{TR})$.
+
+---
+
+## Perché questo conta per la ricerca psicologica {background-color="#2c3e50" style="color: white;"}
+
+Ma se calcolate la media dei log-TR e poi la ritrasformate con l'esponenziale per tornare in millisecondi, **non** ottenete la media dei TR originali. Ottenete la **media geometrica** — che è sistematicamente più bassa.
+
+. . .
+
+Se non capite questo meccanismo, rischiate di interpretare male i risultati dei vostri studi.
+
+# Calcoli in R {background-color="#0072bc" style="color: white;"}
+
+---
+
+## Rappresentare una distribuzione discreta in R
+
+In R usiamo due vettori:
+
+- `x` = valori possibili;
+- `p` = probabilità corrispondenti.
 
 ```{r}
-#| echo: true
-# Definire la distribuzione
-x <- c(0, 1, 2)           # Valori
-p <- c(0.70, 0.20, 0.10)  # Probabilità
+# Punteggi possibili di uno screening (0=negativo, 1=dubbio, 2=positivo)
+x <- c(0, 1, 2)
 
-# Verificare che le probabilità sommino a 1
+# Probabilità
+p <- c(0.70, 0.20, 0.10)
+```
+
+---
+
+## Controllo fondamentale
+
+Le probabilità devono sommare a 1:
+
+```{r}
 sum(p)
 ```
 
----
-
-## Calcolare valore atteso in R
-
-```{r}
-#| echo: true
-# Valore atteso: somma di x * p(x)
-E_X <- sum(x * p)
-E_X
-```
-
-Confrontiamo con l'Esercizio 1 della prima parte: ✓
+Se non otteniamo 1, c'è un errore.
 
 ---
 
-## Calcolare varianza in R
+## Calcolare la media (valore atteso)
+
+La media è una **somma pesata**: ogni valore moltiplicato per la sua probabilità.
+
+$$
+\mathbb{E}(X) = \sum x_i \cdot p(x_i)
+$$
+
+In R:
 
 ```{r}
-#| echo: true
-# Media dei quadrati
-E_X2 <- sum(x^2 * p)
-E_X2
-
-# Varianza = E(X²) - [E(X)]²
-Var_X <- E_X2 - E_X^2
-Var_X
-
-# Deviazione standard
-sqrt(Var_X)
+media <- sum(x * p)
+media
 ```
 
 ---
 
-## Ripetiamo l'Esercizio 3 con R
+## Passo per passo
 
-Scala di ansia (1-5):
+Cosa fa `x * p`?
 
 ```{r}
-#| echo: true
+x * p
+```
+
+Ogni valore è moltiplicato per la sua probabilità.
+
+`sum()` somma tutti questi prodotti.
+
+---
+
+## Calcolare la varianza
+
+Formula operativa:
+
+$$
+\mathbb{V}(X) = \mathbb{E}(X^2) - [\mathbb{E}(X)]^2
+$$
+
+**Passo 1:** Calcolare $\mathbb{E}(X^2)$
+
+```{r}
+media_quadrati <- sum(x^2 * p)
+media_quadrati
+```
+
+---
+
+## Calcolare la varianza (continua)
+
+**Passo 2:** Applicare la formula
+
+```{r}
+varianza <- media_quadrati - media^2
+varianza
+```
+
+**Passo 3:** La deviazione standard è la radice
+
+```{r}
+sqrt(varianza)
+```
+
+---
+
+## Riassunto dei calcoli
+
+```{r}
+# Dati dello screening
+x <- c(0, 1, 2)
+p <- c(0.70, 0.20, 0.10)
+
+# Calcoli
+media    <- sum(x * p)
+varianza <- sum(x^2 * p) - media^2
+sd       <- sqrt(varianza)
+
+# Risultati
+c(Media = media, Varianza = varianza, SD = sd)
+```
+
+Questi tre numeri riassumono completamente il comportamento del test: punteggio medio atteso, dispersione e dispersione in unità interpretabili.
+
+---
+
+## Perché simulare?
+
+La simulazione ci permette di **verificare** i calcoli teorici.
+
+. . .
+
+**Idea:** generiamo molti dati casuali e calcoliamo la media campionaria. Deve avvicinarsi alla media teorica.
+
+---
+
+## La funzione `sample()`
+
+`sample()` estrae valori casuali da un insieme:
+
+```{r}
+# Estrai 10 valori da x, con le probabilità p
+sample(x, size = 10, replace = TRUE, prob = p)
+```
+
+`replace = TRUE` significa "con reinserimento" (possiamo estrarre lo stesso valore più volte).
+
+---
+
+## Simulazione completa
+
+Generiamo 10,000 osservazioni:
+
+```{r}
+campione <- sample(x, size = 10000, replace = TRUE, prob = p)
+```
+
+Calcoliamo la media del campione:
+
+```{r}
+mean(campione)
+```
+
+Confrontiamo con la media teorica (0.40).
+
+---
+
+## Confronto teoria vs simulazione
+
+```{r}
+# Media
+c(Teorica = media, Simulata = mean(campione))
+```
+
+```{r}
+# Varianza (nota: var() usa n-1, quindi è leggermente diversa)
+c(Teorica = varianza, Simulata = var(campione))
+```
+
+I valori sono molto simili. Questa convergenza non è un caso: è una conseguenza della **legge dei grandi numeri** — con molte osservazioni, la media campionaria converge alla media teorica.
+
+---
+
+## Cosa ci insegna la simulazione?
+
+La simulazione rende **concreti** due concetti teorici:
+
+### 📌 Valore atteso
+
+È il **centro di equilibrio** della variabile casuale.
+Se ripetiamo l’esperimento molte volte, la media dei risultati si avvicina a questo valore.
+
+👉 Nella simulazione:
+`mean(campione)` ≈ media teorica.
+
+---
+
+### 📌 Varianza
+
+Misura **quanto i risultati oscillano** attorno al valore atteso.
+
+👉 Nella simulazione:
+`var(campione)` ≈ varianza teorica.
+
+---
+
+### 🎯 Interpretazione intuitiva
+
+* Il **valore atteso** è la media a cui tendono i risultati nel lungo periodo.
+* La **varianza** misura quanto sono dispersi i risultati attorno a quella media.
+* La simulazione mostra che questi non sono solo calcoli astratti:
+  emergono naturalmente quando ripetiamo l’esperimento molte volte.
+
+👉 La teoria descrive il comportamento limite.  
+👉 La simulazione lo rende osservabile.
+
+---
+
+## Esercizio 1 — Scala Likert di ansia
+
+In uno studio psicologico, il livello di ansia dei partecipanti viene misurato su una scala di Likert a 5 punti (da 1 = "Per niente ansioso" a 5 = "Estremamente ansioso").
+
+. . .
+
+La distribuzione di probabilità dei punteggi osservati nella popolazione è la seguente:
+
+| Punteggio | 1 | 2 | 3 | 4 | 5 |
+|-----------|-----|-----|-----|-----|-----|
+| Probabilità | 0.10 | 0.25 | 0.35 | 0.20 | 0.10 |
+
+. . .
+
+Calcola il valore atteso (media) e la deviazione standard della distribuzione.
+
+---
+
+### Soluzione Esercizio 1
+
+```{r}
+# Dati
 x <- 1:5
 p <- c(0.10, 0.25, 0.35, 0.20, 0.10)
 
-# Valore atteso
-E_X <- sum(x * p)
-E_X
+# Calcoli
+media    <- sum(x * p)
+varianza <- sum(x^2 * p) - media^2
 
-# Varianza
-Var_X <- sum(x^2 * p) - E_X^2
-Var_X
-
-# Deviazione standard
-sqrt(Var_X)
+c(Media = media, SD = sqrt(varianza))
 ```
 
 ---
 
-## Distribuzioni note in R
+### Interpretazione
 
-Per le distribuzioni standard, R ha funzioni dedicate:
+Il punteggio medio è circa 3 ("moderatamente ansioso"), con una variabilità di circa 1.1 punti. 
 
-| Distribuzione | Valore atteso | Varianza in R |
-|---------------|---------------|---------------|
-| Binomiale | `n * p` | `n * p * (1-p)` |
-| Poisson | `lambda` | `lambda` |
-| Normale | `mean` | `sd^2` |
-| Beta | Formula | Formula |
+La distribuzione è leggermente spostata verso il basso rispetto al centro della scala — la maggior parte delle persone riporta un'ansia moderata o bassa.
 
 ---
 
-## Esempio: distribuzione Binomiale
+## Esercizio 2 — Verifica mediante simulazione
 
-Lo studente con 3 esami (Esercizio 5):
+Genera 5,000 risposte dalla scala Likert dell'esercizio 1.  
+
+Confronta la media simulata e quella teorica.
+
+---
+
+### Soluzione Esercizio 2
 
 ```{r}
-#| echo: true
-n <- 3
-theta <- 0.70
+campione <- sample(x, size = 5000, replace = TRUE, prob = p)
 
-# Valore atteso
-E_Y <- n * theta
-E_Y
-
-# Varianza
-Var_Y <- n * theta * (1 - theta)
-Var_Y
+c(Media_teorica = media, Media_simulata = mean(campione))
 ```
 
 ---
 
-## Simulazione: verificare il valore atteso
+### Come funziona `sample()`?
 
-La potenza di R sta nelle simulazioni. Verifichiamo che la media di tanti campioni converge al valore atteso:
+```r
+campione <- sample(x, size = 5000, replace = TRUE, prob = p)
+```
+
+**Spiegazione:**  
+
+1. **`x = c(1,2,3,4,5)`** → possibili valori  
+2. **`size = 5000`** → numero di estrazioni  
+3. **`replace = TRUE`** → estrai con reinserimento  
+4. **`prob = p`** → usa le probabilità date  
+
+---
+
+### Interpretazione intuitiva
+
+Immaginate un’urna molto grande in cui la proporzione delle palline rispecchia le probabilità. 
+
+Se una probabilità è 0.35, circa il 35% delle palline riporta quel numero. 
+
+Estraendo molte volte con reinserimento, le frequenze osservate si avvicineranno a quelle proporzioni.
+
+---
+
+## Esercizio 3 — Un test è equo? {background-color="#2c3e50" style="color: white;"}
+
+Questo esercizio risponde a una domanda che vi faranno spesso come psicologi:
+
+> *"Se uno studente risponde a caso, quale punteggio ottiene?"*
+
+Se il punteggio atteso a caso è positivo, il test **premia** la risposta casuale. Se è zero, il test è **equo**. Se è negativo, il test **penalizza** il caso.
+
+Capire questo è fondamentale per progettare e valutare test.
+
+---
+
+## Esercizio 3 — Punteggio in un test a scelta multipla
+
+Un test è composto da **n = 15 domande**, ciascuna con **5 risposte possibili**, di cui una sola corretta.
+
+. . .
+
+Lo studente risponde **completamente a caso** a tutte le domande. 
+
+. . .
+
+Il sistema di punteggio è:
+
+*   **+1 punto** per ogni risposta corretta,
+*   **–0.25 punti** per ogni risposta errata,
+*   **0 punti** per ogni risposta non data.
+
+---
+
+## Esercizio 3 — Domande
+
+1.  Qual è la **distribuzione** del numero di risposte corrette?
+2.  Calcolare il **valore atteso** e la **deviazione standard** del **punteggio totale** ottenuto dallo studente.
+
+---
+
+### Soluzione Esercizio 3
+
+**Distribuzione del numero di risposte corrette**
+
+Il numero di risposte corrette $X$ segue una **distribuzione binomiale**:
+$$
+X \sim \text{Binom}(n = 15, \, p = 0.2)
+$$
+dove $p = 0.2$ è la probabilità di indovinare una singola domanda per caso.
+
+---
+
+### Passo 1: una singola domanda
+
+Consideriamo **una sola domanda**.
+
+* Probabilità di rispondere correttamente:
+  $p =  0.2$.
+* Probabilità di rispondere in modo errato:
+  $1 - p = 0.8$.
+
+Il punteggio per una domanda è:
+
+* **+1** se la risposta è corretta;
+* **–0.25** se la risposta è errata.
+
+---
+
+### Valore atteso per una domanda
+
+Il **valore atteso del punteggio per una domanda** è quindi:
+
+$$
+\mathbb{E}(\text{punteggio per una domanda})
+= 1 \cdot 0.2 + (-0.25) \cdot 0.8.
+$$
+
+Calcoliamo:
+
+$$
+\mathbb{E} = 0.2 - 0.2 = 0.
+$$
+
+**In media, una risposta data a caso vale 0 punti.**
+
+---
+
+### Passo 2: tutte le 15 domande
+
+Il punteggio totale ($S$) è la **somma dei punteggi delle singole domande**.
+
+Poiché il valore atteso di ogni domanda è 0, per la **linearità del valore atteso** il valore atteso totale è:
+
+$$
+\mathbb{E}(S) = 15 \times 0 = 0.
+$$
+
+---
+
+### Risultato finale (valore atteso)
+
+$$
+\boxed{\mathbb{E}(S) = 0}
+$$
+
+**Uno studente che risponde completamente a caso non guadagna né perde punti in media.**
+
+---
+
+Questo tipo di punteggio è detto **"corretto per il caso"**: il sistema di penalizzazione è costruito apposta per rendere **neutrale** il rispondere a caso. 
+
+. . .
+
+La penalità di 
+
+$$-1/(k-1),$$ 
+dove $k$ è il numero di alternative (qui $-1/4 = -0.25$) è la formula generale che garantisce questa proprietà.
+
+---
+
+## Esercizio 4 — Simulazione del punteggio del test
+
+Nell’Esercizio 3 abbiamo calcolato teoricamente che:
+
+* **punteggio atteso = 0**,
+* **deviazione standard ≈ 1.94**.
+
+Ora vogliamo verificare questi risultati con una simulazione.
+
+Simuliamo **5,000 studenti** che rispondono completamente a caso a un test di 15 domande.
+
+---
+
+## 1️⃣ Qual è il modello probabilistico?
+
+Ogni domanda:
+
+* ha 5 alternative,
+* solo 1 è corretta,
+* quindi la probabilità di rispondere correttamente a caso è:
+
+$$
+p = 0.2.
+$$
+
+---
+
+Il numero di risposte corrette $X$ su 15 domande segue quindi una:
+
+$$
+X \sim \text{Binom}(n = 15, p = 0.2).
+$$
+
+👉 $X$ è la nostra **variabile casuale di base**.
+
+---
+
+## 2️⃣ Simuliamo il numero di risposte corrette
+
+Simuliamo 5,000 studenti.
 
 ```{r}
-#| echo: true
-set.seed(42)  # Per riproducibilità
-
-# Simulare 10000 lanci di dado
-lanci <- sample(1:6, size = 10000, replace = TRUE)
-
-# Media campionaria
-mean(lanci)
+num_corrette <- rbinom(5000, size = 15, prob = 0.2)
 ```
 
-Valore atteso teorico: 3.5 ✓
+Cosa fa questo comando?
+
+* genera 5,000 valori,
+* ognuno rappresenta il numero di risposte corrette di uno studente,
+* ciascun valore è estratto da una Binomiale(15, 0.2).
+
+Ora abbiamo 5,000 possibili valori di $X$.
 
 ---
 
-## Simulazione: convergenza al valore atteso
+I primi 30 valori sono:
+
+```{r}
+num_corrette[1:30]
+```
+
+
+---
+
+## 3️⃣ Come si calcola il punteggio?
+
+Regola del test:
+
+* +1 punto per risposta corretta,
+* −0.25 punti per risposta sbagliata,
+* 15 domande totali.
+
+---
+
+Se uno studente ha $X$ risposte corrette:
+
+* risposte sbagliate = $15 - X$.
+
+Il punteggio totale è:
+
+$$
+\text{Punteggio} = 1 \cdot X - 0.25 \cdot (15 - X).
+$$
+
+---
+
+## 4️⃣ Semplifichiamo la formula
+
+$$
+\text{Punteggio} = X - 0.25(15 - X).
+$$
+
+$$
+= X - 3.75 + 0.25X
+$$
+
+$$
+= 1.25X - 3.75.
+$$
+
+👉 Il punteggio è una **trasformazione lineare** di $X$.
+
+---
+
+Questo è importante perché:
+
+Se $Y = aX + b$, allora
+
+$$
+E(Y) = aE(X) + b,
+$$
+
+$$
+Var(Y) = a^2 Var(X).
+$$
+
+---
+
+## 5️⃣ Calcoliamo i punteggi simulati
+
+Applichiamo la formula a tutti i 5,000 studenti:
+
+```{r}
+punteggi_totali <- 1.25 * num_corrette - 3.75
+```
+
+Ora abbiamo 5,000 punteggi simulati.
+
+I primi valori sono:
+
+```{r}
+punteggi_totali[1:30]
+```
+
+
+---
+
+## Confronto tra teoria e simulazione
+
+Valori teorici:
+
+```{r}
+media_teorica <- 0
+sd_teorica <- sqrt(3.75)  # varianza teorica = 3.75
+```
+
+Valori simulati:
+
+```{r}
+data.frame(
+  Statistica = c("Media", "Deviazione Standard"),
+  Teorica = c(media_teorica, sd_teorica),
+  Simulata = c(mean(punteggi_totali), sd(punteggi_totali))
+)
+```
+
+👉 I risultati della simulazione sono molto vicini ai valori teorici.
+
+Questo è un esempio concreto della **Legge dei Grandi Numeri**.
+
+---
+
+## Visualizziamo la distribuzione
 
 ```{r}
 #| echo: false
-#| fig-height: 4
-set.seed(42)
-n_max <- 5000
-lanci <- sample(1:6, size = n_max, replace = TRUE)
-medie_cumulative <- cumsum(lanci) / (1:n_max)
+hist(punteggi_totali,
+     main = "Distribuzione simulata del punteggio (5000 studenti)",
+     xlab = "Punteggio",
+     ylab = "Numero di studenti",
+     col = "lightblue")
 
-plot(1:n_max, medie_cumulative, type = "l", 
-     xlab = "Numero di lanci", ylab = "Media cumulativa",
-     main = "Convergenza al valore atteso", col = "steelblue", lwd = 1.5)
-abline(h = 3.5, col = "red", lty = 2, lwd = 2)
-legend("topright", legend = c("Media cumulativa", "E(X) = 3.5"), 
-       col = c("steelblue", "red"), lty = c(1, 2), lwd = 2)
+abline(v = 0, col = "red", lwd = 2)
 ```
 
-> Con più osservazioni, la media si avvicina a $\mathbb{E}(X)$.
+La linea rossa indica la media teorica (0).
 
 ---
 
-## Simulazione della varianza
+## Interpretazione finale
 
-```{r}
-#| echo: true
-# Varianza campionaria
-var(lanci)
+La simulazione ci mostra tre cose importanti:
 
-# Varianza teorica del dado
-sum((1:6 - 3.5)^2) / 6
-```
+* Il valore atteso è il centro della distribuzione. La media dei punteggi simulati è circa 0.
 
----
+* La deviazione standard misura la dispersione. I punteggi oscillano attorno a 0 con variabilità ≈ 1.94.
 
-## Funzione `sample()` per v.c. discrete
+* Anche chi risponde a caso può fare punti positivi. Ma punteggi molto alti sono rari.
 
-La funzione `sample()` è fondamentale:
-
-```{r}
-#| echo: true
-# Distribuzione personalizzata
-x <- c(0, 1, 2)
-p <- c(0.70, 0.20, 0.10)
-
-# Simulare 1000 osservazioni
-campione <- sample(x, size = 1000, replace = TRUE, prob = p)
-
-# Verificare
-mean(campione)  # Dovrebbe essere ~0.40
-var(campione)   # Dovrebbe essere ~0.44
-```
+👉 Questo è il principio dello scoring:
+il sistema deve penalizzare il caso abbastanza da distinguere fortuna da competenza.
 
 ---
 
-## Esercizio 8 — Simulazione del test
+## Messaggio chiave 
 
-Simula 10000 osservazioni dalla distribuzione del test di screening (Esercizio 1) e verifica che media e varianza campionarie si avvicinino ai valori teorici.
+* La teoria ci dà le formule per la media e la varianza.
+* La simulazione ci mostra che quelle formule descrivono davvero ciò che accade.
+* Il punteggio è una trasformazione lineare di una binomiale.
+* Media e varianza si trasformano in modo prevedibile.
 
----
-
-### Soluzione Esercizio 8
-
-```{r}
-#| echo: true
-set.seed(123)
-
-# Distribuzione
-x <- c(0, 1, 2)
-p <- c(0.70, 0.20, 0.10)
-
-# Simulazione
-campione <- sample(x, size = 10000, replace = TRUE, prob = p)
-
-# Confronto
-cat("Media campionaria:", mean(campione), 
-    "\nMedia teorica:", sum(x * p))
-cat("\n\nVarianza campionaria:", var(campione), 
-    "\nVarianza teorica:", sum(x^2 * p) - sum(x * p)^2)
-```
+La probabilità non è solo calcolo simbolico:  
+è una descrizione quantitativa del comportamento nel lungo periodo.
 
 ---
 
-## Esercizio 9 — Funzione di v.c. in R
+## Esercizio 5 — La scala T in pratica
 
-Un punteggio $X$ segue questa distribuzione:
+I punteggi $X$ a un test di personalità hanno:
 
-| $x$ | 10 | 20 | 30 | 40 |
-|-----|-----|-----|-----|-----|
-| $p(x)$ | 0.1 | 0.3 | 0.4 | 0.2 |
+* media $\mathbb{E}(X) = 25$;
+* deviazione standard $\mathrm{SD}(X) = 5$.
 
-Sia $Y = \sqrt{X}$. Calcola $\mathbb{E}(Y)$ e verifica che $\mathbb{E}(\sqrt{X}) \neq \sqrt{\mathbb{E}(X)}$.
+Il punteggio viene trasformato nella **scala T**:
 
----
-
-### Soluzione Esercizio 9
-
-```{r}
-#| echo: true
-x <- c(10, 20, 30, 40)
-p <- c(0.1, 0.3, 0.4, 0.2)
-
-# E(X)
-E_X <- sum(x * p)
-E_X
-
-# E(sqrt(X))
-E_sqrtX <- sum(sqrt(x) * p)
-E_sqrtX
-
-# sqrt(E(X))
-sqrt(E_X)
-
-# Verifica: sono diversi!
-E_sqrtX < sqrt(E_X)  # Funzione concava → disuguaglianza di Jensen
-```
-
----
-
-## Esercizio 10 — Distribuzioni note in R
-
-Un ricercatore studia il numero di errori in un compito. Se ogni prova ha probabilità 0.15 di errore e ci sono 20 prove:
-
-a) Usa le formule della Binomiale per calcolare $\mathbb{E}(X)$ e $\mathbb{V}(X)$
-b) Simula 5000 esperimenti e verifica i risultati
-
----
-
-### Soluzione Esercizio 10
-
-```{r}
-#| echo: true
-n <- 20
-theta <- 0.15
-
-# a) Valori teorici
-E_teorico <- n * theta
-Var_teorico <- n * theta * (1 - theta)
-cat("E(X) teorico:", E_teorico, "\nVar(X) teorica:", Var_teorico)
-```
-
-```{r}
-#| echo: true
-# b) Simulazione
-set.seed(456)
-errori <- rbinom(5000, size = n, prob = theta)
-cat("\nMedia simulata:", mean(errori), 
-    "\nVarianza simulata:", var(errori))
-```
-
----
-
-## Esercizio 11 — Trasformazione in punteggio T
-
-I punteggi grezzi $X$ hanno $\mathbb{E}(X) = 25$ e $\sigma_X = 5$.
-
-Il punteggio T è definito come: $T = 50 + 10 \cdot \frac{X - 25}{5}$
-
-a) Semplifica la formula
-b) Trova $\mathbb{E}(T)$ e $\sigma_T$ usando le proprietà
-c) Verifica con una simulazione (assumi $X \sim \mathcal{N}(25, 5)$)
-
----
-
-### Soluzione Esercizio 11 (teoria)
-
-**a) Semplificazione:**
 $$
-T = 50 + 10 \cdot \frac{X - 25}{5} = 50 + 2(X - 25) = 2X
+T = 50 + 10 \cdot \frac{X - 25}{5}.
 $$
 
-**b) Proprietà:**
+**Domanda:** qual è la **media** di $T$?
+
+---
+
+### Soluzione Esercizio 5
+
+Passo 1: semplificare la formula.
+
 $$
-\mathbb{E}(T) = 2\mathbb{E}(X) = 2 \times 25 = 50
+T = 50 + 10 \cdot \frac{X - 25}{5}
+= 50 + 2(X - 25).
 $$
+
+Sviluppiamo il prodotto:
+
 $$
-\sigma_T = 2\sigma_X = 2 \times 5 = 10
+T = 50 + 2X - 50 = 2X.
 $$
 
 ---
 
-### Soluzione Esercizio 11 (simulazione)
+### Passo 2: usare la regola del valore atteso
+
+Per una trasformazione lineare vale:
+
+$$
+\mathbb{E}(a + bX) = a + b\,\mathbb{E}(X).
+$$
+
+Qui $T = 2X$, quindi:
+
+$$
+\mathbb{E}(T) = 2 \cdot \mathbb{E}(X) = 2 \cdot 25 = 50.
+$$
+
+$$
+\boxed{\mathbb{E}(T) = 50}
+$$
+
+La media della scala **T** è 50 — per costruzione.
+
+---
+
+### Verifica con simulazione
 
 ```{r}
-#| echo: true
-set.seed(789)
-
-# Simulare X ~ N(25, 5)
 X <- rnorm(10000, mean = 25, sd = 5)
+T_score <- 50 + 10 * (X - 25) / 5
 
-# Calcolare T
-T <- 50 + 10 * (X - 25) / 5
-
-# Verificare
-cat("Media di T:", mean(T), "(atteso: 50)")
-cat("\nSD di T:", sd(T), "(atteso: 10)")
+c(Media_T = mean(T_score), SD_T = sd(T_score))
 ```
+
+La media è circa **50** e la deviazione standard circa **10**: è proprio la **scala T standard**.
 
 ---
 
-## Esercizio 12 — Somma di v.c. indipendenti
+## Perché la scala T è così utilizzata in psicologia? {background-color="#2c3e50" style="color: white;"}
 
-Due sottoscale indipendenti:
+La scala T (media = 50, DS = 10) è usata in molti test clinici e di personalità: MMPI-2, NEO-PI-R, CBCL, SCL-90-R e molti altri.
 
-- $A \sim \mathcal{N}(20, 4)$ (media 20, sd 4)
-- $B \sim \mathcal{N}(30, 5)$ (media 30, sd 5)
+. . .
 
-Simula 10000 punteggi totali $T = A + B$ e verifica le proprietà della somma.
-
----
-
-### Soluzione Esercizio 12
-
-```{r}
-#| echo: true
-set.seed(111)
-
-A <- rnorm(10000, mean = 20, sd = 4)
-B <- rnorm(10000, mean = 30, sd = 5)
-Total <- A + B
-
-# Valori teorici
-cat("E(T) teorico:", 20 + 30, "  Simulato:", mean(Total))
-cat("\nVar(T) teorica:", 16 + 25, "  Simulata:", var(Total))
-cat("\nSD(T) teorica:", sqrt(41), "  Simulata:", sd(Total))
-```
+Ora sapete **esattamente** cosa significa "un T-score di 65": è 1.5 deviazioni standard sopra la media, cioè al 93° percentile. E sapete anche *perché* la trasformazione funziona: è una trasformazione lineare e le proprietà del valore atteso e della varianza garantiscono che la nuova scala abbia i parametri desiderati.
 
 ---
 
-## Creare funzioni personalizzate in R
+## Perché la scala T è così utilizzata in psicologia? {background-color="#2c3e50" style="color: white;"}
 
-Per calcoli ripetuti, conviene creare funzioni:
-
-```{r}
-#| echo: true
-# Funzione per valore atteso di v.c. discreta
-valore_atteso <- function(x, p) {
-  sum(x * p)
-}
-
-# Funzione per varianza
-varianza <- function(x, p) {
-  E_X <- sum(x * p)
-  E_X2 <- sum(x^2 * p)
-  E_X2 - E_X^2
-}
-```
+Molti manuali di test indicano un **cut-off a T = 65** (1.5 DS sopra la media) come soglia di "significatività clinica" — ora sapete che questa soglia lascia sopra circa il **6.7%** della popolazione normativa.
 
 ---
 
-## Uso delle funzioni personalizzate
+## Riepilogo: comandi R essenziali
 
-```{r}
-#| echo: true
-# Test di screening
-x <- c(0, 1, 2)
-p <- c(0.70, 0.20, 0.10)
-
-valore_atteso(x, p)
-varianza(x, p)
-sqrt(varianza(x, p))  # Deviazione standard
-```
+| Operazione | Codice R |
+|------------|----------|
+| Creare vettore | `x <- c(1, 2, 3)` |
+| Somma | `sum(x)` |
+| Media campionaria | `mean(x)` |
+| Varianza campionaria | `var(x)` |
+| Deviazione standard | `sd(x)` |
 
 ---
 
-## Visualizzare distribuzioni in R
+## Riepilogo: comandi R essenziali
 
-```{r}
-#| echo: true
-#| eval: false
-# Distribuzione di massa
-x <- c(0, 1, 2)
-p <- c(0.70, 0.20, 0.10)
-
-barplot(p, names.arg = x, col = "steelblue",
-        xlab = "Punteggio", ylab = "Probabilità",
-        main = "Distribuzione del test di screening")
-abline(v = which(x == 0.4), col = "red", lty = 2)  # Media
-```
+| Operazione | Codice R |
+|------------|----------|
+| Campionamento | `sample(x, n, replace=TRUE, prob=p)` |
+| Binomiale | `rbinom(n, size, prob)` |
+| Normale | `rnorm(n, mean, sd)` |
 
 ---
 
-## Visualizzazione della distribuzione
+## Il percorso fin qui {background-color="#2c3e50" style="color: white;"}
 
-```{r}
-#| echo: false
-#| fig-height: 4
-x <- c(0, 1, 2)
-p <- c(0.70, 0.20, 0.10)
+Nelle ultime lezioni abbiamo costruito una cassetta degli attrezzi completa:
 
-barplot(p, names.arg = x, col = "steelblue",
-        xlab = "Punteggio", ylab = "Probabilità",
-        main = "Distribuzione del test di screening",
-        ylim = c(0, 0.8))
-```
+. . .
 
----
+**Lezioni 5-6** — Il linguaggio della probabilità e l'aggiornamento bayesiano.
 
-## Riepilogo: funzioni R essenziali
+**Lezione 8** — Modelli per conteggi: Bernoulli, Binomiale, Poisson.
 
-**Per calcoli manuali:**
-```r
-sum(x * p)           # Valore atteso
-sum(x^2 * p) - E^2   # Varianza
-sqrt(varianza)       # Deviazione standard
-```
+**Lezione 9** — Modelli per misure continue: Normale e Beta.
 
-**Per simulazioni:**
-```r
-sample(x, n, replace=TRUE, prob=p)  # V.c. discreta
-rbinom(n, size, prob)                # Binomiale
-rnorm(n, mean, sd)                   # Normale
-```
+**Lezione 10 (oggi)** — Come sintetizzare e trasformare le distribuzioni: valore atteso, varianza, funzioni di v.c.
 
 ---
 
-## Cosa abbiamo imparato oggi
+## Il percorso fin qui {background-color="#2c3e50" style="color: white;"}
 
-1. Il **valore atteso** è la media ponderata, interpretabile come media di infinite ripetizioni
+Il passo successivo è capire come due variabili **variano insieme** — la covarianza e la correlazione — che sono alla base di quasi tutta la statistica psicologica, dalla regressione all'analisi fattoriale.
 
-2. La **varianza** misura la dispersione: $\mathbb{V}(X) = \mathbb{E}(X^2) - [\mathbb{E}(X)]^2$
+---
 
-3. Per **funzioni di v.c.**: $\mathbb{E}[g(X)] \neq g(\mathbb{E}[X])$ in generale
+## Riepilogo concettuale
 
-4. **R** permette di calcolare facilmente e verificare con simulazioni
+1. **Trasformare** una v.c. crea una nuova v.c. con proprietà diverse.
 
-5. Le **proprietà** (linearità, additività) sono fondamentali per l'inferenza
+2. Per trasformazioni **lineari**: $\mathbb{E}(a + bX) = a + b\mathbb{E}(X)$.
+
+3. Per trasformazioni **non lineari**: $\mathbb{E}[g(X)] \neq g(\mathbb{E}[X])$.
+
+4. **Media** = somma pesata: `sum(x * p)`.
+
+5. **Varianza** = $\mathbb{E}(X^2) - [\mathbb{E}(X)]^2$.
+
+6. Le **simulazioni** verificano i calcoli teorici.
 
 ---
 
 ## Per la prossima lezione
 
-- Rivedere il materiale su: https://ccaudek.github.io/utet-prob/
-- Capitoli 6 (variabili casuali), 8 (proprietà), 9 (covarianza)
-- Esercitarsi con le simulazioni in R
+Materiale di studio: https://ccaudek.github.io/utet-prob/
 
-> Nel prossimo incontro: **probabilità congiunta** e **indipendenza statistica**.
+Capitoli da rivedere:
+
+- Cap. 6: Variabili casuali
+- Cap. 8: Proprietà delle v.c.
+- Cap. 9: Covarianza e correlazione
+
+**Prossimo argomento:** distribuzioni congiunte e covarianza.

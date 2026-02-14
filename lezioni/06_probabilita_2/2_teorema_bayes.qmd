@@ -1,7 +1,7 @@
 ---
 title: "Il teorema di Bayes"
 subtitle: "Aggiornare le credenze alla luce dei dati"
-version: 1.0
+version: 2.0
 author:
   - name: Corrado Caudek
     orcid: 0000-0002-1404-0420
@@ -38,14 +38,37 @@ library(knitr)
 library(kableExtra)
 ```
 
+# La domanda del paziente {background-color="#e74c3c" style="color: white;"}
+
+## Un paziente vi chiede...
+
+Siete in uno studio di psicologia. Avete somministrato un test di screening per un disturbo d'ansia generalizzata a un paziente, e il risultato è **positivo**.
+
+Il paziente vi guarda e chiede:
+
+. . .
+
+> *"Dottore, qual è la probabilità che io abbia davvero questo disturbo?"*
+
+. . .
+
+Il test ha una sensibilità dell'85% e una specificità del 90%. La vostra prima reazione potrebbe essere: *"è molto probabile — il test è affidabile"*.
+
+. . .
+
+Ma questa risposta è **sbagliata** — e il motivo per cui è sbagliata è esattamente ciò che il teorema di Bayes ci insegna.
+
+---
+
 ## Obiettivo {.unnumbered .unlisted}
 
 In questa seconda parte:
 
-- deriveremo il **teorema di Bayes** dalla probabilità condizionata
-- esamineremo la differenza tra $P(E \mid H)$ e $P(H \mid E)$
-- applicheremo il teorema di Bayes a **problemi diagnostici** reali
-- esploreremo l'**aggiornamento sequenziale** delle credenze
+- deriveremo il **teorema di Bayes** dalla probabilità condizionata;
+- esamineremo la differenza tra $P(E \mid H)$ e $P(H \mid E)$ — la confusione più pericolosa in diagnostica;
+- applicheremo il teorema di Bayes a **problemi diagnostici** reali;
+- esploreremo l'**aggiornamento sequenziale** delle credenze;
+- vedremo perché questo teorema è il **fondamento logico** dell'intero corso.
 
 > Riferimento: https://ccaudek.github.io/utet-prob/ — Capitolo 8
 
@@ -73,8 +96,8 @@ Questo è il **teorema di Bayes**.
 
 Per rendere trasparente il significato, usiamo:
 
-- $H$ = **Hypothesis** (ipotesi da valutare)
-- $E$ = **Evidence** (evidenza osservata)
+- $H$ = **Hypothesis** (ipotesi da valutare);
+- $E$ = **Evidence** (evidenza osservata);
 
 $$
 \boxed{P(H \mid E) = \frac{P(E \mid H) \cdot P(H)}{P(E)}}
@@ -106,23 +129,29 @@ Il teorema di Bayes formalizza **come impariamo dall'esperienza**.
 
 ---
 
-## La confusione fondamentale
+## La confusione fondamentale {background-color="#2c3e50" style="color: white;"}
 
-**Ciò che il test misura**
+Questa è probabilmente la slide più importante dell'intero corso.
 
-$$
-P(E \mid H)
-= P(\text{Test+} \mid \text{Malato})
-$$
-→ **Sensibilità** (proprietà tecnica del test)
+. . .
 
-**Ciò che il paziente chiede**
+**Ciò che il test misura:**
 
 $$
-P(H \mid E)
-= P(\text{Malato} \mid \text{Test+})
+P(E \mid H) = P(\text{Test+} \mid \text{Malato})
 $$
-→ **Valore predittivo positivo (VPP)**
+
+→ **Sensibilità** — una proprietà tecnica del test.
+
+. . .
+
+**Ciò che il paziente chiede:**
+
+$$
+P(H \mid E) = P(\text{Malato} \mid \text{Test+})
+$$
+
+→ **Valore predittivo positivo (VPP)** — ciò che serve per decidere.
 
 ---
 
@@ -138,27 +167,45 @@ Le due probabilità possono essere **molto diverse**, soprattutto quando  la mal
 
 ---
 
+## La "fallacia dell'inversa" nella pratica
+
+Questa confusione non è rara. È sistematica e documentata:
+
+- @casscells1978 hanno mostrato che **l'82% dei medici** di Harvard confonde $P(E \mid H)$ con $P(H \mid E)$ in un semplice problema diagnostico;
+- @gigerenzer1995 ha replicato il risultato con professionisti sanitari in diversi paesi;
+- la confusione appare anche nei tribunali (**prosecutor's fallacy**): $P(\text{evidenza} \mid \text{innocente})$ viene scambiata per $P(\text{innocente} \mid \text{evidenza})$.
+
+---
+
+Come futuri psicologi,  
+
+. . .
+
+**sarete tra i pochi professionisti** formati per non commettere questo errore.
+
+---
+
 ## Perché serve il teorema di Bayes
 
 * Il test fornisce $P(E \mid H)$.  
 * Il paziente vuole $P(H \mid E)$.
 
-👉 Il **teorema di Bayes** collega queste due quantità.
+Il **teorema di Bayes** collega queste due quantità, incorporando un ingrediente cruciale che l'intuizione tende a ignorare: **la prevalenza** $P(H)$.
 
 ---
 
 ## Esercizio 1 — Calcolo del valore predittivo di un test
 
-Si valuta un test diagnostico per un disturbo d'ansia in una determinata popolazione, di cui si conoscono:
+Si valuta il risultato di un test diagnostico per un disturbo d'ansia in una determinata popolazione, di cui si conoscono:
 
 - **Prevalenza del disturbo:** $P(H) = 0.10$  
-  (Probabilità a priori di avere il disturbo)
+  (Probabilità a priori di avere il disturbo).
 
 - **Sensibilità del test:** $P(E \mid H) = 0.85$  
-  (Probabilità di risultare positivo se si ha il disturbo)
+  (Probabilità di risultare positivo se si ha il disturbo).
 
 - **Specificità del test:** $P(\neg E \mid \neg H) = 0.90$  
-  (Probabilità di risultare negativo se non si ha il disturbo)
+  (Probabilità di risultare negativo se non si ha il disturbo).
 
 ---
 
@@ -214,11 +261,11 @@ $$
 P(H \mid E) = \frac{0.085}{0.175} \approx 0.486
 $$
 
-**Risultato:** Solo il **48.6%** dei test positivi indica realmente il disturbo.
+**Risultato:** solo il **48.6%** dei test positivi indica realmente il disturbo.
 
 ---
 
-## Riflessione sul risultato
+## Fermati e rifletti {background-color="#2c3e50" style="color: white;"}
 
 Nonostante:
 
@@ -227,13 +274,19 @@ Nonostante:
 
 il valore predittivo positivo è solo **~49%**.
 
+. . .
+
+Se un paziente vi chiede *"il test è positivo, quanto è probabile che io sia malato?"*, la risposta onesta è: **una probabilità su due** — praticamente il lancio di una  moneta.
+
+. . .
+
 > Un test positivo lascia ancora una **considerevole incertezza** sulla diagnosi.
 
 ---
 
 ## Esercizio 2 — Frequenze naturali
 
-Risolvi l’Esercizio 1 usando frequenze riferite a **1,000 persone**.
+Risolvi l'Esercizio 1 usando frequenze riferite a **1,000 persone**.
 
 ---
 
@@ -252,7 +305,7 @@ P(H \mid E) = \frac{\text{Veri positivi}}{\text{Totale positivi}} = \frac{85}{17
 $$
 
 
-**Interpretazione:** tra tutte le persone con test positivo, **meno della metà** ha davvero il disturbo.
+**Interpretazione:** tra tutte le persone con un test positivo, **meno della metà** ha davvero il disturbo.
 
 ---
 
@@ -274,7 +327,7 @@ flowchart TD
 
 ## Esercizio 2a
 
-Con una sensibilità dell’85%, perché il VPP è solo del 49%?
+Con una sensibilità dell'85%, perché il VPP è solo del 49%?
 
 ---
 
@@ -308,21 +361,21 @@ $$
 
 ## Esercizio 3 — Effetto della prevalenza
 
-Ricalcola $P(H \mid E)$ per l'Esercizio2 ipotizzando, in questo caso, un prevalenza del **2%**.
+Ricalcola $P(H \mid E)$ per l'Esercizio 2 ipotizzando, in questo caso, una prevalenza del **2%**.
 
-* Supponiamao che le caratteristiche del test, sensibilità e specificità, rimangano invariate.
+* Supponiamo che le caratteristiche del test, sensibilità e specificità, rimangano invariate.
 
 ---
 
 ### Soluzione Esercizio 3
 
-**Passo 1:** Nuova probabilità marginale
+**Passo 1:** nuova probabilità marginale
 
 $$
 P(E) = 0.85 \times 0.02 + 0.10 \times 0.98 = 0.017 + 0.098 = 0.115
 $$
 
-**Passo 2:** Applicare Bayes
+**Passo 2:** applicare Bayes
 
 $$
 P(H \mid E) = \frac{0.85 \times 0.02}{0.115} = \frac{0.017}{0.115} \approx 0.148
@@ -337,7 +390,7 @@ $$
 | 10% | 48.6% |
 | 2% | **14.8%** |
 
-La probabilità è crollata da **1 su 2** a **meno di 1 su 7**!
+La probabilità è diminuita da **1 su 2** a **meno di 1 su 7**!
 
 ---
 
@@ -350,6 +403,26 @@ Con prevalenza al 2% su 1000 persone:
 - **Totale positivi:** ~115
 
 I **falsi positivi** (98) sovrastano i **veri positivi** (17).
+
+---
+
+## La prevalenza come contesto: implicazioni per la pratica {background-color="#2c3e50" style="color: white;"}
+
+Questo risultato ha una conseguenza operativa diretta per la nostra professione:
+
+---
+
+## La prevalenza come contesto: implicazioni per la pratica {background-color="#2c3e50" style="color: white;"}
+
+- uno **screening di massa** nella popolazione generale (prevalenza bassa) genera moltissimi falsi positivi → necessita di test di conferma;
+
+. . .
+
+- uno **screening mirato** in una popolazione clinica (prevalenza alta) ha un VPP molto migliore → i positivi sono più affidabili.
+
+. . .
+
+Ecco perché in psicologia clinica si parla di **assessment a più livelli**: prima si identifica un gruppo a rischio (aumentando la prevalenza nel campione), poi si applica il test diagnostico.
 
 ---
 
@@ -402,57 +475,67 @@ $$
 **Teorema di Bayes:**
 
 $$
-P(H \mid E) = \frac{0.90 \times 0.05}{0.0925} = \frac{0.045}{0.0925} \approx 0.486
+P(H \mid E) = \frac{0.90 \times 0.05}{0.0925} = \frac{0.045}{0.0925} \approx 0.486.
 $$
 
 **Risultato:** anche con un test "molto buono" (sensibilità = 90%; specificità = 95%), solo il **48.6%** dei positivi ha realmente l'ADHD.
+
+Ecco una versione più fluida, compatta e didatticamente più incisiva, mantenendo il contenuto ma migliorando ritmo e chiarezza.
 
 ---
 
 ## Bayes come confronto tra ipotesi
 
-Un test non risponde a una domanda assoluta, ma **confronta due ipotesi alternative**:
+Un test **non risponde a una domanda assoluta**, ma mette a confronto **due ipotesi alternative**:
 
-- $H_1$: *la persona ha il disturbo*,
-- $H_0$: *la persona non ha il disturbo*.
+* $H_1$: *la persona ha il disturbo*,
+* $H_0$: *la persona non ha il disturbo*.
 
-Dopo aver osservato l’evidenza $E$ (test positivo), ci chiediamo: **quale ipotesi è più plausibile?**
+---
+
+Dopo aver osservato l’evidenza $E$ (ad esempio un test positivo), la vera domanda diventa:
+
+> **quale delle due ipotesi è ora più plausibile?**
+
+Bayes formalizza questo confronto attraverso il rapporto tra le probabilità posteriori:
 
 $$
-\frac{P(H_1 \mid E)}{P(H_0 \mid E)}
-= \frac{P(E \mid H_1)}{P(E \mid H_0)}
-\times
-\frac{P(H_1)}{P(H_0)}.
+\frac{P(H_1 \mid E)}{P(H_0 \mid E)} = \frac{P(E \mid H_1)}{P(E \mid H_0)} \times \frac{P(H_1)}{P(H_0)}.
 $$
 
 ---
 
-## I tre ingredienti del confronto
+## I tre ingredienti del confronto bayesiano
 
 $$
-\underbrace{\frac{P(H_1 \mid E)}{P(H_0 \mid E)}}_{\text{Quanto } H_1 \text{ è più plausibile di } H_0}
-=
-\underbrace{\frac{P(E \mid H_1)}{P(E \mid H_0)}}_{\text{Cosa dice il test}}
-\times
-\underbrace{\frac{P(H_1)}{P(H_0)}}_{\text{Cosa credevamo prima}}
+\underbrace{\frac{P(H_1 \mid E)}{P(H_0 \mid E)}}_{\text{Quanto } H_1 \text{ è più plausibile di } H_0} = \underbrace{\frac{P(E \mid H_1)}{P(E \mid H_0)}}_{\text{Informazione fornita dal test}}
+\times \underbrace{\frac{P(H_1)}{P(H_0)}}_{\text{Credenze iniziali}}
 $$
 
-- **Odds a priori** → quanto il disturbo è raro;
-- **Rapporto di verosimiglianza (LR)** → *quanto il test discrimina*;
-- **Odds posteriori** → risultato finale del confronto.
+Il confronto si basa su tre elementi distinti:
+
+* **Odds a priori** → quanto il disturbo è raro prima del test;
+* **Rapporto di verosimiglianza (LR)** → *quanto il test discrimina tra le due ipotesi*;
+* **Odds posteriori** → il risultato finale del confronto dopo aver visto l’evidenza.
 
 ---
 
-## Perché il rapporto di verosimiglianza è cruciale
+## Perché il rapporto di verosimiglianza è importante
 
-Il rapporto di verosimiglianza risponde a una domanda chiave:
+Il rapporto di verosimiglianza risponde alla domanda centrale:
 
-> *Quanto è più probabile osservare questo test se la persona  
-> ha il disturbo piuttosto che se non lo ha?*
+> *quanto è più probabile osservare questo risultato del test se la persona ha il disturbo
+> rispetto a quando non lo ha?*
 
-- LR = 1 → il test **non informa**;
-- LR > 1 → l’evidenza favorisce $H_1$;
-- LR < 1 → l’evidenza favorisce $H_0$.
+---
+
+Interpretazione immediata:
+
+* **LR = 1** → il test **non aggiunge informazione**;
+* **LR > 1** → l’evidenza favorisce $H_1$;
+* **LR < 1** → l’evidenza favorisce $H_0$.
+
+In altre parole, **il LR misura la forza dell’evidenza**, indipendentemente da quanto il disturbo sia raro o comune.
 
 ---
 
@@ -464,12 +547,12 @@ $$
 \text{LR}^+ = \frac{P(E \mid H)}{P(E \mid \neg H)}.
 $$
 
-**Interpreta:**  
+**Interpreta:**
 di quanto un test positivo rende $H$ più plausibile rispetto a $\neg H$?
 
 ---
 
-### Soluzione Esercizio 5
+### Soluzione — Esercizio 5
 
 $$
 \text{LR}^+
@@ -478,21 +561,91 @@ $$
 = 18.
 $$
 
-**Interpretazione:**  un test positivo è **18 volte più probabile** in una persona con ADHD che in una persona senza ADHD.
+**Interpretazione:**
+un test positivo è **18 volte più probabile** in una persona con ADHD che in una persona senza ADHD.
 
-* Il test è **fortemente informativo**, ma una **bassa prevalenza** del disturbo può comunque limitare il VPP.
-
-* Il $\text{LR}^+$ misura quanto l’evidenza sposta il confronto a favore di $H,$ indipendentemente dalla prevalenza.
+* Il test è **fortemente discriminante**: un risultato positivo sposta nettamente il confronto a favore di $H$.
+* Tuttavia, se la **prevalenza** dell’ADHD è bassa, il **valore predittivo positivo** può restare limitato.
+* Il $\text{LR}^+$ quantifica **la forza dell’evidenza del test**, ed è **indipendente dalla prevalenza** del disturbo.
 
 ---
 
 ## Aggiornamento sequenziale
 
-Il teorema di Bayes non è un’operazione “una tantum”.  Può essere applicato **in sequenza**, man mano che arriva nuova evidenza:
+Il teorema di Bayes **non è un calcolo “una tantum”**: è un metodo per **aggiornare progressivamente** quanto crediamo in un’ipotesi man mano che arriva nuova evidenza.
 
-1. la **posterior** diventa la **prior** successiva;
-2. osserviamo nuova evidenza;
-3. aggiorniamo di nuovo le probabilità.
+---
+
+L’idea è semplice:
+
+1. parto da una probabilità iniziale (**prior**) $P(H)$;
+2. osservo un dato $E$;
+3. ottengo una probabilità aggiornata (**posterior**) $P(H\mid E)$;
+4. al passo successivo, questa posterior diventa la **nuova prior**;
+5. quando arriva un nuovo dato $E'$, aggiorno di nuovo.
+
+In questo modo, **le informazioni si accumulano** e il confronto tra ipotesi si affina passo dopo passo.
+
+---
+
+## Aggiornamento sequenziale delle credenze
+
+Bayes descrive un processo **dinamico di apprendimento dall’evidenza**: ogni osservazione modifica lo stato delle nostre credenze, che diventa il punto di partenza per l’osservazione successiva.
+
+In forma compatta:
+
+* dopo $E_1$: $P(H \mid E_1)$
+* dopo $E_1$ ed $E_2$: $P(H \mid E_1, E_2)$
+* e così via, finché abbiamo dati.
+
+---
+
+## Un caso clinico: Marco, 8 anni
+
+Riprendiamo Marco e seguiamo il suo percorso diagnostico, mostrando come **anche il contesto** aggiorna la probabilità di ADHD.
+
+. . .
+
+### Fase 1 — Popolazione generale
+
+| Contesto             | Informazione              | Probabilità                 |
+| -------------------- | ------------------------- | --------------------------- |
+| Popolazione generale | Prevalenza epidemiologica | $P(\text{ADHD}) \approx 5%$ |
+
+Se scegliessimo **a caso** un bambino di 8 anni, partiremo da circa il **5%**.
+
+---
+
+### Fase 2 — Arrivo in servizio specialistico
+
+Marco però **non arriva per caso**: viene portato in un servizio specialistico perché qualcuno (genitori/insegnanti) ha già osservato difficoltà rilevanti. Questo fatto è già **una prima evidenza** $E_1$ (selezione del campione).
+
+| Contesto               | Informazione            | Probabilità                                       |
+| ---------------------- | ----------------------- | ------------------------------------------------- |
+| Servizio specialistico | Auto-selezione dei casi | $P(\text{ADHD} \mid \text{servizio}) \approx 30%$ |
+
+---
+
+Quindi, prima di qualsiasi test, la nostra prior non è più 5%, ma:
+
+$$
+P(\text{ADHD} \mid \text{servizio}) \approx 30\%.
+$$
+
+. . .
+
+### Punto chiave
+
+**L’aggiornamento inizia prima del test.**
+Il solo passaggio “arriva in ambulatorio specialistico” cambia *il contesto di riferimento*: non stiamo più stimando la probabilità nella popolazione generale, ma in un sottogruppo **più ad alto rischio**.
+
+---
+
+## Perché conta davvero?
+
+* **Interpretazione corretta**: i valori predittivi dipendono dalla prior.
+* **Realismo clinico**: la prevalenza in ambulatorio ≠ prevalenza nella popolazione.
+* **Coerenza bayesiana**: ogni informazione (anche “logistica”) è evidenza.
 
 ---
 
@@ -507,7 +660,7 @@ Supponiamo che il **secondo test**:
 
 - sia indipendente dal primo **condizionatamente a $H$**;
 - abbia le stesse caratteristiche diagnostiche;
-- risulti anch’esso positivo.
+- risulti anch'esso positivo.
 
 ---
 
@@ -546,7 +699,7 @@ $$
 
 ---
 
-### Effetto cumulativo dell’evidenza
+### Effetto cumulativo dell'evidenza
 
 | Evidenza osservata | $P(H)$ |
 |-------------------|----------|
@@ -554,7 +707,7 @@ $$
 | Dopo 1° test positivo | 48.6% |
 | Dopo 2° test positivo | **94.4%** |
 
-**Messaggio chiave:**  evidenze indipendenti e concordanti **si rafforzano a vicenda**.
+**Messaggio chiave:** evidenze indipendenti e concordanti **si rafforzano a vicenda**.
 
 ---
 
@@ -567,13 +720,37 @@ flowchart LR
     C --> |"Test 3 +"| D["Posterior 3<br/>≈99.7%"]
 ```
 
-L’evidenza **non si somma**: si **accumula attraverso aggiornamenti successivi**.
+L'evidenza **non si somma**: si **accumula attraverso aggiornamenti successivi**.
+
+---
+
+## Il caso di Marco — Aggiornamento completo
+
+Ecco il percorso diagnostico completo di Marco, formalizzato come aggiornamento bayesiano:
+
+---
+
+| Passo | Nuova evidenza | Prior → Posterior |
+|-------|---------------|-------------------|
+| 1 | Arrivo in servizio specialistico | 5% → 30% |
+| 2 | CBCL positivo (compilato dalla madre) | 30% → ~75% |
+| 3 | Conners Teacher positivo (compilato dall'insegnante) | ~75% → ~95% |
+| 4 | Osservazione clinica strutturata coerente | ~95% → ~99% |
+
+---
+
+Ogni passo diagnostico **aggrega** l'informazione precedente. 
+Nessun singolo test è decisivo di per sé, ma la **convergenza incrementale delle evidenze** — valutata tramite l'aggiornamento bayesiano — produce una riduzione progressiva dell'incertezza.
+
+. . .
+
+Questa è esattamente la logica formale che sottende l'**assessment multi-metodo e multi-informatore** (*multi-method multi-informant assessment*), standard della psicologia clinica: ogni fonte di informazione (genitori, insegnanti, test, osservazione) aggiorna la probabilità post-test, che diviene la prior per la valutazione successiva.
 
 ---
 
 ## Esercizio 7 — Test negativo
 
-Riprendiamo i dati dell’Esercizio 1:
+Riprendiamo i dati dell'Esercizio 1:
 
 - prevalenza: $P(H)=0.10$;
 - sensibilità: $P(E\mid H)=0.85$;
@@ -599,7 +776,7 @@ $$
 $$
 P(\neg E)
 = 0.15 \times 0.10 + 0.90 \times 0.90
-= 0.825
+= 0.825.
 $$
 
 ---
@@ -610,7 +787,7 @@ $$
 P(H \mid \neg E)
 = \frac{P(\neg E \mid H)\,P(H)}{P(\neg E)}
 = \frac{0.15 \times 0.10}{0.825}
-\approx 0.018
+\approx 0.018.
 $$
 
 **Interpretazione:**  
@@ -627,7 +804,7 @@ un test negativo riduce la probabilità di malattia  dal **10%** a circa **1.8%*
 | Dopo test negativo | **1.8%** |
 
 **Messaggio chiave:**  
-lo stesso test può **rafforzare** o **ridurre drasticamente**  la probabilità dell’ipotesi, a seconda dell’evidenza osservata.
+lo stesso test può **rafforzare** o **ridurre drasticamente**  la probabilità dell'ipotesi, a seconda dell'evidenza osservata.
 
 
 ---
@@ -706,23 +883,57 @@ Su **200 pazienti**:
 
 **Risultato:** circa **26 falsi positivi** ogni 200 test.
 
+::: {.fragment}
+In una clinica con 200 pazienti al mese, questo significa 26 persone che ricevono un risultato allarmante **senza avere la depressione**. Ciascuno di questi falsi positivi richiederà tempo clinico aggiuntivo, potrebbe generare ansia, e sottolinea l'importanza di *non basare mai una diagnosi su un singolo test*.
+:::
+
 ---
 
 ## Il messaggio centrale
 
-> Il teorema di Bayes non elimina l’incertezza:  
+> Il teorema di Bayes non elimina l'incertezza:  
 > la **quantifica** e la aggiorna in modo coerente.
 
 La conoscenza non cresce per rivelazioni improvvise,  ma per **successivi aggiornamenti** guidati dai dati.
 
 ---
 
-## Perché Bayes è centrale in psicologia [@edwards1963bayesian]
+## Perché Bayes è centrale in psicologia 
 
-- **Diagnostica clinica:** interpretare test e questionari  
-- **Ricerca:** valutare ipotesi alla luce dei dati  
-- **Decision making:** aggiornare scelte con nuove informazioni  
-- **Modelli cognitivi:** descrivere come la mente aggiorna le credenze
+Il teorema di Bayes fornisce un **linguaggio unificante** per molti problemi centrali della psicologia [@edwards1963bayesian]:
+
+* **Diagnostica clinica** — interpretare test, scale e questionari tenendo conto della prevalenza e del contesto;
+* **Ricerca scientifica** — confrontare ipotesi alla luce dei dati osservati;
+* **Decision making** — aggiornare scelte e giudizi quando arriva nuova informazione;
+* **Modelli cognitivi** — descrivere come la mente integra evidenza e aspettative per formare credenze.
+
+---
+
+In tutti questi ambiti, Bayes formalizza un’idea semplice ma potente:
+
+. . .
+
+**le credenze razionali cambiano quando cambia l’evidenza**.
+
+---
+
+## Bayes e il resto del corso {background-color="#2c3e50" style="color: white;"}
+
+Il teorema di Bayes non è solo un argomento di questa lezione. È il **principio unificante** dell'intero corso di Psicometria.
+
+. . .
+
+Quando, nelle prossime settimane, farete inferenza statistica — stimando parametri, confrontando modelli, valutando ipotesi — userete **esattamente questa logica**:
+
+. . .
+
+$$
+\text{Credenza aggiornata} = \frac{\text{Evidenza dei dati} \times \text{Conoscenza precedente}}{\text{Plausibilità complessiva}}
+$$
+
+. . .
+
+La differenza sarà che le "ipotesi" saranno valori di parametri e i "dati" saranno interi dataset. Ma la struttura logica è identica a ciò che abbiamo discusso oggi.
 
 ---
 
@@ -736,12 +947,28 @@ La conoscenza non cresce per rivelazioni improvvise,  ma per **successivi aggior
 
 ---
 
+## Tre cose da portare a casa {background-color="#e74c3c" style="color: white;"}
+
+. . .
+
+**1.** $P(E \mid H) \neq P(H \mid E)$ — non confondete mai queste due quantità. È l'errore più comune e più pericoloso nella diagnostica.
+
+. . .
+
+**2.** La **prevalenza** conta quanto la qualità del test. Un ottimo test applicato alla popolazione sbagliata produce risultati fuorvianti.
+
+. . .
+
+**3.** L'evidenza si **accumula**: nessun singolo dato è definitivo, ma ogni dato ben raccolto riduce l'incertezza. Questo è il cuore del ragionamento scientifico.
+
+---
+
 ## Per la prossima lezione
 
 - Rivedere: https://ccaudek.github.io/utet-prob/ — Capitoli 9-10
 - Argomento: **Variabili casuali** e **distribuzioni di probabilità**
 
-> Passeremo dal ragionamento su eventi al ragionamento su quantità numeriche.
+> Passeremo dal ragionamento su eventi al ragionamento su quantità numeriche — il passo che ci avvicina all'analisi dei dati.
 
 ---
 

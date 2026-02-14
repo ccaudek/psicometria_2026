@@ -1,0 +1,631 @@
+---
+title: "La crisi della replicabilità in psicologia"
+subtitle: "Quali implicazioni per la professione dello psicologo?"
+version: 2.0
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+lang: it
+
+execute:
+  echo: true
+  warning: false
+  message: false
+
+format:
+  revealjs:
+    theme: [default, ../revealjs.scss]
+    title-slide-attributes:
+      data-background-color: "#0072bc"
+    slide-number: c
+    show-slide-number: print
+    highlight-style: github
+    math: mathjax
+---
+
+```{r}
+#| echo: false
+#| output: false
+library(tibble)
+library(dplyr)
+library(knitr)
+library(kableExtra)
+```
+
+# Perché questo corso è necessario {background-color="#2c3e50" style="color: white;"}
+
+## La domanda da cui partiamo
+
+State per intraprendere un percorso che prevede l'apprendimento dell'inferenza bayesiana — un approccio che la maggior parte degli altri corsi nel vostro piano di studi non utilizza.
+
+. . .
+
+È naturale chiedersi: **ne vale la pena?**
+
+. . .
+
+* Lo scopo di questa presentazione è convincervi che la risposta è sì — non per ragioni astratte, ma per ragioni che riguardano direttamente la vostra **futura pratica professionale** come psicologi.
+
+# La crisi della replicabilità  {background-color="#2c3e50" style="color: white;"}
+
+---
+
+## Cosa significa “replicare”
+
+Nella scienza, un risultato è solido quando **ricompare**  
+ripetendo lo studio con **nuovi partecipanti** e in un **contesto diverso**.
+
+. . .
+
+* La **replicabilità** è il test più severo per un risultato empirico:  
+se un effetto è reale, raccogliere nuovi dati dovrebbe **confermarlo**.
+
+. . .
+
+* Se l'effetto **scompare** nella replica, qualcosa non ha funzionato:  
+nell’esperimento originale o nel modo in cui lo abbiamo “dimostrato”.
+
+---
+
+## I numeri della crisi
+
+Nel 2015, un grande progetto internazionale ([Open Science Collaboration](https://www.science.org/doi/10.1126/science.aac4716)) ha tentato di replicare **100 studi** pubblicati su riviste di punta della psicologia.
+
+. . .
+
+* Il risultato è stato sconfortante: solo circa il **36%** delle repliche ha prodotto un effetto significativo nella stessa direzione dell'originale. Gli effetti che si sono replicati erano in media della **metà** della dimensione originale.
+
+. . .
+
+* Progetti successivi (Many Labs, Camerer et al.) hanno confermato il quadro: i tassi di replicazione si aggirano intorno al 60–65%, con effetti sistematicamente più piccoli di quanto riportato nelle pubblicazioni originali.
+
+---
+
+## Il messaggio non è "niente funziona"
+
+È importante essere precisi. La [crisi della replicabilità](https://en.wikipedia.org/wiki/Replication_crisis) non dice che tutta la psicologia è sbagliata.
+
+. . .
+
+* Dice qualcosa di più sottile e, per certi versi, più preoccupante: **non sappiamo con certezza quali risultati siano solidi e quali no**.
+
+. . .
+
+* Alcuni effetti si sono replicati benissimo. Altri — inclusi alcuni insegnati nei manuali — si sono rivelati molto più fragili di quanto si pensasse. Il problema è che, leggendo la letteratura, *è spesso difficile distinguere gli uni dagli altri*.
+
+# Cosa c'entra con voi {background-color="#e74c3c" style="color: white;"}
+
+## La professione dello psicologo si basa su conoscenze empiriche
+
+Qualunque sarà il tuo ambito — clinico, scolastico, organizzativo, della salute —  la tua pratica professionale si fonda su **conoscenze validate dalla ricerca empirica**.
+
+---
+
+## La professione dello psicologo si basa su conoscenze empiriche
+
+* **Scelta di un intervento terapeutico** → la sua efficacia deve essere dimostrata da studi empirici.  
+
+. . .
+
+* **Interpretazione di un test psicodiagnostico** → norme e cut-off derivano da dati su campioni.  
+
+. . .
+
+* **Redazione di un report** → le conclusioni devono poggiare su evidenze solide.
+
+. . .
+
+Se le evidenze sono fragili, **lo è anche la tua pratica professionale**.
+
+---
+
+## Scenario 1: la teoria "debole"
+
+Immaginate di lavorare come psicologi clinici. Utilizzate un protocollo terapeutico la cui efficacia è stata dimostrata in uno studio pubblicato su una buona rivista.
+
+. . .
+
+Lo studio aveva un campione di 30 partecipanti, un $p$-value di .04, e un effetto definito "moderato". Il protocollo è diventato popolare, viene insegnato nei workshop e i colleghi lo raccomandano.
+
+. . .
+
+* Ma quell'effetto **non è mai stato replicato**. Nessuno ci ha riprovato, oppure chi ci ha provato non ha trovato nulla e il risultato è finito in un cassetto, perché le riviste preferiscono risultati "positivi".
+
+---
+
+## Le conseguenze concrete
+
+Se la teoria su cui si basa il vostro intervento è giustificata da dati non replicabili, la possibilità che quell'intervento sia davvero *efficace* non è semplicemente "ridotta" — è praticamente **nulla**, non superiore a quella di un effetto placebo.
+
+. . .
+
+* Il vostro paziente investe tempo, denaro, speranza in un trattamento che non ha basi solide. Voi lo somministrate in buona fede, convinti di star facendo la cosa giusta.
+
+. . .
+
+* La crisi della replicabilità ci dice che questa situazione non è un'eccezione rara. Per una quota non marginale della letteratura psicologica, questa situazione è la **norma**.
+
+---
+
+## Scenario 2: il report professionale
+
+Lavorate come psicologi in un'azienda. Il management vi chiede di valutare l'efficacia di un programma di benessere per i dipendenti.
+
+. . .
+
+Raccogliete i dati, eseguite un test *t*, ottenete $p = .03$ e scrivete: "Il programma ha un effetto significativo sul benessere".
+
+. . .
+
+* La direzione — che sta investendo risorse concrete — si aspetta che questa conclusione **si replichi** se il programma viene esteso ad altre sedi. Oggi il mondo delle organizzazioni è sempre più consapevole dei rischi legati alla scarsa replicabilità dei risultati.
+
+---
+
+## Cosa succede "dopo"
+
+Se l'effetto non si replica in un campione diverso — cosa che accade spesso con campioni piccoli e analisi standard — l'azienda se ne accorgerà.
+
+. . .
+
+Non necessariamente perché i dirigenti leggano riviste scientifiche sulla crisi della replicabilità, ma per un motivo molto più pragmatico: **il programma non funzionerà come promesso**. I benefici osservati nella prima sede non si ripeteranno nelle altre.
+
+---
+
+A quel punto, la vostra **credibilità professionale** è in gioco. 
+
+* Il problema non è stato il programma in sé, ma il metodo con cui avete tratto le conclusioni: un approccio che non teneva conto della fragilità di un risultato basato solo sulla "significatività statistica" in un piccolo gruppo.
+
+---
+
+## Scenario 3: la decisione sul singolo paziente
+
+Questo è lo scenario più critico: la transizione dalla statistica alla **pratica clinica individuale**. Dovete prendere una decisione diagnostica basandovi su un dato numerico.
+
+. . .
+
+* Il paziente ottiene un punteggio di 72 a un test standardizzato. Il manuale indica un cut-off clinico di 70.
+
+. . .
+
+L'**approccio ingenuo**: poiché $72 > 70$, il paziente viene classificato sopra soglia. La conseguenza? Una diagnosi formale o l'avvio di un protocollo terapeutico specifico.
+
+---
+
+## Il dato individuale è "rumoroso"
+
+In psicometria, ogni punteggio osservato è composto dal "punteggio vero" e dall'**errore di misura**. Nel singolo paziente, questo rumore è amplificato da molti fattori:
+
+. . .
+
+* **Stato reattivo:** il paziente ha avuto una giornata difficile o è particolarmente stanco.
+
+. . .
+
+* **Bias cognitivi:** la comprensione delle domande può essere distorta dallo stato emotivo.
+
+. . .
+
+* **Desiderabilità sociale:** la tendenza a minimizzare o enfatizzare i sintomi per influenzare il giudizio del clinico.
+
+---
+
+## Il paradosso: la distorsione come sintomo
+
+La valutazione psicodiagnostica presenta un paradosso di fondo: i disturbi stessi che si intendono valutare possono alterare l'**affidabilità** delle informazioni fornite dal paziente, che sono invece fondamentali per la diagnosi.
+
+. . .
+
+* Il paziente **depresso** sovrastima la frequenza degli eventi negativi.
+* Il paziente **ansioso** catastrofizza l'intensità dei sintomi fisici.
+* Il paziente con **disturbi di personalità** filtra la realtà attraverso schemi relazionali distorti.
+
+---
+
+## Punto chiave
+
+Proprio le persone che hanno più bisogno di una valutazione accurata sono quelle i cui dati "grezzi" sono, per natura, i più fragili.
+
+---
+
+## Oltre il "punteggio osservato"
+
+* Torniamo a quel **72** (con cut-off a **70**).
+
+* Una differenza di soli **2 punti** rientra quasi sempre nel margine di errore del test. Se il test ha un Errore Standard di Misura (SEM) di 5 punti, il "punteggio vero" del paziente potrebbe oscillare, con alta probabilità, tra 67 e 77.
+
+. . .
+
+* Se il paziente ripetesse il test domani, quel 72 potrebbe facilmente diventare un **68**.
+
+---
+
+## Le conseguenze della decisione "ingenua"
+
+* Basarsi su un confronto puramente aritmetico (72 > 70) significa *ignorare la natura probabilistica della misura*.
+
+. . .
+
+* Prendere decisioni importanti per la vita del singolo — diagnosi, perizie, piani terapeutici — basandosi su una differenza che statisticamente "non esiste" non è solo un errore tecnico: è una **responsabilità deontologica**.
+
+---
+
+## Cosa serve davvero
+
+Per prendere decisioni razionali sul singolo paziente servono strumenti che tengano conto di **tre cose contemporaneamente**:
+
+. . .
+
+1. **L'incertezza della misura**: quel 72 non è "72 virgola zero", è una stima rumorosa del vero stato del paziente.
+
+. . .
+
+2. **Le conoscenze pregresse**: cosa sappiamo, prima ancora di vedere questo paziente, sulla prevalenza del disturbo nella popolazione a cui appartiene?
+
+. . .
+
+3. **L'aggiornamento razionale**: come combinare le informazioni (imperfette) del test con le informazioni (imperfette) che già avevamo?
+
+---
+
+## Cosa serve davvero
+
+Questa è, in essenza, la logica dell'inferenza bayesiana.
+
+# Come ci siamo arrivati {background-color="#2c3e50" style="color: white;"}
+
+## Una breve storia della crisi
+
+La comprensione dei rischi di un approccio "ingenuo" – quello che trae conclusioni definitive da dati fragili – non è nata dall'oggi al domani. È stata il frutto di una serie di segnali progressivi.
+
+---
+
+**2005 — Ioannidis: ["Why Most Published Research Findings Are False."](https://en.wikipedia.org/wiki/File:Ioannidis_(2005)_Why_Most_Published_Research_Findings_Are_False.pdf)** Con campioni piccoli, flessibilità analitica e incentivi alla novità, diventa strutturalmente probabile pubblicare risultati falsi.
+
+---
+
+**2011 — Il caso [Bem](https://en.wikipedia.org/wiki/Daryl_Bem).** Uno studio sulla "precognizione" — la capacità di percepire eventi futuri — supera la revisione tra pari e viene pubblicato su una rivista prestigiosa. Il metodo utilizzato è lo stesso della ricerca mainstream: test di significatività con $p < .05$.
+
+* Se quello strumento può "dimostrare" la precognizione, il problema non è solo nei ricercatori. È nello **strumento inferenziale** stesso.
+
+---
+
+## Le pratiche di ricerca questionabili
+
+Negli anni successivi, è emerso che molte pratiche diffuse — e spesso considerate normali — distorcono i risultati in modo sistematico.
+
+. . .
+
+**Optional stopping**: raccogliere dati finché il $p$-value non scende sotto .05, poi fermarsi. Sembra ragionevole, ma gonfia il tasso di falsi positivi.
+
+. . .
+
+**Garden of forking paths**: le analisi comportano decine di scelte (esclusione di outlier, trasformazioni, covariabili). Se queste scelte vengono fatte *dopo* aver visto i dati, la probabilità di trovare un risultato "significativo" per caso aumenta enormemente.
+
+---
+
+John et al. (2012) hanno mostrato che **oltre il 50%** dei ricercatori ammette di aver praticato almeno una di queste procedure. 
+
+* Non per disonestà, ma perché il sistema — incentivi, norme, strumenti — le incoraggia.
+
+---
+
+## Il cuore tecnico del problema
+
+Il valore-$p$ risponde **solo** a questa domanda:
+
+> “**Se** l’ipotesi nulla fosse vera (effetto = 0), quanto sarebbero improbabili i dati osservati?”
+
+. . .
+
+Tuttavia, la domanda che interessa a ricercatori e professionisti è invece:
+
+> “**Dati** i risultati osservati, quanto è plausibile che l’effetto sia reale e di quale entità?”
+
+---
+
+Queste due domande sono profondamente diverse (**asimmetriche e non invertibili**). 
+
+* Scambiarle significa commettere un errore logico (fallacia della “transposizione delle condizionali”), con conseguenze drammatiche nella ricerca e nella pratica clinica.
+
+---
+
+## Una distinzione cruciale
+
+| | Frequentismo | Approccio bayesiano |
+|:--|:--|:--|
+| Domanda | $P(\text{dati} \mid H_0)$ | $P(\text{ipotesi} \mid \text{dati})$ |
+| Risultato | "Significativo / Non significativo" | Distribuzione di plausibilità |
+| Incertezza | Implicita, binaria | Esplicita, graduata |
+| Piccoli campioni | Molto fragile | Gestibile con prior informative |
+| Singolo paziente | Confronto secco con il cut-off | Stima personalizzata con incertezza |
+
+. . .
+
+Non è una questione di gusto. È una questione di quale strumento sia **più adatto** ai problemi reali che uno psicologo si trova ad affrontare.
+
+# I quattro problemi del professionista {background-color="#2c3e50" style="color: white;"}
+
+## Problema 1: decidere con pochi dati
+
+Lo psicologo professionista non è un ricercatore con centinaia di soggetti. 
+
+Spesso lavora con **un singolo caso**, o con un gruppo molto piccolo.
+
+---
+
+* L'approccio frequentista classico è progettato per **grandi campioni**: la sua logica (distribuzione campionaria sotto $H_0$, ripetizione ipotetica dell'esperimento) funziona bene con $n = 200$, ma diventa fragilissima con $n = 15$ — figuriamoci con $n = 1$.
+
+. . .
+
+* L'approccio bayesiano non ha questo limite strutturale. Con pochi dati, il risultato rifletterà una grande incertezza — come è giusto che sia. Ma l'inferenza rimane coerente e utilizzabile, perché le informazioni pregresse (la *prior*) compensano parzialmente la scarsità dei dati.
+
+---
+
+## Problema 2: Il rumore nel dato singolo
+
+I dati di un singolo paziente sono inevitabilmente “rumorosi”: contengono errori di misura, distorsioni cognitive e variabilità situazionale.
+
+. . .
+
+Il metodo bayesiano gestisce questa complessità in modo più informativo e onesto:
+
+*   Non produce una risposta dicotomica (**"sì/no"**), ma una **distribuzione di probabilità**: una mappa completa della plausibilità di tutti i possibili valori del tratto misurato.
+
+---
+
+*   **Esempio pratico:** Se il punteggio osservato è **72** e l'errore di misura è elevato, la distribuzione risultante sarà **ampia e piatta**.
+    *   Questo ci dice in modo trasparente che la nostra **incertezza è alta**.
+    *   Un approccio basato su un semplice cut-off (<span style="text-decoration: line-through;">ad es. ">70 = positivo"</span>) **nasconderebbe** questa fondamentale incertezza, offrendo una falsa sicurezza.
+    
+---
+
+## Problema 3: Su quale letteratura possiamo fare affidamento?
+
+Lo psicologo ha il dovere deontologico di basarsi sulla letteratura scientifica più aggiornata. 
+
+. . .
+
+Ma **aggiornata** non sempre significa **affidabile**.
+
+. . .
+
+* La ricerca pubblicata è un miscuglio di risultati solidi e risultati fragili o artefatti. Come orientarsi?
+
+---
+
+### Criteri pratici per valutare un risultato
+
+- **Replicabilità:** l'effetto è stato confermato da studi indipendenti?
+
+- **Potenza statistica:** il campione era sufficientemente ampio da rilevare l'effetto atteso?
+
+- **Preregistrazione:** le ipotesi e l'analisi erano state specificate in anticipo?
+
+- **Trasparenza:** dati e materiali sono pubblicamente disponibili?
+
+- **Coerenza teorica:** l'effetto ha una plausibile spiegazione nel quadro teorico di riferimento?
+
+---
+
+## Leggere la letteratura con occhio critico
+
+* Un **valore-p di .03** non equivale a *"il 97% di probabilità che l'effetto sia reale"*.  
+
+* Significa soltanto: *"se l'effetto fosse nullo, ci saremmo aspettati di osservare un risultato così estremo solo nel 3% dei casi"*.
+
+. . .
+
+* Tuttavia, se lo studio ha un **campione piccolo**, **nessuna preregistrazione** e **molteplici analisi esplorative**, quel *p = .03* è molto probabilmente un **falso positivo**.
+
+---
+
+**L’obiettivo di questo corso** è fornirvi gli strumenti concettuali 
+
+* la logica bayesiana, 
+* la gestione dell’incertezza, 
+* la capacità di valutare la solidità dell’evidenza, 
+
+per **leggere la letteratura in modo consapevole e critico**.
+
+---
+
+* Non diventerete statistici.  
+
+. . .
+
+* Diventerete **psicologi in grado di distinguere un risultato solido da uno fragile**, sapendo quando fidarsi di un dato e quando mantenere un sano scetticismo.
+
+---
+
+## Problema 4: la cumulatività della conoscenza
+
+Nella pratica frequentista classica, ogni studio "ricomincia da zero": si testa $H_0$ come se non sapessimo niente.
+
+. . .
+
+* Nella pratica bayesiana, la conoscenza è **cumulativa**: il risultato di uno studio diventa la *prior* del successivo. Si costruisce progressivamente una comprensione più solida.
+
+. . .
+
+Questo ha un'implicazione diretta per il professionista: permette di integrare formalmente ciò che si è imparato **dalla letteratura** con ciò che si osserva **nel proprio paziente**.
+
+---
+
+Non è un’idealizzazione teorica.
+
+**È il modo in cui gli psicologi pensano già nella pratica quotidiana.**
+
+> “La letteratura suggerisce che il trattamento X è efficace per la diagnosi di questo paziente. Tuttavia, osservando i suoi segnali clinici specifici (Y), l’evoluzione mi sembra diversa.”
+
+---
+
+**L’inferenza bayesiana non inventa un nuovo modo di ragionare: lo rende esplicito, trasparente e quantitativo.**
+
+Ci permette di integrare in modo rigoroso:
+
+- l’**evidenza generale** (ciò che sappiamo dalla ricerca),
+- con l’**evidenza individuale** (ciò che osserviamo nel paziente).
+
+Trasforma un’intuizione clinica in un **ragionamento strutturato e comunicabile**.
+
+# Verso una psicologia più solida {background-color="#2c3e50" style="color: white;"}
+
+## La risposta della comunità scientifica
+
+La crisi della replicabilità non è stata solo un campanello d'allarme. 
+
+Ha prodotto un cambiamento culturale profondo, che va sotto il nome di **Open Science**.
+
+---
+
+**Preregistrazione**: dichiarare ipotesi e analisi *prima* di raccogliere i dati, per eliminare la flessibilità analitica.
+
+**Open data e open materials**: rendere disponibili dati e procedure perché chiunque possa verificarle.
+
+**Registered reports**: le riviste valutano il disegno dello studio *prima* di vedere i risultati, eliminando il bias verso i risultati "positivi".
+
+**Progetti multi-laboratorio**: replicare gli stessi studi in decine di laboratori contemporaneamente.
+
+---
+
+## E il ruolo dei metodi bayesiani?
+
+In questo contesto, l’approccio bayesiano offre strumenti che rispondono concretamente ai limiti dei metodi tradizionali.
+
+. . .
+
+**1. Rende esplicita l’incertezza.**  
+Non produce un verdetto binario (“significativo/non significativo”), ma una **distribuzione di probabilità** che mostra chiaramente quanto sappiamo e quanto ancora è incerto.
+
+. . .
+
+**2. È informativo anche con piccoli campioni.**  
+L’integrazione di conoscenza pregressa (*prior*) può compensare parzialmente la scarsità di dati — a condizione di rendere **completamente trasparenti** le assunzioni di partenza.
+
+---
+
+**3. Costringe alla trasparenza e alla critica.**  
+Per applicare un’analisi bayesiana è necessario dichiarare esplicitamente le proprie ipotesi iniziali. Questo rende l’analisi **più facile da discutere, replicare e, se necessario, criticare** — che è il cuore stesso del metodo scientifico.
+
+---
+
+## Cosa Bayes *non* risolve
+
+È essenziale essere onesti: l’inferenza bayesiana **non è una panacea**.
+
+. . .
+
+- **Non salva strumenti di misura inadeguati:**  
+  se un questionario non è valido, nessun metodo statistico può correggere il problema alla radice.
+- **Non compensa disegni di ricerca mal concepiti:**  
+  i bias di selezione, gli effetti confondenti, l'assenza di gruppo di controllo rimangono problemi critici.
+- **Non sostituisce una teoria solida:**  
+  applicare modelli sofisticati a ipotesi vaghe produce risultati altrettanto vaghi.
+
+---
+
+**Tuttavia, ciò che Bayes fa è fondamentale: ti costringe a pensare.**
+
+. . .
+
+* Ti costringe a rendere esplicite le tue assunzioni, a quantificare l’incertezza, a integrare in modo strutturato evidenze da fonti diverse.  
+
+. . .
+
+* Più che una semplice tecnica statistica, è **un framework per un ragionamento più rigoroso e trasparente**.
+
+# Il percorso che faremo {background-color="#2c3e50" style="color: white;"}
+
+---
+
+## Da dove partiamo
+
+Questo corso parte dall'idea che **non servono** basi matematiche avanzate per ragionare correttamente con l'incertezza. 
+
+* Servono **concetti chiari** e la capacità di usare strumenti computazionali.
+
+---
+
+Impareremo a:
+
+- **descrivere** i dati con la statistica esplorativa e la visualizzazione,
+- **ragionare** con la probabilità come linguaggio dell'incertezza,
+- **aggiornare** le credenze alla luce dei dati (il cuore dell'approccio bayesiano),
+- **stimare** parametri e confrontare modelli con strumenti moderni,
+- **valutare** la solidità delle conclusioni (proprie e altrui).
+
+---
+
+## Come lavoreremo
+
+Tutto il corso si svolge in R e RStudio. 
+
+* Non è un corso di programmazione — la programmazione è il **mezzo**, non il fine.
+
+. . .
+
+All'esame potrete usare **gli snippet di codice** che vi sarete costruiti durante il corso. L'obiettivo non è memorizzare la sintassi, ma **capire la logica** e saper usare gli strumenti.
+
+. . .
+
+I materiali del corso sono online e liberamente accessibili. Usateli attivamente: non limitatevi a leggerli, ma eseguite il codice, modificatelo, sperimentate.
+
+---
+
+## Cosa vi porterete via
+
+Alla fine di questo corso, non sarete né statistici né programmatori.
+
+. . .
+
+Sarete **psicologi** con una comprensione chiara di:
+
+- cosa significa "incertezza" e come quantificarla,
+- perché certi risultati della letteratura sono affidabili e altri no,
+- come ragionare razionalmente quando i dati sono pochi e rumorosi,
+- quali strumenti usare per trarre conclusioni difendibili nella pratica professionale.
+
+---
+
+Queste competenze non sono un lusso accademico. 
+
+* Sono la **base** di una pratica professionale responsabile in un'epoca in cui la psicologia sta reimparando a fare scienza.
+
+---
+
+## Collegamento con le prossime lezioni
+
+Oggi abbiamo visto **perché** serve un cambio di prospettiva.
+
+. . .
+
+Dalla prossima lezione inizieremo il **come**: partiremo dai dati, dall'esplorazione, dalla visualizzazione. 
+
+Poi, passo dopo passo, costruiremo gli strumenti probabilistici e inferenziali.
+
+. . .
+
+Il percorso è impegnativo ma accessibile. 
+
+* Costituisce **la base della preparazione professionale** dello psicologo.
+
+---
+
+## Per approfondire
+
+I materiali della crisi della replicazione e le sue implicazioni sono trattati in dettaglio nella prima sezione del companion:
+
+- [Cap. 2 — La crisi della replicazione](https://ccaudek.github.io/utet-companion/chapters/replication_crisis/01_crisis.html)
+- [Cap. 3–7 — Limiti dell'inferenza frequentista](https://ccaudek.github.io/utet-companion/chapters/limits/01_limits_stat_freq.html): simulazioni al computer che rendono visibili i problemi
+
+---
+
+Per chi vuole esplorare fin da subito:
+
+- Open Science Collaboration (2015). *Estimating the reproducibility of psychological science.* Science, 349(6251).
+- Ioannidis, J. P. A. (2005). *Why most published research findings are false.* PLoS Medicine, 2(8), e124.

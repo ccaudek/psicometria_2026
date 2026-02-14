@@ -1,12 +1,12 @@
 ---
 title: "Probabilità e calcolo combinatorio"
 subtitle: "Principi di equiprobabilità e tecniche di enumerazione"
-version: 1.0
+version: "2.0"
 author:
-  - name: Corrado Caudek
-    orcid: 0000-0002-1404-0420
-    email: corrado.caudek@unifi.it
-    affiliations: Università degli Studi di Firenze
+  - name: "Corrado Caudek"
+    orcid: "0000-0002-1404-0420"
+    email: "corrado.caudek@unifi.it"
+    affiliation: "Università degli Studi di Firenze"
 date: today
 date-format: long
 toc: false
@@ -14,17 +14,17 @@ toc-depth: 2
 lang: it
 
 format:
-    revealjs:
-      theme: [default, ../revealjs.scss]
-      title-slide-attributes:
-        data-background-color: "#0072bc"
-      slide-number: c
-      show-slide-number: print
-      highlight-style: github
-      math: mathjax
-      mermaid:
-        theme: neutral
-      
+  revealjs:
+    theme: [default, ../revealjs.scss]
+    title-slide-attributes:
+      data-background-color: "#0072bc"
+    slide-number: c
+    show-slide-number: print
+    highlight-style: github
+    math: mathjax
+    mermaid:
+      theme: neutral
+
 bibliography: ../references.bib
 csl: ../apa.csl
 ---
@@ -42,19 +42,19 @@ library(kableExtra)
 
 In questa seconda parte:
 
-- esamineremo la **formula classica** della probabilità
-- introdurremo le tecniche di **calcolo combinatorio**
-- esploreremo il **bias dell'equiprobabilità**
-- collegheremo questi concetti all'**interpretazione bayesiana**
+- esamineremo la **formula classica** della probabilità;
+- introdurremo le tecniche di **calcolo combinatorio**;
+- esploreremo il **bias dell'equiprobabilità**;
+- collegheremo questi concetti all'**interpretazione bayesiana**.
 
-> Riferimento: https://ccaudek.github.io/utet-prob/ — Capitoli 4-5
+> Riferimento: https://ccaudek.github.io/utet-prob/ — Capitoli 4-5.
 
 ---
 
 ## La definizione classica (Laplace) della probabilità
 
 $$
-P(A) = \frac{\text{casi favorevoli}}{\text{casi possibili}} = \frac{|A|}{|\Omega|}
+P(A) = \frac{\text{casi favorevoli}}{\text{casi possibili}} = \frac{|A|}{|\Omega|}.
 $$
 
 **Condizione fondamentale:** tutti gli esiti dello spazio campionario $\Omega$ devono essere **equiprobabili**.
@@ -65,9 +65,11 @@ $$
 
 > Quando non abbiamo ragioni per distinguere tra esiti possibili, è razionale assegnare la stessa probabilità a ciascuno.
 
+
 **È una regola di coerenza logica**, non un'affermazione sulla realtà empirica.
 
-**Esempio:** Moneta bilanciata → $P(\text{Testa}) = P(\text{Croce}) = \frac{1}{2}$.
+
+**Esempio:** moneta bilanciata → $P(\text{Testa}) = P(\text{Croce}) = \frac{1}{2}$.
 
 
 ---
@@ -87,16 +89,37 @@ $$
 
 ## Il ruolo del calcolo combinatorio
 
-Molti errori nel ragionamento probabilistico nascono da una **enumerazione non corretta** dei casi possibili.
+Molti errori nel ragionamento probabilistico nascono da una **enumerazione incompleta o distorta** dei casi possibili.
+
+. . .
 
 Il calcolo combinatorio fornisce strumenti per:
 
-1. **contare in modo sistematico** – evitare omissioni
-2. **identificare strutture** – raggruppamenti, permutazioni, combinazioni
-3. **evitare doppi conteggi** – distinzione tra ordine/no ordine
-4. **gestire grandi spazi campionari** – senza enumerazione esplicita
+1. **contare in modo sistematico** – evitare omissioni;
+2. **identificare strutture** – raggruppamenti, permutazioni, combinazioni;
+3. **evitare doppi conteggi** – distinzione tra ordine/no ordine;
+4. **gestire grandi spazi campionari** – senza enumerazione esplicita.
 
 ---
+
+## A cosa vi servirà nella professione?
+
+Il calcolo combinatorio non è un mero esercizio accademico, ma uno strumento fondamentale per interpretare, progettare e prendere decisioni in ambito professionale.Ecco come lo incontrerete in azione:
+
+. . .
+
+- **Progettare trial clinici randomizzati:** come si assegnano in modo equo e valido 30 pazienti a due gruppi? Il numero di assegnazioni possibili è un problema combinatorio puro, ed è la base matematica di qualsiasi studio sperimentale controllato.
+
+---
+
+- **Valutare un dato sorprendente:** di fronte a un risultato sorprendente (ad esempio, 8 miglioramenti su 12 pazienti), la domanda cruciale è: *quale è la probabilità che questo accada per puro caso?* Per rispondere in modo rigoroso, è necessario enumerare e confrontare tutti i possibili scenari — un'applicazione diretta del calcolo combinatorio.
+
+. . .
+
+- **Padroneggiare modelli statistici essenziali:** la distribuzione binomiale — che incontreremo a breve — è il modello per eccellenza degli eventi "successo/fallimento". La sua stessa formula e logica sono un'applicazione concreta dei principi di conteggio che esamineremo a breve.
+
+
+# Permutazioni e disposizioni {background-color="#2c3e50" style="color: white;"}
 
 ## Permutazioni: definizione
 
@@ -117,7 +140,7 @@ In un esperimento di memoria, 4 parole vengono presentate una dopo l'altra. L'or
 **Domande:**
 
 a) Quante sequenze di presentazione sono possibili?
-b) Qual è la probabilità di ciascuna sequenza (assumendo equiprobabilità)?
+b) Qual è la probabilità di ciascuna sequenza (assumendo l'equiprobabilità)?
 
 ---
 
@@ -125,12 +148,12 @@ b) Qual è la probabilità di ciascuna sequenza (assumendo equiprobabilità)?
 
 **a)** Numero di permutazioni:
 $$
-4! = 4 \times 3 \times 2 \times 1 = 24 \text{ sequenze}
+4! = 4 \times 3 \times 2 \times 1 = 24 \text{ sequenze}.
 $$
 
 **b)** Se equiprobabili:
 $$
-P(\text{una sequenza specifica}) = \frac{1}{24} \approx 0.042
+P(\text{una sequenza specifica}) = \frac{1}{24} \approx 0.042.
 $$
 
 ---
@@ -154,8 +177,70 @@ factorial(4)
 Le **disposizioni** si applicano quando scegliamo **e ordiniamo** $k$ elementi da un insieme di $n$ elementi distinti.
 
 $$
-D_{n,k} = \frac{n!}{(n-k)!} = n \times (n-1) \times \cdots \times (n-k+1)
+D_{n,k} = \frac{n!}{(n-k)!} = n \times (n-1) \times \cdots \times (n-k+1).
 $$
+
+---
+
+## Un approccio intuitivo: contare in eccesso e correggere
+
+### 1. Contiamo in eccesso con le permutazioni totali
+
+Partiamo da tutte le **permutazioni degli $n$ oggetti**:  
+$$
+P_n = n!
+$$
+
+In ogni permutazione, i primi $k$ posti formano una possibile **disposizione** di $k$ oggetti.
+
+---
+
+### 2. Il problema: ogni disposizione viene ripetuta
+
+Fissiamo i primi $k$ oggetti.  
+Gli ultimi $n-k$ oggetti possono essere **permutati tra loro** senza alterare la disposizione che ci interessa.
+
+**Esempio con $n=5, k=3$**.
+Disposizione che vogliamo: $(A, C, E)$
+
+Compare in $2! = 2$ permutazioni totali:
+
+1. $A, C, E, B, D$  
+2. $A, C, E, D, B$
+
+Stessa disposizione iniziale, diverso ordine degli ultimi due.
+
+---
+
+### 3. Quante ripetizioni? Esattamente $(n-k)!$
+
+Per ogni scelta dei primi $k$ oggetti, gli $n-k$ rimanenti possono essere ordinati in:
+$$
+(n-k)!
+$$
+modi diversi, tutti contenuti nel conteggio $n!$.
+
+Quindi, nel totale $n!$, ogni disposizione è contata **$(n-k)!$ volte**.
+
+---
+
+### 4. Correggiamo il sovraconteggio
+
+Per ottenere il numero **corretto** di disposizioni:
+$$
+D_{n,k} = \frac{\text{Conteggio in eccesso}}{\text{Ripetizioni per ogni disposizione}} = \frac{n!}{(n-k)!}
+$$
+
+---
+
+## In sintesi: da $n!$ a $D_{n,k}$
+
+1. **Conto tutte le permutazioni** → $n!$  .
+2. **Riconosco che i primi $k$ oggetti** sono la disposizione che cerco.  
+3. **Vedo che ogni disposizione è ripetuta** $(n-k)!$ volte.  
+4. **Divido** per $(n-k)!$ per eliminare le ripetizioni.  
+
+**Risultato:** una giustificazione logica e intuitiva della formula delle disposizioni.
 
 ---
 
@@ -170,10 +255,10 @@ In un gruppo di 8 partecipanti, dobbiamo assegnare 3 ruoli distinti (leader, por
 ### Soluzione Esercizio 2
 
 $$
-D_{8,3} = \frac{8!}{(8-3)!} = \frac{8!}{5!} = 8 \times 7 \times 6 = 336
+D_{8,3} = \frac{8!}{(8-3)!} = \frac{8!}{5!} = 8 \times 7 \times 6 = 336.
 $$
 
-**Interpretazione:** Ci sono 336 modi diversi di assegnare i 3 ruoli a 8 persone.
+**Interpretazione:** ci sono 336 modi diversi di assegnare i 3 ruoli a 8 persone.
 
 ---
 
@@ -185,7 +270,7 @@ $$
 factorial(8) / factorial(5)
 ```
 
----
+# Combinazioni {background-color="#2c3e50" style="color: white;"}
 
 ## Combinazioni: definizione
 
@@ -199,18 +284,38 @@ Si legge "$n$ su $k$" o "coefficiente binomiale".
 
 ---
 
+### Derivazione
+
+È semplice derivare la formula delle **combinazioni** a partire dalle disposizioni:
+
+Poiché nelle **disposizioni** l’ordine è rilevante, se vogliamo contare solo i **sottoinsiemi** di $k$ elementi (senza ordine), dobbiamo eliminare il conteggio dei diversi ordinamenti degli stessi elementi.
+
+---
+
+Ogni sottoinsieme di $k$ elementi può essere **ordinato in $k!$ modi diversi**, tutti già contati in $D_{n,k}$.
+
+Quindi, per ottenere il numero di **combinazioni** $C_{n,k}$, basta **dividere le disposizioni per $k!$**:
+
+$$
+C_{n,k} = \frac{D_{n,k}}{k!} = \frac{\frac{n!}{(n-k)!}}{k!} = \frac{n!}{k!\,(n-k)!}.
+$$
+
+In sostanza: **contiamo tutti gli ordinamenti** ($D_{n,k}$) e poi **togliamo le permutazioni interne** a ciascun gruppo ($k!$), perché l’ordine non conta.
+
+---
+
 ## Esercizio 3 — Combinazioni
 
 Da un gruppo di 10 studenti, devo selezionare 3 per formare un gruppo di lavoro (senza ruoli distinti).
 
-**Domanda:** Quanti gruppi diversi posso formare?
+**Domanda:** quanti gruppi diversi posso formare?
 
 ---
 
 ### Soluzione Esercizio 3
 
 $$
-\binom{10}{3} = \frac{10!}{3! \times 7!} = \frac{10 \times 9 \times 8}{3 \times 2 \times 1} = \frac{720}{6} = 120
+\binom{10}{3} = \frac{10!}{3! \times 7!} = \frac{10 \times 9 \times 8}{3 \times 2 \times 1} = \frac{720}{6} = 120.
 $$
 
 ---
@@ -231,7 +336,7 @@ choose(10, 3)
 |------------|---------|---------|
 | Ordinare tutti gli elementi | $n!$ | Ordine di presentazione |
 | Scegliere e ordinare $k$ da $n$ | $\frac{n!}{(n-k)!}$ | Assegnare ruoli |
-| Scegliere $k$ da $n$ (no ordine) | $\binom{n}{k}$ | Formare gruppi |
+| Scegliere $k$ da $n$ (nessun ordine) | $\binom{n}{k}$ | Formare gruppi |
 
 ---
 
@@ -239,7 +344,7 @@ choose(10, 3)
 
 Un questionario ha 5 item. Ogni item ha 2 risposte possibili (Sì/No).
 
-**Domande:**
+**Domande**
 
 a) Quante sequenze di risposte diverse sono possibili?
 b) Se le risposte fossero date a caso, qual è la probabilità di rispondere "Sì" a tutti gli item?
@@ -250,12 +355,12 @@ b) Se le risposte fossero date a caso, qual è la probabilità di rispondere "S�
 
 **a)** Principio moltiplicativo:
 $$
-2 \times 2 \times 2 \times 2 \times 2 = 2^5 = 32 \text{ sequenze}
+2 \times 2 \times 2 \times 2 \times 2 = 2^5 = 32 \text{ sequenze}.
 $$
 
 **b)** Se equiprobabili:
 $$
-P(\text{tutti Sì}) = \frac{1}{32} = 0.03125
+P(\text{tutti Sì}) = 0.5^5 = \frac{1}{32} = 0.03125.
 $$
 
 ---
@@ -266,278 +371,526 @@ $$
 #| echo: true
 
 2^5
-1 / 2^5
+0.5^5
 ```
 
 ---
 
-## Esercizio 5 — Combinazioni in uno studio
+## Esercizio 5 — Combinazioni in uno studio clinico
 
-In uno studio clinico, su 12 pazienti trattati, 8 mostrano miglioramento.
+In uno studio clinico, su 12 pazienti trattati, 8 mostrano un miglioramento.
 
-**Domanda:** In quanti modi diversi si può osservare che esattamente 8 pazienti migliorano?
+**Domanda:** in quanti modi diversi si può osservare che esattamente 8 pazienti migliorano?
+
+---
+Ecco una riscrittura più chiara e più “da slide”: meno ridondanze, struttura più lineare, e con una transizione finale che prepara bene ciò che verrà dopo. Mantengo i numeri e i risultati identici, ma rendo il testo più asciutto e leggibile.
 
 ---
 
-### Soluzione Esercizio 5
+## Esercizio 5 — Combinazioni in uno studio clinico
 
-Dobbiamo scegliere **quali** 8 pazienti migliorano tra i 12:
+In uno studio clinico, su $n=12$ pazienti trattati, $8$ mostrano un miglioramento.
+
+**Domanda 1.** In quanti modi diversi può accadere che **esattamente 8** migliorino?
+
+---
+
+## Modello semplificato (ipotesi nulla)
+
+Per fissare le idee, assumiamo che il trattamento **non abbia effetto** e che ogni paziente migliori “per caso” con la stessa probabilità di una moneta equilibrata:
+
+* ogni paziente: Migliora (M) / Non migliora (N);
+* probabilità uguali e indipendenti: $p=0.5$.
+
+Con questa ipotesi possiamo contare gli esiti e trasformare il conteggio in una probabilità.
+
+---
+
+## Tutti gli esiti possibili (denominatore)
+
+Ogni paziente ha 2 esiti (M o N).
+Con 12 pazienti:
 
 $$
-\binom{12}{8} = \frac{12!}{8! \times 4!} = \frac{12 \times 11 \times 10 \times 9}{4 \times 3 \times 2 \times 1} = 495
+|\Omega| = 2^{12} = 4096.
+$$
+
+Questi 4096 esiti sono le **sequenze** M/N di lunghezza 12 (tutte equiprobabili sotto $p=0.5$).
+
+---
+
+## Esiti favorevoli: esattamente 8 miglioramenti (numeratore)
+
+Vogliamo contare quante sequenze contengono:
+
+* **8 M** e **4 N**.
+
+---
+
+L’ordine dei pazienti è fissato (pazienti distinti), quindi basta scegliere:
+
+> **quali 8 pazienti** (su 12) sono quelli che migliorano.
+
+Questo è un coefficiente binomiale:
+
+$$
+\binom{12}{8}=\frac{12!}{8!,4!}=495.
+$$
+
+Quindi esistono **495** modi distinti per osservare *esattamente 8 miglioramenti su 12*.
+
+---
+
+## Probabilità di esattamente 8 miglioramenti
+
+Sotto l’ipotesi $p=0.5$, tutti gli esiti in $\Omega$ hanno lo stesso “peso”. Quindi:
+
+$$
+P(X=8)=\frac{\binom{12}{8}}{2^{12}}
+=\frac{495}{4096}
+\approx 0.121 \quad (12.1\%).
 $$
 
 ---
 
-### Verifica con R
+## Riepilogo 
 
-```{r}
-#| echo: true
-
-choose(12, 8)
-```
+* **Totale esiti**: $2^{12}=4096$.
+* **Esiti con 8 miglioramenti**: $\binom{12}{8}=495$.
+* **Probabilità**: $495/4096 \approx 12.1\%$.
 
 ---
 
-## Esercizio 6 -- Il problema dei due dadi
+## Attenzione a un errore comune
 
-Lanciamo due dadi bilanciati. 
+Dire “495 è tanto” non basta.
 
-* a) Qual è la probabilità che la somma di due dadi sia 7?
-* b) Qual è la probabilità che la somma di due dadi sia 2?
-* c) Qual è la probabilità che la somma di due dadi sia almeno 10?
+La domanda è: **495 rispetto a cosa?**
+Rispetto a $4096$.
+
+$$
+495 \text{ su } 4096 \Rightarrow \text{circa } 12\%.
+$$
 
 ---
 
-## Spazio campionario 
+## Domanda clinica più naturale: “almeno 8”
 
-Lo spazio campionario ha **36 esiti** (le coppie ordinate):
+Spesso però non interessa “esattamente 8”, ma un risultato **almeno così buono**:
 
-| Dado 1 / Dado 2 | 1 | 2 | 3 | 4 | 5 | 6 |
-|-----------------|---|---|---|---|---|---|
-| **1** | (1,1) | (1,2) | (1,3) | (1,4) | (1,5) | (1,6) |
-| **2** | (2,1) | (2,2) | (2,3) | (2,4) | (2,5) | (2,6) |
-| ... | ... | ... | ... | ... | ... | ... |
-| **6** | (6,1) | (6,2) | (6,3) | (6,4) | (6,5) | (6,6) |
+$$
+P(X\ge 8)=P(8)+P(9)+P(10)+P(11)+P(12).
+$$
+
+Con $p=0.5$:
+
+$$
+P(X=k)=\binom{12}{k}(0.5)^{12}=\frac{\binom{12}{k}}{4096}.
+$$
+
+---
+
+## Calcolo di $P(X\ge 8)$
+
+$$
+P(X\ge 8)=\frac{\binom{12}{8}+\binom{12}{9}+\binom{12}{10}+\binom{12}{11}+\binom{12}{12}}{4096}.
+$$
+
+Valori:
+
+* $\binom{12}{8}=495$,
+* $\binom{12}{9}=220$,
+* $\binom{12}{10}=66$,
+* $\binom{12}{11}=12$,
+* $\binom{12}{12}=1$.
+
+Somma: $495+220+66+12+1=794$.
+
+$$
+P(X\ge 8)=\frac{794}{4096}\approx 0.194 \quad (19.4\%).
+$$
+
+---
+
+## Interpretazione 
+
+> Se il trattamento fosse **inefficace**, un risultato “buono” come **8 o più miglioramenti su 12** si osserverebbe comunque circa **1 volta su 5**.
+
+Quindi **non è un esito raro** sotto l’ipotesi di “nessun effetto”.
+
+---
+
+## Perché questo esercizio conta (in un’ottica bayesiana)
+
+In questo esercizio abbiamo fatto due cose fondamentali:
+
+. . .
+
+1. **abbiamo descritto un modello per gli esiti**
+   (12 pazienti → sequenze M/N → conteggi con $\binom{12}{k}$);
+
+. . .
+
+2. **abbiamo collegato i dati a un parametro incerto**
+   (qui: la “tendenza” a migliorare, $p$).
+
+---
+
+Nel seguito del corso useremo gli stessi ingredienti per:
+
+* partire da una **densità di credenza** su $p$ (*prior*),
+* **aggiornarla** alla luce dei dati (*posterior*).
+
+. . .
+
+**Idea chiave**: $\binom{12}{k}$ non è solo “conteggio” —
+è il mattone combinatorio che entra nel meccanismo di **aggiornamento delle credenze**.
+
+. . .
+
+> *Oggi abbiamo contato esiti; presto useremo gli stessi conteggi per aggiornare ciò che pensiamo su $p$.*
+
+# Il bias dell’equiprobabilità {background-color="#e74c3c" style="color: white;"}
+
+## Bias cognitivi
+
+Il calcolo combinatorio ci dice **quanti esiti** ci sono e **quanti** sono favorevoli: è la base per ragionare in modo formale su eventi costruiti su spazi campionari più o meno grandi.
+
+. . .
+
+Nei problemi di questo tipo, però, l’intuizione spesso inganna: entrano in gioco **bias cognitivi** che rendono “naturali” risposte sbagliate.
+
+. . .
+
+Uno dei più comuni è il **bias dell’equiprobabilità**: la tendenza a trattare come *ugualmente plausibili* esiti che, in realtà, non lo sono — perché **non corrispondono allo stesso numero di combinazioni**.
+
+---
+
+## Un’idea guida
+
+Lo vedremo con due esempi.
+
+. . .
+
+> *Quando contiamo correttamente, scopriamo che non tutto ciò che “sembra simmetrico” lo è davvero nello spazio delle combinazioni.*
+
+----
+
+## Esercizio 6 — Il problema dei due dadi
+
+Lanciamo due dadi bilanciati e indipendenti. Vogliamo calcolare
+
+1) $P(S = 7)$,  
+2) $P(S = 2)$,  
+3) $P(S \ge 10)$,
+
+dove $S$ è la somma dei due risultati.
+
+---
+
+## Spazio campionario
+
+Lo spazio campionario ha **36 esiti**: le coppie ordinate $(d_1,d_2)$ con $d_1,d_2 \in \{1,\dots,6\}$.
+
+. . .
+
+Qui l’equiprobabilità è giustificata:
+
+- dadi bilanciati,
+- lanci indipendenti,
+- ogni coppia $(d_1,d_2)$ ha lo stesso "peso".
+
+---
+
+### Tutti i possibili esiti
+
+| Dado 1 / Dado 2 | 1       | 2       | 3       | 4       | 5       | 6       |
+|-----------------|---------|---------|---------|---------|---------|---------|
+| **1**           | (1,1)   | (1,2)   | (1,3)   | (1,4)   | (1,5)   | (1,6)   |
+| **2**           | (2,1)   | (2,2)   | (2,3)   | (2,4)   | (2,5)   | (2,6)   |
+| **3**           | (3,1)   | (3,2)   | (3,3)   | (3,4)   | (3,5)   | (3,6)   |
+| **4**           | (4,1)   | (4,2)   | (4,3)   | (4,4)   | (4,5)   | (4,6)   |
+| **5**           | (5,1)   | (5,2)   | (5,3)   | (5,4)   | (5,5)   | (5,6)   |
+| **6**           | (6,1)   | (6,2)   | (6,3)   | (6,4)   | (6,5)   | (6,6)   |
 
 ---
 
 ## Conteggio delle somme
 
-| Somma | Combinazioni | Numero |
-|-------|--------------|--------|
-| 2 | (1,1) | 1 |
-| 3 | (1,2), (2,1) | 2 |
-| 4 | (1,3), (2,2), (3,1) | 3 |
-| ... | ... | ... |
-| 7 | (1,6), (2,5), (3,4), (4,3), (5,2), (6,1) | 6 |
-| ... | ... | ... |
-| 12 | (6,6) | 1 |
+Non sono equiprobabili le **somme**.
+
+. . .
+
+Alcune somme possono essere ottenute in molti modi (es. 7),
+altre in pochissimi (es. 2 o 12).
 
 ---
 
-### Soluzione Esercizio 6
+### Distribuzione delle somme di due dadi
 
-**a) La probabilità che la somma sia 7**
+::: {style="font-size: 0.75em; line-height: 1.05;"}
 
-* Il valore "7" (somma dei due dadi) compare in 6 eventi elementari dello spazio campionario: (1,6), (2,5), (3,4), (4,3), (5,2), (6,1).
+| Somma | Combinazioni                                                                 | Numero |
+|-------|------------------------------------------------------------------------------|--------|
+| 2     | (1,1)                                                                        | 1      |
+| 3     | (1,2), (2,1)                                                                 | 2      |
+| 4     | (1,3), (2,2), (3,1)                                                          | 3      |
+| 5     | (1,4), (2,3), (3,2), (4,1)                                                   | 4      |
+| 6     | (1,5), (2,4), (3,3), (4,2), (5,1)                                            | 5      |
+| 7     | (1,6), (2,5), (3,4), (4,3), (5,2), (6,1)                                     | 6      |
+| 8     | (2,6), (3,5), (4,4), (5,3), (6,2)                                            | 5      |
+| 9     | (3,6), (4,5), (5,4), (6,3)                                                   | 4      |
+| 10    | (4,6), (5,5), (6,4)                                                          | 3      |
+| 11    | (5,6), (6,5)                                                                 | 2      |
+| 12    | (6,6)                                                                        | 1      |
 
-* Possiamo assumere l'equiprobabilità, perché i dadi sono bilanciati e indipendenti -- quindi ogni punto dello spazio campionario ha la stessa probabilità.
-
-In conclusione:
-
-$$
-P(\text{somma} = 7) = \frac{6}{36} = \frac{1}{6} \approx 0.167
-$$
-
----
-
-### Soluzione Esercizio 6
-
-**b) La probabilità che la somma sia 2** 
-
-Solo (1,1) dà somma 2. Dunque:
-
-$$
-P(\text{somma} = 2) = \frac{1}{36} \approx 0.028
-$$
+:::
 
 ---
 
-### Soluzione Esercizio 6
+### Soluzione (a) — $P(S=7)$
 
-**c) La probabilità che la somma sia ≥ 10** 
-
-Somma ≥ 10 significa somma = 10, 11, o 12.
-
-- Somma 10: (4,6), (5,5), (6,4) → 3 casi
-- Somma 11: (5,6), (6,5) → 2 casi
-- Somma 12: (6,6) → 1 caso
+La somma 7 si ottiene in **6** modi:
 
 $$
-P(\text{somma} \geq 10) = \frac{3 + 2 + 1}{36} = \frac{6}{36} = \frac{1}{6}
+(1,6),(2,5),(3,4),(4,3),(5,2),(6,1).
+$$
+
+$$
+P(S=7)=\frac{6}{36}=\frac{1}{6}\approx 0.167.
 $$
 
 ---
 
-## Il bias dell'equiprobabilità
+### Soluzione (b) — $P(S=2)$
 
-Molte persone tendono a ragionare come se ogni processo casuale producesse esiti **uniformi** [@gauvrit2014equiprobability].
+Solo una coppia produce somma 2:
 
-Questo **equiprobability bias** emerge in:
+$$
+(1,1).
+$$
 
-- problema dei due dadi
-- problema dei due figli
-- problema di Monty Hall
-- aggiornamento bayesiano
+$$
+P(S=2)=\frac{1}{36}\approx 0.028.
+$$
 
 ---
 
-## Perché il bias è così comune?
+### Soluzione (c) — $P(S\ge 10)$
+
+Somma $\ge 10$ significa 10, 11 o 12.
+
+- 10: $(4,6),(5,5),(6,4)$ → 3 modi.  
+- 11: $(5,6),(6,5)$ → 2 modi.  
+- 12: $(6,6)$ → 1 modo.  
+
+Totale: $3+2+1=6$.
+
+$$
+P(S\ge 10)=\frac{6}{36}=\frac{1}{6}.
+$$
+
+---
+
+## Dove nasce il bias?
+
+L’errore tipico è pensare:
+
+> “Le somme possibili sono 11 (da 2 a 12), quindi sono tutte ugualmente plausibili.”
+
+. . .
+
+Ma l’equiprobabilità vale per le **coppie** $(d_1,d_2)$,  
+non per il **risultato trasformato** $S=d_1+d_2$.
+
+---
+
+## Il bias dell’equiprobabilità
+
+Molte persone tendono a trattare ogni processo casuale come se producesse esiti **uniformi** [@gauvrit2014equiprobability].
+
+Questo bias emerge spesso quando:
+
+- si passa da esiti elementari a una variabile derivata (somma, massimo, conteggio, ecc.);
+- si confonde “possibile” con “ugualmente frequente”.
+
+---
+
+## Perché è così comune?
 
 Due ragioni principali [@gauvrit2014equiprobability]:
 
-1. **Culturale:** nella didattica si parte da generatori uniformi (monete, dadi), quindi "casuale" diventa sinonimo di "uniforme".
+1. **Didattica/cultura**  
+   spesso si parte da generatori uniformi (monete, dadi) e “casuale” diventa sinonimo di “uniforme”.
 
-2. **Paradosso della combinazione:** anche se i processi di base sono uniformi, le **trasformazioni** (*somma*, massimo, selezione) producono spesso distribuzioni **non uniformi**.
+2. **Trasformazioni**  
+   anche se gli esiti di base sono equiprobabili, trasformazioni come somma o conteggio producono spesso distribuzioni **non uniformi**.
+
+---
+
+## Un esempio ancora più semplice: due monete
+
+Il bias si vede in modo ancora più pulito con due lanci di moneta.
 
 ---
 
 ## Esercizio 7 — Due monete
 
-Lanciamo **due monete**.
+Lanciamo **due monete bilanciate**.
 
 Qual è la probabilità di ottenere **esattamente una testa**?
 
 ---
 
-### Passo 1 — Spazio campionario
+## Spazio campionario
 
-Ogni lancio produce una coppia ordinata
-(prima moneta, seconda moneta)
+Gli esiti elementari (coppie ordinate) sono:
 
 | Esito | Prima | Seconda |
 | ----: | :---: | :-----: |
-|     1 |   T   |    T    |
-|     2 |   T   |    C    |
-|     3 |   C   |    T    |
-|     4 |   C   |    C    |
+| 1 | T | T |
+| 2 | T | C |
+| 3 | C | T |
+| 4 | C | C |
 
-Lo spazio campionario ha **4 esiti equiprobabili**.
-
----
-
-### Passo 2 — Evento “una sola testa”
-
-L’evento “esattamente una testa” include gli esiti:
-
-* (T, C)
-* (C, T)
-
-Numero di esiti favorevoli: **2**.
+Questi **4 esiti** sono equiprobabili.
 
 ---
 
-### Passo 3 — Calcolo della probabilità
+## Evento “esattamente una testa”
+
+L’evento include:
+
+- (T, C),
+- (C, T).
+
+Quindi:
 
 $$
-P(\text{1 testa}) = \frac{2}{4} = \frac{1}{2}.
+P(\text{1 testa})=\frac{2}{4}=\frac{1}{2}.
 $$
 
 ---
 
-### Attenzione: un errore comune
+## Attenzione: l’errore comune
 
-> “0 teste”, “1 testa”, “2 teste” **non sono equiprobabili**
+> “0 teste”, “1 testa”, “2 teste” **non sono equiprobabili**.
 
-* **0 teste** → 1 esito;
-* **1 testa** → 2 esiti;
-* **2 teste** → 1 esito.
+- 0 teste → 1 esito.  
+- 1 testa → 2 esiti.  
+- 2 teste → 1 esito.  
 
-Gli esiti equiprobabili sono **TT, TC, CT, CC**, non il numero di teste.
+Gli esiti equiprobabili sono **TT, TC, CT, CC**, non “il numero di teste”.
 
 ---
 
 ## Lezione chiave
 
-L'equiprobabilità non si "eredita automaticamente" attraverso le trasformazioni:
+L’equiprobabilità **non si eredita automaticamente** quando trasformiamo i dati:
 
-- il generatore di base può essere uniforme (moneta bilanciata),
-- **ma** la variabile derivata (numero di teste) può avere distribuzione **non uniforme**.
+- il generatore di base può essere uniforme (moneta, dado),
+- ma la **variabile derivata** (somma, numero di teste, massimo, …) può non esserlo.
+Ecco una versione più scorrevole, coerente e “da slide” (meno testo, più punchline, lessico uniforme). Ho mantenuto la struttura, ma ho reso più chiaro il passaggio *contare → modellare l’incertezza*.
 
----
+# Oltre il contare: l’idea bayesiana {background-color="#2c3e50" style="color: white;"}
 
 ## Quando NON possiamo contare?
 
-In molte situazioni psicologiche reali, il meccanismo generativo **non è accessibile**:
+In molte situazioni reali il meccanismo generativo è **opaco** o **inaccessibile**:
 
 - efficacia di un trattamento,
-- probabilità di una diagnosi corretta,
+- accuratezza di una diagnosi,
 - successo di un intervento psicologico.
 
-In questi casi, **non ha senso** pensare a esiti "equiprobabili".
+. . .
+
+Qui “tutti gli esiti sono equiprobabili” non è un buon punto di partenza.
 
 ---
 
-## L'approccio bayesiano
+## L’idea chiave
 
-Quando il meccanismo generativo non è noto, l'approccio bayesiano offre una soluzione:
+Se non possiamo enumerare esiti elementari, cambiamo strategia:
 
-1. si esprime la propria **incertezza iniziale** con una distribuzione **a priori**;
-2. si osservano i **dati**;
-3. si **aggiorna** la credenza usando il teorema di Bayes:
+- rappresentiamo l’incertezza su quantità sconosciute con una **distribuzione di credenza**;
+- la **aggiorniamo** quando arrivano nuovi dati.
+
+(È il motivo per cui il linguaggio delle *densità* diventa centrale.)
+
+---
+
+## L’approccio bayesiano in tre mosse
+
+Quando il meccanismo generativo non è noto o non è controllabile:
+
+1. esprimiamo l’**incertezza iniziale** con una distribuzione **a priori**;
+2. osserviamo i **dati** (e specifichiamo un modello di osservazione);
+3. aggiorniamo la credenza con il teorema di Bayes:
 
 $$
-P(\theta \mid \text{dati}) \propto P(\text{dati} \mid \theta) \times P(\theta).
+P(\theta \mid \text{dati}) \propto P(\text{dati} \mid \theta)\, P(\theta).
 $$
 
 ---
 
 ## Equiprobabilità come scelta epistemica
 
-Una **prior piatta** (uniforme) su un parametro $\theta$ rappresenta:
+Una **prior uniforme** su un parametro $\theta$ dice, operativamente:
 
-> "Non ho motivi forti per preferire certi valori di $\theta$ rispetto ad altri."
+> “Non ho ragioni forti per favorire alcuni valori di $\theta$ rispetto ad altri.”
 
-Questa è una forma operativa del **principio di indifferenza**, ma applicata a parametri continui, non a esiti discreti.
+È una versione del **principio di indifferenza**, ma applicata a **parametri continui** (non a esiti discreti).
+
 
 ---
 
 ## Esercizio 8 — Riflessione concettuale
 
-Un ricercatore vuole esprimere la propria incertezza sull’efficacia di un nuovo trattamento.
+Un ricercatore vuole rappresentare la propria incertezza sull’efficacia di un nuovo trattamento.
 
 Sia $\theta \in [0,1]$ la **probabilità che il trattamento sia efficace**:
 
-* $\theta = 0$: siamo **certi** che il trattamento non sia efficace;
-* $\theta = 1$: siamo **certi** che il trattamento sia efficace;
-* valori intermedi di (\theta): gradi intermedi di fiducia nell’efficacia.
+- $\theta = 0$: siamo **certi** che non sia efficace;
+- $\theta = 1$: siamo **certi** che sia efficace;
+- valori intermedi: gradi intermedi di fiducia nell’efficacia.
 
-**Domanda:**
-ha senso dire che “$\theta = 0.3$ e $\theta = 0.7$ sono equiprobabili”?
+**Domanda.**  
+Ha senso dire che “$\theta=0.3$ e $\theta=0.7$ sono equiprobabili”?  
 Se sì, **in che senso**?
 
 ---
 
-### Discussione Esercizio 8
+### Discussione — cosa significa “equiprobabile” qui?
 
-**Risposta:** ha senso **solo** come descrizione della nostra **incertezza iniziale**.
+**Risposta:** sì, ma **solo** come affermazione sulla nostra **credenza iniziale**, non sulla realtà.
 
-*Prima di osservare i dati:*
+Prima dei dati:
 
-* $\theta$ è un valore **fisso ma sconosciuto**;
-* noi esprimiamo ignoranza su quale valore assuma;
-* una prior uniforme su $[0,1]$ afferma:
+- $\theta$ è un valore **fisso ma ignoto** (non “casuale” in natura);
+- *casuale* è la nostra informazione su $\theta$;
+- scegliere una prior uniforme su $[0,1]$ equivale a dire:
 
-  > “tutti i valori di (\theta) sono ugualmente plausibili **dato ciò che sappiamo ora**”
-  
+> “Dato ciò che so ora, nessun valore di $\theta$ è più plausibile di un altro.”
+
 ---
 
-*Dopo aver osservato i dati:*
+**Nota importante:** per variabili continue non ha senso dire  
+$P(\theta=0.3)=P(\theta=0.7)$ (sono entrambi **zero**).  
 
-* la distribuzione a posteriori **non è più uniforme**;
-* alcuni valori di $\theta$ diventano più plausibili di altri;
-* l’evidenza empirica aggiorna razionalmente le nostre credenze.
+Il senso corretto è: **intervalli** della stessa ampiezza hanno la stessa probabilità a priori, ad es.
+$$
+P(0.2 \le \theta \le 0.3)=P(0.6 \le \theta \le 0.7).
+$$
+
+---
+
+### Dopo i dati: l’equiprobabilità sparisce
+
+Dopo aver osservato dati:
+
+- la distribuzione a posteriori **in generale non è uniforme**;
+- alcuni valori di $\theta$ diventano **molto più plausibili** di altri;
+- l’evidenza aggiorna razionalmente le credenze (e restringe l’incertezza).
 
 ---
 
@@ -545,121 +898,62 @@ Se sì, **in che senso**?
 
 ```{mermaid}
 flowchart LR
-    A[Prior] --> B[Dati]
-    B --> C[Posterior]
+    A[Prior: cosa credo prima] --> B[Dati]
+    B --> C[Posterior: cosa credo dopo]
     C --> D[Nuovi dati]
-    D --> E[Nuova posterior]
+    D --> E[Aggiornamento continuo]
 ```
 
-L'aggiornamento bayesiano rappresenta la formalizzazione matematica del processo per cui noi **impariamo dall'esperienza**.
+L’aggiornamento bayesiano è la formalizzazione matematica di un’idea semplice:
+**impariamo dall’esperienza correggendo le nostre credenze.**
 
 ---
 
-## Riepilogo: quando usare cosa?
+## Riepilogo: quale approccio usare?
 
-| Situazione | Approccio |
-|------------|-----------|
-| Esiti equiprobabili, spazio finito | Formula classica + combinatoria |
-| Trasformazioni di v.c. uniformi | Enumerazione esplicita |
-| Meccanismo generativo ignoto | Approccio bayesiano |
-| Prior non informativa | Distribuzione uniforme su $\theta$ |
+| Situazione                             | Strumento                                        |
+| -------------------------------------- | ------------------------------------------------ |
+| Spazio finito + esiti equiprobabili    | Definizione classica + combinatoria              |
+| Trasformazioni di variabili “uniformi” | Attenzione: l’uniformità può **non conservarsi** |
+| Meccanismo generativo ignoto / opaco   | Approccio bayesiano (prior → posterior)          |
+| “Ignoranza operativa” su un parametro  | Prior “debole” (es. uniforme su $[0,1]$)         |
 
----
+# Chiusura {background-color="#2c3e50" style="color: white;"}
 
-## Esercizio 9 — Sintesi
+## Torniamo al punto di partenza
 
-Considera un mazzo di **52 carte**.
-Estraiamo **5 carte a caso**, senza reinserimento.
+All’inizio avete visto che l’intuizione può portarci molto lontano dalla risposta corretta nel problema del test diagnostico. Ora possiamo dire *perché*.
 
-**Domanda:**
-qual è la probabilità di ottenere **esattamente 2 assi**?
+. . .
 
-*(Suggerimento: usare le combinazioni)*
-
----
-
-## Procedura generale
-
-Per calcolare una probabilità in uno spazio equiprobabile:
-
-1. **contare i casi favorevoli**;
-2. **contare i casi possibili**;
-3. **calcolare la probabilità** come rapporto.
+- Lo **spazio campionario** non è {positivo, negativo}, ma il prodotto:
+  {ha il disturbo, non ha il disturbo} × {test positivo, test negativo}.
+- Il **base rate** (1%) determina *quanti casi* ricadono in ciascuna parte dello spazio: ignorarlo significa “pesare male” le possibilità.
+- La **combinatoria** ci obbliga a contare in modo coerente: casi favorevoli vs casi possibili.
 
 ---
 
-### Passo 1 — Casi favorevoli
-
-Vogliamo mani con:
-
-* **2 assi**,
-* **3 carte che non sono assi**.
-
-Calcoli:
-
-* scegliere 2 assi tra 4: $\binom{4}{2} = 6$;
-* scegliere 3 non-assi tra 48: $\binom{48}{3} = 17296$.
-
-Numero di casi favorevoli: $6 \times 17296 = 103776.$
-
----
-
-### Passo 2 — Casi possibili
-
-Tutte le possibili mani di 5 carte da un mazzo di 52:
-
-$$
-\binom{52}{5} = 2598960.
-$$
-
----
-
-### Passo 3 — Calcolo della probabilità
-
-$$
-P(\text{2 assi}) =
-\frac{\text{casi favorevoli}}{\text{casi possibili}}
-= \frac{103776}{2598960}
-\approx 0.040.
-$$
-
----
-
-### Verifica computazionale (R)
-
-```{r}
-#| echo: true
-
-casi_favorevoli <- choose(4, 2) * choose(48, 3)
-casi_possibili <- choose(52, 5)
-
-casi_favorevoli
-casi_possibili
-casi_favorevoli / casi_possibili
-```
+Nella prossima lezione vedremo come il **teorema di Bayes** mette insieme questi elementi e produce il calcolo completo — e la risposta corretta (circa **8%**).
 
 ---
 
 ## Messaggio conclusivo
 
-* La formula $P(A) = \frac{|A|}{|\Omega|}$ vale **solo** quando gli esiti sono **equiprobabili**.
-
-* Il **calcolo combinatorio** è lo strumento chiave per contare correttamente.
-
-* Il **bias dell’equiprobabilità** è una fonte frequente di errori intuitivi.
-
-* L’equiprobabilità **non si conserva** sotto trasformazioni degli esiti.
-
-* Quando il meccanismo generativo è ignoto, l’**approccio bayesiano** consente di esprimere e aggiornare le credenze in modo coerente.
+- La formula classica $P(A)=\frac{|A|}{|\Omega|}$ funziona **solo** quando gli esiti sono davvero **equiprobabili**.
+- La **combinatoria** non è “contare per gioco”: è il modo corretto per distinguere **casi favorevoli** e **casi possibili**.
+- Il **bias dell’equiprobabilità** è una trappola comune: tendiamo a distribuire probabilità “a occhio” dove non dovremmo.
+- L’equiprobabilità **non si conserva** sotto trasformazioni: cambiare rappresentazione può cambiare la distribuzione.
+- Quando il meccanismo generativo è ignoto, l’approccio **bayesiano** permette di **formalizzare l’incertezza** e **aggiornarla** con i dati.
 
 ---
+
 
 ## Per la prossima lezione
 
 - Rivedere: https://ccaudek.github.io/utet-prob/ — Capitoli 6-7
 - Argomento: **Probabilità condizionata** e **Teorema di Bayes**
 
-> Il teorema di Bayes è il cuore dell'inferenza bayesiana che useremo per tutto il corso.
+> Il teorema di Bayes è il cuore dell'inferenza bayesiana che useremo in tutto il corso.
 
 ---
 

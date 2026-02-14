@@ -1,7 +1,7 @@
 ---
 title: "Distribuzioni continue"
 subtitle: "La distribuzione Beta e l'uso di R"
-version: 1.0
+version: 2.0
 author:
   - name: Corrado Caudek
     orcid: 0000-0002-1404-0420
@@ -41,38 +41,85 @@ library(knitr)
 library(kableExtra)
 ```
 
+# Quant'è efficace questa terapia? {background-color="#e74c3c" style="color: white;"}
+
+## Una domanda che vi faranno spesso
+
+Immaginate di aver trattato 12 pazienti con un nuovo protocollo per il disturbo d'ansia sociale. Di questi, 9 sono migliorati in maniera "clinicamente rilevante" e 3 no.
+
+. . .
+
+Un collega vi chiede:
+
+> *"Qual è la probabilità che questa terapia funzioni?"*
+
+. . .
+
+<mark>Non potete rispondere con un singolo numero ("il 75%") — questo ignorerebbe l'**incertezza**.</mark> Con solo 12 pazienti, la vostra stima è rumorosa: la vera efficacia potrebbe essere molto diversa da 9/12.
+
+---
+
+Vi serve una distribuzione che rappresenti **tutto ciò che sapete — e tutto ciò che non sapete** — sulla probabilità di successo. 
+
+. . .
+
+Questa distribuzione è la **Beta**.
+
+---
+
 ## Obiettivo {.unnumbered .unlisted}
 
 In questa seconda parte:
 
 1. Introdurremo la **distribuzione Beta**, fondamentale per l'inferenza bayesiana.
-2. Impareremo a usare **R** per calcolare probabilità e quantili.
-3. Risolveremo gli stessi esercizi della prima parte, ma con **R**.
+2. Vedremo perché è lo strumento naturale per ragionare sull'**efficacia dei trattamenti** e sull'**affidabilità delle stime**.
+3. Impareremo a usare **R** per calcolare probabilità e quantili.
+4. Risolveremo gli stessi esercizi della prima parte, ma con **R**.
 
 ---
 
 ## La distribuzione Beta: perché è importante?
 
-La **Beta** è una distribuzione continua definita sull'intervallo $[0, 1]$.
+La distribuzione **Beta** è una distribuzione continua definita sull'intervallo $[0, 1]$.
 
 Viene usata per modellare:
 
 - **probabilità** e **proporzioni**;
-- **credenze** su parametri che variano tra 0 e 1;
-- la **distribuzione a priori** nell'inferenza bayesiana.
+* **credenze** su parametri che variano tra 0 e 1;
+* la **distribuzione a priori** nell’inferenza bayesiana.
+
+. . .
+
+In psicologia, ogni volta che vi chiedete *"qual è la probabilità che un trattamento funzioni?"* o *"qual è la proporzione di pazienti che risponde positivamente?"*, state ragionando su una quantità che la Beta può descrivere.
+
+---
+
+## La Beta come distribuzione di credenza
+
+In un’ottica bayesiana, la Beta **non descrive i dati**:
+descrive **le nostre credenze sulla probabilità di successo**.
+
+> La distribuzione Beta è una mappa di credibilità sui possibili valori di una probabilità.
+
+* asse orizzontale → valori possibili di $\pi$;
+* altezza → quanto ciascun valore è credibile;
+* area totale → 100% delle credenze.
 
 ---
 
 ## La formula della Beta
 
-Una variabile $\pi \sim \text{Beta}(\alpha, \beta)$ ha densità:
+Se $\pi \sim \text{Beta}(\alpha,\beta)$, la densità è:
 
 $$
-f(\pi) = \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)} \pi^{\alpha-1}(1-\pi)^{\beta-1},
+f(\pi) =
+\frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)}
+\pi^{\alpha-1}(1-\pi)^{\beta-1}
 $$
 dove $\Gamma$ è la funzione gamma (generalizzazione del fattoriale).
 
-* L'aspetto cruciale è capire cosa significano i parametri $\alpha$ e $\beta$.
+👉 **Non è importante saperla usare a mano**.
+È importante capire **che ruolo giocano $\alpha$ e $\beta$**.
 
 ---
 
@@ -83,6 +130,11 @@ I parametri $\alpha$ e $\beta$ possono essere interpretati come:
 - $\alpha$: numero di "**successi**" osservati (più uno);
 - $\beta$: numero di "**insuccessi**" osservati (più uno).
 
+. . .
+
+Tornando al nostro esempio: 9 miglioramenti e 3 non-miglioramenti → $\alpha = 10$, $\beta = 4$.
+
+La distribuzione Beta **codifica direttamente l'esperienza clinica** in una forma matematica.
 
 ---
 
@@ -91,6 +143,8 @@ I parametri $\alpha$ e $\beta$ possono essere interpretati come:
 $$
 \mathbb{E}(\pi) = \frac{\alpha}{\alpha + \beta}.
 $$
+
+Per il nostro esempio: $\frac{10}{10+4} \approx 0.71$ — vicino a 9/12 = 0.75, ma "tirato" leggermente verso 0.5 dall'incertezza iniziale.
 
 ---
 
@@ -112,10 +166,10 @@ La Beta assume forme **molto diverse** al variare dei parametri:
 
 * Interpretiamo:
 
-  * $\alpha = \text{successi} + 1$
-  * $\beta = \text{insuccessi} + 1$
-* disegniamo la densità Beta
-* evidenziamo la **media** con una linea verticale
+  * $\alpha = \text{successi} + 1$;
+  * $\beta = \text{insuccessi} + 1$;
+* disegniamo la densità Beta;
+* evidenziamo la **media** con una linea verticale.
 
 ---
 
@@ -168,7 +222,7 @@ plot_beta(
 )
 ```
 
-👉 Distribuzione: spostata verso lo 0, molto asimmetrica, incertezza elevata.
+Distribuzione spostata verso lo 0, molto asimmetrica, incertezza elevata.
 
 ---
 
@@ -183,7 +237,7 @@ plot_beta(
 )
 ```
 
-👉 Stessa numerosità del caso precedente, ma la massa si sposta verso 1.
+Stessa numerosità del caso precedente, ma la massa si sposta verso 1.
 
 ---
 
@@ -198,7 +252,7 @@ plot_beta(
 )
 ```
 
-👉 Media ≈ 0.5, ma distribuzione ancora **larga** → pochi dati = molta incertezza.
+Media ≈ 0.5, ma distribuzione ancora **larga** → pochi dati = molta incertezza.
 
 ---
 
@@ -213,7 +267,7 @@ plot_beta(
 )
 ```
 
-👉 Stessa proporzione del caso 1 (≈ 0.2), ma distribuzione **molto più concentrata**.
+Stessa proporzione del caso 1 (≈ 0.2), ma distribuzione **molto più concentrata**.
 
 ---
 
@@ -228,7 +282,31 @@ plot_beta(
 )
 ```
 
-👉 Stessa proporzione del caso 2 (≈ 0.8), ma evidenza molto più forte.
+Stessa proporzione del caso 2 (≈ 0.8), ma evidenza molto più forte.
+
+---
+
+## Fermati e rifletti {background-color="#2c3e50" style="color: white;"}
+
+Confrontate gli Esempi 1 e 4: entrambi hanno una proporzione di successi del 20%.
+
+. . .
+
+Ma la distribuzione Beta dell'Esempio 4 (100 osservazioni) è **molto più stretta** di quella dell'Esempio 1 (10 osservazioni).
+
+. . .
+
+Questo cattura un'intuizione fondamentale: **la stessa proporzione osservata è più informativa quando proviene da più dati**. Un 2/10 e un 20/100 suggeriscono la stessa proporzione, ma la nostra certezza è molto diversa.
+
+---
+
+## Fermati e rifletti {background-color="#2c3e50" style="color: white;"}
+
+Questa è la differenza tra dire "un paio di pazienti sono migliorati" e "nel nostro studio con 100 partecipanti, il 20% è migliorato". 
+
+Stessa proporzione, certezza radicalmente diversa.
+
+La Beta cattura questa differenza in modo naturale.
 
 ---
 
@@ -240,21 +318,63 @@ plot_beta(
   $$
 * Il **numero totale di osservazioni** controlla:
 
-  * quanto la distribuzione è **concentrata**
+  * quanto la distribuzione è **concentrata**.
 * Il **numero di successi** controlla:
 
-  * **dove** è centrata la distribuzione
+  * **dove** è centrata la distribuzione.
 * Più dati → **meno incertezza**.
 
 ---
 
 ## Interpretazione psicologica
 
-* **Beta(1, 1):** totale incertezza — tutti i valori tra 0 e 1 sono ugualmente plausibili.
+* **Beta(1, 1):** totale incertezza — tutti i valori tra 0 e 1 sono ugualmente plausibili. È il punto di partenza prima di raccogliere qualsiasi dato.
 
-* **Beta(10, 2):** dopo aver osservato 9 successi e 1 insuccesso, crediamo che la probabilità di successo sia alta (media ≈ 0.83).
+* **Beta(10, 4):** dopo aver osservato 9 successi e 3 insuccessi, crediamo che la probabilità di successo sia alta (media ≈ 0.71). Questo è esattamente il caso del terapeuta con 12 pazienti.
 
-* **Beta(3, 7):** dopo 2 successi e 6 insuccessi, crediamo che la probabilità sia bassa (media ≈ 0.30).
+* **Beta(3, 7):** dopo 2 successi e 6 insuccessi, crediamo che la probabilità sia bassa (media ≈ 0.30). Un trattamento che merita cautela.
+
+---
+
+## Messaggi chiave
+
+* La Beta descrive **credenze su una probabilità**, non dati grezzi;
+* la **media** indica la stima centrale;
+* la **larghezza** indica l’incertezza;
+* più dati → **meno incertezza**, non necessariamente media diversa.
+
+---
+
+## Bayes come linguaggio delle credenze
+
+
+> Bayesian inference is about **reallocating credibility** across parameter values.
+
+* prior → credenze iniziali;
+* likelihood → evidenza dei dati;
+* posterior → credenze aggiornate.
+
+> Le distribuzioni sono **mappe delle nostre credenze**,
+> non fotografie della realtà.
+
+---
+
+## La Beta come ponte verso l'inferenza bayesiana
+
+Ricordate il teorema di Bayes dalla lezione 6?
+
+$$
+P(H \mid E) = \frac{P(E \mid H) P(H)}{P(E)}.
+$$
+
+La distribuzione Beta gioca un ruolo centrale:
+
+- **prima dei dati:** la Beta rappresenta la nostra **credenza iniziale** (prior) sull'efficacia di un trattamento;
+- **dopo i dati:** la Beta aggiornata rappresenta la nostra **credenza finale** (posterior).
+
+> Bayesian inference is about **reallocating credibility** across parameter values.
+
+La Beta è il **linguaggio matematico** con cui faremo questa riallocazione.
 
 ---
 
@@ -282,7 +402,7 @@ Una credenza centrata su 0.5 con incertezza moderata può essere rappresentata d
 plot_beta(
   successi = 1,
   n = 2,
-  titolo = "Beta(2, 2"
+  titolo = "Beta(2, 2) — Molta incertezza"
 )
 ```
 
@@ -293,9 +413,17 @@ plot_beta(
 plot_beta(
   successi = 4,
   n = 8,
-  titolo = "Beta(5, 5)"
+  titolo = "Beta(5, 5) — Incertezza moderata"
 )
 ```
+
+---
+
+La Beta(2, 2) dice: "penso sia circa 0.5, ma non ne sono affatto sicuro". 
+
+La Beta(5, 5) dice: "penso sia circa 0.5, e ho qualche ragione per crederlo". 
+
+La scelta tra le due dipende da **quanta informazione pregressa** avete.
 
 ---
 
@@ -303,7 +431,7 @@ plot_beta(
 
 A differenza della Normale, **non esistono tavole standard** per la Beta.
 
-Ma non è un problema: usiamo **R**!
+Ma non è un problema: usiamo **R**.
 
 > Questo è il grande vantaggio del software: possiamo lavorare con qualsiasi distribuzione, non solo quelle "tabulabili".
 
@@ -373,7 +501,7 @@ pnorm(130, mean = 100, sd = 15, lower.tail = FALSE)
 
 ## Ripetiamo l'Esercizio 2 con R
 
-**Problema:** Tempi di risposta ~ $\mathcal{N}(350, 40)$. Trovare $P(310 < X < 390)$.
+**Problema:** tempi di risposta ~ $\mathcal{N}(350, 40)$. Trovare $P(310 < X < 390)$.
 
 ```{r}
 #| echo: true
@@ -387,7 +515,7 @@ pnorm(390, mean = 350, sd = 40) - pnorm(310, mean = 350, sd = 40)
 
 ## Ripetiamo l'Esercizio 3 con R
 
-**Problema:** Test ansia ~ $\mathcal{N}(50, 10)$. Quale punteggio separa il 10% più alto?
+**Problema:** test d'ansia ~ $\mathcal{N}(50, 10)$. Quale punteggio separa il 10% più alto?
 
 ```{r}
 #| echo: true
@@ -401,7 +529,7 @@ qnorm(0.90, mean = 50, sd = 10)
 
 ## Ripetiamo l'Esercizio 4 con R
 
-**Problema:** Screening depressione ~ $\mathcal{N}(25, 8)$.
+**Problema:** Screening per la depressione ~ $\mathcal{N}(25, 8)$.
 
 ```{r}
 #| echo: true
@@ -416,7 +544,7 @@ qnorm(0.95, mean = 25, sd = 8)
 
 ## Ripetiamo l'Esercizio 5 con R
 
-**Problema:** Test cognitivo ~ $\mathcal{N}(100, 15)$. Intervallo per il 95% centrale.
+**Problema:** test cognitivo ~ $\mathcal{N}(100, 15)$. Intervallo per il 95% centrale.
 
 ```{r}
 #| echo: true
@@ -428,9 +556,9 @@ qnorm(c(0.025, 0.975), mean = 100, sd = 15)
 
 ---
 
-## Esercizio 6 — Pratica con la Beta
+## Esercizio 6 — Efficacia di un trattamento
 
-Un terapeuta ha trattato 12 pazienti: 9 sono migliorati, 3 no.
+Torniamo al caso presentato all'inizio. Un terapeuta ha trattato 12 pazienti con un protocollo per l'ansia sociale: 9 sono migliorati, 3 no.
 
 La sua credenza sulla probabilità di miglioramento segue una **Beta(10, 4)** (9+1 successi, 3+1 insuccessi).
 
@@ -455,16 +583,18 @@ pbeta(0.70, shape1 = 10, shape2 = 4, lower.tail = FALSE)
 
 > C'è circa il **58%** di probabilità che il vero tasso di successo superi 0.70.
 
+**Significato clinico:** se un collega vi chiede "puoi dirmi con sicurezza che questa terapia funziona per almeno il 70% dei pazienti?", la risposta onesta è "c'è circa una probabilità su due". Servono più dati.
+
 ---
 
-## Esercizio 7 — Confronto con credenze diverse
+## Esercizio 7 — Due clinici, due opinioni
 
-Due ricercatori studiano la stessa terapia:
+Due psicologi discutono di una nuova terapia prima di iniziare uno studio:
 
-- **Anna** (scettica): crede in una Beta(2, 8) — media 0.20.
-- **Bruno** (ottimista): crede in una Beta(8, 2) — media 0.80.
+- **Anna** (scettica): ha letto risultati deludenti in contesti simili e parte da una Beta(2, 8) — media 0.20.
+- **Bruno** (ottimista): ha avuto esperienze positive informali e parte da una Beta(8, 2) — media 0.80.
 
-**Domanda:** Per ciascuno, qual è la probabilità che il tasso di successo sia > 0.50?
+**Domanda:** per ciascuno, qual è la probabilità che il tasso di successo sia > 0.50?
 
 ---
 
@@ -479,7 +609,17 @@ pbeta(0.50, shape1 = 2, shape2 = 8, lower.tail = FALSE)
 pbeta(0.50, shape1 = 8, shape2 = 2, lower.tail = FALSE)
 ```
 
-Le credenze iniziali influenzano fortemente le conclusioni!
+Le credenze iniziali influenzano fortemente le conclusioni.
+
+---
+
+### Cosa succede dopo aver raccolto dati?
+
+Questo è il punto cruciale: con dati sufficienti, le credenze di Anna e Bruno **convergeranno**. L'inferenza bayesiana non elimina la soggettività, ma la **quantifica** e permette ai dati di prevalere su di essa.
+
+Se entrambi osservano 40 successi su 50 pazienti, le loro posterior saranno molto simili — indipendentemente dal punto di partenza. Questa è la forza del metodo bayesiano: **l'evidenza empirica alla fine domina**.
+
+Vedremo questo meccanismo in dettaglio nelle prossime lezioni.
 
 ---
 
@@ -487,9 +627,8 @@ Le credenze iniziali influenzano fortemente le conclusioni!
 
 Un'indagine rileva che 15 partecipanti su 20 preferiscono un certo stimolo.
 
-Assumendo una Beta(16, 6) come distribuzione a posteriori:
-
-**Domanda:** Trova l'intervallo che contiene il 90% centrale della credenza.
+**Domanda:**  
+assumendo una Beta(16, 6) come distribuzione a posteriori, trova l'intervallo che contiene il 90% centrale della credenza.
 
 ---
 
@@ -502,6 +641,14 @@ qbeta(c(0.05, 0.95), shape1 = 16, shape2 = 6)
 ```
 
 > Con il 90% di probabilità, la vera preferenza è tra **0.58 e 0.91**.
+
+---
+
+**Interpretazione:** questo intervallo è l'analogo bayesiano dell'intervallo di confidenza, ma con un'interpretazione più diretta — possiamo dire letteralmente: 
+
+> "c'è il 90% di probabilità che il vero valore stia in questo intervallo". 
+
+Questa è l'interpretazione che la maggior parte delle persone *crede* di dare agli intervalli di confidenza frequentisti, ma che tecnicamente non è corretta in quel framework.
 
 ---
 
@@ -534,6 +681,10 @@ pbeta(0.75, 36, 16) - pbeta(0.65, 36, 16)
 ```
 
 > L'affermazione **A** è la più supportata (≈ 90%).
+
+---
+
+Con la distribuzione Beta e R, potete rispondere a **qualsiasi domanda** sulla plausibilità di un valore per una proporzione — non siete più vincolati a un singolo "sì/no".
 
 ---
 
@@ -578,7 +729,7 @@ La curva di densità rappresenta il nostro **grado di credenza** su dove si trov
 
 ---
 
-## Esempio: evoluzione dell'incertezza
+## La certezza cresce con i dati
 
 ```{r}
 #| echo: false
@@ -593,7 +744,29 @@ curve(dbeta(x, 20, 20), from = 0, to = 1, main = "Dopo 38 obs: Beta(20,20)",
 par(mfrow = c(1, 1))
 ```
 
-> Con più dati, la nostra incertezza **si riduce**.
+> Con più dati, la nostra incertezza **si riduce**. Questo è l'apprendimento bayesiano in azione.
+
+---
+
+## Il percorso che abbiamo fatto {background-color="#2c3e50" style="color: white;"}
+
+In queste lezioni sulla probabilità abbiamo costruito un percorso coerente:
+
+. . .
+
+**Lezione 5** — Il linguaggio: eventi, spazi campionari, assiomi.
+
+**Lezione 6** — L'aggiornamento: probabilità condizionata e teorema di Bayes.
+
+**Lezione 8** — I modelli per conteggi: Bernoulli, Binomiale, Poisson.
+
+**Lezione 9 (oggi)** — I modelli per misure continue: Normale e Beta.
+
+---
+
+## Il percorso che abbiamo fatto {background-color="#2c3e50" style="color: white;"}
+
+Ora avete tutti gli strumenti per il passo successivo: **l'inferenza bayesiana** — usare i dati per aggiornare le nostre credenze sui parametri in modo formale e rigoroso.
 
 ---
 
@@ -615,13 +788,13 @@ dbeta(x, shape1, shape2)   # Densità in x
 
 ---
 
-## Cosa abbiamo imparato oggi
+## Cosa abbiamo discusso oggi
 
 1. Le **distribuzioni continue** usano la densità, non la massa.
-2. La **Normale** è definita da $\mu$ e $\sigma$; si usa la standardizzazione.
-3. La **Beta** è definita su $[0, 1]$ ed è perfetta per probabilità/proporzioni.
+2. La **Normale** è definita da $\mu$ e $\sigma$; è il fondamento della psicometria.
+3. La **Beta** è definita su $[0, 1]$ ed è lo strumento per ragionare su probabilità e proporzioni.
 4. **R** rende i calcoli semplici con `p`, `q`, `d`, `r` + nome distribuzione.
-5. La **densità** rappresenta il grado di incertezza (fondamentale per l'approccio bayesiano).
+5. La **densità** rappresenta il grado di incertezza — il cuore dell'approccio bayesiano.
 
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "Quantificare e aggiornare l'incertezza"
 subtitle: "L'apprendimento sequenziale — Segmento 1"
-version: 1.0
+version: 2.0
 author:
   - name: Corrado Caudek
     orcid: 0000-0002-1404-0420
@@ -34,6 +34,50 @@ csl: ../apa.csl
 set.seed(42)
 ```
 
+# Dalla fotografia al filmato {background-color="#27ae60" style="color: white;"}
+
+## Riprendiamo da dove ci eravamo fermati
+
+Nella lezione precedente abbiamo costruito l'architettura dell'inferenza bayesiana:
+
+. . .
+
+**Prior** (cosa sappiamo prima) $\times$ **Verosimiglianza** (cosa dicono i dati) $=$ **Posterior** (cosa sappiamo dopo).
+
+. . .
+
+Abbiamo visto come calcolare il posterior con l'approssimazione a griglia e come l'equilibrio tra prior e dati dipende dalla quantità di evidenza disponibile. Abbiamo anche visto che, con abbastanza dati, il posterior converge verso il valore vero indipendentemente dal prior.
+
+---
+
+## Cosa mancava? {background-color="#27ae60" style="color: white;"}
+
+. . .
+
+Finora abbiamo trattato i dati come un **blocco unico**: 7 successi su 10, tutti insieme. Ma nella pratica reale — clinica, sperimentale, educativa — i dati arrivano **uno alla volta**.
+
+. . .
+
+Una psicologa che valuta un trattamento non aspetta 100 pazienti per trarre conclusioni. Dopo ogni paziente si chiede: "Sta funzionando? Devo continuare? Devo cambiare approccio?"
+
+. . .
+
+Oggi vedremo che l'inferenza bayesiana ha una proprietà naturale: il **posterior di oggi diventa il prior di domani**. Questo trasforma una fotografia statica in un filmato — un processo di apprendimento continuo.
+
+---
+
+## Un limite del frequentismo che qui viene superato {background-color="#2c3e50" style="color: white;"}
+
+. . .
+
+Ricordate la lezione 14? Il valore-$p$ assume che il piano di analisi sia fissato *prima* di vedere i dati. Se un ricercatore calcola il valore-$p$ dopo ogni nuovo paziente e si ferma quando raggiunge la significatività, il tasso di errore di Tipo I esplode — è esattamente il problema del *sequential testing* e dell'*optional stopping* che contribuisce alla crisi di replicabilità.
+
+. . .
+
+L'aggiornamento bayesiano sequenziale non soffre di questo problema: il posterior è una proprietà dei dati osservati e del modello specificato, non del piano di campionamento. Non importa *quando* si decide di guardare i risultati.
+
+---
+
 ## Obiettivi del segmento {.unnumbered .unlisted}
 
 1. Capire il principio: **"il posterior di oggi diventa il prior di domani"**.
@@ -43,7 +87,7 @@ set.seed(42)
 
 ## Ripasso: la formula di Bayes  
 
-Nella lezione precedente abbiamo visto la forma fondamentale dell’aggiornamento bayesiano:
+Nella lezione precedente abbiamo visto la forma fondamentale dell'aggiornamento bayesiano:
 
 $$
 \text{Posterior} \;\propto\; \text{Verosimiglianza} \;\times\; \text{Prior}.
@@ -51,7 +95,7 @@ $$
 
 Finora abbiamo applicato la formula utilizzando **tutti i dati contemporaneamente**.
 
-Ma cosa accade se i dati arrivano **in sequenza**, uno dopo l’altro?
+Ma cosa accade se i dati arrivano **in sequenza**, uno dopo l'altro?
 
 ---
 
@@ -71,9 +115,7 @@ Una psicologa sta valutando un nuovo protocollo per il disturbo d'ansia generali
 
 > **Il posterior di oggi diventa il prior di domani.**
 
-* Quando arriva un nuovo dato, non dobbiamo ricominciare da zero.
-
-* Usiamo ciò che abbiamo imparato finora come **punto di partenza** per il nuovo aggiornamento.
+Quando arriva un nuovo dato, non dobbiamo ricominciare da zero. Usiamo ciò che abbiamo imparato finora come **punto di partenza** per il nuovo aggiornamento.
 
 ---
 
@@ -113,7 +155,7 @@ Il parametro $\theta$ rappresenta quindi la **probabilità di successo** del tra
 
 ## Prior iniziale: massima incertezza
 
-Non essendoci informazioni preliminari sull’efficacia del trattamento, la psicologa assume una posizione di **massima incertezza iniziale**.
+Non essendoci informazioni preliminari sull'efficacia del trattamento, la psicologa assume una posizione di **massima incertezza iniziale**.
 
 Per semplicità, considera solo tre valori plausibili per $\theta$:
 
@@ -121,7 +163,7 @@ Per semplicità, considera solo tre valori plausibili per $\theta$:
 | -------------- | --- | --- | --- |
 | Prior iniziale | 1/3 | 1/3 | 1/3 |
 
-Questa distribuzione **uniforme** assegna la stessa probabilità a ciascun valore, riflettendo l’assenza di conoscenze pregresse.
+Questa distribuzione **uniforme** assegna la stessa probabilità a ciascun valore, riflettendo l'assenza di conoscenze pregresse.
 
 ---
 
@@ -131,7 +173,7 @@ Questa distribuzione **uniforme** assegna la stessa probabilità a ciascun valor
 * **$\theta = 0.5$** → efficacia **moderata**, equivalente al caso.
 * **$\theta = 0.7$** → efficacia **elevata**.
 
-Ogni valore di $\theta$ può essere visto come un’**ipotesi alternativa** sulla vera efficacia del trattamento.
+Ogni valore di $\theta$ può essere visto come un'**ipotesi alternativa** sulla vera efficacia del trattamento.
 
 ---
 
@@ -148,11 +190,9 @@ Questo modello collega direttamente il parametro $\theta$ ai dati osservati.
 
 ## Arriva il primo paziente
 
-**Paziente 1:** risponde positivamente ✓
+**Paziente 1:** risponde positivamente (successo)
 
-### Verosimiglianza del dato
-
-Dato che osserviamo **un singolo successo**, la verosimiglianza è:
+Dato che osserviamo **un singolo successo**, la verosimiglianza è semplicemente:
 
 $$
 P(\text{dato} \mid \theta) = \theta.
@@ -163,9 +203,7 @@ $$
 | Prior                      | 0.333 | 0.333 | 0.333 |
 | Verosimiglianza (successo) | 0.3   | 0.5   | 0.7   |
 
----
-
-> **Idea chiave:** la verosimiglianza misura quanto ciascun valore di $\theta$ rende plausibile il dato osservato.
+La verosimiglianza misura quanto ciascun valore di $\theta$ rende plausibile il dato osservato.
 
 ---
 
@@ -186,13 +224,13 @@ Moltiplichiamo prior e verosimiglianza e normalizziamo:
 
 ## Arriva il secondo paziente
 
-**Paziente 2:** risponde positivamente ✓
+**Paziente 2:** risponde positivamente (successo)
 
-Usiamo il **posterior precedente come nuovo prior** (aggiornamento sequenziale):
+Usiamo il **posterior precedente come nuovo prior** — è l'aggiornamento sequenziale in azione:
 
 | $\theta$                   | 0.3   | 0.5   | 0.7   |
 | -------------------------- | ----- | ----- | ----- |
-| Prior₂                     | 0.200 | 0.333 | 0.467 |
+| Prior₂ (= Posterior₁)     | 0.200 | 0.333 | 0.467 |
 | Verosimiglianza (successo) | 0.3   | 0.5   | 0.7   |
 
 ---
@@ -206,17 +244,15 @@ Usiamo il **posterior precedente come nuovo prior** (aggiornamento sequenziale):
 | 0.7      | 0.467  | 0.7      | 0.327             | 0.534      |
 |          |        |          | **Somma = 0.554** |            |
 
-**Interpretazione:** due successi consecutivi rafforzano nettamente l’ipotesi di alta efficacia ($\theta = 0.7$).
+**Interpretazione:** due successi consecutivi rafforzano nettamente l'ipotesi di alta efficacia ($\theta = 0.7$).
 
 ---
 
 ## Arriva il terzo paziente
 
-**Paziente 3:** non risponde al trattamento ✗
+**Paziente 3:** non risponde al trattamento (insuccesso)
 
-Ora osserviamo un **insuccesso**.
-
-### Verosimiglianza dell’insuccesso
+Ora la verosimiglianza si inverte — l'insuccesso favorisce valori bassi di $\theta$:
 
 $$
 P(\text{insuccesso} \mid \theta) = 1 - \theta
@@ -224,7 +260,7 @@ $$
 
 | $\theta$                     | 0.3   | 0.5   | 0.7   |
 | ---------------------------- | ----- | ----- | ----- |
-| Prior₃                       | 0.123 | 0.343 | 0.534 |
+| Prior₃ (= Posterior₂)       | 0.123 | 0.343 | 0.534 |
 | Verosimiglianza (insuccesso) | 0.7   | 0.5   | 0.3   |
 
 ---
@@ -238,7 +274,7 @@ $$
 | 0.7      | 0.534  | 0.3      | 0.160             | 0.370      |
 |          |        |          | **Somma ≈ 0.433** |            |
 
-**Interpretazione:** l’insuccesso riequilibra le credenze, riducendo la probabilità di un’efficacia molto alta.
+**Interpretazione:** l'insuccesso riequilibra le credenze, riducendo la probabilità di un'efficacia molto alta. Ma $\theta = 0.5$ e $\theta = 0.7$ restano entrambi plausibili — il sistema non reagisce in modo eccessivo a una singola osservazione.
 
 ---
 
@@ -254,12 +290,9 @@ $$
 
 ## Messaggi chiave da portare a casa
 
-* L’inferenza bayesiana **aggiorna gradualmente** le credenze in risposta ai dati.
-* La verosimiglianza valuta la compatibilità tra dati e ipotesi.
-* Il posterior fornisce **probabilità dirette sul parametro**, utili per il ragionamento clinico e decisionale.
-* Successi e insuccessi contribuiscono entrambi all’apprendimento.
+L'inferenza bayesiana **aggiorna gradualmente** le credenze in risposta ai dati. La verosimiglianza valuta la compatibilità tra dati e ipotesi. Il posterior fornisce **probabilità dirette sul parametro**, utili per il ragionamento clinico e decisionale. Successi e insuccessi contribuiscono entrambi all'apprendimento — il sistema si auto-corregge.
 
-# Parte 2: l’ordine dei dati conta?
+# Parte 2: l'ordine dei dati conta?
 
 ## Una domanda cruciale
 
@@ -276,63 +309,58 @@ se gli stessi risultati fossero arrivati in **ordine diverso** (ad esempio: Insu
 
 ## Intuizione iniziale
 
-A prima vista, l’ordine **potrebbe sembrare importante**:
+A prima vista, l'ordine **potrebbe sembrare importante**: un insuccesso iniziale può "scoraggiare", successi successivi possono "recuperare".
 
-* un insuccesso iniziale può “scoraggiare”,
-* successi successivi possono “recuperare”.
-
-Ma l’inferenza bayesiana ragiona sui **dati nel loro complesso**, non sulla loro sequenza temporale.
-
-Verifichiamolo esplicitamente.
+Ma l'inferenza bayesiana ragiona sui **dati nel loro complesso**, non sulla loro sequenza temporale. Verifichiamolo esplicitamente.
 
 ---
 
 ## Verifica: ordine alternativo
 
-* **Ordine originale:** ✓ ✓ ✗ → posterior finale già calcolato.
-* **Ordine alternativo:** ✗ ✓ ✓ → ricalcoliamo passo per passo.
+* **Ordine originale:** Successo, Successo, Insuccesso → posterior finale già calcolato.
+* **Ordine alternativo:** Insuccesso, Successo, Successo → ricalcoliamo passo per passo.
 
 Useremo sempre lo stesso prior iniziale uniforme.
 
 ---
 
-## Passo 1: prima un insuccesso ✗
+## Passo 1: prima un insuccesso
 
-La verosimiglianza dell’insuccesso è $1 - \theta$.
+La verosimiglianza dell'insuccesso è $1 - \theta$.
 
-| $\theta$ | Prior | Verosim. (✗) | Prodotto | Posterior₁ |
-| -------- | ----- | ------------ | -------- | ---------- |
-| 0.3      | 0.333 | 0.7          | 0.233    | **0.467**  |
-| 0.5      | 0.333 | 0.5          | 0.167    | **0.333**  |
-| 0.7      | 0.333 | 0.3          | 0.100    | **0.200**  |
+| $\theta$ | Prior | Verosim. (insuccesso) | Prodotto | Posterior₁ |
+| -------- | ----- | --------------------- | -------- | ---------- |
+| 0.3      | 0.333 | 0.7                   | 0.233    | **0.467**  |
+| 0.5      | 0.333 | 0.5                   | 0.167    | **0.333**  |
+| 0.7      | 0.333 | 0.3                   | 0.100    | **0.200**  |
 
-**Interpretazione:** un insuccesso iniziale favorisce valori più bassi di $\theta.$
+**Interpretazione:** un insuccesso iniziale favorisce valori più bassi di $\theta$ — il sistema si muove nella direzione opposta rispetto al caso precedente.
 
 ---
 
-## Passo 2: poi un successo ✓
+## Passo 2: poi un successo
 
 Ora aggiorniamo usando Posterior₁ come nuovo prior.
 
-| $\theta$ | Prior₂ | Verosim. (✓) | Prodotto | Posterior₂ |
-| -------- | ------ | ------------ | -------- | ---------- |
-| 0.3      | 0.467  | 0.3          | 0.140    | **0.280**  |
-| 0.5      | 0.333  | 0.5          | 0.167    | **0.333**  |
-| 0.7      | 0.200  | 0.7          | 0.140    | **0.280**  |
+| $\theta$ | Prior₂ | Verosim. (successo) | Prodotto | Posterior₂ |
+| -------- | ------ | ------------------- | -------- | ---------- |
+| 0.3      | 0.467  | 0.3                 | 0.140    | **0.280**  |
+| 0.5      | 0.333  | 0.5                 | 0.167    | **0.333**  |
+| 0.7      | 0.200  | 0.7                 | 0.140    | **0.280**  |
 
 **Interpretazione:** il successo riequilibra le credenze.
 
 ---
 
-## Passo 3: un altro successo ✓
+## Passo 3: un altro successo
 
 Terzo aggiornamento:
 
-| $\theta$ | Prior₃ | Verosim. (✓) | Prodotto | Posterior₃ |
-| -------- | ------ | ------------ | -------- | ---------- |
-| 0.3      | 0.280  | 0.3          | 0.084    | **0.20**   |
-| 0.5      | 0.333  | 0.5          | 0.167    | **0.40**   |
-| 0.7      | 0.280  | 0.7          | 0.196    | **0.37**   |
+| $\theta$ | Prior₃ | Verosim. (successo) | Prodotto | Posterior₃ |
+| -------- | ------ | ------------------- | -------- | ---------- |
+| 0.3      | 0.280  | 0.3                 | 0.084    | **0.20**   |
+| 0.5      | 0.333  | 0.5                 | 0.167    | **0.40**   |
+| 0.7      | 0.280  | 0.7                 | 0.196    | **0.37**   |
 
 (Valori arrotondati alla seconda cifra decimale)
 
@@ -340,19 +368,19 @@ Terzo aggiornamento:
 
 ## Confronto finale
 
-| $\theta$ | Ordine ✓✓✗ | Ordine ✗✓✓ |
-| -------- | ---------- | ---------- |
-| 0.3      | 20%        | 20%        |
-| 0.5      | 40%        | 40%        |
-| 0.7      | 37%        | 37%        |
+| $\theta$ | Ordine S-S-I | Ordine I-S-S |
+| -------- | ------------ | ------------ |
+| 0.3      | 20%          | 20%          |
+| 0.5      | 40%          | 40%          |
+| 0.7      | 37%          | 37%          |
 
-**Il posterior finale è identico.**
+**Il posterior finale è identico.** I percorsi intermedi sono diversi, ma la destinazione è la stessa.
 
 ---
 
 ## Risultato fondamentale
 
-> **Nell’inferenza bayesiana, l’ordine di arrivo dei dati non influenza il posterior finale.**
+> **Nell'inferenza bayesiana, l'ordine di arrivo dei dati non influenza il posterior finale.**
 
 Ciò che conta è **quali dati** sono stati osservati, non **quando**.
 
@@ -363,59 +391,54 @@ Ciò che conta è **quali dati** sono stati osservati, non **quando**.
 La formula di Bayes aggiornata sequenzialmente equivale a:
 
 $$
-\text{Posterior}\theta
-\propto
-\text{Prior}\theta
-\prod_{i=1}^{n} P(D_i \mid \theta) .
+P(\theta \mid D_1, \ldots, D_n) \propto P(\theta) \prod_{i=1}^{n} P(D_i \mid \theta).
 $$
 
 La moltiplicazione è **commutativa**:
 $$
-P(D_1 \mid \theta) P(D_2 \mid \theta) = P(D_2 \mid \theta) P(D_1 \mid \theta) .
+P(D_1 \mid \theta) \cdot P(D_2 \mid \theta) = P(D_2 \mid \theta) \cdot P(D_1 \mid \theta).
 $$
 
-👉 Cambiare l’ordine dei dati **non cambia il risultato finale**.
+Cambiare l'ordine dei fattori non cambia il prodotto — e quindi non cambia il posterior.
 
 ---
 
 ## Messaggio chiave
 
-* L’aggiornamento bayesiano è **coerente** e **robusto**.
-* I dati possono arrivare in qualunque ordine.
-* Il posterior finale riflette **tutta l’evidenza accumulata**.
+L'aggiornamento bayesiano è **coerente** e **robusto**: i dati possono arrivare in qualunque ordine e il posterior finale riflette **tutta l'evidenza accumulata**.
+
+Questo contrasta con il frequentismo, dove l'ordine in cui si decidono le analisi e si raccolgono i dati può influenzare l'interpretazione del valore-$p$.
 
 # Parte 3: il significato per la psicologia
 
-## L’apprendimento come aggiornamento bayesiano
+## L'apprendimento come aggiornamento bayesiano
 
-L’aggiornamento bayesiano fornisce un modello formale di **come impariamo dall’esperienza**. In forma sequenziale:
+L'aggiornamento bayesiano fornisce un modello formale di **come impariamo dall'esperienza**. In forma sequenziale:
 
-1. Partiamo da **credenze iniziali** sul mondo (prior).
-2. Osserviamo nuove evidenze.
-3. Aggiorniamo le nostre credenze alla luce dei dati.
-4. Le nuove credenze diventano il punto di partenza per le osservazioni future.
+1. partiamo da **credenze iniziali** sul mondo (prior);
+2. osserviamo nuove evidenze;
+3. aggiorniamo le nostre credenze alla luce dei dati;
+4. le nuove credenze diventano il punto di partenza per le osservazioni future.
 
-👉 L’apprendimento non è un “reset”, ma un **processo cumulativo**.
+L'apprendimento non è un "reset", ma un **processo cumulativo**.
 
 ---
 
-## Esempio quotidiano: formare un’impressione
+## Esempio quotidiano: formare un'impressione
 
 Incontri una nuova persona. Come costruisci un giudizio sulla sua affidabilità?
 
-**Prior iniziale**
-Assumi che sia *mediamente affidabile* (come la maggior parte delle persone).
-
 ---
+
+**Prior iniziale:** assumi che sia *mediamente affidabile* (come la maggior parte delle persone).
+
+. . .
 
 **Osservazioni successive:**
 
-* Arriva puntuale a un appuntamento
-  → aggiornamento verso “affidabile”,
-* Dimentica di restituirti un libro
-  → aggiornamento verso “meno affidabile”,
-* Ti aiuta in un momento difficile
-  → forte aggiornamento verso “affidabile”.
+- Arriva puntuale a un appuntamento → aggiornamento verso "affidabile".
+- Dimentica di restituirti un libro → aggiornamento verso "meno affidabile".
+- Ti aiuta in un momento difficile → forte aggiornamento verso "affidabile".
 
 Ogni nuova informazione **non cancella** le precedenti: le integra.
 
@@ -423,79 +446,93 @@ Ogni nuova informazione **non cancella** le precedenti: le integra.
 
 ## Perché questo è "bayesiano"?
 
-* Il giudizio iniziale funziona come un **prior**.
-* Ogni comportamento osservato è un **dato**.
-* Il giudizio aggiornato è un **posterior**.
-* Il processo è **sequenziale** e sensibile all’evidenza.
+Il giudizio iniziale funziona come un **prior**. Ogni comportamento osservato è un **dato**. Il giudizio aggiornato è un **posterior**. Il processo è **sequenziale** e sensibile all'evidenza.
 
-👉 Il modello bayesiano formalizza un’intuizione psicologica molto naturale.
+. . .
 
----
-
-## La “central tendency” nella percezione
-
-Numerosi studi sperimentali evidenziano un fenomeno sistematico nella percezione umana:
-
-* quando stimiamo grandezze sensoriali — come la lunghezza di linee, la durata di suoni o l’intensità di stimoli — le nostre stime sono **attratte verso la media** delle osservazioni passate.
+Il modello bayesiano formalizza un'intuizione psicologica molto naturale: le persone non ripartono da zero a ogni interazione, ma aggiornano le proprie aspettative sulla base dell'esperienza accumulata.
 
 ---
 
-Questo comportamento emerge **naturalmente** da un modello bayesiano:
+## La "central tendency" nella percezione
 
-- il prior incorpora la storia percettiva precedente (l’“esperienza media” accumulata);
-- il dato sensoriale corrente viene integrato con tale conoscenza a priori.
+Numerosi studi sperimentali evidenziano un fenomeno sistematico nella percezione umana: quando stimiamo grandezze sensoriali — come la lunghezza di linee, la durata di suoni o l'intensità di stimoli — le nostre stime sono **attratte verso la media** delle osservazioni passate.
 
-Il fenomeno non rappresenta un **errore cognitivo**, ma piuttosto una **strategia razionale** in condizioni di incertezza: la mente combina l’evidenza immediata con l’esperienza pregressa per produrre una stima più robusta.
+. . .
+
+Questo comportamento emerge **naturalmente** da un modello bayesiano: il prior incorpora la storia percettiva precedente e il dato sensoriale corrente viene integrato con tale conoscenza a priori. Il fenomeno non rappresenta un errore cognitivo, ma piuttosto una **strategia razionale** in condizioni di incertezza.
+
+---
+
+La mente, in un certo senso, fa inferenza bayesiana sequenziale: il posterior di ogni stima percettiva diventa il prior per la stima successiva.
 
 ---
 
 ## Applicazione clinica: monitoraggio del trattamento
 
-L’approccio bayesiano fornisce un **quadro naturale e rigoroso** per il ragionamento clinico in contesti longitudinali.
+L'approccio bayesiano fornisce un quadro naturale per il ragionamento clinico in contesti longitudinali. Un terapeuta può:
 
-Un terapeuta può seguire un processo strutturato:
-
-1. **Inizializzazione:** formulare aspettative iniziali basate sulla letteratura e sull'esperienza clinica (prior).
-2. **Aggiornamento sequenziale:** ricalibrare le stime dopo ogni seduta, incorporando i progressi osservati.
-3. **Affinamento progressivo:** ottenere una valutazione sempre più informata e personalizzata dell’efficacia del trattamento.
+1. **inizializzare:** formulare aspettative iniziali basate sulla letteratura (prior);
+2. **zggiornare dopo ogni seduta:** ricalibrare le stime incorporando i progressi osservati;
+3. **prendere decisioni informate:** continuare, modificare o interrompere un protocollo sulla base dell'evidenza accumulata.
 
 ---
 
-Questo processo supporta decisioni cliniche **basate sull'evidenza** relative a:
+Nel framework frequentista, questo tipo di monitoraggio continuo è problematico: controllare ripetutamente il valore-$p$ gonfia il tasso di falsi positivi.
 
-- **continuare** il trattamento corrente,
-- **modificare** gli interventi,
-- **interrompere** un protocollo inefficace.
-
-L’aggiornamento bayesiano formalizza così il **processo di apprendimento continuo** che caratterizza la pratica clinica esperta.
-
-## Esercizio: valutazione dell'efficacia di un training di mindfulness  
-
-Un ricercatore vuole stimare se un training di **mindfulness** riduce significativamente l’ansia in pazienti clinici.
-
-**Parametro d’interesse:**  
-$\theta$ = probabilità che un paziente mostri un miglioramento clinicamente significativo dopo il training.
+L'aggiornamento bayesiano, invece, è progettato per essere utilizzato in modo sequenziale.
 
 ---
 
-**Prior (basato su studi precedenti):**  
-Il ricercatore assegna una probabilità maggiore a un’efficacia moderata ($\theta=0.5$), ma considera plausibili anche efficacia bassa ($\theta=0.4$) o elevata ($\theta=0.6$).
+## Esercizio: valutazione dell'efficacia di un training di mindfulness
+
+**Contesto:**  
+un ricercatore vuole verificare se un training di **mindfulness** produce una riduzione clinicamente rilevante dell'ansia in pazienti clinici.
+
+---
+
+### Obiettivo dello studio
+
+Stimare l'efficacia del training attraverso un **parametro chiave**:
+
+> $\theta$ = probabilità che un paziente mostri un miglioramento 
+> clinicamente rilevante dopo il training.
+
+---
+
+### Domanda di ricerca
+
+Il training di mindfulness è efficace nel ridurre l'ansia in modo clinicamente rilevante?
+
+**Nota**
+
+- Il parametro $\theta$ rappresenta il **tasso di successo** del trattamento.
+- Un miglioramento è definito "clinicamente rilevante" secondo criteri standardizzati (es. riduzione del punteggio di ansia ≥ 50%).
+
+---
+
+### Prior (basato su studi precedenti)
+
+Il ricercatore assegna una probabilità maggiore a un'efficacia moderata $(\theta=0.5)$, ma considera plausibili anche efficacia bassa $(\theta=0.4)$) o elevata $(\theta=0.6)$.
 
 | $\theta$ | 0.4  | 0.5  | 0.6  |
 |----------|------|------|------|
 | Prior    | 0.25 | 0.50 | 0.25 |
 
-**Dati osservati in sequenza:**  
-- Paziente 1: mostra miglioramento ✓  
-- Paziente 2: mostra miglioramento ✓  
+---
 
-**Compito:** calcolare la distribuzione posterior dopo ciascun paziente, applicando l’aggiornamento bayesiano sequenziale.
+## Dati osservati in sequenza
+
+- Paziente 1: mostra miglioramento (successo);
+- Paziente 2: mostra miglioramento (successo).
+
+**Compito:** calcolare la distribuzione posterior dopo ciascun paziente, applicando l'aggiornamento bayesiano sequenziale.
 
 ---
 
 ## Soluzione — dopo il Paziente 1  
 
-La verosimiglianza del miglioramento è $P(\text{✓}\mid\theta)=\theta$.
+La verosimiglianza del miglioramento è $P(\text{successo}\mid\theta)=\theta$.
 
 | $\theta$ | Prior | Verosim. | Prodotto          | Posterior₁ |
 |----------|-------|----------|-------------------|------------|
@@ -504,7 +541,9 @@ La verosimiglianza del miglioramento è $P(\text{✓}\mid\theta)=\theta$.
 | 0.6      | 0.25  | 0.6      | 0.150             | **0.300**  |
 |          |       |          | **Somma = 0.500** |            |
 
-**Interpretazione:** dopo un successo, la probabilità di un’efficacia moderata ($\theta=0.5$) rimane la più alta, ma aumenta il peso attribuito a $\theta=0.6$.
+. . .
+
+**Interpretazione:** dopo un successo, la probabilità di un'efficacia moderata ($\theta=0.5$) rimane la più alta, ma aumenta il peso attribuito a $\theta=0.6$.
 
 ---
 
@@ -512,33 +551,41 @@ La verosimiglianza del miglioramento è $P(\text{✓}\mid\theta)=\theta$.
 
 Usiamo **Posterior₁ come nuovo prior** (aggiornamento sequenziale).
 
-| $\theta$ | Prior₂ | Verosim. | Prodotto          | Posterior₂ |
-|----------|--------|----------|-------------------|------------|
-| 0.4      | 0.200  | 0.4      | 0.080             | **0.145**  |
-| 0.5      | 0.500  | 0.5      | 0.250             | **0.455**  |
-| 0.6      | 0.300  | 0.6      | 0.180             | **0.400**  |
-|          |        |          | **Somma = 0.510** |            |
-
-*(Valori arrotondati; la somma si discosta leggermente da 1 per arrotondamento)*
+| $\theta$ | Prior₂ | Verosim. | Prodotto | Posterior₂ |
+|----------|--------|----------|----------|------------|
+| 0.4      | 0.200  | 0.4      | 0.080    | **0.145**  |
+| 0.5      | 0.500  | 0.5      | 0.250    | **0.455**  |
+| 0.6      | 0.300  | 0.6      | 0.180    | **0.327**  |
+|          |        |          | **Somma = 0.510** | **1.000** |
 
 ---
 
-**Interpretazione:** due miglioramenti consecutivi rafforzano ulteriormente l’ipotesi di un’efficacia elevata ($\theta=0.6$), che ora ha probabilità simile a quella di un’efficacia moderata.
+Dopo due successi consecutivi:
+
+- $\theta=0.5$ (efficacia moderata) rimane l'ipotesi più probabile (45.5%);
+- $\theta=0.6$ (efficacia elevata) sale al 32.7%;
+- $\theta=0.4$ (efficacia bassa) scende al 14.5%.
 
 ---
 
-## Interpretazione finale  
+## Interpretazione finale 
 
-* Due successi consecutivi **incrementano gradualmente** la plausibilità attribuita a un’efficacia elevata ($\theta=0.6$).  
-* Le credenze non “saltano” in modo brusco, ma **si evolvono in modo continuo** con l’arrivo di nuovi dati.  
-* Il posterior fornisce una **stima quantitativa aggiornata** che può guidare decisioni cliniche, come la prosecuzione, modifica o interruzione del training.
+Due successi consecutivi **incrementano gradualmente** la plausibilità attribuita a un'efficacia elevata ($\theta=0.6$), che passa dal 30% al 32.7%, ma **l'efficacia moderata rimane dominante** (45.5%).
+
+. . .
+
+Le credenze non "saltano" in modo brusco, ma **si evolvono in modo continuo** con l'arrivo di nuovi dati.
+
+. . .
+
+Il posterior fornisce una **stima quantitativa aggiornata** che può guidare decisioni cliniche, come la prosecuzione, modifica o interruzione del training.
 
 ---
 
 ## Messaggio chiave  
 
-> L’inferenza bayesiana non è solo una tecnica statistica:  
-> è un **modello formale dell’apprendimento, della percezione e della decisione** in psicologia e nelle scienze cognitive.
+> L'inferenza bayesiana non è solo una tecnica statistica:  
+> è un **modello formale dell'apprendimento, della percezione e della decisione** in psicologia e nelle scienze cognitive.
 
 ---
 
@@ -552,12 +599,15 @@ Usiamo **Posterior₁ come nuovo prior** (aggiornamento sequenziale).
 
 4. **Modello dell'apprendimento:** descrive come impariamo dall'esperienza.
 
+5. **Vantaggio sul frequentismo:** il monitoraggio sequenziale non gonfia i falsi positivi.
+
 ---
 
 ## Per il prossimo segmento
 
 Vedremo:
 
-- come implementare l'aggiornamento sequenziale in **R**.
-- **visualizzazioni** dell'evoluzione delle credenze.
-- applicazioni con **dati reali** in contesti psicologici.
+- come implementare l'aggiornamento sequenziale in **R**;
+- la "magia" della **famiglia coniugata** Beta-Binomiale;
+- **visualizzazioni** dell'evoluzione delle credenze;
+- un'applicazione clinica con **dati reali** simulati.

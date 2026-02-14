@@ -1,7 +1,7 @@
 ---
 title: "La funzione di verosimiglianza"
 subtitle: "Calcolare e visualizzare la verosimiglianza in R — Segmento 2"
-version: 1.0
+version: 2.0
 author:
   - name: Corrado Caudek
     orcid: 0000-0002-1404-0420
@@ -33,6 +33,18 @@ csl: ../apa.csl
 #| echo: false
 set.seed(42)
 ```
+
+# Dalla formula al codice {background-color="#e74c3c" style="color: white;"}
+
+## Perché R?
+
+Nel segmento precedente avete calcolato la verosimiglianza a mano per due o tre valori di $\theta$. Ma la vera potenza della verosimiglianza emerge quando la calcolate per *centinaia* di valori e la visualizzate come una curva.
+
+. . .
+
+Questo è impossibile a mano, ma banale in R. E la curva vi dirà qualcosa che i singoli numeri non possono dire: **dove si concentra l'evidenza** e **quanta incertezza rimane**.
+
+---
 
 ## Obiettivi {.unnumbered .unlisted}
 
@@ -124,7 +136,7 @@ dbinom(x = 9, size = 12, prob = 0.75)
 
 **Interpretazione:**
 
-* otteniamo un valore di verosimiglianza più alto! 
+* otteniamo un valore di verosimiglianza più alto; 
 * $\theta = 0.75$ è più compatibile con i dati osservati di $\theta = 0.5$.
 
 ---
@@ -277,7 +289,7 @@ posizione_massimo <- which.max(verosim)
 posizione_massimo
 ```
 
-Questo numero (nel nostro caso, 76) NON è il valore di $\theta$! È solo la **posizione** (indice) nell'elenco dei nostri $\theta$.
+Questo numero (nel nostro caso, 76) NON è il valore di $\theta$. È solo la **posizione** (indice) nell'elenco dei nostri $\theta$.
 
 ---
 
@@ -289,7 +301,7 @@ theta_massimo <- theta[posizione_massimo]
 theta_massimo
 ```
 
-Ora abbiamo la risposta! 
+Ora abbiamo la risposta. 
 La MLE è $\hat{\theta} = 0.75$.
 
 ---
@@ -302,7 +314,7 @@ Immagina di avere:
 - una lista di altezze (verosimiglianze): `verosim = [0.000, 0.001, ..., 0.250]`.
 
 `which.max(verosim)` ci dice: "Il valore più alto è al 76° posto nella lista".  
-Poi prendiamo il 76° valore da `theta`: è 0.75!
+Poi prendiamo il 76° valore da `theta`: è 0.75.
 
 ---
 
@@ -310,19 +322,21 @@ Poi prendiamo il 76° valore da `theta`: è 0.75!
 
 Il risultato **$\hat{\theta}$ = 0.75** è chiamato **stimatore di massima verosimiglianza** (MLE).
 
-Perché? Perché se abbiamo osservato 9 successi su 12 prove, il valore di $\theta$ che rende **più plausibile** (più "verosimile") questa osservazione è proprio 0.75.
+. . .
+
+Se abbiamo osservato 9 successi su 12 prove, il valore di $\theta$ che rende **più plausibile** (più "verosimile") questa osservazione è 0.75.
 
 ---
 
 ## Verifica
 
-Abbiamo osservato 9 successi su 12.
+Nel caso di 9 successi su 12, la formula di MLE è
 
 $$
 \hat{\theta} = \frac{9}{12} = 0.75.
 $$
 
-Il nostro calcolo conferma la formula teorica!
+La nostra simulazione conferma la formula teorica.
 
 ---
 
@@ -362,7 +376,8 @@ g2 <- ggplot(dati, aes(x = theta, y = verosim)) +
 g2
 ```
 
-# Parte 4: interpretare la larghezza della verosimiglianza nel contesto clinico
+# Parte 4: Interpretare la larghezza nel contesto clinico
+
 
 ## L'incertezza nell'interpretazione clinica
 
@@ -429,7 +444,7 @@ legend("topleft", c("n = 12", "n = 120"), col = c("black", "blue"), lwd = 2)
 
 - Il picco è a 0.75, ma la curva è molto larga.
 - Sostanziali porzioni della curva cadono su valori:
-  - sotto 0.5: il trattamento potrebbe essere inefficace o dannoso;
+  - sotto 0.5: il trattamento potrebbe essere inefficace;
   - sopra 0.9: il trattamento potrebbe essere eccellente.
 - **Conclusione clinica:** "I dati suggeriscono un'efficacia, ma con molta incertezza".
 
@@ -493,29 +508,26 @@ text(0.5, max(verosim_120)*0.9,
      col = "darkblue")
 ```
 
-## Messaggio chiave per lo psicologo
+---
+
+## Il messaggio per lo psicologo {background-color="#2c3e50" style="color: white;"}
+
+. . .
 
 La **larghezza** della funzione di verosimiglianza ci dice quanto possiamo essere **certi** della nostra stima:
 
 - **Curva larga** → molta incertezza → studio esplorativo → bisogno di replicazione.
 - **Curva stretta** → poca incertezza → studio conclusivo → basi solide per la decisione.
 
-Nella ricerca psicologica, spesso iniziamo con studi pilota (curve larghe) per poi confermare con campioni più numerosi (curve strette).
-
 ---
 
-## Analogia con la misurazione
+## Il messaggio per lo psicologo {background-color="#2c3e50" style="color: white;"}
 
-Pensate a misurare una temperatura:
+Nella ricerca psicologica, spesso iniziamo con studi pilota (curve larghe) per poi confermare con campioni più numerosi (curve strette). 
 
-- **Con un termometro di scarsa qualità:** la lettura è 23°C, ma potrebbe essere tra 20°C e 26°C.
-- **Con un termometro di alta qualità:** la lettura è 23°C, ed è quasi certamente tra 22.8°C e 23.2°C.
+La verosimiglianza rende visibile questa progressione: non è solo "più dati = meglio" — è "più dati = curva più stretta = meno incertezza su cosa sta succedendo".
 
-Allo stesso modo, la curva di verosimiglianza ci dice la "qualità della nostra misura" del parametro $\theta$!
-
-
-# Parte 5: esercizi 
-
+# Parte 5: Esercizi 
 
 ## Esercizio 1
 
@@ -542,7 +554,7 @@ dbinom(y, n, prob = 0.6)
 dbinom(y, n, prob = 0.7)
 ```
 
-$\theta = 0.7$ ha la verosimiglianza più alta.
+$\theta = 0.7$ ha la verosimiglianza più alta tra i tre valori esaminati.
 
 ---
 
@@ -585,6 +597,8 @@ theta[which.max(verosim)]
 # Verifica
 y / n
 ```
+
+La MLE è $\hat{\theta} = 0.667$, cioè la proporzione osservata di successi. Notate come la curva sia più stretta rispetto all'esempio con $n = 12$: con 15 partecipanti l'incertezza è già leggermente minore.
 
 ---
 
@@ -646,7 +660,7 @@ g4
 - MLE Gruppo A: $\hat{\theta}_A = 8/20 = 0.40$.
 - MLE Gruppo B: $\hat{\theta}_B = 12/20 = 0.60$.
 
-Le curve **non si sovrappongono molto**: i due gruppi sembrano avere probabilità di successo diverse.
+Le curve **si sovrappongono parzialmente**: c'è una zona (intorno a $\theta = 0.5$) in cui entrambe hanno verosimiglianza ragionevole. Questo significa che i dati, da soli, non permettono di concludere con certezza che i due gruppi siano diversi — ma c'è un'indicazione. Con campioni più grandi, le curve si restringerebbero e la sovrapposizione diminuirebbe.
 
 ---
 
@@ -707,15 +721,15 @@ g5
 - MLE prima: 0.4, MLE dopo: 0.7.
 - C'è evidenza di un cambiamento, ma i campioni sono piccoli.
 
-Con più dati, le curve sarebbero più strette e il confronto più chiaro.
+Con più dati, le curve sarebbero più strette e il confronto più chiaro. Notate che questo è esattamente il ragionamento che sta dietro alla pianificazione di uno studio: scegliete $n$ grande abbastanza perché le curve dei due tempi si separino chiaramente se l'effetto esiste davvero.
 
 
-# Parte 6: la log-verosimiglianza
+# Parte 6: La log-verosimiglianza
 
 
 ## Perché il logaritmo?
 
-Quando i campione è grande, la verosimiglianza diventa un numero **molto piccolo**.
+Quando i campioni sono grandi, la verosimiglianza diventa un numero **molto piccolo**.
 
 ```{r}
 # Con n = 100
@@ -727,7 +741,7 @@ dbinom(75, 100, prob = 0.75)
 dbinom(7500, 10000, prob = 0.75)
 ```
 
-Numeri così piccoli possono creare problemi al computer.
+Numeri così piccoli possono creare problemi al computer (il cosiddetto *underflow*: il numero diventa così piccolo che il computer lo arrotonda a zero).
 
 ---
 
@@ -743,6 +757,8 @@ Oppure direttamente con `log = TRUE`:
 ```{r}
 dbinom(7500, 10000, prob = 0.75, log = TRUE)
 ```
+
+Numeri come $-18.7$ sono molto più gestibili di $0.000000008$.
 
 ---
 
@@ -790,7 +806,7 @@ Il **massimo** della log-verosimiglianza è nello stesso punto del massimo della
 theta[which.max(loglik)]
 ```
 
-Sempre 0.75!
+Sempre 0.75. Il logaritmo è una funzione monotona crescente, quindi non sposta il punto di massimo.
 
 ---
 
@@ -806,6 +822,30 @@ Sempre 0.75!
 
 ---
 
+## Il percorso fin qui {background-color="#2c3e50" style="color: white;"}
+
+. . .
+
+**Lezioni 5-6** — Probabilità e aggiornamento bayesiano.
+
+**Lezione 8** — Modelli per conteggi: Bernoulli, Binomiale, Poisson.
+
+**Lezione 9** — Modelli per misure continue: Normale e Beta.
+
+**Lezione 10** — Valore atteso, varianza, funzioni di v.c.
+
+**Lezione 11** — Covarianza e correlazione.
+
+**Lezione 12 (oggi)** — La funzione di verosimiglianza.
+
+---
+
+## Il percorso fin qui {background-color="#2c3e50" style="color: white;"}
+
+Avete ora tutti i pezzi: sapete descrivere l'incertezza (distribuzioni, momenti), sapete come le variabili si relazionano (covarianza), e sapete come i dati parlano dei parametri (verosimiglianza). Il passo finale è **combinare** l'informazione dei dati con le conoscenze pregresse: è l'inferenza bayesiana — prior, verosimiglianza e posterior.
+
+---
+
 ## Riepilogo concettuale
 
 1. `dbinom()` calcola la verosimiglianza binomiale.
@@ -814,7 +854,7 @@ Sempre 0.75!
 
 3. Calcoliamo la verosimiglianza per **tutti** i valori.
 
-4. Il grafico mostra la **plausibilà relativa** di questi valori.
+4. Il grafico mostra la **plausibilità relativa** di questi valori.
 
 5. La MLE è il **picco** della curva.
 
@@ -824,21 +864,13 @@ Sempre 0.75!
 
 ## Il messaggio da portare a casa
 
-La funzione di verosimiglianza risponde alla domanda:
-
-> "Alla luce dei dati osservati, quanto è plausibile ciascuno dei possibili valori del parametro?"
-
----
-
-## Il messaggio da portare a casa
-
-Questa logica è esattamente ciò di cui ha bisogno lo psicologo ricercatore per:
+La funzione di verosimiglianza trasforma i dati in un **profilo di evidenza** per il parametro di interesse:
 
 * stimare con quanta evidenza un **trattamento** sia efficace;
 * **confrontare** teorie o gruppi in modo quantitativo;
 * valutare l'**incertezza** nelle stime di cambiamento nel tempo.
 
-La verosimiglianza trasforma i dati in un **profilo di evidenza** per il parametro di interesse.
+Nella prossima lezione vedremo come la verosimiglianza si combina con le credenze iniziali per produrre la distribuzione a posteriori — il cuore dell'inferenza bayesiana.
 
 ---
 

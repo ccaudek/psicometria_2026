@@ -1,0 +1,621 @@
+---
+title: "Distribuzioni discrete: Bernoulli, Binomiale, Poisson"
+subtitle: "Esercitazione pratica – Segmento 1 (esercizi a mano)"
+version: 2.0
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+toc-depth: 2
+lang: it
+
+format:
+    revealjs:
+      theme: [default, ../revealjs.scss]
+      title-slide-attributes:
+        data-background-color: "#0072bc"
+      slide-number: c
+      show-slide-number: print
+      highlight-style: github
+      math: mathjax
+      mermaid:
+        theme: neutral
+      
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+# Contare è il primo passo {background-color="#e74c3c" style="color: white;"}
+
+## Una giornata tipo in psicologia
+
+Pensate a una tipica giornata di lavoro di uno psicologo. Cosa si trova a **contare**?
+
+. . .
+
+- Quanti pazienti su 10 rispondono positivamente a un trattamento?
+- Quanti item su 20 un bambino riesce a completare nel WISC?
+- Quante crisi di panico si verificano in una settimana?
+- Quanti pazienti arrivano in un'ora al servizio di urgenza?
+
+---
+
+Ognuna di queste domande coinvolge un **conteggio**. Le distribuzioni che vedremo oggi — Bernoulli, Binomiale, Poisson — sono gli strumenti matematici per ragionare su questi conteggi in modo rigoroso.
+
+---
+
+## Obiettivi del segmento {.unnumbered .unlisted}
+
+In questo segmento lavoriamo **senza R**. L'obiettivo non è fare calcoli complicati, ma imparare a rispondere a due domande fondamentali:
+
+1. **Che cosa sto contando?**
+2. **Quale distribuzione descrive meglio questa situazione?**
+
+---
+
+Alla fine del segmento dovreste essere in grado di:
+
+* riconoscere quando usare una distribuzione **Bernoulli**, **Binomiale** o **Poisson**;
+* tradurre una situazione concreta in una **variabile aleatoria discreta**;
+* impostare correttamente i calcoli di probabilità.
+
+> Le formule servono solo *dopo* aver capito il problema.
+
+---
+
+## Variabili aleatorie discrete: l'idea chiave
+
+Una **variabile aleatoria discreta** è una variabile che:
+
+* assume valori separati (0, 1, 2, …);
+* rappresenta un **conteggio**.
+
+. . .
+
+Esempi in psicologia:
+
+* numero di risposte corrette in un test neuropsicologico;
+* numero di sintomi riportati in un'intervista clinica;
+* numero di episodi depressivi nell'ultimo anno;
+* numero di comportamenti on-task osservati in 10 minuti.
+
+---
+
+Tutte le distribuzioni di oggi rispondono a **domande di conteggio**, ma in modi diversi.
+
+---
+
+## Distribuzione di Bernoulli — Una sola prova
+
+La distribuzione di **Bernoulli** descrive la situazione più semplice possibile:
+
+* **una sola prova**;
+* **due soli esiti possibili**.
+
+---
+
+Definiamo:
+
+* 1 = successo,
+* 0 = insuccesso.
+
+C'è **un solo parametro**:
+$$
+p = P(\text{successo}).
+$$
+
+Scriviamo:
+$$
+X \sim \text{Bernoulli}(p).
+$$
+
+---
+
+## Bernoulli in psicologia: dove la incontriamo
+
+Ogni volta che **riduciamo un esito a due sole possibilità**, stiamo implicitamente usando una **distribuzione di Bernoulli**.
+
+Alcuni esempi tipici:
+
+* un paziente **migliora** / **non migliora** dopo un intervento;
+* uno studente **supera** / **non supera** un esame;
+* un partecipante **rileva** / **non rileva** un target in un compito di attenzione.
+
+---
+
+Queste situazioni sono **onnipresenti** nella pratica clinica e nella ricerca sperimentale.
+
+. . .
+
+La distribuzione di Bernoulli è il **mattone elementare**:
+da qui si costruiscono modelli più complessi (binomiale, regressione logistica, modelli bayesiani), ma la logica di base resta la stessa.
+
+---
+
+## Esercizio 1 — Una prova, due esiti
+
+**Contesto clinico**
+In un servizio di psicologia scolastica viene somministrato un test di screening per le difficoltà di lettura a **un singolo bambino**.
+
+. . .
+
+* Il test restituisce un esito **positivo** (possibile difficoltà) oppure **negativo** (nessuna difficoltà evidente).
+* Dai dati normativi sappiamo che, nella popolazione scolastica generale, la probabilità di un risultato positivo è
+  $p = 0.15$.
+
+---
+
+### Formalizzazione
+
+Definiamo la variabile casuale:
+
+* $X = 1$ se il test è positivo;
+* $X = 0$ se il test è negativo.
+
+---
+
+### Domande
+
+1. Che distribuzione ha $X$?
+2. Quanto vale $P(X=1)$?
+3. Quanto vale $P(X=0)$?
+
+---
+
+### Soluzione e commento
+
+La situazione è caratterizzata da:
+
+* **una sola prova**;
+* **due soli esiti possibili**.
+
+Di conseguenza:
+
+$$
+X \sim \text{Bernoulli}(0.15).
+$$
+
+Le probabilità sono:
+
+$$
+P(X=1)=0.15, \qquad P(X=0)=1-0.15=0.85.
+$$
+
+---
+
+### Primo concetto chiave: il complemento
+
+> Se un evento ha probabilità $p$, il suo complemento ha probabilità $1-p$.
+
+---
+
+### Interpretazione clinica
+
+Su **100 bambini** sottoposti allo screening, ci aspettiamo che **circa 15** risultino positivi.
+Questo **non significa** che 15 bambini abbiano effettivamente una difficoltà di lettura: il test segnala solo *un possibile rischio*.
+
+:::{.fragment}
+Qui entra in gioco il **valore predittivo positivo**, che dipende anche dalla prevalenza e dalle caratteristiche del test.
+:::
+
+---
+
+## Distribuzione Binomiale — Più prove identiche
+
+La distribuzione **binomiale** descrive il **numero di successi** quando:
+
+* ripetiamo la *stessa* prova molte volte;
+* le prove sono **indipendenti**;
+* la probabilità di successo $p$ è sempre la stessa.
+
+Scriviamo:
+$$
+X \sim \text{Binomiale}(N,p).
+$$
+
+---
+
+Idea chiave:
+
+> la distribuzione binomiale conta **quante prove di Bernoulli valgono 1**.
+
+---
+
+## Esercizio 2 — Conteggio dei successi
+
+### Contesto
+
+In una batteria neuropsicologica, un paziente risponde a $N = 20$ item indipendenti. Per ciascun item, la probabilità di risposta corretta (nella popolazione di riferimento) è $p = 0.80$.
+
+Definiamo:
+
+* $X$ = numero di risposte corrette.
+
+---
+
+### Domande
+
+1. Che distribuzione ha $X$?
+2. $P(X=16)$?
+3. $P(X \ge 16)$?
+
+---
+
+### Soluzione 2a — Identificazione
+
+Stiamo contando il numero di **successi in un numero fissato di prove**:
+
+$$
+X \sim \text{Binomiale}(20,0.80).
+$$
+
+---
+
+### Soluzione 2b — Esattamente 16
+
+$$
+P(X=16)=\binom{20}{16}(0.80)^{16}(0.20)^4.
+$$
+
+Interpretazione:
+
+* scegliamo *quali* 16 item sono corretti;
+* moltiplichiamo le probabilità dei successi e degli insuccessi.
+
+---
+
+La formula della **distribuzione binomiale**:
+$$
+P(X = 16) = \binom{20}{16} (0.80)^{16} (0.20)^{4}
+$$
+dove $X$ è il numero di successi in $n = 20$ prove indipendenti, con probabilità di successo $p = 0.80$.
+
+---
+
+### 1. Calcolo del coefficiente binomiale $\binom{20}{16}$
+
+Il coefficiente binomiale si calcola come:
+$$
+\binom{n}{k} = \frac{n!}{k! \, (n-k)!}
+$$
+Qui $n = 20$, $k = 16$ (quindi $n - k = 4$).
+
+$$
+\binom{20}{16} = \frac{20!}{16! \, 4!}
+$$
+
+---
+
+Possiamo semplificare:
+$$
+\frac{20!}{16! \, 4!} = \frac{20 \times 19 \times 18 \times 17 \times 16!}{16! \times (4 \times 3 \times 2 \times 1)} = \frac{20 \times 19 \times 18 \times 17}{4 \times 3 \times 2 \times 1}
+$$
+
+Calcoliamo il numeratore:
+$$
+20 \times 19 = 380, \quad 380 \times 18 = 6840, \quad 6840 \times 17 = 116280
+$$
+
+Calcoliamo il denominatore:
+$$
+4 \times 3 = 12, \quad 12 \times 2 = 24, \quad 24 \times 1 = 24
+$$
+
+---
+
+Quindi:
+$$
+\binom{20}{16} = \frac{116280}{24} = 4845
+$$
+
+Ci sono **4845 modi diversi** in cui un paziente può rispondere correttamente a 16 item su 20. Il coefficiente binomiale conta quante sono queste configurazioni.
+
+---
+
+### 2. Prodotto dei tre termini
+$$
+P(X = 16) = 4845 \times (0.80)^{16} \times (0.20)^{4}
+$$
+Prima moltiplichiamo i due termini decimali:
+$$
+(0.80)^{16} \times (0.20)^4 \approx 0.028147497 \times 0.0016 \approx 0.0000450359952
+$$
+Ora moltiplichiamo per 4845:
+$$
+4845 \times 0.0000450359952 \approx 0.218199
+$$
+
+---
+
+### 3. Risultato finale
+$$
+\boxed{P(X = 16) \approx 0.2182}
+$$
+
+Quindi, la probabilità di ottenere **esattamente 16 risposte corrette** su 20 item è circa **21.8%**.
+
+:::{.fragment}
+**Interpretazione clinica:** se somministriamo questo test a molti pazienti con capacità nella norma ($p = 0.80$), circa il 22% otterrà esattamente 16/20. Non è il punteggio più comune — ma è nel range atteso.
+:::
+
+---
+
+### Soluzione 2c — Almeno 16
+
+$$
+P(X\ge16)=\sum_{k=16}^{20}P(X=k)
+$$
+
+Lo svolgimento "a mano" richiede di calcolare 5 probabilità separate e sommarle.
+
+:::{.fragment}
+**Per questo nel prossimo segmento useremo R.**
+:::
+
+---
+
+## Esercizio 3 — Il cuore concettuale
+
+### Domanda chiave
+
+Perché nella formula della **distribuzione binomiale** compare un **coefficiente binomiale**?
+
+---
+
+### Soluzione
+
+* Ogni item è una **variabile di Bernoulli**: esito $1$ (corretto) o $0$ (sbagliato). Con $n$ item indipendenti di probabilità di successo $p$, otteniamo $n$ prove Bernoulli indipendenti:
+  $$
+  B_1, B_2, \dots, B_n.
+  $$
+  
+* La variabile binomiale è la **somma** dei successi:
+  $$
+  X = B_1 + B_2 + \dots + B_n.
+  $$
+
+Se $X=k$, significa che ci sono stati **esattamente** $k$ successi, ma **non sappiamo in quali prove** questi siano avvenuti.
+
+---
+
+### Il ruolo del coefficiente binomiale
+
+Dobbiamo quindi contare: **in quanti modi possibili** si possono avere $k$ successi in $n$ prove?
+
+La risposta è data proprio dal **coefficiente binomiale**:
+$$
+\binom{n}{k}.
+$$
+
+---
+
+### Perché moltiplicare per $\binom{n}{k}$?
+
+* Ogni **specifica sequenza** di $k$ successi e $(n-k)$ insuccessi ha la stessa probabilità:
+  $$
+  p^k \, (1-p)^{n-k}.
+  $$
+* Ci sono $\binom{n}{k}$ sequenze distinte che realizzano esattamente $k$ successi.
+* L'evento $\{X=k\}$ è l'**unione disgiunta** di tutti questi $\binom{n}{k}$ eventi elementari.
+
+---
+
+Per la regola della somma per eventi disgiunti, la probabilità totale è:
+$$
+P(X=k) = \binom{n}{k} \, p^k \, (1-p)^{n-k}.
+$$
+
+Il coefficiente binomiale **conta il numero di modi** in cui $k$ successi possono manifestarsi in $n$ prove indipendenti.
+
+---
+
+## Riassunto concettuale
+
+> Il coefficiente binomiale $\binom{n}{k}$ nella formula è la risposta diretta alla domanda combinatoria: **"In quanti modi diversi posso ottenere questo risultato?"**  
+> Senza di esso, calcoleremmo la probabilità di una **sola sequenza specifica**, non di **tutte le sequenze possibili** che portano a $k$ successi.
+
+---
+
+## La Binomiale nella pratica psicologica {background-color="#2c3e50" style="color: white;"}
+
+Perché la Binomiale è importante per noi?
+
+. . .
+
+Ogni volta che un test psicometrico produce un **punteggio = numero di item corretti** (o di sintomi presenti o di criteri soddisfatti), stiamo lavorando con una variabile che, sotto certe assunzioni, segue una distribuzione binomiale.
+
+---
+
+## La Binomiale nella pratica psicologica {background-color="#2c3e50" style="color: white;"}
+
+Sapere come funziona la binomiale ci permette di rispondere a domande come:
+
+- "È plausibile che un paziente con abilità nella norma ottenga solo 10/20?"
+- "Il punteggio 18/20 è abbastanza alto da escludere un deficit?"
+- "Quanti item deve avere il test per discriminare in modo affidabile?"
+
+. . .
+
+Queste sono domande cruciali della **pratica clinica** — e la binomiale ne è il fondamento.
+
+---
+
+## Distribuzione di Poisson — Cambia la domanda
+
+La distribuzione di Poisson risponde a una **domanda diversa** rispetto alla distribuzione di Bernoulli e alla Binomiale:
+
+> *quanti eventi si verificano in un dato intervallo di tempo o di spazio?*
+
+Qui **non** contiamo successi su prove ripetute, ma **eventi che accadono spontaneamente** all’interno di un intervallo ben definito (un’ora, un giorno, una seduta, un’area).
+
+---
+
+### Il parametro chiave: $\lambda$
+
+La distribuzione di Poisson ha **un solo parametro**, $\lambda$ (lambda).
+
+$$
+\lambda = \text{numero medio di eventi attesi nell’intervallo}.
+$$
+
+In altre parole, $\lambda$ rappresenta:
+
+* il **tasso medio** con cui gli eventi si verificano;
+* il numero di eventi che **ci aspettiamo in media**, non quello che osserviamo in un singolo caso.
+
+---
+
+Esempio:
+
+* se $\lambda = 2$, in media ci aspettiamo **2 eventi per intervallo**;
+* in un intervallo specifico potremmo osservarne 0, 1, 2, 3, ecc., ma **nel lungo periodo la media sarà 2**.
+
+---
+
+### La variabile casuale
+
+Scriviamo:
+
+$$
+X \sim \text{Poisson}(\lambda),
+$$
+
+dove $X$ è il **numero di eventi effettivamente osservati** in un intervallo, mentre $\lambda$ ne descrive la **frequenza media**.
+
+Un fatto importante (e utile da ricordare):
+
+> nella Poisson, **media e varianza coincidono** ed entrambe valgono $\lambda$.
+
+---
+
+## Quando si usa la Poisson in psicologia?
+
+La distribuzione di Poisson è il modello naturale quando:
+
+* contiamo **eventi nel tempo o nello spazio** (non prove);
+* gli eventi sono **indipendenti** tra loro;
+* il **tasso medio** di occorrenza è stabile e stimabile;
+* gli eventi sono **relativamente rari**.
+
+---
+
+### Esempi concreti
+
+* Numero di **crisi di panico** in un mese per un paziente con disturbo di panico.
+* Numero di **episodi di autolesionismo** in una settimana.
+* Numero di **accessi al pronto soccorso psichiatrico** durante un turno.
+* Numero di **errori di disattenzione** osservati in una sessione sperimentale di 30 minuti.
+
+---
+
+## Esercizio 4 — Eventi nel tempo
+
+**Contesto:**  
+In un servizio di consulenza psicologica ad accesso diretto, arrivano in media **2 pazienti all'ora** senza appuntamento.
+
+Definiamo:
+
+* $X$ = numero di pazienti che arrivano in un'ora.
+
+**Domande:**  
+
+1. Che distribuzione usare?
+2. Qual è il parametro?
+3. $P(X=0)$? $P(X=3)$?
+
+---
+
+### Soluzione e commento
+
+Qui usiamo:
+$$
+X \sim \text{Poisson}(\lambda = 2).
+$$
+
+$$
+P(X=k)= \frac{\lambda^k e^{-\lambda}}{k!} = \frac{2^k e^{-2}}{k!}, \quad k = 0, 1, 2, \dots
+$$
+
+In particolare:
+$$
+P(X=0)=e^{-2} \approx 0.135, \qquad
+P(X=3)=\frac{2^3 e^{-2}}{3!} \approx 0.180.
+$$
+
+---
+
+**Interpretazione per la gestione del servizio:**
+
+- C'è circa il **13.5%** di probabilità che in un'ora non arrivi nessuno — il che significa che circa 1 ora su 7 sarà "vuota". Questo è utile per pianificare il lavoro amministrativo.
+- C'è circa il **18%** di probabilità di avere 3 pazienti in un'ora — un carico superiore alla media che richiede organizzazione.
+
+Il modello Poisson aiuta a **pianificare le risorse** di un servizio, trasformando l'intuizione ("a volte siamo pieni, a volte vuoti") in stime quantitative.
+
+---
+
+## Esercizio 5 — Scegliere la distribuzione giusta
+
+Per ciascuna situazione, decidete: **Bernoulli, Binomiale o Poisson?**
+
+. . .
+
+1. Un paziente completa o non completa un programma terapeutico di 12 sessioni.
+2. Su 30 pazienti di un servizio, quanti mostrano miglioramento clinicamente significativo?
+3. Quanti accessi al pronto soccorso psichiatrico si registrano in una notte?
+
+. . .
+
+---
+
+### Soluzione Esercizio 5
+
+1. **Bernoulli** — un solo paziente, due esiti (completa / non completa).
+2. **Binomiale** — numero di "successi" (miglioramenti) su un numero fissato di prove ($N=30$ pazienti), con probabilità $p$ di miglioramento.
+3. **Poisson** — conteggio di eventi (accessi) in un intervallo di tempo (una notte), con un tasso medio $\lambda$.
+
+La competenza chiave è saper **riconoscere la struttura** della situazione prima di scegliere una formula.
+
+---
+
+## Fermati e rifletti {background-color="#2c3e50" style="color: white;"}
+
+Abbiamo visto tre distribuzioni. Ciascuna risponde a una domanda diversa:
+
+. . .
+
+| Distribuzione | Domanda | Esempio clinico |
+|:---|:---|:---|
+| **Bernoulli** | Successo o insuccesso? | Il paziente risponde al trattamento? |
+| **Binomiale** | Quanti successi su $N$ prove? | Quanti item corretti in un test? |
+| **Poisson** | Quanti eventi in un intervallo? | Quante crisi in una settimana? |
+
+---
+
+## Fermati e rifletti {background-color="#2c3e50" style="color: white;"}
+
+La scelta della distribuzione non è un dettaglio tecnico: determina **quale domanda** state ponendo ai dati. Se scegliete la distribuzione sbagliata, state rispondendo alla domanda sbagliata.
+
+---
+
+## Riepilogo finale {.unnumbered .unlisted}
+
+* **Bernoulli** → una prova, due esiti.
+* **Binomiale** → quanti successi su più prove.
+* **Poisson** → quanti eventi in un intervallo.
+
+La competenza chiave è **scegliere la distribuzione giusta**, non ricordare la formula.
+
+---
+
+### Ponte al segmento successivo
+
+Nel prossimo segmento useremo **R** per:
+
+* fare questi calcoli rapidamente;
+* visualizzare le distribuzioni;
+* esplorare cosa succede al variare dei parametri;
+* rispondere a domande cliniche e di ricerca usando le distribuzioni come strumenti concreti.

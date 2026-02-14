@@ -1,7 +1,7 @@
 ---
 title: "Prior, verosimiglianza e posterior"
 subtitle: "L'architettura dell'inferenza bayesiana — Segmento 1"
-version: 1.0
+version: 2.0
 author:
   - name: Corrado Caudek
     orcid: 0000-0002-1404-0420
@@ -34,18 +34,66 @@ csl: ../apa.csl
 set.seed(42)
 ```
 
-## Obiettivi del segmento {.unnumbered .unlisted}
+# Un cambio di paradigma {background-color="#27ae60" style="color: white;"}
 
-1. Capire i **tre ingredienti** dell'inferenza bayesiana
-2. Imparare la **formula di Bayes** per i parametri
-3. Calcolare il posterior **a mano** in casi semplici
-4. Capire perché questo approccio è utile per lo psicologo
+## Ricordate il problema?
+
+Nelle ultime tre lezioni abbiamo costruito un quadro coerente dell’inferenza frequentista — e ne abbiamo visto i limiti strutturali.
 
 ---
 
-## Il problema dello psicologo (ripasso)
+**Lezione 14 — Il problema concettuale**
+Il frequentismo calcola $P(\text{dati} \mid H_0)$,
+non $P(H \mid \text{dati})$.
+L’intervallo di confidenza non è una probabilità sul parametro.
 
-Abbiamo visto che la **verosimiglianza** ci dice quanto i dati sono compatibili con diversi valori del parametro.
+. . .
+
+**Lezione 15 — Il problema interpretativo**
+Il valore-$p$ non è la probabilità che $H_0$ sia vera.
+Con bassa potenza, gli effetti “significativi” tendono a essere **esagerati** (errore di Tipo M)
+e talvolta persino **nel segno sbagliato** (errore di Tipo S).
+
+. . .
+
+**Lezione 16 — Il problema sistemico**
+P-hacking, HARKing, publication bias:
+un sistema di incentivi che ha amplificato le debolezze strutturali del frequentismo.
+
+---
+
+## Oggi cambia tutto {background-color="#27ae60" style="color: white;"}
+
+. . .
+
+Oggi iniziamo a studiare un approccio che risponde **direttamente** alle domande che il frequentismo lasciava senza risposta.
+
+. . .
+
+Ricordate la domanda dello psicologo clinico? "Qual è la probabilità che questo trattamento funzioni?" Il frequentismo rispondeva: "Se il trattamento *non* funzionasse, questi dati sarebbero sorprendenti." 
+
+. . .
+
+L'inferenza bayesiana risponde: "Data l'evidenza, la probabilità che il trattamento funzioni è del 93%."
+
+. . .
+
+Questa è la differenza. E per arrivarci, servono solo tre ingredienti e una formula.
+
+---
+
+## Obiettivi del segmento {.unnumbered .unlisted}
+
+1. Capire i **tre ingredienti** dell'inferenza bayesiana.
+2. Imparare la **formula di Bayes** per i parametri.
+3. Calcolare il posterior **a mano** in casi semplici.
+4. Capire perché questo approccio è utile per lo psicologo.
+
+# Parte 1: i tre ingredienti
+
+## Il problema dello psicologo
+
+Abbiamo visto che la **verosimiglianza** ci dice quanto i dati sono compatibili con diversi valori del parametro. La conoscete già dalla lezione sulla verosimiglianza — è lo stesso concetto.
 
 Ma spesso abbiamo anche **informazioni pregresse**:
 
@@ -76,10 +124,11 @@ Uno psicologo clinico sta valutando un nuovo training per l'ansia sociale.
 
 > "Date le mie conoscenze pregresse **e** i dati osservati, cosa posso concludere sulla probabilità di successo $\theta$?"
 
-L'inferenza bayesiana combina **entrambe** le fonti di informazione.
+. . .
 
+L'inferenza bayesiana combina **entrambe** le fonti di informazione. Notate il contrasto con il frequentismo: il test $t$ userebbe solo i dati, ignorando ciò che lo psicologo sa dalla letteratura e dall'esperienza clinica. L'approccio bayesiano formalizza invece questo processo di integrazione di informazioni.
 
-# Parte 1: i tre ingredienti
+---
 
 ## Ingrediente 1: la distribuzione a priori (*prior*)
 
@@ -121,6 +170,10 @@ Nel nostro esempio:
 
 > "Dopo aver osservato 7/10 successi, cosa credo ora su $\theta$?"
 
+. . .
+
+Notate: il posterior è esattamente $P(\theta \mid \text{dati})$ — la probabilità del parametro dati i dati. È la quantità che il frequentismo *non poteva* calcolare e che il ricercatore desiderava conscere fin dall'inizio.
+
 ---
 
 ## La formula di Bayes
@@ -152,6 +205,10 @@ $$
 $$
 
 L'inferenza bayesiana è un **aggiornamento razionale** delle credenze (sul parametro $\theta$) alla luce delle nuove evidenze.
+
+. . .
+
+Questa formula è sorprendentemente semplice. Eppure è tutto ciò che serve per risolvere i problemi che il frequentismo lasciava aperti. Vediamo come funziona concretamente.
 
 
 # Parte 2: un esempio con i calcoli a mano
@@ -188,7 +245,7 @@ prior <- c(0.10, 0.20, 0.40, 0.20, 0.10)
 sum(prior)
 ```
 
-Sì, somma a 1. ✓
+Sì, somma a 1. La distribuzione è ben definita.
 
 ---
 
@@ -201,6 +258,8 @@ Per ogni valore di $\theta$, calcoliamo $\mathcal{L}(\theta \mid \text{dati})$:
 $$
 \mathcal{L}(\theta \mid y = 7; n = 10) = \binom{10}{7} \theta^7 (1-\theta)^3.
 $$
+
+Questa è la distribuzione binomiale che conoscete già. Il coefficiente binomiale $\binom{10}{7} = 120$ è uguale per tutti i valori di $\theta$, quindi non influenza le proporzioni relative.
 
 ---
 
@@ -224,7 +283,7 @@ verosim <- dbinom(7, size = 10, prob = theta)
 round(verosim, 3)
 ```
 
-I valori corrispondono! ✓
+I valori corrispondono.
 
 ---
 
@@ -275,7 +334,7 @@ round(posterior, 3)
 sum(posterior)
 ```
 
-Il posterior somma a 1. ✓
+Il posterior somma a 1. La distribuzione è ben definita.
 
 ---
 
@@ -297,13 +356,6 @@ Il posterior somma a 1. ✓
 #| echo: false
 library(ggplot2)
 library(patchwork)
-
-# Assumendo che prior, verosim, posterior e theta siano già definiti
-# Esempio di dati se non definiti:
-# theta <- seq(0, 1, by = 0.2)
-# prior <- c(0.1, 0.2, 0.3, 0.2, 0.1, 0.1)
-# verosim <- dbinom(9, 12, prob = theta)
-# posterior <- prior * verosim / sum(prior * verosim)
 
 # Funzione per creare un singolo grafico con etichette specifiche
 crea_grafico <- function(valori, titolo, colore) {
@@ -344,12 +396,11 @@ composizione +
 
 ## Interpretazione
 
-- **Prior**: credevo che $\theta = 0.5$ fosse il valore più probabile (40%).
+- **Prior**: credevo che $\theta = 0.5$ fosse il valore più plausibile (40%).
 - **Verosimiglianza**: i dati (7/10) suggeriscono $\theta = 0.7$.
-- **Posterior**: compromesso — ora credo che $\theta = 0.5$ o $\theta = 0.6$ siano i valori più probabili.
+- **Posterior**: compromesso — ora credo che $\theta = 0.5$ o $\theta = 0.6$ siano i valori più plausibili.
 
-I dati hanno **spostato** le mie credenze verso valori più alti.
-
+I dati hanno **spostato** le mie credenze verso valori più alti, ma il prior ha impedito che la stima "saltasse" direttamente a 0.7. Il posterior rappresenta un compromesso ragionevole tra ciò che sapevo prima e ciò che i dati mi dicono.
 
 # Parte 3: significato per la psicologia
 
@@ -360,6 +411,26 @@ I dati hanno **spostato** le mie credenze verso valori più alti.
 2. **Quantifica l'incertezza**: otteniamo una distribuzione, non un singolo numero.
 3. **Si aggiorna**: con nuovi dati, ricalcoliamo il posterior.
 4. **Risponde alla domanda giusta**: "Qual è la probabilità che $\theta$ sia in un certo intervallo?"
+
+---
+
+## Cosa potete fare ora che prima non potevate {background-color="#2c3e50" style="color: white;"}
+
+. . .
+
+Ricordate l'intervallo di confidenza? Non potevate dire "c'è il 95% di probabilità che il parametro sia in questo intervallo." Ora, con il posterior, potete.
+
+---
+
+## Cosa potete fare ora che prima non potevate {background-color="#2c3e50" style="color: white;"}
+
+Ricordate il valore-$p$? Non potevate dire "la probabilità che il trattamento funzioni è X%." Ora, con il posterior, potete calcolare $P(\theta > 0 \mid \text{dati})$ direttamente.
+
+---
+
+## Cosa potete fare ora che prima non potevate {background-color="#2c3e50" style="color: white;"}
+
+Ricordate il problema dell'"assenza di evidenza"? Il frequentismo non poteva distinguere tra "non c'è effetto" e "non ho abbastanza dati." L'approccio bayesiano produce una distribuzione che mostra chiaramente se i dati sono inconclusivi.
 
 ---
 
@@ -387,14 +458,34 @@ Si tratta di una **probabilità diretta sul parametro**, proprio il tipo di info
 
 ---
 
+Provate a formulare questa stessa domanda nel framework frequentista: 
+
+. . .
+
+**non è possibile.**
+
+. . .
+
+Il frequentismo può solo dirvi 
+
+> "se la sensibilità fosse esattamente 0.75, quanto sarebbero sorprendenti questi dati?"
+
+— una domanda molto meno utile.
+
+---
+
 ## Confronto con l'approccio frequentista
+
+<div style="font-size: 0.85em;">
 
 | Domanda | Frequentista | Bayesiano |
 |---------|--------------|-----------|
-| "Qual è la probabilità che $\theta > 0.75$?" | Non risponde | Risponde direttamente |
+| "Qual è la probabilità che $\theta > 0.75$?" | Non può rispondere | Risponde direttamente |
 | "I dati sono incompatibili con $\theta = 0.75$?" | Risponde (valore-$p$) | Non è la domanda principale |
+| "Quanto è grande l'effetto?" | IC (interpretazione indiretta) | Posterior (interpretazione diretta) |
+| "I dati sono inconclusivi?" | Non può distinguere | Il posterior mostra l'incertezza |
 
-L'approccio bayesiano risponde alla domanda che lo psicologo **effettivamente si pone**.
+</div>
 
 ---
 
@@ -459,7 +550,19 @@ round(posterior_es1, 3)
 | 0.5 | 0.50 | 0.44 |
 | 0.6 | 0.25 | 0.41 |
 
-I dati (4/6 = 67%) hanno spostato le credenze verso valori più alti di $\theta.$
+I dati (4/6 = 67%) hanno spostato le credenze verso valori più alti di $\theta.$ 
+
+---
+
+Notate che possiamo calcolare immediatamente la probabilità che $\theta \geq 0.5$:
+
+$$0.44 + 0.41 = 0.85,$$ 
+
+ovvero l'85%. 
+
+. . .
+
+Questa è una risposta diretta a una domanda clinicamente rilevante.
 
 ---
 
@@ -467,7 +570,7 @@ I dati (4/6 = 67%) hanno spostato le credenze verso valori più alti di $\theta.
 
 Una psicologa valuta l'aderenza a un programma di mindfulness.
 
-**Prior:** Uniforme su $\theta \in \{0.5, 0.6, 0.7, 0.8\}$ (tutti ugualmente probabili).
+**Prior:** uniforme su $\theta \in \{0.5, 0.6, 0.7, 0.8\}$ (tutti ugualmente probabili).
 
 **Dati:** 6 pazienti su 8 completano il programma.
 
@@ -517,7 +620,7 @@ C'è circa il **67%** di probabilità che l'aderenza sia almeno 70%.
 
 4. **Formula**: $\text{Posterior} \propto \text{Verosimiglianza} \times \text{Prior}$.
 
-5. L'inferenza bayesiana risponde a domande **direttamente rilevanti** per la pratica psicologica.
+5. L'inferenza bayesiana risponde a domande **direttamente rilevanti** per la pratica psicologica — le stesse domande che il frequentismo non poteva formulare.
 
 ---
 
@@ -528,3 +631,4 @@ Vedremo:
 - Come passare da valori discreti a **distribuzioni continue**.
 - L'**approssimazione a griglia** per casi più realistici.
 - Come **visualizzare** l'aggiornamento bayesiano.
+- L'effetto della **quantità di dati** e della **scelta del prior**.

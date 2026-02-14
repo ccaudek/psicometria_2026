@@ -1,7 +1,7 @@
 ---
 title: "Probabilità congiunta"
 subtitle: "Calcoli e simulazioni in R"
-version: "1.0"
+version: "2.0"
 author:
   - name: Corrado Caudek
     orcid: 0000-0002-1404-0420
@@ -41,6 +41,27 @@ library(knitr)
 library(kableExtra)
 ```
 
+# Simulare relazioni tra variabili {background-color="#e74c3c" style="color: white;"}
+
+## Perché simulare?
+
+Nella prima parte avete imparato a calcolare covarianza e correlazione "a mano" su  piccole tabelle. Nella pratica, lavorerete con centinaia o migliaia di osservazioni.
+
+. . .
+
+In questa seconda parte useremo R per:
+
+- rappresentare distribuzioni congiunte;
+- calcolare marginali, covarianza e correlazione;
+- **simulare** dati con relazioni note e verificare che le formule funzionino;
+- vedere con i vostri occhi cosa significa "incorrelazione senza indipendenza".
+
+. . .
+
+Simulare dati è una competenza professionale: quando pianificate uno studio, prima di raccogliere dati reali, potete simulare risultati attesi per verificare che il vostro disegno di ricerca funzioni.
+
+---
+
 ## Obiettivo {.unnumbered .unlisted}
 
 In questa seconda parte:
@@ -50,12 +71,16 @@ In questa seconda parte:
 3. verificheremo l'indipendenza tra variabili attraverso simulazioni;
 4. esploreremo un caso speciale: quando due variabili sono incorrelate ma non indipendenti.
 
-## Esercizio 1
+---
+
+## Esercizio 1 — Le monete in R
 
 Lanciamo 3 monete equilibrate.
 
-- $X$ = numero totale di teste (0, 1, 2, 3)
-- $Y$ = risultato della prima moneta (0 = croce, 1 = testa)
+- $X$ = numero totale di teste (0, 1, 2, 3);
+- $Y$ = risultato della prima moneta (0 = croce, 1 = testa).
+
+---
 
 ## La tabella di probabilità congiunta
 
@@ -67,6 +92,8 @@ Lanciamo 3 monete equilibrate.
 | X = 3 | 0     | 1/8   |
 
 Ogni cella contiene $P(X = x, Y = y)$.
+
+---
 
 ## Creare la tabella
 
@@ -86,6 +113,8 @@ riga3 <- c(1/8, 2/8)
 riga4 <- c(0, 1/8)
 ```
 
+---
+
 ## Unire le righe in una matrice
 
 ```{r}
@@ -94,6 +123,8 @@ tabella
 ```
 
 `rbind` = "row bind" = unisci per righe.
+
+---
 
 ## Aggiungere nomi (opzionale ma utile)
 
@@ -106,13 +137,17 @@ tabella
 
 Ora la tabella è più leggibile.
 
+---
+
 ## Controllo: le probabilità sommano a 1?
 
 ```{r}
 sum(tabella)
 ```
 
-✓ La tabella è corretta.
+La tabella è corretta.
+
+---
 
 ## Cos'è una marginale?
 
@@ -121,6 +156,8 @@ La **marginale di X** risponde a:
 * qual è $P(X = x)$, ignorando $Y$?
 
 Si ottiene **sommando su tutte le colonne** (cioè su tutti i valori di $Y$).
+
+---
 
 ## Calcolare la marginale di X
 
@@ -131,6 +168,7 @@ P_X
 
 `rowSums` = somma di ogni riga.
 
+---
 
 ## Interpretazione
 
@@ -141,6 +179,8 @@ P_X
 
 Questa è la distribuzione binomiale con $n = 3$ e $p = 0.5$.
 
+---
+
 ## Calcolare la marginale di Y
 
 ```{r}
@@ -150,12 +190,16 @@ P_Y
 
 `colSums` = somma di ogni colonna.
 
+---
+
 ## Interpretazione
 
 - $P(Y = 0) = 0.5$ (croce sulla prima moneta)
 - $P(Y = 1) = 0.5$ (testa sulla prima moneta)
 
 Questo ha senso: la moneta è equilibrata.
+
+---
 
 ## Calcolare la covarianza
 
@@ -167,6 +211,8 @@ dobbiamo trovare:
 2. $\mathbb{E}(Y)$ — media di Y;
 3. $\mathbb{E}(XY)$ — media del prodotto.
 
+---
+
 ## Passo 1: Definire i valori possibili
 
 ```{r}
@@ -176,6 +222,8 @@ valori_X <- c(0, 1, 2, 3)
 # Valori che Y può assumere
 valori_Y <- c(0, 1)
 ```
+
+---
 
 ## Passo 2: Calcolare E(X)
 
@@ -188,6 +236,8 @@ E_X
 
 In media, otteniamo 1.5 teste su 3 lanci.
 
+---
+
 ## Passo 3: Calcolare E(Y)
 
 ```{r}
@@ -197,6 +247,8 @@ E_Y
 
 In media, la prima moneta dà 0.5 (metà delle volte testa).
 
+---
+
 ## Passo 4: Calcolare E(XY)
 
 Qui dobbiamo considerare **tutte le coppie** $(x, y)$.
@@ -204,6 +256,8 @@ Qui dobbiamo considerare **tutte le coppie** $(x, y)$.
 Per ogni cella della tabella, calcoliamo: 
 
 $$x \cdot y \cdot P(X=x, Y=y).$$
+
+---
 
 ## E(XY): il calcolo esplicito
 
@@ -221,6 +275,8 @@ termine_30 <- 3 * 0 * tabella["X=3", "Y=0"]  # = 0
 termine_31 <- 3 * 1 * tabella["X=3", "Y=1"]  # = 3/8
 ```
 
+---
+
 ## E(XY): la somma
 
 ```{r}
@@ -228,6 +284,8 @@ E_XY <- termine_00 + termine_01 + termine_10 + termine_11 +
         termine_20 + termine_21 + termine_30 + termine_31
 E_XY
 ```
+
+---
 
 ## Quali termini contano davvero?
 
@@ -240,6 +298,8 @@ I termini non nulli sono solo quelli con $y = 1$ e $x > 0$:
 E_XY <- 1 * 1 * (1/8) + 2 * 1 * (2/8) + 3 * 1 * (1/8)
 E_XY
 ```
+
+---
 
 ## Passo 5: Calcolare la covarianza
 
@@ -254,6 +314,8 @@ Cov_XY <- E_XY - E_X * E_Y
 Cov_XY
 ```
 
+---
+
 ## Interpretazione della covarianza
 
 $$\text{Cov}(X, Y) = 0.25 > 0$$
@@ -262,6 +324,7 @@ $$\text{Cov}(X, Y) = 0.25 > 0$$
 
 Questo ha senso: se la prima moneta dà testa, il totale aumenta di 1.
 
+---
 
 ## Calcolare la correlazione
 
@@ -350,7 +413,7 @@ c(Congiunta = P_congiunta, Prodotto = P_prodotto)
 
 $0.25 \neq 0.1875$
 
-Sono diversi! Quindi X e Y **non** sono indipendenti.
+Sono diversi. Quindi X e Y **non** sono indipendenti.
 
 ---
 
@@ -411,13 +474,13 @@ Se $X$ e $Y$ sono indipendenti, allora $\text{Cov}(X, Y) = 0$.
 
 ---
 
-## Attenzione!
+## Attenzione
 
 Il contrario **non** è vero:
 
 $\text{Cov}(X, Y) = 0$ **non implica** indipendenza.
 
-* Esistono variabili dipendenti con covarianza zero.
+Esistono variabili dipendenti con covarianza zero.
 
 ---
 
@@ -479,7 +542,7 @@ head(X, 10)
 table(X) / n
 ```
 
-Simile a $P(X) = (0.125, 0.375, 0.375, 0.125)$ ✓
+Simile a $P(X) = (0.125, 0.375, 0.375, 0.125)$.
 
 ---
 
@@ -489,7 +552,7 @@ Simile a $P(X) = (0.125, 0.375, 0.375, 0.125)$ ✓
 cov(X, Y)
 ```
 
-Vicino a 0.25 ✓
+Vicino a 0.25.
 
 ---
 
@@ -499,7 +562,7 @@ Vicino a 0.25 ✓
 cor(X, Y)
 ```
 
-Vicino a 0.58 ✓
+Vicino a 0.58.
 
 ---
 
@@ -528,16 +591,17 @@ Vicino a 0.58 ✓
 
 5. Le **simulazioni** confermano i calcoli teorici.
 
----
+# Simulare dati bivariati: uno strumento professionale {background-color="#0072bc" style="color: white;"}
 
-## Esercizio 2 — Simulare la distribuzione ansia–depressione
+## Esercizio 2 — Simulare ansia e stress
 
-**Obiettivo.**
+**Obiettivo:** generare dati in cui due variabili abbiano una covarianza prestabilita.
 
-Vogliamo **simulare dati** in cui due variabili abbiano una covarianza prestabilita. Questo ci permette di:
+Nella pratica, questo è utile per:
 
-- capire cosa "fa" la covarianza;
-- verificare le formule con dati concreti.
+- **verificare** le formule con dati concreti;
+- **pianificare** studi (power analysis);
+- **capire** cosa succede quando le variabili sono correlate.
 
 ---
 
@@ -558,9 +622,9 @@ R fa tutto il resto.
 
 Vogliamo simulare due variabili:
 
-- **Ansia** con media 50 e varianza 100 (SD = 10).
-- **Stress** con media 30 e varianza 64 (SD = 8).
-- **Covarianza** tra Ansia e Stress: 40.
+- **ansia** con media 50 e varianza 100 (SD = 10);
+- **stress** con media 30 e varianza 64 (SD = 8);
+- **covarianza** tra Ansia e Stress: 40.
 
 ---
 
@@ -625,19 +689,11 @@ dati <- mvrnorm(n = 1000, mu = medie, Sigma = Sigma)
 ## Cosa abbiamo ottenuto?
 
 ```{r}
+colnames(dati) <- c("Ansia", "Stress")
 head(dati)
 ```
 
 Ogni riga è una "persona" con un punteggio di Ansia e uno di Stress.
-
----
-
-## Diamo nomi alle colonne
-
-```{r}
-colnames(dati) <- c("Ansia", "Stress")
-head(dati)
-```
 
 ---
 
@@ -649,26 +705,22 @@ Le medie campionarie sono vicine a (50, 30)?
 colMeans(dati)
 ```
 
-✓ Molto vicine!
-
 ---
 
 ## La covarianza campionaria
 
-È vicina a 40?
+La covarianza campionaria è vicina a 40?
 
 ```{r}
 cov(dati[, "Ansia"], dati[, "Stress"])
 ```
-
-✓ Vicina al valore teorico.
 
 ---
 
 ## La matrice di covarianza campionaria
 
 ```{r}
-cov(dati)
+cov(dati) |> round(2)
 ```
 
 Confronta con la matrice teorica:
@@ -683,41 +735,31 @@ Sigma
 
 ```{r}
 #| echo: false
-#| fig-height: 5
-plot(dati, pch = 16, col = rgb(0.2, 0.4, 0.8, 0.4),
-     xlab = "Ansia", ylab = "Stress",
-     main = "Dati simulati (Cov = 40)")
-```
+library(ggplot2)
 
-La nuvola di punti sale verso destra: covarianza positiva.
+ggplot(dati, aes(x = Ansia, y = Stress)) +
+  geom_point(alpha = 0.4, size = 2.5, color = "#3366CC") +  # colore esadecimale simile a RGB(0.2,0.4,0.8)
+  labs(
+    x = "Ansia",
+    y = "Stress",
+    title = "Dati simulati (Cov = 40)",
+    subtitle = "Relazione lineare positiva tra ansia e stress"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    plot.subtitle = element_text(hjust = 0.5, color = "gray40"),
+    panel.grid.minor = element_blank()
+  )
+```
 
 ---
 
-## Riepilogo del codice completo
-
-```{r}
-#| eval: false
-library(MASS)
-
-# 1. Medie
-medie <- c(50, 30)
-
-# 2. Matrice di covarianza
-Sigma <- matrix(c(100, 40,
-                   40, 64), nrow = 2)
-
-# 3. Simulazione
-dati <- mvrnorm(n = 1000, mu = medie, Sigma = Sigma)
-
-# 4. Verifica
-cov(dati)
-```
-
-**Quattro passaggi, concetto chiaro.**
+La nuvola di punti ha un andamento crescente: i valori salgono spostandosi verso destra, rivelando una covarianza positiva tra le variabili.
 
 ---
 
-## Esercizio 3: cambiare la covarianza
+## Esercizio 3 — Cambiare la covarianza
 
 Cosa succede se la covarianza è **negativa**?
 
@@ -726,6 +768,7 @@ Sigma_neg <- matrix(c(100, -40,
                       -40,  64), nrow = 2)
 
 dati_neg <- mvrnorm(n = 1000, mu = medie, Sigma = Sigma_neg)
+colnames(dati_neg) <- c("Ansia", "Stress")
 ```
 
 ---
@@ -734,17 +777,30 @@ dati_neg <- mvrnorm(n = 1000, mu = medie, Sigma = Sigma_neg)
 
 ```{r}
 #| echo: false
-#| fig-height: 5
-plot(dati_neg, pch = 16, col = rgb(0.8, 0.2, 0.2, 0.4),
-     xlab = "Ansia", ylab = "Stress",
-     main = "Dati simulati (Cov = -40)")
+ggplot(dati_neg, aes(x = Ansia, y = Stress)) +
+  geom_point(alpha = 0.4, size = 2.5, color = "#CC3333") +
+  geom_smooth(method = "lm", se = FALSE, color = "darkred", linewidth = 0.8) +
+  labs(
+    x = "Ansia", 
+    y = "Stress",
+    title = "Dati simulati (Cov = -40)",
+    caption = "La retta evidenzia la relazione lineare negativa"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    plot.caption = element_text(hjust = 0, color = "gray40", size = 9),
+    panel.grid.minor = element_blank()
+  )
 ```
+
+---
 
 La nuvola scende verso destra: covarianza negativa.
 
 ---
 
-## Esercizio: covarianza zero
+## Covarianza zero
 
 Cosa succede se le variabili sono **indipendenti**?
 
@@ -753,6 +809,7 @@ Sigma_zero <- matrix(c(100,  0,
                          0, 64), nrow = 2)
 
 dati_ind <- mvrnorm(n = 1000, mu = medie, Sigma = Sigma_zero)
+colnames(dati_ind) <- c("Ansia", "Stress")
 ```
 
 ---
@@ -761,11 +818,28 @@ dati_ind <- mvrnorm(n = 1000, mu = medie, Sigma = Sigma_zero)
 
 ```{r}
 #| echo: false
-#| fig-height: 5
-plot(dati_ind, pch = 16, col = rgb(0.2, 0.6, 0.2, 0.4),
-     xlab = "Ansia", ylab = "Stress",
-     main = "Dati simulati (Cov = 0)")
+ggplot(dati_ind, aes(x = Ansia, y = Stress)) +
+  geom_point(
+    alpha = 0.4, 
+    size = 2.5, 
+    color = "#33CC33",  # Verde simile a RGB(0.2, 0.6, 0.2)
+    shape = 16
+  ) +
+  labs(
+    x = "Ansia",
+    y = "Stress",
+    title = "Dati simulati (Cov = 0)",
+    subtitle = "Assenza di relazione lineare tra ansia e stress"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    plot.subtitle = element_text(hjust = 0.5, color = "gray40"),
+    panel.grid.minor = element_blank()
+  )
 ```
+
+---
 
 Nuvola "rotonda": nessuna relazione lineare.
 
@@ -785,9 +859,11 @@ plot(dati_neg, pch = 16, col = rgb(0.8, 0.2, 0.2, 0.3),
      xlab = "Ansia", ylab = "Stress", main = "Cov = -40")
 ```
 
+A sinistra: sale (positiva). Al centro: rotonda (zero). A destra: scende (negativa).
+
 ---
 
-## Esercizio 4: dalla covarianza alla correlazione
+## Esercizio 4 — Dalla covarianza alla correlazione
 
 La correlazione è la covarianza "standardizzata":
 
@@ -820,7 +896,7 @@ rho_teorica
 cor(dati[, "Ansia"], dati[, "Stress"])
 ```
 
-Vicino a 0.5 ✓
+Vicino a 0.5.
 
 ---
 
@@ -836,45 +912,27 @@ La matrice di covarianza **determina** la relazione tra le variabili:
 
 ---
 
-## Perché questo approccio è utile
-
-1. **Semplicità**: poche righe di codice.
-2. **Controllo**: decidiamo noi la covarianza.
-3. **Verifica**: possiamo controllare che i dati rispettino il modello.
-4. **Visualizzazione**: il grafico rende tangibile il concetto.
-
----
-
 ## Nota tecnica
 
-Questo metodo assume che i dati seguano una **distribuzione normale bivariata**.
+Questo metodo assume che i dati seguano una **distribuzione normale bivariata**, cioè che ciascuna variabile da sola sia distribuita normalmente e che la relazione tra loro sia lineare.
 
-In molte applicazioni psicologiche questa è un'approssimazione ragionevole.
-
-Per distribuzioni non normali esistono altri metodi, ma sono più complessi.
+In molte applicazioni psicologiche questa è un'approssimazione ragionevole. Per distribuzioni non normali esistono altri metodi, ma sono più complessi.
 
 ---
 
-## Cosa significa “Normale bivariata”?
-
-Dire che **due variabili seguono una Normale bivariata** significa, in pratica, che:
-
-* ciascuna variabile **da sola** è distribuita normalmente
-  (es. ansia ∼ Normale, depressione ∼ Normale);
-* le due variabili **possono essere correlate**;
-* la relazione tra loro è **lineare**.
-
----
-
-## Esercizio 5 — Incorrelazione senza indipendenza
+## Esercizio 5 — Incorrelazione senza indipendenza {background-color="#2c3e50" style="color: white;"}
 
 Molti pensano che:
 
 > "Covarianza zero" = "Variabili indipendenti".
 
-**Questo è falso!**
+. . .
 
-Vediamo un controesempio classico.
+**Abbiamo visto che questo è falso** Consideriamo ora un controesempio che ha conseguenze pratiche importanti: è possibile trovare $\rho = 0$ tra due variabili che in realtà hanno una relazione forte, ma semplicemente non lineare.
+
+. . .
+
+Pensate alla curva di Yerkes-Dodson: la relazione tra l'arousal e la prestazione è a forma di U rovesciata. La correlazione lineare è quasi nulla, eppure la relazione è sistematica.
 
 ---
 
@@ -910,81 +968,33 @@ Notiamo: la struttura è **simmetrica** rispetto all'asse X.
 
 ---
 
-## Simulare i dati: l'idea
+## Simulare i dati
 
-Vogliamo generare 10,000 coppie (X, Y):
-
-1. creiamo un "sacchetto" con le 4 coppie;
-2. estraiamo a caso, 10,000 volte;
-3. R fa tutto il lavoro.
-
----
-
-## Passo 1: Creare il sacchetto
-
-Scriviamo 2500 copie di ogni coppia (totale: 10,000):
+Generiamo 10,000 coppie (X, Y):
 
 ```{r}
 n <- 10000
 
-# 2500 copie della coppia (0, 0)
-X1 <- rep(0, times = 2500)
-Y1 <- rep(0, times = 2500)
-
-# 2500 copie della coppia (1, 1)
-X2 <- rep(1, times = 2500)
-Y2 <- rep(1, times = 2500)
+# 2500 copie di ogni coppia
+X1 <- rep(0, times = 2500); Y1 <- rep(0, times = 2500)
+X2 <- rep(1, times = 2500); Y2 <- rep(1, times = 2500)
+X3 <- rep(1, times = 2500); Y3 <- rep(-1, times = 2500)
+X4 <- rep(2, times = 2500); Y4 <- rep(0, times = 2500)
 ```
 
 ---
 
-## Continuiamo con le altre coppie
-
-```{r}
-# 2500 copie della coppia (1, -1)
-X3 <- rep(1, times = 2500)
-Y3 <- rep(-1, times = 2500)
-
-# 2500 copie della coppia (2, 0)
-X4 <- rep(2, times = 2500)
-Y4 <- rep(0, times = 2500)
-```
-
----
-
-## Passo 2: Unire tutto
+## Unire e mescolare
 
 ```{r}
 X_ordinato <- c(X1, X2, X3, X4)
 Y_ordinato <- c(Y1, Y2, Y3, Y4)
-```
 
-Ora abbiamo 10,000 coppie, ma sono **in ordine**.
-
----
-
-## Passo 3: Mescolare
-
-```{r}
-# Creiamo un ordine casuale
+# Ordine casuale
 ordine_casuale <- sample(1:n)
-
-# Mescoliamo X e Y con lo stesso ordine
 X <- X_ordinato[ordine_casuale]
 Y <- Y_ordinato[ordine_casuale]
 ```
-
----
-
-## Cosa abbiamo fatto?
-
-```{r}
-#| echo: false
-cat("Prime 20 coppie (X, Y):\n")
-head(data.frame(X = X, Y = Y), 20)
-```
-
-Le coppie sono mescolate casualmente, ma ogni coppia compare esattamente 2500 volte.
 
 ---
 
@@ -994,7 +1004,7 @@ Le coppie sono mescolate casualmente, ma ogni coppia compare esattamente 2500 vo
 table(X, Y)
 ```
 
-Ogni coppia compare 2500 volte (25% del totale) ✓
+Ogni coppia compare 2500 volte (25% del totale).
 
 ---
 
@@ -1070,9 +1080,7 @@ abline(h = 0, lty = 2, col = "gray")
 ## Cosa mostra il grafico?
 
 - I punti **non** formano una nuvola che sale o scende → covarianza zero.
-
 - Ma i punti esistono solo in **4 posizioni** → c'è una struttura.
-
 - Conoscere X **limita** i possibili valori di Y.
 
 ---
@@ -1089,7 +1097,7 @@ set.seed(111)
 x1 <- rnorm(500)
 y1 <- rnorm(500)
 plot(x1, y1, pch = 16, col = rgb(0.2, 0.5, 0.2, 0.3),
-     main = "Indipendenti (Cov ≈ 0)", xlab = "X", ylab = "Y")
+     main = "Indipendenti (Cov = 0)", xlab = "X", ylab = "Y")
 
 # Dipendenti con Cov = 0
 plot(jitter(X[1:500], 0.15), jitter(Y[1:500], 0.15), 
@@ -1105,33 +1113,10 @@ A sinistra: nuvola uniforme. A destra: solo 4 posizioni possibili.
 
 | Affermazione | Vera? |
 |--------------|-------|
-| Indipendenza → Cov = 0 | ✓ Sempre vera |
-| Cov = 0 → Indipendenza | ✗ **Falsa!** |
+| Indipendenza → Cov = 0 | Sempre vera |
+| Cov = 0 → Indipendenza | **Falsa!** |
 
----
-
-## Perché succede questo?
-
-La covarianza misura solo la relazione **lineare**.
-
-Nel nostro esempio:
-
-- c'è una **relazione** tra X e Y (non tutte le combinazioni sono possibili);
-- ma questa relazione **non è lineare** (è simmetrica).
-
----
-
-## Riepilogo
-
-1. Abbiamo costruito 10,000 coppie con 4 valori equiprobabili.
-
-2. La covarianza è risultata **zero**.
-
-3. Ma X e Y **non sono indipendenti**: alcune combinazioni non esistono.
-
-4. **Morale:** correlazione zero non significa assenza di relazione.
-
-Ecco una versione **più chiara, più guidata e più didattica**, pensata per una slide di lezione: meno “codice secco”, più collegamento con la teoria.
+La covarianza misura solo la relazione **lineare**. Nel nostro esempio c'è una relazione chiara (non tutte le combinazioni sono possibili), ma questa relazione è **simmetrica** — non lineare — e la covarianza non la cattura.
 
 ---
 
@@ -1155,7 +1140,7 @@ $$
 
 ```{r}
 #| echo: true
-library(MASS)   # funzione mvrnorm()
+library(MASS)
 set.seed(111)
 
 # 1. Parametri delle due variabili
@@ -1183,6 +1168,10 @@ dati <- mvrnorm(
   Sigma = Sigma
 )
 
+dati[1:10, ]
+```
+
+```{r}
 X <- dati[, 1]
 Y <- dati[, 2]
 ```
@@ -1207,17 +1196,21 @@ c(
 
 ### Interpretazione
 
-* La **varianza osservata** di $X + Y$ coincide (a errori di simulazione minimi) con la **formula teorica**.
+* La **varianza osservata** di $X + Y$ coincide (con errori di simulazione minimi) con la **formula teorica**.
 * La **covarianza positiva** aumenta la variabilità della somma.
 * Se $X$ e $Y$ fossero indipendenti, il termine $2\text{Cov}(X,Y)$ sarebbe zero.
 
-> La simulazione rende visibile perché la covarianza è fondamentale quando si sommano variabili correlate.
+> La simulazione rende chiaro perché la covarianza è fondamentale quando si sommano variabili correlate.
 
 ---
 
-## Nota didattica
+### Nota pratica
 
-Questo esempio spiega perché, in psicologia e nelle scienze sociali, **sommare punteggi correlati** (es. scale simili) può aumentare la variabilità più di quanto ci si aspetti assumendo l'indipendenza.
+* Questo è esattamente ciò che accade quando sommate punteggi di sottoscale in un test psicometrico. 
+
+* Se le sottoscale sono correlate positivamente (come è quasi sempre il caso), la varianza del punteggio totale è **maggiore** della somma delle varianze delle singole sottoscale. 
+
+* Ignorare questo fatto porta a sottostimare l'errore standard di misura.
 
 ---
 
@@ -1303,23 +1296,22 @@ c(
   \mathbb{V}(X + Y) \approx 100 + 100 = 200
   $$
 
-* Quando $X$ e $Y$ sono **correlati positivamente**:
+* Quando $X$ e $Y$ sono **correlati positivamente** ($\rho = 0.7$):
   $$
-  \mathbb{V}(X + Y) = 100 + 100 + 2,\text{Cov}(X,Y) > 200
+  \mathbb{V}(X + Y) = 100 + 100 + 2 \cdot 70 = 340
   $$
 
-👉 La **correlazione positiva aumenta la varianza della somma**, perché le due variabili tendono a muoversi nella stessa direzione.
+La correlazione positiva aumenta la varianza della somma del **70%** rispetto al caso indipendente — perché le due variabili tendono a muoversi nella stessa direzione.
 
 ---
 
-### Messaggio chiave (da portare a casa)
+### Messaggio chiave
 
-> **Non basta conoscere le varianze**:
-> quando le variabili sono dipendenti, la **covarianza fa la differenza**.
+> **Non basta conoscere le varianze**: quando le variabili sono dipendenti, la **covarianza fa la differenza**.
 
 ---
 
-## Esercizio 8 — Correlazione in psicologia
+## Esercizio 8 — Correlazione tra scale cognitive
 
 Simula dati di 500 studenti con:
 
@@ -1341,9 +1333,21 @@ sigma_qi <- 15
 rho_qi <- 0.65
 cov_qi <- rho_qi * sigma_qi^2
 Sigma_qi <- matrix(c(225, cov_qi, cov_qi, 225), nrow = 2)
+Sigma_qi
+```
 
+---
+
+```{r}
 # Simulazione
 qi_dati <- mvrnorm(500, mu = c(100, 100), Sigma = Sigma_qi)
+head(qi_dati)
+```
+
+---
+
+```{r}
+
 qi_verbale <- qi_dati[, 1]
 qi_numerico <- qi_dati[, 2]
 
@@ -1356,13 +1360,34 @@ cat("Correlazione osservata:", cor(qi_verbale, qi_numerico), "\n")
 
 ```{r}
 #| echo: false
-#| fig-height: 4.5
-plot(qi_verbale, qi_numerico,
-     pch = 16, col = rgb(0.2, 0.5, 0.3, 0.5),
-     xlab = "QI Verbale", ylab = "QI Numerico",
-     main = paste("Correlazione:", round(cor(qi_verbale, qi_numerico), 2)))
-abline(lm(qi_numerico ~ qi_verbale), col = "red", lwd = 2)
+
+df <- data.frame(
+  qi_verbale = qi_verbale, 
+  qi_numerico = qi_numerico
+)
+ggplot(df, aes(x = qi_verbale, y = qi_numerico)) +
+  geom_point(alpha = 0.5, size = 3, color = "#336633") +  # rgb(0.2, 0.5, 0.3) in esadecimale
+  geom_smooth(method = "lm", se = FALSE, color = "red", size = 1) +
+  labs(
+    x = "QI Verbale",
+    y = "QI Numerico",
+    title = paste("Correlazione:", round(cor(qi_verbale, qi_numerico), 2))
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    panel.grid.minor = element_blank()
+  )
 ```
+
+---
+
+### Cosa ci dice questo esercizio {background-color="#2c3e50" style="color: white;"}
+
+Abbiamo appena simulato qualcosa che assomiglia a dati reali di un test di intelligenza. La correlazione di circa 0.65 tra QI verbale e numerico è coerente con ciò che si osserva nella realtà — ed è il fondamento empirico del cosiddetto **fattore g** di intelligenza generale.
+
+
+Quando nell'assessment psicometrico sentite parlare di "analisi fattoriale", il punto di partenza è proprio la matrice di correlazione tra le sottoscale. Ciò che state vedendo in questo grafico è il dato di base su cui lavora l'analisi fattoriale.
 
 ---
 
@@ -1393,6 +1418,26 @@ cor(data.frame(x, y, z))
 | Correlazione | `cor(x, y)` |
 | Matrice correlazione | `cor(data)` |
 | Bivariata Normale | `MASS::mvrnorm(n, mu, Sigma)` |
+
+---
+
+## Il percorso fin qui {background-color="#2c3e50" style="color: white;"}
+
+. . .
+
+**Lezioni 5-6** — Probabilità e aggiornamento bayesiano.
+
+**Lezione 8** — Modelli per conteggi: Bernoulli, Binomiale, Poisson.
+
+**Lezione 9** — Modelli per misure continue: Normale e Beta.
+
+**Lezione 10** — Valore atteso, varianza, funzioni di v.c.
+
+**Lezione 11 (oggi)** — Come due variabili variano insieme: covarianza e correlazione.
+
+. . .
+
+Avete ora tutti gli strumenti probabilistici per affrontare il passo successivo: la **funzione di verosimiglianza** — il meccanismo formale attraverso cui i dati "parlano" ai parametri del modello.
 
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "Quantificare e aggiornare l'incertezza"
 subtitle: "L'apprendimento sequenziale — Segmento 2"
-version: 1.1
+version: 2.0
 author:
   - name: Corrado Caudek
     orcid: 0000-0002-1404-0420
@@ -31,6 +31,11 @@ csl: ../apa.csl
 
 ```{r}
 #| echo: false
+#| message: false
+#| warning: false
+library(ggplot2)
+library(dplyr)
+library(tidyr)
 set.seed(42)
 ```
 
@@ -53,7 +58,7 @@ Nel segmento precedente abbiamo stabilito che:
 - l'ordine dei dati **non** cambia il risultato finale;
 - l'apprendimento è **graduale** e cumulativo.
 
-Ora vedremo come tradurre **questa logica** in R.
+Ora vedremo come tradurre **questa logica** in R, e incontreremo uno strumento potente: la **famiglia coniugata** Beta-Binomiale.
 
 # Parte 1: l'esempio del globo (McElreath)
 
@@ -117,36 +122,36 @@ La Beta(1, 1) è una distribuzione piatta: tutti i valori di $p$ da 0 a 1 sono u
 
 ---
 
-## La magia della famiglia coniugata
+## La magia della famiglia coniugata {background-color="#27ae60" style="color: white;"}
 
-Quando usiamo:
+. . .
 
-- **prior:** Beta($\alpha$, $\beta$),
-- **verosimiglianza:** binomiale,
-
-il **posterior** è ancora una distribuzione Beta
+Quando usiamo un **prior Beta** con una **verosimiglianza binomiale**, succede qualcosa di elegante: il **posterior è ancora una distribuzione Beta**.
 
 $$
 p \mid \text{dati} \sim \text{Beta}(\alpha + k, \;\; \beta + N - k),
 $$
 dove $k$ = successi (Acqua), $N - k$ = insuccessi (Terra).
 
+. . .
+
+Questa proprietà si chiama **coniugazione**: il prior e il posterior appartengono alla stessa famiglia di distribuzioni. Non è necessario calcolare integrali o fare approssimazioni a griglia — basta aggiornare due numeri.
+
 ---
 
 ## Perché è importante?
 
-**Un enorme vantaggio computazionale:**
+Un enorme vantaggio computazionale:
 
-* il **posterior mantiene la stessa forma** del prior;
-* l’aggiornamento richiede solo **operazioni semplici** (somme e prodotti);
-* **non** è necessario calcolare integrali complessi.
+- il **posterior mantiene la stessa forma** del prior;
+- l'aggiornamento richiede solo **operazioni semplici** (somme);
+- **non** è necessario calcolare integrali complessi.
 
-Questa proprietà definisce una **famiglia coniugata**
-→ un concetto chiave che approfondiremo nelle prossime lezioni.
+Nella lezione precedente abbiamo usato l'approssimazione a griglia (101 punti, moltiplicazioni, normalizzazione). Con la famiglia coniugata, l'aggiornamento bayesiano si riduce a **sommare conteggi**.
 
 ---
 
-## La regola di aggiornamento (davvero semplicissima)
+## La regola di aggiornamento
 
 Partendo da un prior **Beta($\alpha, \beta$)**:
 
@@ -155,14 +160,7 @@ Partendo da un prior **Beta($\alpha, \beta$)**:
 | Acqua (W)    | $\alpha \leftarrow \alpha + 1$ |
 | Terra (L)    | $\beta \leftarrow \beta + 1$   |
 
-**Tutto qui.**
-
----
-
-* Ogni osservazione di **Acqua** incrementa $\alpha$,
-* ogni osservazione di **Terra** incrementa $\beta$.
-
-👉 L’inferenza bayesiana, in questo caso, si riduce a **contare e aggiornare**.
+Ogni osservazione di **Acqua** incrementa $\alpha$; ogni osservazione di **Terra** incrementa $\beta$. L'inferenza bayesiana, in questo caso, si riduce a **contare e aggiornare**.
 
 ---
 
@@ -189,8 +187,7 @@ I parametri della Beta hanno un'interpretazione intuitiva:
 
 **Dopo W, W, L, W:**
 
-- Beta(4, 2) significa: 3 Acqua + 1 Terra osservati;
-- (più i "conteggi virtuali" del prior).
+- Beta(4, 2) significa: 3 Acqua + 1 Terra osservati (più i "conteggi virtuali" del prior).
 
 ---
 
@@ -207,19 +204,11 @@ $$
 $$
 \text{Media} = \frac{4}{4 + 2} = \frac{4}{6} \approx 0.67
 $$
-che è vicino alla frequenza osservata (3/4 = 0.75).
+che è vicino alla frequenza osservata (3/4 = 0.75), ma "tirato" leggermente verso il prior uniforme.
 
 ---
 
 ## Visualizziamo l'aggiornamento
-
-```{r}
-#| label: setup
-#| include: false
-library(ggplot2)
-library(dplyr)
-library(tidyr)
-```
 
 ```{r}
 #| label: sim-data
@@ -285,7 +274,7 @@ Ogni pannello mostra l'evoluzione delle credenze:
 - **Curva blu solida:** il nuovo posterior dopo l'ultima osservazione.
 - **Linea verticale tratteggiata:** il vero valore di $p$ (0.70).
 
-Osservate come la curva si **sposta** e diventa più **stretta**.
+Osservate come la curva si **sposta** e diventa più **stretta** — meno incertezza ad ogni passo.
 
 ---
 
@@ -294,7 +283,7 @@ Osservate come la curva si **sposta** e diventa più **stretta**.
 #| echo: false
 #| fig-width: 10
 #| fig-height: 8
-# Correzione: gestione esplicita del prior uniforme per il primo lancio
+# Gestione esplicita del prior uniforme per il primo lancio
 df_prev <- df_plot %>%
   mutate(Lancio_prev = Lancio + 1) %>%
   select(Lancio_prev, p, dens_prev = dens)
@@ -306,9 +295,7 @@ prior_uniforme <- data.frame(
 )
 
 df_combined <- df_plot %>%
-  # Aggiungi il prior del lancio precedente (se esiste)
   left_join(df_prev, by = c("Lancio" = "Lancio_prev", "p" = "p")) %>%
-  # Per il lancio 1, usa il prior uniforme
   mutate(dens_prev = ifelse(Lancio == 1, prior_uniforme$dens_prev, dens_prev))
 
 # Crea etichette informative con sequenza corretta
@@ -327,7 +314,7 @@ ggplot(df_combined, aes(x = p)) +
   geom_line(aes(y = dens), color = "steelblue", linewidth = 1.2) +
   geom_vline(xintercept = p_vero, linetype = "dashed", 
              color = "darkgreen", linewidth = 0.5, alpha = 0.7) +
-  facet_wrap(~ label, ncol = 5) +  # 5 colonne per 15 lanci = 3 righe
+  facet_wrap(~ label, ncol = 5) +
   labs(
     title = "Aggiornamento Bayesiano Sequenziale",
     subtitle = "Linea tratteggiata: prior | Linea blu: posterior | Linea verde: vero valore (0.70)",
@@ -350,25 +337,27 @@ ggplot(df_combined, aes(x = p)) +
 
 ## Cosa osserviamo nella figura?
 
-1. **Spostamento progressivo:** La curva si sposta verso il vero valore (0.70).
+1. **Spostamento progressivo:** la curva si sposta verso il vero valore (0.70).
 
-2. **Restringimento:** La curva diventa sempre più stretta → meno incertezza.
+2. **Restringimento:** la curva diventa sempre più stretta — meno incertezza.
 
-3. **Il prior "svanisce":** Dopo poche osservazioni, il prior uniforme non ha più influenza.
+3. **Il prior "svanisce":** dopo poche osservazioni, il prior uniforme non ha più influenza.
 
 4. **Ogni osservazione conta:** W sposta verso destra, L sposta verso sinistra.
 
 ---
 
+Questo è lo stesso principio della consistenza asintotica che abbiamo visto nella lezione precedente — con abbastanza dati, il posterior converge verso il valore vero indipendentemente dal prior iniziale.
+
+---
+
 ## Il messaggio chiave
 
-> **L'apprendimento bayesiano è l'accumulo razionale di evidenza.**
+> **L'apprendimento bayesiano è l'accumulo razionale dell'evidenza.**
 
-- Non buttiamo via le informazioni precedenti.
-- Non ricominciamo da zero ad ogni osservazione.
-- Ogni nuovo dato **affina** la nostra conoscenza.
+Non buttiamo via le informazioni precedenti. Non ricominciamo da zero ad ogni osservazione. Ogni nuovo dato **affina** la nostra conoscenza.
 
-# Parte 2: Applicazione clinica
+# Parte 2: applicazione clinica
 
 ---
 
@@ -380,7 +369,7 @@ Lo stesso principio si applica a domande clinicamente rilevanti:
 - Quanto è **accurato** un test diagnostico?
 - Qual è la **probabilità di aderenza** a un programma?
 
-Vediamo un esempio concreto.
+Vediamo un esempio concreto in cui l'aggiornamento sequenziale offre un vantaggio pratico rispetto all'approccio frequentista.
 
 ---
 
@@ -403,8 +392,6 @@ Prima di iniziare, cosa sappiamo?
 
 ---
 
-## Perché Beta(6, 6)?
-
 ```{r}
 #| echo: true
 # La media di Beta(6, 6) è:
@@ -422,14 +409,10 @@ Il prior Beta(6, 6) è come dire: "Prima di vedere i dati, mi aspetto che circa 
 
 ```{r}
 #| echo: false
-# Griglia di valori per theta
+#| fig-height: 4.5
 theta <- seq(0, 1, length.out = 200)
 prior_dens <- dbeta(theta, alpha_prior, beta_prior)
-```
 
-```{r}
-#| echo: false
-#| fig-height: 4.5
 ggplot(data.frame(theta = theta, dens = prior_dens), 
        aes(x = theta, y = dens)) +
   geom_line(linewidth = 1.5, color = "gray50") +
@@ -475,113 +458,58 @@ aggiorna_beta <- function(alpha, beta, dati) {
   nuovo_alpha <- alpha + successi
   nuovo_beta  <- beta + insuccessi
 
-  # Restituiamo una lista (più semplice da usare)
   list(alpha = nuovo_alpha, beta = nuovo_beta)
 }
 ```
 
----
-
-## Spiegazione della funzione
-
-La funzione fa esattamente ciò che abbiamo visto "a mano":
-
-1. **conta i successi:** `sum(dati)` — quante remissioni?
-2. **conta gli insuccessi:** `length(dati) - successi` — quanti non migliorati?
-3. **aggiorna alpha:** aggiungi i successi;
-4. **aggiorna beta:** aggiungi gli insuccessi.
+La funzione conta i successi e gli insuccessi, poi aggiorna i parametri — esattamente ciò che abbiamo fatto "a mano" nel segmento precedente.
 
 ---
 
-## Prepariamo i dati mensili
+## Aggiornamento mese per mese
 
 ```{r}
 #| echo: true
-# Definiamo i dati mensili (1 = remissione, 0 = no remissione)
-mese1 <- c(1, 1, 0, 1)           # 3 remissioni su 4
-mese2 <- c(0, 1, 1, 1, 0)        # 3 remissioni su 5  
-mese3 <- c(1, 1, 1, 0, 1, 1)     # 5 remissioni su 6
-
-# Prior basato sulla letteratura: Beta(6, 6)
-alpha_prior <- 6
-beta_prior <- 6
-
-cat("PRIOR INIZIALE:\n")
-cat("Beta(", alpha_prior, ",", beta_prior, ")\n")
-cat("Media prior:", round(alpha_prior/(alpha_prior + beta_prior), 3), "\n")
-```
-
----
-
-## Dopo il Mese 1
-
-```{r}
-#| echo: true
-# Inizializziamo i parametri correnti
+# Prior iniziale
 alpha_corrente <- alpha_prior
 beta_corrente <- beta_prior
+```
 
-# Aggiorniamo con i dati del mese 1
+```{r}
+# Mese 1
 parametri <- aggiorna_beta(alpha_corrente, beta_corrente, mese1)
 alpha_corrente <- parametri$alpha
 beta_corrente <- parametri$beta
-
-cat("MESE 1:\n")
-cat("Dati:", sum(mese1), "remissioni su", length(mese1), "pazienti\n")
-cat("Posterior: Beta(", alpha_corrente, ",", beta_corrente, ")\n")
+cat("Mese 1:", sum(mese1), "remissioni su", length(mese1),
+    "→ Beta(", alpha_corrente, ",", beta_corrente, ")",
+    "| Media:", round(alpha_corrente/(alpha_corrente + beta_corrente), 3), 
+    "\n")
 ```
 
 ---
 
 ```{r}
-cat("Media posterior:", round(alpha_corrente/(alpha_corrente + beta_corrente), 3), "\n")
-cat("P(θ > 0.5):", round((1 - pbeta(0.5, alpha_corrente, beta_corrente))*100, 1), "%\n")
-```
-
----
-
-## Dopo il Mese 2
-
-```{r}
-#| echo: true
-# Il posterior del mese 1 diventa il prior del mese 2
+# Mese 2
 parametri <- aggiorna_beta(alpha_corrente, beta_corrente, mese2)
 alpha_corrente <- parametri$alpha
 beta_corrente <- parametri$beta
-
-cat("MESE 2:\n")
-cat("Dati:", sum(mese2), "remissioni su", length(mese2), "pazienti\n")
-cat("Posterior: Beta(", alpha_corrente, ",", beta_corrente, ")\n")
+cat("Mese 2:", sum(mese2), "remissioni su", length(mese2),
+    "→ Beta(", alpha_corrente, ",", beta_corrente, ")",
+    "| Media:", round(alpha_corrente/(alpha_corrente + beta_corrente), 3), 
+    "\n")
 ```
 
 ---
 
 ```{r}
-cat("Media posterior:", round(alpha_corrente/(alpha_corrente + beta_corrente), 3), "\n")
-cat("P(θ > 0.5):", round((1 - pbeta(0.5, alpha_corrente, beta_corrente))*100, 1), "%\n")
-```
-
----
-
-## Dopo il Mese 3
-
-```{r}
-#| echo: true
-# Il posterior del mese 2 diventa il prior del mese 3
+# Mese 3
 parametri <- aggiorna_beta(alpha_corrente, beta_corrente, mese3)
 alpha_corrente <- parametri$alpha
 beta_corrente <- parametri$beta
-
-cat("MESE 3:\n")
-cat("Dati:", sum(mese3), "remissioni su", length(mese3), "pazienti\n")
-cat("Posterior: Beta(", alpha_corrente, ",", beta_corrente, ")\n")
-```
-
----
-
-```{r}
-cat("Media posterior:", round(alpha_corrente/(alpha_corrente + beta_corrente), 3), "\n")
-cat("P(θ > 0.5):", round((1 - pbeta(0.5, alpha_corrente, beta_corrente))*100, 1), "%\n")
+cat("Mese 3:", sum(mese3), "remissioni su", length(mese3),
+    "→ Beta(", alpha_corrente, ",", beta_corrente, ")",
+    "| Media:", round(alpha_corrente/(alpha_corrente + beta_corrente), 3), 
+    "\n")
 ```
 
 ---
@@ -604,7 +532,6 @@ Le credenze si spostano progressivamente verso valori più alti di $\theta$.
 ```{r}
 #| echo: false
 #| fig-height: 5.5
-library(ggplot2)
 
 theta <- seq(0, 1, length.out = 500)
 
@@ -639,51 +566,41 @@ ggplot(distribuzioni, aes(x = theta, y = densita, color = periodo)) +
 
 ---
 
-## Take-home message
+## La domanda clinica cruciale {background-color="#2c3e50" style="color: white;"}
 
-**L'aggiornamento bayesiano in pratica:**
+> "Qual è la probabilità che la terapia sia efficace ($\theta > 50\%$)?"
 
-1. **Inizia con un prior** — Beta(6, 6) basato sulla letteratura.
-2. **Aggiorna con nuovi dati** — funzione `aggiorna_beta()`.
-3. **Il posterior diventa il nuovo prior** — aggiornamento sequenziale.
-4. **Monitora le metriche chiave** — media, P(θ > soglia).
-
-**Vantaggio clinico:** èossiamo prendere decisioni informate in tempo reale, non solo alla fine dello studio!
-
----
-
-## La domanda clinica cruciale
-
-> "Qual è la probabilità che la terapia sia efficace (θ > 50%)?"
-
-Con l'approccio bayesiano, possiamo rispondere **direttamente**.
-
----
-
-## Calcolo della probabilità
+. . .
 
 ```{r}
 #| echo: true
 # Probabilità che theta > 0.5 dopo 3 mesi
-# Usiamo la funzione pbeta che calcola P(theta <= x)
-# Quindi P(theta > 0.5) = 1 - P(theta <= 0.5)
-
 prob_efficace <- 1 - pbeta(0.5, shape1 = 17, shape2 = 10)
 cat("P(θ > 0.50) =", round(prob_efficace * 100, 1), "%")
 ```
 
+. . .
+
+C'è il **93%** di probabilità che il vero tasso di remissione sia superiore al 50%. La stima più probabile è circa il 63%.
+
 ---
 
-## Interpretazione per il clinico
+## Cosa sarebbe successo con il frequentismo? {background-color="#2c3e50" style="color: white;"}
 
-**Dati osservati:** 11 remissioni su 15 pazienti (73%)
+. . .
 
-**Conclusione bayesiana:**
+Un ricercatore frequentista avrebbe dovuto fissare *prima dello studio* quanti pazienti arruolare, poi calcolare il valore-$p$ *una sola volta* alla fine. Se avesse controllato i risultati ogni mese — come farebbe naturalmente un clinico — il tasso di falsi positivi sarebbe aumentato (il problema dell'*optional stopping* che abbiamo visto nella lezione 16).
 
-- C'è il **93%** di probabilità che il vero tasso di remissione sia superiore al 50%.
-- La stima più probabile è circa **63%**.
 
-**Raccomandazione:** I dati supportano l'efficacia della terapia. Si può continuare il trattamento con fiducia.
+---
+
+## Cosa sarebbe successo con il frequentismo? {background-color="#2c3e50" style="color: white;"}
+
+L'approccio bayesiano non soffre di questo problema. Il clinico può legittimamente controllare i risultati dopo ogni mese, aggiornare le proprie credenze e prendere decisioni in tempo reale — senza violare alcuna assunzione statistica.
+
+. . .
+
+Questa è una differenza pratica enorme per chi lavora in contesti clinici.
 
 ---
 
@@ -692,47 +609,53 @@ cat("P(θ > 0.50) =", round(prob_efficace * 100, 1), "%")
 ```{r}
 #| echo: true
 # Probabilità di efficacia dopo ogni mese
-cat("Prior:      P(θ > 0.50) =", round((1 - pbeta(0.5, 6, 6)) * 100, 1), "%\n")
+cat("Prior: P(θ > 0.50) =", round((1 - pbeta(0.5, 6, 6)) * 100, 1), "%\n")
 cat("Dopo Mese 1: P(θ > 0.50) =", round((1 - pbeta(0.5, 9, 7)) * 100, 1), "%\n")
 cat("Dopo Mese 2: P(θ > 0.50) =", round((1 - pbeta(0.5, 12, 9)) * 100, 1), "%\n")
 cat("Dopo Mese 3: P(θ > 0.50) =", round((1 - pbeta(0.5, 17, 10)) * 100, 1), "%\n")
 ```
 
-La certezza aumenta progressivamente con l'accumulo di evidenza!
+La certezza aumenta progressivamente con l'accumulo di evidenza.
 
 ---
 
-## Vantaggi dell'approccio bayesiano in clinica
+## Interpretazione per il clinico
 
-1. **Aggiornamento in tempo reale** — Non devo aspettare la fine dello studio.
+**Dati osservati:** 11 remissioni su 15 pazienti (73%)
 
-2. **Quantifica l'incertezza** — Non solo "significativo/non significativo".
+**Conclusione bayesiana:** c'è il 93% di probabilità che il vero tasso di remissione sia superiore al 50%, con una stima centrale di circa il 63%.
 
-3. **Incorpora la letteratura** — Il prior riflette la conoscenza pregressa.
+**Raccomandazione:** i dati supportano l'efficacia della terapia. Si può continuare il trattamento con fiducia e l'evidenza si rafforzerà ulteriormente con i prossimi pazienti — il posterior di oggi diventerà il prior di domani.
 
-4. **Interpretazione diretta** — "C'è il 93% di probabilità che funzioni."
+# Riepilogo e percorso del corso
+
+## Il percorso fin qui {background-color="#27ae60" style="color: white;"}
+
+. . .
+
+**Lezioni 5-11** — Probabilità, distribuzioni, verosimiglianza.
+
+**Lezioni 14-16** — Inferenza frequentista e crisi di replicabilità.
+
+**Lezione 17** — I tre ingredienti: prior, verosimiglianza, posterior. La formula di Bayes. L'approssimazione a griglia.
+
+**Lezione 18 (oggi)** — L'apprendimento sequenziale. La famiglia coniugata Beta-Binomiale. Monitoraggio clinico in tempo reale.
+
+. . .
+
+Nella prossima lezione approfondiremo le **famiglie coniugate** — non solo Beta-Binomiale, ma anche Normale-Normale — e vedremo come queste scorciatoie analitiche si collegano alla teoria.
 
 ---
 
-## Take-Home Messages
+## Riepilogo
 
-1. **Il posterior diventa il prior:** L'apprendimento è cumulativo.
+1. **Il posterior diventa il prior:** l'apprendimento è cumulativo.
 
-2. **Beta + Binomiale = Beta:** L'aggiornamento richiede solo somme.
+2. **Beta + Binomiale = Beta:** l'aggiornamento richiede solo somme — niente griglie, niente integrali.
 
-3. **Applicabile in contesti reali:** Monitoraggio clinico, valutazione terapie.
+3. **Monitoraggio in tempo reale:** a differenza del frequentismo, possiamo controllare i risultati in qualsiasi momento senza gonfiare i falsi positivi.
 
-4. **Probabilità dirette:** Risposte alle domande che davvero ci interessano.
-
----
-
-## Prossimi passi
-
-Nella prossima lezione approfondiremo:
-
-- Le **famiglie coniugate** (Beta-Binomiale, Normale-Normale)
-- Perché funzionano e quando usarle
-- Altri esempi con dati continui
+4. **Probabilità dirette:** "C'è il 93% di probabilità che la terapia funzioni" è la risposta che il clinico cerca.
 
 ---
 
@@ -744,4 +667,4 @@ Materiale di studio: https://ccaudek.github.io/utet-companion/
 
 "Distribuzioni coniugate: Beta-Binomiale, Normale-Normale."
 
-Vedremo come alcune combinazioni di prior e likelihood hanno soluzioni eleganti in forma chiusa.
+Vedremo come alcune combinazioni di prior e likelihood hanno soluzioni eleganti in forma chiusa — e perché questo ci sarà utile quando passeremo ai metodi computazionali.

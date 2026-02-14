@@ -46,13 +46,13 @@ set.seed(42)
 - il concetto di distribuzione campionaria;
 - l'errore standard.
 
-. . .
+---
 
 **Parte 2:** vedremo
 
 - simulazioni R per consolidare l'intuizione;
 - l'intervallo di confidenza: cosa è (e cosa **non** è);
-- perché conta per la ricerca psicologica.
+- perché tutto questo è al centro della crisi di riproducibilità.
 
 # Parte 1: simulazioni approfondite
 
@@ -113,7 +113,7 @@ Nel nostro caso:
 medie <- replicate(n_campioni, {     # Ripeti 1000 volte...
   campione <- rnorm(n, mean = mu, sd = sigma)  # 1. Estrai n valori
   mean(campione)                     # 2. Calcola la media
-})                                    # Tutti i risultati in 'medie'
+})                                   # Tutti i risultati in 'medie'
 ```
 
 ---
@@ -145,11 +145,11 @@ Entrambi funzionano, ma `replicate()` è:
 ### Equivalente con ciclo `for`
 
 ```r
-medie <- numeric(n_campioni)          # Crea contenitore vuoto
+medie <- numeric(n_campioni)         # Crea contenitore vuoto
 
 for (i in 1:n_campioni) {            # Per i da 1 a 1000...
   campione <- rnorm(n, mean = mu, sd = sigma)  # Estrai campione
-  medie[i] <- mean(campione)          # Calcola e salva media
+  medie[i] <- mean(campione)         # Calcola e salva media
 }
 ```
 
@@ -245,187 +245,240 @@ cat("SE con n = 100:", round(sigma/sqrt(100), 2), "\n")
 . . .
 
 ::: {.callout-warning}
-Con campioni piccoli (tipici in psicologia: n = 20-30), le medie campionarie **variano molto** tra uno studio e l'altro, anche se l'effetto è reale e costante.
+Con campioni piccoli (tipici in psicologia: $n$ = 20-30), le medie campionarie **variano molto** tra uno studio e l'altro, anche se l'effetto è reale e costante.
 :::
 
-# Parte 2: l'intervallo di confidenza
+# Parte 2: L'intervallo di confidenza
 
 ## Dalla distribuzione campionaria all'incertezza
 
-Sappiamo che la media campionaria varia da campione a campione.
+Sappiamo che la media campionaria **varia** da campione a campione.
 
-Come **quantifichiamo questa incertezza** in modo utile?
+**Domanda:** come possiamo *quantificare* questa incertezza in modo utile e comunicabile?
 
-. . .
-
-* **L'intervallo di confidenza** (IC) è il tentativo frequentista di rispondere a questa domanda.
-
----
-
-## La formula dell'IC al 95%
-
-Per la media di un campione:
-
-$$
-IC_{95\%} = \bar{x} \pm 1.96 \times SE = \bar{x} \pm 1.96 \times \frac{s}{\sqrt{n}}.
-$$
-
-. . .
-
-Il valore 1.96 viene dalla distribuzione normale: il 95% dei valori cade entro ±1.96 deviazioni standard dalla media.
+::: {.callout-note}
+**La risposta frequentista:**  
+l'**intervallo di confidenza** (IC) — un metodo per tradurre la variabilità campionaria in una stima intervallare del parametro ignoto.
+:::
 
 ---
 
-## 1) Assunzioni e distribuzione della media
+## L'idea in una frase
 
-Supponiamo $X_1,\dots,X_n \overset{iid}{\sim} \mathcal N(\mu,\sigma^2).$
+> Partiamo da ciò che **sappiamo** sulla distribuzione campionaria  
+> e lo **ribaltiamo** per ottenere un'affermazione sul parametro.
 
-Allora la media campionaria
+---
+
+## 1) Le assunzioni di partenza
+
+Supponiamo che il campione provenga da una popolazione normale con varianza nota:
 
 $$
-\bar X=\frac{1}{n}\sum_{i=1}^n X_i
+X_1,\dots,X_n \overset{\text{iid}}{\sim} \mathcal N(\mu,\sigma^2).
 $$
 
-ha distribuzione:
+Allora la **media campionaria** segue una distribuzione normale:
 
 $$
-\bar X \sim \mathcal N\!\left(\mu,\frac{\sigma^2}{n}\right).
+\bar X = \frac{1}{n}\sum_{i=1}^n X_i \qquad\sim\qquad \mathcal N\!\left(\mu,\frac{\sigma^2}{n}\right)
 $$
 
 ---
 
-Quindi la variabile standardizzata
+## 2) Standardizziamo
+
+Se sottraiamo la media e dividiamo per la deviazione standard, otteniamo una variabile **normale standard**:
 
 $$
-Z=\frac{\bar X-\mu}{\sigma/\sqrt{n}}
-$$
-segue una normale standard:
-
-$$
-Z \sim \mathcal N(0,1).
+Z = \frac{\bar X - \mu}{\sigma/\sqrt{n}} \quad\sim\quad \mathcal N(0,1)
 $$
 
 ---
 
-## 2) Prendiamo il 95% centrale della normale standard
+## 3) Prendiamo il 95% centrale della normale
 
 Per definizione del quantile $z_{0.975}$:
 
 $$
 \mathbb P(-z_{0.975} \le Z \le z_{0.975}) = 0.95
 $$
-e numericamente
+
+Sappiamo che $z_{0.975} \approx 1.96$.
+
+Dunque:
 
 $$
-z_{0.975}\approx 1.96.
-$$
-
----
-
-Quindi:
-
-$$
-\mathbb P\!\left(-1.96 \le \frac{\bar X-\mu}{\sigma/\sqrt{n}} \le 1.96\right)=0.95.
+\mathbb P\!\left(-1.96 \le \frac{\bar X - \mu}{\sigma/\sqrt{n}} \le 1.96\right) = 0.95
 $$
 
 ---
 
-## 3) “Invertiamo” l’ineguaglianza 
+## 4) Il passaggio cruciale: **invertire** l'ineguaglianza
 
-Partiamo da:
+Finora abbiamo fatto un'affermazione su $\bar X$ **dato $\mu$**.  
+Ora la **invertiamo** in un'affermazione su $\mu$ **dato $\bar X$**.
+
+---
+
+**Passo 1** — Moltiplichiamo per $\sigma/\sqrt{n} > 0$:
 
 $$
--1.96 \le \frac{\bar X-\mu}{\sigma/\sqrt{n}} \le 1.96.
+-1.96\frac{\sigma}{\sqrt{n}} \le \bar X - \mu \le 1.96\frac{\sigma}{\sqrt{n}}
 $$
 
-Moltiplichiamo **tutti e tre i membri** per $\sigma/\sqrt{n}$ (quantità positiva, quindi i versi non cambiano):
+**Passo 2** — Sottraiamo $\bar X$:
 
 $$
--1.96\frac{\sigma}{\sqrt{n}} \le \bar X-\mu \le 1.96\frac{\sigma}{\sqrt{n}}.
+-\bar X -1.96\frac{\sigma}{\sqrt{n}} \le -\mu \le -\bar X + 1.96\frac{\sigma}{\sqrt{n}}
+$$
+
+**Passo 3** — Moltiplichiamo per $-1$ **invertendo i versi**:
+
+$$
+\bar X + 1.96\frac{\sigma}{\sqrt{n}} \ge \mu \ge \bar X - 1.96\frac{\sigma}{\sqrt{n}}
 $$
 
 ---
 
-Ora sottraiamo $\bar X$ a tutti i membri:
+**Passo 4** — Riscriviamo in ordine crescente:
 
 $$
--\bar X -1.96\frac{\sigma}{\sqrt{n}} \le -\mu \le -\bar X + 1.96\frac{\sigma}{\sqrt{n}}.
-$$
-
-Moltiplichiamo per $-1$ (qui **i versi si invertono**):
-
-$$
-\bar X +1.96\frac{\sigma}{\sqrt{n}} \ge \mu \ge \bar X - 1.96\frac{\sigma}{\sqrt{n}}.
-$$
-
-Riscriviamolo in ordine “crescente”:
-
-$$
-\bar X - 1.96\frac{\sigma}{\sqrt{n}} \le \mu \le \bar X + 1.96\frac{\sigma}{\sqrt{n}}.
+\bar X - 1.96\frac{\sigma}{\sqrt{n}} \;\le\; \mu \;\le\; \bar X + 1.96\frac{\sigma}{\sqrt{n}}
 $$
 
 ---
 
-Ora rimettiamo la probabilità:
+## 5) Rimettiamo la probabilità
+
+Ora l'incognita $\mu$ è **al centro** della disuguaglianza:
 
 $$
-\mathbb P\!\left(\bar X - 1.96\frac{\sigma}{\sqrt{n}} \le \mu \le \bar X + 1.96\frac{\sigma}{\sqrt{n}}\right)=0.95.
-$$
-
----
-
-**Questo è esattamente un intervallo di confidenza frequentista al 95%**: 
-
-> una procedura che, ripetuta su infiniti campioni, contiene $\mu$ nel 95% dei casi.
-
-Quindi l’IC è:
-
-$$
-IC_{95\%} = \left[ \bar{x} - 1.96 \frac{\sigma}{\sqrt{n}},\ \bar{x} + 1.96 \frac{\sigma}{\sqrt{n}} \right].
+\mathbb P\!\left(\bar X - 1.96\frac{\sigma}{\sqrt{n}} \;\le\; \mu \;\le\; \bar X + 1.96\frac{\sigma}{\sqrt{n}}\right) = 0.95
 $$
 
 ---
 
-## 4) Da $\sigma$ a $s$: la formula pratica 
+## Questa è la definizione formale di un **intervallo di confidenza frequentista al 95%** {background-color="#2c3e50" style="color: white;"}
 
-Nella realtà $\sigma$ (deviazione standard della popolazione) **è quasi sempre ignota**.
+> Una **procedura** che, applicata a infiniti campioni dalla stessa popolazione, produce intervalli che **contengono il vero parametro $\mu$ nel 95% dei casi**.
+
+---
+
+## 6) Sul singolo campione
+
+Quando osserviamo un **singolo campione**, otteniamo un valore specifico $\bar x$:
+
+$$
+IC_{95\%} = \left[ \bar{x} - 1.96 \frac{\sigma}{\sqrt{n}},\; \bar{x} + 1.96 \frac{\sigma}{\sqrt{n}} \right]
+$$
+
+---
+
+::: {.callout-warning}
+
+## Attenzione — L'errore di interpretazione più comune
+
+| ✅ **Cosa significa il 95%** | ❌ **Cosa NON significa** |
+|-----------------------------|---------------------------|
+| La **procedura** ha una probabilità del 95% di produrre un intervallo che contiene $\mu$, **prima** di osservare i dati. | C'è il 95% di probabilità che $\mu$ sia in **questo specifico intervallo**, **dopo** aver osservato i dati. |
+| Su infiniti campioni, il 95% degli intervalli conterrà $\mu$. | $\mu$ ha il 95% di probabilità di cadere qui. |
+
+**Perché?**  
+$\mu$ **non è una variabile casuale**. È un valore fisso (anche se sconosciuto).  
+L'intervallo calcolato **lo contiene o non lo contiene** — non c'è spazio per la probabilità *a posteriori*.
+
+:::
+
+---
+
+## 7) Nella realtà: $\sigma$ è quasi sempre ignota
+
+Finora abbiamo assunto $\sigma$ **nota**.  
 
 . . .
 
-
-Allora la si stima con la deviazione standard campionaria $s$ e si scrive:
-
-$$
-IC_{95\%} \approx \bar{x} \pm 1.96 \frac{s}{\sqrt{n}}.
-$$
-
-Questa è una **approssimazione** (buona quando $n$ è abbastanza grande o quando la popolazione è normale e $n$ non è minuscolo).
+Nella pratica, la deviazione standard della popolazione **non è mai nota**.
 
 ---
 
-## 5) La versione “esatta” con $\sigma$ ignota 
-
-Se $\sigma$ è ignota e i dati sono normali, il pivot corretto è:
+**Soluzione:** la stimiamo con la deviazione standard campionaria $s$:
 
 $$
-T=\frac{\bar X-\mu}{s/\sqrt{n}} \sim t_{n-1}.
+IC_{95\%} \;\approx\; \bar{x} \pm 1.96 \frac{s}{\sqrt{n}}
+$$
+
+. . .
+
+Questa è una **approssimazione** — valida per campioni grandi (per il teorema del limite centrale) o per dati normali con $n$ non troppo piccolo.
+
+---
+
+## 8) La versione esatta: distribuzione t di Student
+
+Se $\sigma$ è ignota **e** i dati sono normali, il pivot corretto è:
+
+$$
+T = \frac{\bar X - \mu}{s/\sqrt{n}} \;\sim\; t_{n-1}
+$$
+
+dove $t_{n-1}$ è la **distribuzione t di Student** con $n-1$ gradi di libertà.
+
+---
+
+Il 95% centrale diventa:
+
+$$
+\mathbb P\!\left(-t_{0.975,\;n-1} \le \frac{\bar X - \mu}{s/\sqrt{n}} \le t_{0.975,\;n-1}\right) = 0.95
+$$
+
+Invertendo come prima:
+
+$$
+IC_{95\%} = \bar x \;\pm\; t_{0.975,\;n-1} \frac{s}{\sqrt{n}}
 $$
 
 ---
 
-Allora il 95% centrale diventa:
+::: {.callout-note}
 
-$$
-\mathbb P\!\left(-t_{0.975,n-1}\le \frac{\bar X-\mu}{s/\sqrt{n}}\le t_{0.975,n-1}\right)=0.95.
-$$
+## Confronto: 1.96 vs t
 
-e invertendo la formula in modo identico come sopra, si ottiene:
+| $n$ | $t_{0.975,\;n-1}$ | Differenza da 1.96 |
+|-----|-------------------|---------------------|
+| 10  | 2.26             | +0.30               |
+| 30  | 2.04             | +0.08               |
+| 100 | 1.98             | +0.02               |
+| ∞   | 1.96             | —                   |
 
-$$
-IC_{95\%}=\bar x \pm t_{0.975,n-1}\frac{s}{\sqrt{n}}.
-$$
+**All'aumentare di $n$, $t$ tende a 1.96.**  
+Per $n$ piccolo, usare 1.96 invece del valore corretto **sottostima** l'incertezza.
 
-Qui **non** compare 1.96, ma $t_{0.975,n-1}$ (che tende a 1.96 quando $n\to\infty$).
+:::
+
+---
+
+## Riepilogo: il percorso logico dell'IC
+
+---
+
+| Passo | Operazione | Risultato |
+|-------|------------|-----------|
+| ① | Distribuzione campionaria | $\bar X \sim \mathcal N(\mu, \sigma^2/n)$ |
+| ② | Standardizzazione | $Z = (\bar X - \mu)/(\sigma/\sqrt{n}) \sim \mathcal N(0,1)$ |
+| ③ | Quantile normale | $\mathbb P(-1.96 \le Z \le 1.96) = 0.95$ |
+| ④ | Inversione algebrica | $\mathbb P\big(\bar X - 1.96\sigma/\sqrt{n} \le  \\ \mu \le \bar X + 1.96\sigma/\sqrt{n}\big) = 0.95$ |
+| ⑤ | Applicazione al campione | $IC = \bar x \pm 1.96 \sigma/\sqrt{n}$ |
+| ⑥ | Caso reale ($\sigma$ ignota) | $IC = \bar x \pm t_{n-1} \cdot s/\sqrt{n}$ |
+
+---
+
+::: {style="background-color: #2c3e50; color: white; padding: 1.5em; border-radius: 8px; text-align: center;"}
+
+**L'intervallo di confidenza non è una risposta su $\mu$.  
+È una dichiarazione di affidabilità del metodo che abbiamo usato.**
+
+:::
 
 ---
 
@@ -484,7 +537,7 @@ Ma **non possiamo sempre saperlo**: nella realtà $\mu$ è sconosciuto.
 
 ::: {.columns}
 ::: {.column width="48%"}
-### ✗ Interpretazione ERRATA
+### Interpretazione ERRATA
 
 "C'è il 95% di probabilità che il vero valore del parametro sia in questo intervallo"
 :::
@@ -493,7 +546,7 @@ Ma **non possiamo sempre saperlo**: nella realtà $\mu$ è sconosciuto.
 :::
 
 ::: {.column width="48%"}
-### ✓ Interpretazione CORRETTA
+### Interpretazione CORRETTA
 
 "Se ripetessimo lo studio infinite volte, il 95% degli intervalli così costruiti conterrebbe il vero valore"
 :::
@@ -509,7 +562,7 @@ L'interpretazione frequentista riguarda la **procedura**, non **questo particola
 
 - Il **parametro** $\mu$ è **fisso** (non casuale) — semplicemente non lo conosciamo.
 - L'**intervallo** è **casuale** — varia da campione a campione.
-- Questo intervallo specifico **o contiene μ o non lo contiene** — non c'è probabilità.
+- Questo intervallo specifico **o contiene μ o non lo contiene** — non c'è una probabilità.
 
 ---
 
@@ -592,7 +645,7 @@ Dopo un singolo lancio:
 . . .
 
 ::: {.callout-note}
-L'intervallo di confidenza è la "rete". Il parametro è il "pesce".
+L'intervallo di confidenza è la "rete". Il parametro è il "pesce". Il paradosso è che abbiamo fatto un solo lancio e non possiamo guardare dentro la rete.
 :::
 
 # Parte 4: errori comuni di interpretazione
@@ -603,7 +656,7 @@ Ricercatori e studenti hanno risposto a un quiz su cosa significa un IC al 95%.
 
 . . .
 
-**Risultato:** la maggior parte ha scelto interpretazioni **errate**.
+**Risultato:** la maggior parte ha scelto interpretazioni **errate** — inclusi i ricercatori con dottorato.
 
 ---
 
@@ -620,38 +673,76 @@ Ricercatori e studenti hanno risposto a un quiz su cosa significa un IC al 95%.
 . . .
 
 ::: {.callout-warning}
-Anche ricercatori esperti commettono questi errori!
+Anche ricercatori esperti commettono questi errori! Il fatto che l'interpretazione corretta sia controintuitiva non è un dettaglio — è un problema strutturale dell'approccio frequentista.
 :::
 
 ---
 
 ## Perché queste interpretazioni sono errate?
 
-**Affermazione 1:** "La probabilità che μ sia nell'intervallo è 95%"
+### **Affermazione 1:**
 
-- Nel framework frequentista, μ è **fisso**, non ha una distribuzione di probabilità.
-- L'intervallo o lo contiene o no — non c'è probabilità.
+> "La probabilità che μ sia nell'intervallo è 95%"
 
-. . .
+* Nel framework frequentista, μ è **fisso**, non è una variabile casuale.
+* Non ha una distribuzione di probabilità.
+* L’intervallo, una volta calcolato, o contiene μ oppure no.
+* Il 95% si riferisce alla **procedura**, non al parametro.
 
-**Affermazione 2:** "Il 95% dei dati cade nell'intervallo"
+---
 
-- L'IC riguarda il **parametro** (μ), non i **dati**.
-- La variabilità dei dati è molto maggiore della variabilità della media.
+### **Affermazione 2:**
+
+> "Il 95% dei dati cade nell'intervallo"
+
+* L’intervallo di confidenza riguarda il **parametro μ**, non i singoli dati.
+* I dati sono molto più variabili della media campionaria.
+* Un IC al 95% non è un intervallo che contiene il 95% delle osservazioni.
+* Questo sarebbe un **intervallo di previsione**, che è un oggetto diverso.
+
+---
+
+### **Affermazione 3:**
+
+> "Se ripetessi lo studio, il 95% delle volte la media cadrebbe in questo intervallo"
+
+* L’intervallo è stato costruito usando **questa specifica media campionaria**.
+* Se ripetessimo lo studio, cambierebbe la media → cambierebbe anche l’intervallo.
+* Non stiamo chiedendo dove cadrà la media. Stiamo chiedendo quante volte l’intervallo costruito con la procedura conterrà μ.
+
+👉 È l’intervallo che varia da campione a campione, non μ.
+
+---
+
+### **Affermazione 4:**
+
+> "C'è il 95% di probabilità che la media del prossimo campione cada in questo intervallo"
+
+* L’IC non è progettato per catturare **future medie campionarie**.
+* Per quello servirebbe un **intervallo di previsione per la media futura**, che è diverso.
+* L’IC descrive la relazione tra la media osservata e il parametro μ, non tra campioni diversi.
+
+---
+
+## Interpretazione corretta 
+
+Un intervallo di confidenza al 95% significa:
+
+> se ripetessimo il campionamento molte volte e costruissimo ogni volta l’intervallo con la stessa procedura, circa il 95% di quegli intervalli conterrebbe il vero valore μ.
 
 ---
 
 ## Esempio: training cognitivo e QI
 
-**Studio:** Effetto del brain training su n = 30 partecipanti.
+**Studio:** effetto del brain training su n = 30 partecipanti.
 
-**Risultato:** Differenza media pre-post: +3.5 punti QI, con IC 95% = [1.2, 5.8]
+**Risultato:** differenza media pre-post: +3.5 punti QI, con IC 95% = [1.2, 5.8].
 
 . . .
 
 ::: {.columns}
 ::: {.column width="48%"}
-### ✗ ERRATO
+### ERRATO
 
 "C'è il 95% di probabilità che il vero effetto del training sia tra 1.2 e 5.8 punti"
 :::
@@ -660,11 +751,29 @@ Anche ricercatori esperti commettono questi errori!
 :::
 
 ::: {.column width="48%"}
-### ✓ CORRETTO
+### CORRETTO
 
 "Se ripetessimo questo studio infinite volte, il 95% degli IC costruiti così conterrebbe il vero effetto"
 :::
 :::
+
+---
+
+## L'ironia della situazione {background-color="#2c3e50" style="color: white;"}
+
+. . .
+
+L'interpretazione *errata* dell'IC — "c'è il 95% di probabilità che il parametro sia qui dentro" — è in realtà la domanda a cui vorremmo davvero rispondere.
+
+. . .
+
+E l'approccio bayesiano, attraverso l'**intervallo di credibilità**, risponde esattamente a *quella* domanda: dato ciò che abbiamo osservato e le nostre conoscenze pregresse, con quale probabilità il parametro cade in un certo intervallo?
+
+---
+
+## L'ironia della situazione {background-color="#2c3e50" style="color: white;"}
+
+In altre parole: l'interpretazione che le persone *pensano* di dare all'IC frequentista è di fatto l'interpretazione *corretta* dell'intervallo di credibilità bayesiano. Questo aiuta a capire perché l'approccio bayesiano è spesso percepito come più naturale.
 
 # Parte 5: perché conta per la psicologia
 
@@ -672,7 +781,7 @@ Anche ricercatori esperti commettono questi errori!
 
 Uno psicologo non può dire:
 
-> "C'è il 95% di probabilità che questo trattamento funzioni per lei".
+> "c'è il 95% di probabilità che questo trattamento funzioni per lei".
 
 . . .
 
@@ -688,15 +797,53 @@ Molti articoli **interpretano erroneamente** i propri risultati.
 
 Frasi come:
 
-> "L'intervallo di confidenza indica che c'è una probabilità del 95% che l'effetto reale sia compreso tra..."
+> "l'intervallo di confidenza indica che c'è una probabilità del 95% che l'effetto reale sia compreso tra..."
 
-...sono **tecnicamente scorrette**, ma molto comuni.
+...sono **tecnicamente scorrette**, ma molto comuni — anche su riviste di alto impatto.
 
 ---
 
-## Replicabilità
+## La crisi di riproducibilità: i numeri {background-color="#e74c3c" style="color: white;"}
 
-Capire l'IC aiuta a capire **perché risultati "significativi" spesso non si replicano**.
+. . .
+
+Nel 2015, il progetto *Reproducibility Project: Psychology* ha replicato 100 studi: solo il 36% delle repliche ha raggiunto la significatività, contro il 97% degli studi originali.
+
+. . .
+
+La dimensione media degli effetti nelle repliche era circa la metà di quella riportata negli studi originali.
+
+. . .
+
+Risultati simili sono emersi in economia sperimentale, in oncologia preclinica e in neuroscienze sociali. Non è un problema di una singola disciplina — è un problema del modo in cui la ricerca usa (e abusa) gli strumenti statistici frequentisti.
+
+---
+
+## Perché il frequentismo è al centro della crisi
+
+Diversi fattori concorrono e molti sono legati alla logica dell'inferenza frequentista.
+
+---
+
+**Campioni piccoli + variabilità campionaria.** 
+
+Con $n = 20$-$30$ per gruppo (tipico in psicologia), l'errore standard è grande. Studi con bassa potenza statistica producono stime instabili che oscillano tra "significativo" e "non significativo" a seconda del campione.
+
+---
+
+**La soglia $p < .05$ come criterio binario.** 
+
+Un effetto con $p = .049$ viene pubblicato; lo stesso effetto con $p = .051$ resta nel cassetto. Questa logica "tutto o niente" distorce la letteratura.
+
+---
+
+**Publication bias.** 
+
+Se solo i risultati significativi vengono pubblicati, la letteratura sovrastima sistematicamente la dimensione degli effetti.
+
+---
+
+## La "danza" dei valori-$p$
 
 ```{r}
 #| echo: false
@@ -730,25 +877,75 @@ ggplot(df_studi, aes(x = studio, y = media, color = significativo)) +
 
 ---
 
+## Cosa vediamo nel grafico {background-color="#2c3e50" style="color: white;"}
+
+. . .
+
+Tutti e 10 gli studi misurano **lo stesso effetto reale** (0.5, linea verde). Eppure alcuni raggiungono la significatività statistica e altri no.
+
+. . .
+
+Se venissero pubblicati solo gli studi "significativi" (quelli in blu), un lettore della letteratura concluderebbe che l'effetto è più grande di quanto sia in realtà — perché le stime significative tendono a sovrastimare l'effetto vero (devono essere abbastanza grandi da superare la soglia).
+
+. . .
+
+Questo meccanismo si chiama **errore di tipo M** (*magnitude error*): le stime pubblicate sono sistematicamente esagerate. Ne parleremo in dettaglio nella prossima lezione.
+
+---
+
+## Dalla crisi alle soluzioni
+
+La comunità scientifica ha risposto alla crisi con diverse strategie:
+
+. . .
+
+**Pre-registrazione degli studi:** dichiarare le analisi *prima* di raccogliere i dati, per evitare che si cerchino risultati significativi a posteriori.
+
+. . .
+
+**Spostamento verso la stima:** riportare dimensioni dell'effetto e intervalli di confidenza invece di limitarsi a "significativo/non significativo" (la cosiddetta *new statistics*).
+
+. . .
+
+**Approccio bayesiano:** fornisce direttamente la probabilità dell'ipotesi dati i dati, permette di quantificare l'evidenza *a favore* di $H_0$ (non solo contro) e non dipende da esperimenti ipotetici mai condotti.
+
+---
+
 ## Il problema fondamentale
 
 L'IC risponde alla domanda:
 
-> "Quanto sarebbe variabile la mia stima se ripetessi l'esperimento?"
+> "quanto sarebbe variabile la mia stima se ripetessi l'esperimento?"
 
 . . .
 
 Ma **non risponde** alla domanda che vorremmo porre:
 
-> "Qual è la probabilità che il parametro sia in questo intervallo?"
+> "qual è la probabilità che il parametro sia in questo intervallo?"
 
 . . .
 
 ::: {.callout-important}
-Per rispondere a quest'ultima domanda, serve l'**inferenza bayesiana**.
+Per rispondere a quest'ultima domanda, serve l'**inferenza bayesiana** — che vedremo tra poche lezioni.
 :::
 
 # Riepilogo
+
+## Il percorso fin qui {background-color="#2c3e50" style="color: white;"}
+
+. . .
+
+**Lezioni 5-11** — Probabilità, distribuzioni, valore atteso, covarianza.
+
+**Lezione 12** — Verosimiglianza: come i dati parlano dei parametri.
+
+**Lezione 14 (oggi)** — Inferenza frequentista: distribuzione campionaria, errore standard, IC.
+
+. . .
+
+Avete ora gli strumenti per capire cosa fa l'inferenza frequentista — e cosa *non* fa. Nella prossima lezione vedremo il valore-$p$, i test di ipotesi, e gli errori di tipo S e M. Poi saremo pronti per l'inferenza bayesiana, che risponde direttamente alle domande che il frequentismo lascia senza risposta.
+
+---
 
 ## I punti chiave di oggi
 
@@ -760,17 +957,7 @@ Per rispondere a quest'ultima domanda, serve l'**inferenza bayesiana**.
 
 4. La maggior parte delle interpretazioni comuni degli IC sono **tecnicamente errate**.
 
-5. Queste limitazioni hanno conseguenze reali per la **comunicazione scientifica**.
-
----
-
-## Il messaggio fondamentale
-
-> L'inferenza frequentista si basa su esperimenti che non faremo mai, e risponde a domande che non sono quelle che vorremmo porre.
-
-. . .
-
-Alcuni ricercatori ritengono, quindi, che sia **inutile** — ma in ogni caso, richiede una estrema **cautela interpretativa**.
+5. Queste limitazioni hanno conseguenze reali per la **comunicazione scientifica** e sono al centro della **crisi di riproducibilità**.
 
 ---
 
@@ -795,7 +982,7 @@ Alcuni ricercatori ritengono, quindi, che sia **inutile** — ma in ogni caso, r
 
 - Hoekstra, R., et al. (2014). Robust misinterpretation of confidence intervals. *Psychonomic Bulletin & Review*.
 - Morey, R. D., et al. (2016). The fallacy of placing confidence in confidence intervals. *Psychonomic Bulletin & Review*.
-- Cumming, G. (2014). The new statistics: Why and how. *Psychological Science*.
+- Open Science Collaboration (2015). Estimating the reproducibility of psychological science. *Science*.
 
 ---
 
@@ -807,6 +994,4 @@ Alcuni ricercatori ritengono, quindi, che sia **inutile** — ma in ogni caso, r
 
 . . .
 
-Le simulazioni condotte oggi hanno l'obiettivo di sviluppare **un'intuizione**, non di far memorizzare formule.
-
-Solo con questa intuizione potrete interpretare criticamente i risultati — vostri e altrui.
+Le simulazioni condotte oggi hanno l'obiettivo di sviluppare **un'intuizione**, non di far memorizzare formule. Solo con questa intuizione potrete leggere criticamente la letteratura e decidere, per il vostro lavoro futuro, quali strumenti statistici rispondono davvero alle domande che vi porrete.

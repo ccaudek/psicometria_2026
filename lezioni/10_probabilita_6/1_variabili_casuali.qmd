@@ -1,7 +1,7 @@
 ---
 title: "Variabili casuali"
 subtitle: "Valore atteso e varianza"
-version: 1.0
+version: 2.0
 author:
   - name: Corrado Caudek
     orcid: 0000-0002-1404-0420
@@ -41,6 +41,35 @@ library(knitr)
 library(kableExtra)
 ```
 
+# Riassumere l'incertezza {background-color="#e74c3c" style="color: white;"}
+
+## Un problema concreto
+
+Avete somministrato un test di screening a 200 bambini. Il test ha tre possibili esiti: negativo (0), dubbio (1), positivo (2).
+
+. . .
+
+I risultati:
+
+- 140 negativi, 40 dubbi, 20 positivi.
+
+. . .
+
+Il dirigente scolastico vi chiede:
+
+> *"In sintesi, cosa mi dite? Qual è il risultato tipico? E quanto variano i risultati tra i bambini?"*
+
+---
+
+Per rispondere vi servono due numeri: 
+
+* il **valore atteso** (che cosa è "tipico"), 
+* la **deviazione standard** (quanto i risultati variano). 
+
+Oggi impariamo a calcolarli — e soprattutto a capire cosa significano.
+
+---
+
 ## Obiettivo {.unnumbered .unlisted}
 
 In questa prima parte della lezione introduciamo gli **indicatori sintetici** delle variabili casuali:
@@ -56,10 +85,11 @@ Questi concetti sono fondamentali per descrivere le distribuzioni di probabilit�
 
 Una **variabile casuale** è una funzione che associa un numero a ciascun esito di un esperimento casuale.
 
-**Esempio:** nel lancio di una moneta, definiamo $X$:
+**Esempio clinico:** in uno screening, definiamo $X$:
 
-- $X = 1$ se esce "testa";
-- $X = 0$ se esce "croce".
+- $X = 0$ se il test è negativo;
+- $X = 1$ se il risultato è dubbio;
+- $X = 2$ se il test è positivo.
 
 La variabile casuale trasforma gli esiti qualitativi in **numeri** su cui possiamo fare calcoli.
 
@@ -90,24 +120,39 @@ $$
 
 ---
 
-## Esempio fondamentale: moneta equilibrata
+## Esempio: il test di screening
 
-$X$ = esito del lancio di una moneta (1 = testa, 0 = croce)
+Torniamo al nostro screening. Le frequenze relative sono:
 
-| $x$ | $P(X = x)$ |
-|-----|------------|
-| 0 | 0.5 |
-| 1 | 0.5 |
+| Esito | Punteggio ($x$) | Probabilità |
+|-------|-----------|-------------|
+| Negativo | 0 | 0.70 |
+| Dubbio | 1 | 0.20 |
+| Positivo | 2 | 0.10 |
 
 $$
-\mathbb{E}(X) = 0 \times 0.5 + 1 \times 0.5 = 0.5.
+\mathbb{E}(X) = 0 \times 0.70 + 1 \times 0.20 + 2 \times 0.10 = 0.40.
 $$
-
-> Il valore atteso può essere un valore **impossibile** per la variabile!
 
 ---
 
-## Esempio: lancio di un dado
+> Il punteggio medio atteso è **0.40** — più vicino a "negativo" che a "dubbio". Questo dice al dirigente scolastico che la maggior parte dei bambini è nella norma.
+
+---
+
+## Interpretazione del valore atteso
+
+Il valore atteso è la **media** che otterremmo se ripetessimo l'esperimento **infinite volte**.
+
+. . .
+
+Notate: il valore 0.40 è un punteggio che nessun bambino otterrà mai (i punteggi possibili sono 0, 1, 2). 
+
+<mark>Il valore atteso può essere un valore **impossibile** per la variabile — è una sintesi della distribuzione, non un dato osservabile.</mark>
+
+---
+
+## Esempio classico: lancio di un dado
 
 $Y$ = punteggio ottenuto lanciando un dado equilibrato
 
@@ -119,23 +164,7 @@ $$
 \mathbb{E}(Y) = 1 \cdot \frac{1}{6} + 2 \cdot \frac{1}{6} + \ldots + 6 \cdot \frac{1}{6} = \frac{21}{6} = 3.5.
 $$
 
----
-
-## Interpretazione del valore atteso
-
-Il valore atteso è la **media** che otterremmo se ripetessimo l'esperimento **infinite volte**.
-
----
-
-**Esempio pratico:** 
-
-Se lancio un dado 6000 volte, mi aspetto di ottenere circa:
-
-- 1000 volte il valore 1
-- 1000 volte il valore 2
-- ... e così via
-
-La media sarà circa $\frac{1000(1+2+3+4+5+6)}{6000} = 3.5.$
+Anche qui, 3.5 non è un valore possibile: è il "baricentro" della distribuzione.
 
 ---
 
@@ -169,7 +198,7 @@ La dipendenza influisce sulla **variabilità** ($\text{Var}(X+Y)$), **non** sul 
 
 ---
 
-### Esempio Psicologico: punteggio totale in un Test
+### Esempio psicometrico: punteggio totale in un test
 
 **Contesto:** un test psicometrico breve composto da **due item dicotomici**:
 
@@ -225,8 +254,8 @@ se il test viene somministrato a **molti partecipanti**, il punteggio totale med
 
 Se gli item sono indipendenti (la risposta al primo non influenza la risposta al secondo):
 
-- Probabilità congiunte: $P(X=1, Y=1) = 0.70 \times 0.50 = 0.35$
-- $\mathbb{E}(T) = 0.70 + 0.50 = 1.20$
+- probabilità congiunte: $P(X=1, Y=1) = 0.70 \times 0.50 = 0.35$.
+- $\mathbb{E}(T) = 0.70 + 0.50 = 1.20$.
 
 ---
 
@@ -236,7 +265,7 @@ Se chi risponde bene al primo tende a rispondere bene anche al secondo:
 
 - $P(X=1, Y=1) > 0.35$ (es. 0.45)
 - $P(X=1, Y=0) < 0.35$ (es. 0.25)
-- **Ma comunque:** $\mathbb{E}(T) = 0.70 + 0.50 = 1.20$
+- **Ma comunque:** $\mathbb{E}(T) = 0.70 + 0.50 = 1.20$.
 
 ---
 
@@ -250,7 +279,7 @@ Se chi risponde bene al primo tende a rispondere bene anche al secondo:
 
 ---
 
-### Implicazioni per la psicometria
+### Implicazioni per l'assessment psicometrico
 
 1. **Affidabilità del test:**  
    la correlazione tra item influenza la **consistenza interna** ($\alpha$ di Cronbach), ma non il punteggio medio atteso.
@@ -270,11 +299,8 @@ $$
 \boxed{\mathbb{E}(X + Y) = \mathbb{E}(X) + \mathbb{E}(Y)}.
 $$
 
-**Esempio concreto:**  
-test a 2 item con difficoltà 0.70 e 0.50 → punteggio totale atteso = 1.20.
-
 **Messaggio fondamentale:**  
-la linearità del valore atteso è una proprietà **robusta** che semplifica notevolmente i calcoli, anche in presenza di dipendenze complesse tra variabili.
+la linearità del valore atteso è una proprietà **robusta** che semplifica notevolmente i calcoli, anche in presenza di dipendenze complesse tra le variabili.
 
 ---
 
@@ -282,11 +308,11 @@ la linearità del valore atteso è una proprietà **robusta** che semplifica not
 
 In un contesto diverso, il principio si applica per:
 
-* **Tempo totale di reazione**
-  $T = T_{\text{percezione}} + T_{\text{decisione}}$.
-* **Carico cognitivo totale**
-  somma di più componenti.
-* **Numero totale di errori**
+* **tempo totale di reazione**
+  $T = T_{\text{percezione}} + T_{\text{decisione}}$;
+* **carico cognitivo totale**
+  somma di più componenti;
+* **numero totale di errori**
   come somma di errori in fasi diverse del compito.
 
 Il messaggio resta lo stesso:
@@ -363,7 +389,7 @@ $$
 = \mathbb{E}(X) + 5.
 $$
 
-👉 Aggiungere una costante **sposta la media**, ma non cambia le differenze tra individui.
+Aggiungere una costante **sposta la media**, ma non cambia le differenze tra individui.
 
 ---
 
@@ -379,20 +405,40 @@ Queste trasformazioni sono comuni in psicologia:
 - standardizzazioni.
 
 
-> *Il valore atteso si comporta come una media “ben educata”:
+> *Il valore atteso si comporta come una media "ben educata":
 > segue le trasformazioni lineari senza sorprese.*
+
+---
+
+## La standardizzazione nell'assessment psicometrico {background-color="#2c3e50" style="color: white;"}
+
+Le trasformazioni lineari che abbiamo appena visto sono esattamente ciò che sta dietro le **scale standardizzate** che userete ogni giorno:
+
+. . .
+
+| Se volete... | Fate... | Risultato |
+|:---|:---|:---|
+| Punteggio z | $Z = \frac{X - \mu}{\sigma}$ | Media = 0, DS = 1 |
+| Scala T | $T = 50 + 10Z$ | Media = 50, DS = 10 |
+| Scala QI | $\text{QI} = 100 + 15Z$ | Media = 100, DS = 15 |
+
+---
+
+## La standardizzazione nell'assessment psicometrico {background-color="#2c3e50" style="color: white;"}
+
+Ogni scala psicometrica è una **trasformazione lineare** del punteggio z. Le proprietà che stiamo studiando spiegano *perché* queste trasformazioni funzionano e *cosa garantiscono*.
 
 ---
 
 ## Proprietà del valore atteso (3): prodotto
 
-Se $X$ e $Y$ sono **indipendenti**:
+Se $X$ e $Y$ sono <mark>**indipendenti**</mark>:
 
 $$
 \mathbb{E}(XY) = \mathbb{E}(X) \cdot \mathbb{E}(Y).
 $$
 
-**Attenzione:** questa proprietà vale **solo** per variabili indipendenti!
+**Attenzione:** questa proprietà vale **solo** per variabili indipendenti.
 
 ---
 
@@ -401,9 +447,9 @@ $$
 Consideriamo due variabili:
 
 - $X$: il partecipante **arriva in orario**  
-  ($X=1$ sì, $X=0$ no)
-- $Y$: il partecipante **sceglie l’opzione corretta**  
-  ($Y=1$ sì, $Y=0$ no)
+  ($X=1$ sì, $X=0$ no).
+- $Y$: il partecipante **sceglie l'opzione corretta**  
+  ($Y=1$ sì, $Y=0$ no).
 
 Supponiamo che:
 
@@ -439,7 +485,7 @@ arriva in orario **e** risponde correttamente.
 
 ---
 
-### Perché l’indipendenza è cruciale
+### Perché l'indipendenza è cruciale
 
 Se $X$ e $Y$ **non fossero indipendenti** (ad esempio: chi arriva tardi è più distratto), allora:
 
@@ -447,26 +493,10 @@ $$
 \mathbb{E}(XY) \neq \mathbb{E}(X)\,\mathbb{E}(Y).
 $$
 
-👉 Il prodotto dei valori attesi **non funziona più**.
-
-**Messaggio chiave:**  
-questa proprietà non è “sempre vera”:  
-dipende da un’ipotesi forte sul legame tra le variabili.
-
----
-
-### Variante alternativa 
-
-* $X$ = presenza del target (0/1)
-* $Y$ = risposta corretta (0/1)
-
-Se il target **aiuta** la risposta corretta,
-le variabili **non sono indipendenti** → la formula fallisce.
-
-In conclusione,
+Il prodotto dei valori attesi **non funziona più**.
 
 > *La linearità del valore atteso è gratuita.
-> Il prodotto no: si paga con l’indipendenza.*
+> Il prodotto no: si paga con l'indipendenza.*
 
 ---
 
@@ -496,6 +526,26 @@ $$
 
 ---
 
+## Perché la varianza conta in psicologia {background-color="#2c3e50" style="color: white;"}
+
+Due pazienti con lo stesso punteggio medio di ansia settimanale possono avere esperienze completamente diverse:
+
+. . .
+
+**Paziente A:** ansia costante, livello 5 ogni giorno. Media = 5, varianza = 0.
+
+**Paziente B:** oscillazioni estreme — giorni a 0 e giorni a 10. Media = 5, varianza = 25.
+
+. . .
+
+Il trattamento per il paziente A (ansia cronica stabile) e per il paziente B (ansia episodica con picchi) sarà probabilmente molto diverso.
+
+. . .
+
+La varianza cattura qualcosa che la media da sola non può dire: la **stabilità** dell'esperienza.
+
+---
+
 ## Esempio: varianza del dado
 
 Abbiamo già trovato $\mathbb{E}(Y) = 3.5$. Calcoliamo $\mathbb{E}(Y^2)$:
@@ -510,95 +560,6 @@ $$
 $$
 \mathbb{V}(Y) = 15.17 - 3.5^2 = 15.17 - 12.25 = 2.92
 $$
-
----
-
-### Esempio psicologico — due studenti, stessa media
-
-Consideriamo il **punteggio a un mini‐test** (0–10 punti).
-
-### Studente A
-
-Ottiene sempre:
-$$
-Y = 5.
-$$
-
-### Studente B
-
-Ottiene alternativamente:
-$$
-Y = 0 \quad \text{oppure} \quad Y = 10,
-$$
-con uguale probabilità.
-
----
-
-### Media (uguale per entrambi)
-
-Per entrambi:
-$$
-\mathbb{E}(Y) = 5.
-$$
-
-👉 **Stessa media**, ma comportamento molto diverso.
-
----
-
-### Varianza dello Studente A
-
-Poiché (Y=5) sempre:
-$$
-Y - \mathbb{E}(Y) = 0 \quad \text{in ogni caso}.
-$$
-
-Quindi:
-$$
-\mathbb{V}(Y) = 0.
-$$
-
-👉 Nessuna variabilità.
-
----
-
-### Varianza dello Studente B
-
-Calcoliamo “a mano”:
-
-| Valore | Scarto dalla media | Scarto² |
-| ------ | ------------------ | ------- |
-| 0      | (0 - 5 = -5)       | 25      |
-| 10     | (10 - 5 = 5)       | 25      |
-
-Media degli scarti quadratici:
-$$
-\mathbb{V}(Y) = \frac{25 + 25}{2} = 25.
-$$
-
-👉 **Stessa media, varianza enorme**.
-
----
-
-## Interpretazione chiave
-
-* La **media** dice *dove* si trovano i valori.
-* La **varianza** dice *quanto* sono dispersi.
-
-> Due distribuzioni possono avere la **stessa media**
-> ma una variabilità completamente diversa.
-
----
-
-## Messaggio da portare a casa
-
-> La varianza non misura il “livello” medio,
-> ma la **stabilità** o **instabilità** dei risultati.
-
-Questo sarà cruciale quando parleremo di:
-
-* affidabilità delle misure,
-* differenze individuali,
-* errore di misura.
 
 ---
 
@@ -618,9 +579,12 @@ Per il dado: $\sigma_Y = \sqrt{2.92} \approx 1.71$.
 
 ### Perché la deviazione standard è più interpretabile
 
-La varianza è espressa in **unità al quadrato** (es. “punti²”, “secondi²”) → difficile da interpretare.
+La varianza è espressa in **unità al quadrato** (es. "punti²", "secondi²") → difficile da interpretare.
 
 La deviazione standard è espressa nelle **stesse unità dei dati**  → è immediatamente leggibile.
+
+> *La varianza è per il matematico.
+> La deviazione standard è per lo psicologo.*
 
 ---
 
@@ -633,52 +597,14 @@ Supponiamo che:
 - tempo medio: $\mathbb{E}(T) = 500$ ms;
 - varianza: $\mathbb{V}(T) = 10\,000$ ms$^2$.
 
+---
+
 La deviazione standard è:
 $$
 \sigma_T = \sqrt{10\,000} = 100 \text{ ms}.
 $$
 
----
-
-### Interpretazione intuitiva
-
-Dire che:
-$$
-\sigma_T = 100 \text{ ms}
-$$
-
-significa che:
-
-> i tempi di reazione si discostano dalla media
-> di circa **100 millisecondi**, in media.
-
-Questo è facile da interpretare perché:
-
-- 100 ms è una quantità *psicologicamente rilevante*;
-- possiamo confrontarla direttamente con la media (500 ms).
-
----
-
-### Confronto diretto
-
-- Varianza = 10 000 ms² → poco intuitiva  
-- Deviazione standard = 100 ms → immediata  
-
-👉 **La deviazione standard parla la lingua dei dati.**
-
----
-
-## Messaggio chiave
-
-- La **varianza** è utile per i calcoli teorici.
-- La **deviazione standard** è utile per interpretare i dati.
-
-> Per descrivere la dispersione,
-> **pensiamo in termini di deviazioni standard, non di varianze.**
-
-
-> *La varianza è per il matematico.
-> La deviazione standard è per lo psicologo.*
+Dire $\sigma_T = 100$ ms significa che i tempi di reazione si discostano dalla media di circa **100 millisecondi** — una quantità psicologicamente rilevante, confrontabile direttamente con la media.
 
 ---
 
@@ -694,22 +620,6 @@ $$
 
 ---
 
-### Esempio psicologico — Trasformare una scala di punteggi
-
-Sia $X$ il **punteggio grezzo** a un test psicologico  
-(numero di risposte corrette).
-
-Ora costruiamo una nuova variabile:
-
-$$
-Y = a + bX,
-$$
-dove:
-- $a$ è un **bonus fisso**,
-- $b$ è un **fattore di scala** (es. ogni risposta vale più punti).
-
----
-
 ### Caso 1 — Aggiungere un bonus fisso
 
 Supponiamo:
@@ -719,8 +629,6 @@ Y = X + 10.
 $$
 
 Tutti i partecipanti ricevono **10 punti extra**.
-
-Per la proprietà della varianza:
 
 $$
 \mathbb{V}(Y)
@@ -744,8 +652,6 @@ $$
 
 Ogni risposta corretta vale **2 punti** invece di 1.
 
-Allora:
-
 $$
 \mathbb{V}(Y)
 = \mathbb{V}(2X)
@@ -754,44 +660,7 @@ $$
 $$
 
 **Interpretazione:**  
-raddoppiare la scala **quadruplica la varianza**.
-
----
-
-## Esempio numerico 
-
-Se:
-
-$$
-\mathbb{V}(X) = 9 \quad (\sigma_X = 3),
-$$
-
-allora:
-
-- con $Y = X + 10$:  
-  $\mathbb{V}(Y)=9$, $\sigma_Y=3$;
-- con $Y = 2X$:  
-  $\mathbb{V}(Y)=36$, $\sigma_Y=6$.
-
-👉 La **deviazione standard** cresce linearmente,  
-la **varianza cresce quadraticamente**.
-
----
-
-## Messaggio chiave 
-
-- Aggiungere una costante → **nessun effetto** sulla varianza.  
-- Moltiplicare per una costante → la varianza cambia di $b^2$.
-
-Questo spiega perché:
-
-- la varianza è sensibile all’unità di misura,
-- la deviazione standard è spesso più interpretabile.
-
-In sintesi,
-
-> *la varianza non misura solo la dispersione,
-> ma anche **la scala** in cui stiamo misurando.*
+raddoppiare la scala **quadruplica la varianza**, ma la deviazione standard raddoppia (cresce linearmente).
 
 ---
 
@@ -807,120 +676,32 @@ $$
 \mathbb{V}(X - Y) = \mathbb{V}(X) + \mathbb{V}(Y).
 $$
 
-**Nota:** anche nella differenza si **sommano** le varianze!
+**Nota:** anche nella differenza si **sommano** le varianze.
 
 ---
 
-### Esempio psicologico — Punteggio totale di un test
-
-Consideriamo un test con **due item indipendenti**:
-
-- $X$ = punteggio al primo item;  
-- $Y$ = punteggio al secondo item.  
-
-Il **punteggio totale** è:
-
-$$
-T = X + Y.
-$$
-
-Assumiamo che gli item misurino aspetti diversi  e che le risposte siano **indipendenti**.
-
----
-
-### Varianza del punteggio totale
-
-Se:
-
-$$
-\mathbb{V}(X) = 4, \qquad \mathbb{V}(Y) = 9,
-$$
-
-allora:
-$$
-\mathbb{V}(T)
-= \mathbb{V}(X+Y)
-= \mathbb{V}(X)+\mathbb{V}(Y)
-= 4+9
-= 13.
-$$
-
-**Interpretazione:**  
-la variabilità del punteggio totale  
-è la **somma delle variabilità** dei singoli item.
-
----
-
-### Deviazione standard (più interpretabile)
-
-$$
-\sigma_T = \sqrt{13} \approx 3.6.
-$$
-
-👉 Il punteggio totale oscilla in media di circa **3–4 punti** attorno alla media.
-
----
-
-## Esempio psicologico — Tempo totale di reazione
-
-Supponiamo che il tempo totale sia la somma di due fasi:
-
-$$
-T = T_{\text{percezione}} + T_{\text{decisione}}.
-$$
-
-Se le due fasi sono **indipendenti**:
-
-$$
-\mathbb{V}(T)
-= \mathbb{V}(T_{\text{percezione}})
-+ \mathbb{V}(T_{\text{decisione}}).
-$$
-
-👉 L’incertezza totale è la somma delle incertezze delle singole fasi.
-
----
-
-## Esempio psicologico — Differenza tra due condizioni
-
-Consideriamo una misura di **effetto sperimentale**:
-
-$$
-D = X - Y,
-$$
-dove:
-
-- $X$ = prestazione nella condizione A,
-- $Y$ = prestazione nella condizione B.
-
-Se $X$ e $Y$ sono **indipendenti**:
-
-$$
-\mathbb{V}(D)
-= \mathbb{V}(X-Y)
-= \mathbb{V}(X)+\mathbb{V}(Y).
-$$
-
-👉 Anche nella **differenza**, le varianze **si sommano**.
-
----
-
-## Perché questo è controintuitivo
+### Perché questo è controintuitivo
 
 Molti pensano:
 
-> “Se faccio una differenza, la variabilità diminuisce”.
+> "Se faccio una differenza, la variabilità diminuisce".
 
 In realtà:
 
 - la **media** può diminuire,
 - ma la **variabilità** no (se le variabili sono indipendenti).
 
-👉 La sottrazione **non cancella l’incertezza**.
+---
+
+La sottrazione **non cancella l'incertezza**. 
+
+. . .
+
+Questo ha conseguenze importanti per la ricerca: la varianza della *differenza* tra due condizioni sperimentali è la *somma* delle varianze delle due condizioni.
 
 ---
 
-## Attenzione: l’indipendenza è cruciale
+### Attenzione: l'indipendenza è cruciale
 
 Se $X$ e $Y$ **non sono indipendenti**:
 
@@ -932,26 +713,11 @@ $$
 
 In psicologia questo succede spesso:
 
-- item simili,
-- misure ripetute,
-- condizioni correlate.
+- item simili in un test (correlazione positiva → varianza del totale *maggiore*),
+- misure ripetute sullo stesso soggetto,
+- condizioni sperimentali correlate.
 
-👉 Qui entra in gioco la **covarianza**.
-
----
-
-## Messaggio chiave
-
-- Per variabili indipendenti:
-  - le **medie si sommano**,
-  - le **varianze si sommano**.
-- La sottrazione **non riduce** la variabilità.
-- L’indipendenza è una **condizione forte**, non automatica.
-
-In sintesi,
-
-> *l’incertezza si accumula:
-> anche quando sottrai, la varianza somma.*
+Qui entra in gioco la **covarianza** — argomento della prossima lezione.
 
 ---
 
@@ -968,13 +734,13 @@ La variabile $Z$ ha sempre:
 - valore atteso = 0;
 - varianza = 1.
 
-👉 La standardizzazione rimuove **posizione** e **scala**.
+La standardizzazione rimuove **posizione** e **scala**.
 
 ---
 
-### Esempio psicologico — punteggio a un test
+### Esempio — punteggio a un test cognitivo
 
-Consideriamo un test cognitivo. Supponiamo che, nella popolazione:
+Supponiamo che, nella popolazione:
 
 - punteggio medio: $\mathbb{E}(Y)=50$;
 - deviazione standard: $\sigma_Y=10$.
@@ -989,8 +755,6 @@ $$
 
 ### Calcolo dello z-score 
 
-Applichiamo la formula:
-
 $$
 Z
 = \frac{65 - 50}{10}
@@ -999,43 +763,17 @@ Z
 $$
 
 **Interpretazione:**  
-il partecipante ha un punteggio **1.5 deviazioni standard sopra la media**.
+il partecipante ha un punteggio **1.5 deviazioni standard sopra la media**. Se la distribuzione è Normale, questo corrisponde al **93° percentile** — solo il 7% della popolazione fa meglio.
 
 ---
 
 ### Perché lo z-score è utile
 
-- Non dipende dall’unità di misura (punti, secondi, errori).
+- Non dipende dall'unità di misura (punti, secondi, errori).
 - Permette confronti diretti tra scale diverse.
-- Dice *quanto* un valore è lontano dalla media,
-  in unità di **variabilità tipica**.
+- Dice *quanto* un valore è lontano dalla media, in unità di **variabilità tipica**.
 
----
-
-### Confronto immediato
-
-- $Z = 0$ → valore nella media.  
-- $Z = 1$ → una deviazione standard sopra la media.  
-- $Z = -1$ → una deviazione standard sotto la media.  
-
-👉 Gli z-score parlano la stessa lingua, anche quando i test sono diversi.
-
----
-
-### Messaggio chiave
-
-> Standardizzare significa chiedere:
-> *di quante deviazioni standard mi discosto dalla media?*
-
-È per questo che:
-
-- gli z-score sono centrali in psicometria,
-- preparano il terreno a correlazione e regressione.
-
-In sintesi,
-
-> *la media e la deviazione standard non spariscono:
-> le abbiamo “incorporate” nella nuova scala.*
+Gli z-score parlano la stessa lingua, anche quando i test sono diversi.
 
 ---
 
@@ -1064,9 +802,11 @@ $$
 | Normale($\mu, \sigma$) | $\mu$ | $\sigma^2$ |
 | Beta($\alpha, \beta$) | $\frac{\alpha}{\alpha+\beta}$ | $\frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}$ |
 
+Riconoscete le distribuzioni delle lezioni precedenti? Per ciascuna, valore atteso e varianza si calcolano direttamente dai parametri — senza bisogno di sommare o integrare.
+
 ---
 
-## Esercizio 1 — Test psicologico
+## Esercizio 1 — Test di screening
 
 Un test di screening ha tre possibili esiti:
 
@@ -1118,6 +858,8 @@ $$
 \mathbb{V}(X) = 0.60 - 0.40^2 = 0.60 - 0.16 = 0.44
 $$
 
+**Deviazione standard:** $\sigma_X = \sqrt{0.44} \approx 0.66$.
+
 ---
 
 ## Esercizio 3 — Scala dell'ansia
@@ -1164,7 +906,7 @@ $$
 \sigma_X = \sqrt{1.25} \approx 1.12
 $$
 
-> I punteggi si discostano dalla media di circa **1.12 punti**.
+> I punteggi si discostano dalla media di circa **1.12 punti**. In una scala 1-5, questo indica una dispersione moderata — non tutti rispondono allo stesso modo, ma non c'è nemmeno una polarizzazione estrema.
 
 ---
 
@@ -1229,10 +971,9 @@ $$
 
 ---
 
-## Esercizio 6 — Standardizzazione (pensiero controfattuale)
+## Esercizio 6 — Standardizzazione
 
-Un ricercatore vuole trasformare i punteggi grezzi di una scala di ansia
-nella corrispondente **scala standardizzata**.
+Un ricercatore vuole trasformare i punteggi grezzi di una scala di ansia nella corrispondente **scala standardizzata**.
 
 Sia $X$ il punteggio grezzo, con:
 

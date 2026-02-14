@@ -1,0 +1,903 @@
+---
+title: "Sintassi R"
+subtitle: "Vettori, dataframe, dplyr e ggplot2"
+version: 1.0
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+lang: it
+
+execute:
+  echo: true
+  warning: false
+  message: false
+
+format:
+  revealjs:
+    theme: [default, ../revealjs.scss]
+    title-slide-attributes:
+      data-background-color: "#0072bc"
+    slide-number: c
+    show-slide-number: print
+    highlight-style: github
+    math: mathjax
+---
+
+```{r}
+#| echo: false
+library(tidyverse)
+```
+
+## Come usare questa lezione
+
+Questa lezione è un **repertorio di strumenti** R. Non dovete memorizzare la sintassi.
+
+. . .
+
+**All'esame potrete usare **gli snippet di codice** che vi sarete trascritti.
+
+. . .
+
+Quindi: l'obiettivo di oggi è **capire la logica**, non imparare a memoria. Prendete appunti e costruitevi un vostro "formulario" di codice R.
+
+# Aritmetica vettorializzata {background-color="#2c3e50" style="color: white;"}
+
+## Il concetto più importante di R
+
+In R, le operazioni si applicano **automaticamente a tutti gli elementi** di un vettore.
+
+Questo si chiama **aritmetica vettorializzata** ed è l'idea centrale del linguaggio.
+
+. . .
+
+```{r}
+x <- c(2, 5, 8, 3)
+```
+
+. . .
+
+```{r}
+x + 10    # aggiunge 10 a CIASCUN elemento
+```
+
+. . .
+
+```{r}
+x * 2     # moltiplica CIASCUN elemento per 2
+```
+
+Non serve nessun ciclo: R fa tutto da solo.
+
+---
+
+## Operazione tra due vettori
+
+Se abbiamo due vettori della stessa lunghezza, le operazioni si fanno **elemento per elemento**:
+
+```{r}
+y <- c(1, 0, 2, 4)
+
+x + y     # 2+1, 5+0, 8+2, 3+4
+```
+
+. . .
+
+```{r}
+x * y     # 2×1, 5×0, 8×2, 3×4
+```
+
+. . .
+
+```{r}
+x - y     # 2-1, 5-0, 8-2, 3-4
+```
+
+---
+
+## Perché questo è così utile?
+
+Pensiamo alla statistica descrittiva. Per calcolare le **deviazioni dalla media**, dovremmo prendere ogni dato, sottrarre la media e ripetere $n$ volte.
+
+. . .
+
+In R, basta scrivere:
+
+```{r}
+x <- c(112, 128, 133, 136, 145, 148, 151, 158, 164, 192)
+
+deviazioni <- x - mean(x)   # sottrae la media a TUTTI i valori in un colpo solo
+deviazioni
+```
+
+. . .
+
+Una sola riga di codice fa il lavoro di un intero ciclo.
+
+---
+
+## E per le deviazioni al quadrato?
+
+```{r}
+deviazioni^2     # eleva al quadrato ciascuna deviazione
+```
+
+. . .
+
+La varianza (con $n - 1$)?
+
+```{r}
+sum(deviazioni^2) / (length(x) - 1)
+```
+
+. . .
+
+Verifica:
+
+```{r}
+var(x)     # stesso risultato!
+```
+
+---
+
+## Il collegamento con la notazione matematica
+
+Questo è un punto chiave: ogni **formula con il simbolo di sommatoria** ($\Sigma$) si traduce in R in modo quasi diretto.
+
+---
+
+| Formula | In R |
+|:--------|:-----|
+| $\sum_{i=1}^{n} x_i$ | `sum(x)` |
+| $\frac{1}{n}\sum_{i=1}^{n} x_i$ | `sum(x) / length(x)` oppure `mean(x)` |
+| $\sum_{i=1}^{n} (x_i - \bar{x})^2$ | `sum((x - mean(x))^2)` |
+| $\frac{\sum (x_i - \bar{x})^2}{n-1}$ | `sum((x - mean(x))^2) / (length(x) - 1)` oppure `var(x)` |
+
+---
+
+## Perché la traduzione funziona
+
+Il segreto è che **sotto il $\Sigma$ c'è un'operazione che si ripete per ciascun elemento $i$-esimo**. In R, le operazioni vettorializzate fanno esattamente questo: applicano l'operazione a ciascun elemento.
+
+. . .
+
+Quindi:
+
+1. La formula dice "per ciascun $i$, calcola $x_i - \bar{x}$" → in R: `x - mean(x)` (vettorializzato)
+2. La formula dice "poi eleva al quadrato" → in R: `(...)^2`
+3. La formula dice "poi somma tutto" → in R: `sum(...)`
+
+. . .
+
+La formula matematica si legge **dall'interno verso l'esterno**. Il codice R si scrive allo stesso modo.
+
+---
+
+## Un esercizio
+
+La formula dello **z-score** (punteggio standardizzato) è:
+
+$$z_i = \frac{x_i - \bar{x}}{s}$$
+
+. . .
+
+Come si scrive in R?
+
+. . .
+
+```{r}
+z <- (x - mean(x)) / sd(x)
+round(z, 2)     # arrotondati a 2 decimali
+```
+
+. . .
+
+Una sola riga — nessun ciclo, nessun indice $i$. R applica la formula a tutti gli elementi.
+
+# Dove si trovano i dati? {background-color="#2c3e50" style="color: white;"}
+
+## Il problema della directory di lavoro
+
+Uno degli ostacoli più frequenti per chi inizia con R è:
+
+> *"Ho il file CSV, ma R non lo trova!"*
+
+. . .
+
+Quando scriviamo `read.csv("dati.csv")`, R cerca il file nella **directory di lavoro** (*working directory*).
+
+. . .
+
+```{r}
+getwd()    # mostra la directory di lavoro corrente
+```
+
+Se il file non è lì, R dà errore.
+
+---
+
+## Soluzione 1: mettere i dati dove si trova il codice
+
+La strategia più semplice: salvare il file CSV **nella stessa cartella** dello script R (o del file .qmd).
+
+```
+mia_cartella/
+  ├── analisi.R          ← il vostro script
+  └── stars_classe.csv   ← i dati
+```
+
+. . .
+
+In questo caso, basta:
+
+```{r}
+#| eval: false
+d <- read.csv("stars_classe.csv")
+```
+
+Questa è spesso la soluzione più pratica per esercizi e homework.
+
+---
+
+## Soluzione 2: i Progetti di RStudio
+
+Un **Progetto RStudio** (.Rproj) fissa automaticamente la directory di lavoro alla cartella del progetto.
+
+. . .
+
+Come si crea:
+
+1. *File → New Project → New Directory → New Project*
+2. Scegliete un nome e una posizione
+3. RStudio crea un file `.Rproj` nella cartella
+
+. . .
+
+Da quel momento, ogni volta che aprite il progetto (doppio clic sul file `.Rproj`), R "sa" dove cercare i file.
+
+---
+
+## Soluzione 3: il pacchetto `here`
+
+Se avete sottocartelle (es. `dati/`, `script/`), il pacchetto **here** costruisce i percorsi in modo portabile:
+
+```
+mio_progetto/
+  ├── mio_progetto.Rproj
+  ├── script/
+  │     └── analisi.R
+  └── dati/
+        └── stars_classe.csv
+```
+
+. . .
+
+```{r}
+#| eval: false
+library(here)
+d <- read.csv(here("dati", "stars_classe.csv"))
+```
+
+. . .
+
+`here()` parte sempre dalla radice del progetto, indipendentemente da dove si trova lo script. Questo evita errori quando condividete il progetto con qualcun altro.
+
+---
+
+## Quale soluzione usare?
+
+| Situazione | Soluzione consigliata |
+|:-----------|:---------------------|
+| Esercizio singolo, homework | File nella stessa cartella |
+| Progetto con più file/cartelle | Progetto RStudio + `here()` |
+| Condivisione con altri | Progetto RStudio + `here()` |
+
+. . .
+
+Per questo corso, la prima soluzione è quasi sempre sufficiente.
+
+# Il dataframe e `$` {background-color="#2c3e50" style="color: white;"}
+
+## Ripassiamo: il dataframe
+
+```{r}
+d <- read.csv("stars_classe.csv")
+head(d, 4)    # prime 4 righe
+```
+
+. . .
+
+Un **dataframe** è una tabella in cui ciascuna colonna è un vettore. Ogni colonna ha un nome.
+
+---
+
+## Estrarre una colonna con `$`
+
+```{r}
+d$STARS_total[1:8]   # i primi 8 punteggi totali
+```
+
+. . .
+
+`d$STARS_total` restituisce un **vettore**. Possiamo applicare tutte le operazioni vettorializzate che abbiamo visto:
+
+```{r}
+mean(d$STARS_total)
+sd(d$STARS_total)
+```
+
+---
+
+## Accedere a righe e colonne: `[riga, colonna]`
+
+```{r}
+d[3, 5]        # riga 3, colonna 5
+d[1:3, ]       # righe 1-3, tutte le colonne
+```
+
+---
+
+```{r}
+d[, "genere"]  # tutte le righe, colonna "genere"
+```
+
+La virgola separa **righe** (prima) da **colonne** (dopo). Lasciare vuoto uno dei due significa "tutte".
+
+# La pipe e dplyr {background-color="#2c3e50" style="color: white;"}
+
+## Il pacchetto tidyverse
+
+**tidyverse** è una collezione di pacchetti che semplificano il lavoro con i dati. I due che usiamo oggi sono:
+
+- **dplyr**: per trasformare e riassumere i dati
+- **ggplot2**: per i grafici
+
+```{r}
+#| eval: false
+library(tidyverse)    # carica tutto insieme
+```
+
+---
+
+## La pipe: `|>`
+
+La **pipe** è un modo di scrivere una sequenza di operazioni in modo leggibile.
+
+Invece di annidare le funzioni:
+
+```{r}
+round(mean(d$STARS_total), 1)
+```
+
+. . .
+
+Possiamo scrivere:
+
+```{r}
+d$STARS_total |> mean() |> round(1)
+```
+
+. . .
+
+La pipe `|>` si legge "**e poi**": prendi il vettore, *e poi* calcola la media, *e poi* arrotonda.
+
+---
+
+## Perché la pipe è utile
+
+Con operazioni semplici la differenza è minima. Ma quando le operazioni sono tante, la pipe rende il codice **leggibile come una frase**:
+
+. . .
+
+```{r}
+d |>
+  filter(genere == "F") |>           # prendi solo le studentesse
+  summarise(media = mean(STARS_total))  # calcolane la media
+```
+
+. . .
+
+Senza la pipe, dovremmo scrivere:
+
+```{r}
+#| eval: false
+summarise(filter(d, genere == "F"), media = mean(STARS_total))
+```
+
+La versione con la pipe si legge: "prendi `d`, *e poi* filtra, *e poi* riassumi".
+
+---
+
+## I verbi principali di dplyr
+
+| Verbo | Cosa fa |
+|:------|:--------|
+| `filter()` | Seleziona **righe** che soddisfano una condizione |
+| `select()` | Seleziona **colonne** |
+| `mutate()` | Crea nuove colonne |
+| `summarise()` | Riassume i dati (media, sd, conteggio, ...) |
+| `group_by()` | Raggruppa i dati prima di un riassunto |
+
+. . .
+
+Vediamoli in azione.
+
+---
+
+## `summarise()`: riassumere i dati
+
+```{r}
+d |>
+  summarise(
+    media = mean(STARS_total),
+    mediana = median(STARS_total),
+    dev_std = sd(STARS_total),
+    n = n()
+  )
+```
+
+. . .
+
+`summarise()` prende un intero dataframe e lo riduce a **una sola riga** con le statistiche richieste.
+
+---
+
+## `group_by()` + `summarise()`: il duo fondamentale
+
+Cosa succede se vogliamo la media **per ciascun genere**?
+
+```{r}
+d |>
+  group_by(genere) |>
+  summarise(
+    media = mean(STARS_total),
+    dev_std = sd(STARS_total),
+    n = n()
+  )
+```
+
+---
+
+`group_by()` dice a R: "prima di riassumere, dividi i dati in gruppi". Tutto ciò che segue viene applicato **separatamente a ciascun gruppo**.
+
+---
+
+## Raggruppare per scuola superiore
+
+```{r}
+d |>
+  group_by(scuola_superiore) |>
+  summarise(
+    media = mean(STARS_total),
+    dev_std = sd(STARS_total),
+    n = n()
+  ) |>
+  arrange(media)     # ordina per media crescente
+```
+
+---
+
+## `filter()`: selezionare righe
+
+```{r}
+# Solo gli studenti del liceo scientifico
+d |>
+  filter(scuola_superiore == "Liceo scientifico") |>
+  summarise(
+    media = mean(STARS_total),
+    n = n()
+  )
+```
+
+. . .
+
+Nota: si usa `==` (doppio uguale) per il confronto, non `=` (che è per l'assegnazione).
+
+---
+
+## Combinare più condizioni
+
+```{r}
+# Studentesse del liceo scientifico
+d |>
+  filter(genere == "F", scuola_superiore == "Liceo scientifico") |>
+  summarise(
+    media = mean(STARS_total),
+    n = n()
+  )
+```
+
+. . .
+
+Più condizioni separate da virgola significano "**e**" (AND): devono essere vere entrambe.
+
+---
+
+## `mutate()`: creare nuove variabili
+
+`mutate()` aggiunge una nuova colonna calcolata dalle colonne esistenti.
+
+. . .
+
+Esempio: nella lezione sulla statistica descrittiva abbiamo calcolato gli z-score. Con `mutate()`:
+
+```{r}
+d <- d |>
+  mutate(
+    STARS_z = (STARS_total - mean(STARS_total)) / sd(STARS_total)
+  )
+
+head(d[, c("id", "STARS_total", "STARS_z")], 5)
+```
+
+---
+
+## Esempio pratico: calcolare un punteggio di sottoscala
+
+Nella ricerca psicometrica, spesso si hanno le risposte ai **singoli item** e bisogna calcolare il punteggio di una sottoscala.
+
+. . .
+
+La sottoscala **FAH** (*Fear of Asking for Help*) della STARS è composta da 4 item. Carichiamo i dati a livello di item:
+
+```{r}
+items <- read.csv("stars_item_fah.csv")
+head(items)
+```
+
+---
+
+## Creare il punteggio con `mutate()`
+
+```{r}
+items <- items |>
+  mutate(
+    FAH_totale = item_15 + item_20 + item_22 + item_23,
+    FAH_media  = FAH_totale / 4
+  )
+
+head(items[, c("id", "item_15", "item_20", "item_22", "item_23",
+               "FAH_totale", "FAH_media")])
+```
+
+. . .
+
+In una riga abbiamo sommato 4 colonne e calcolato la media — per tutti i 200 studenti contemporaneamente. Questo è l'aritmetica vettorializzata all'opera dentro un dataframe.
+
+---
+
+## Dalla formula alla pratica
+
+La formula per il punteggio medio di una sottoscala con $k$ item è:
+
+$$\bar{x}_{\text{sub}} = \frac{1}{k}\sum_{j=1}^{k} x_j$$
+
+. . .
+
+In R, con `mutate()`:
+
+```{r}
+#| eval: false
+mutate(FAH_media = (item_15 + item_20 + item_22 + item_23) / 4)
+```
+
+. . .
+
+Il $\Sigma$ diventa una somma di colonne; la divisione per $k$ è una normale divisione. L'aritmetica vettorializzata fa il resto: il calcolo viene applicato a **ciascuna riga** automaticamente.
+
+# Visualizzazione con ggplot2 {background-color="#2c3e50" style="color: white;"}
+
+## La logica di ggplot2
+
+ggplot2 costruisce i grafici per **strati** (*layer*):
+
+. . .
+
+1. **I dati**: quale dataframe usare?
+2. **L'estetica** (*aesthetics*): quali variabili vanno sugli assi?
+3. **La geometria** (*geom*): che tipo di grafico? (punti, barre, linee, ...)
+
+. . .
+
+Questi tre ingredienti si combinano con il segno `+`.
+
+---
+
+## Primo grafico: istogramma
+
+```r
+ggplot(d, aes(x = STARS_total)) +
+  geom_histogram(
+    aes(y = after_stat(density)),
+    bins = 15,
+    fill = "steelblue",
+    color = "white"
+  ) +
+  labs(
+    title = "Distribuzione STARS total",
+    x = "Punteggio STARS",
+    y = "Densità"
+  ) +
+  theme_minimal()
+```
+
+---
+
+```{r}
+#| echo: false
+ggplot(d, aes(x = STARS_total)) +
+  geom_histogram(
+    aes(y = after_stat(density)),
+    bins = 15,
+    fill = "steelblue",
+    color = "white"
+  ) +
+  labs(
+    title = "Distribuzione STARS total",
+    x = "Punteggio STARS",
+    y = "Densità"
+  ) +
+  theme_minimal()
+```
+
+---
+
+## Anatomia del codice
+
+```{r}
+#| eval: false
+ggplot(d, aes(x = STARS_total)) +     # dati + estetica: x = STARS_total
+  geom_histogram(                       # geometria: istogramma
+    aes(y = after_stat(density)),       #   asse y = densità (non conteggi)
+    bins = 15,                          #   numero di classi
+    fill = "steelblue",                 #   colore riempimento
+    color = "white"                     #   colore bordo
+  ) +
+  labs(title = "...", x = "...", y = "...") +  # etichette
+  theme_minimal()                       # stile grafico pulito
+```
+
+. . .
+
+Il `+` aggiunge un layer alla volta. Ogni layer è indipendente e modificabile.
+
+---
+
+## Boxplot per gruppo
+
+```r
+ggplot(d, aes(x = genere, y = STARS_total, fill = genere)) +
+  geom_boxplot() +
+  labs(
+    title = "STARS total per genere",
+    x = "Genere",
+    y = "Punteggio STARS"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+. . .
+
+`fill = genere` colora ciascun boxplot in base al gruppo.
+
+---
+
+```{r}
+#| echo: false
+ggplot(d, aes(x = genere, y = STARS_total, fill = genere)) +
+  geom_boxplot() +
+  labs(
+    title = "STARS total per genere",
+    x = "Genere",
+    y = "Punteggio STARS"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+---
+
+## Boxplot per scuola superiore
+
+```r
+ggplot(d, aes(x = reorder(scuola_superiore, STARS_total), 
+              y = STARS_total)) +
+  geom_boxplot(fill = "steelblue", alpha = 0.7) +
+  coord_flip() +     # ruota il grafico (etichette lunghe)
+  labs(
+    title = "STARS total per tipo di scuola superiore",
+    x = "",
+    y = "Punteggio STARS"
+  ) +
+  theme_minimal()
+```
+
+---
+
+```{r}
+#| echo: false
+ggplot(d, aes(x = reorder(scuola_superiore, STARS_total), 
+              y = STARS_total)) +
+  geom_boxplot(fill = "steelblue", alpha = 0.7) +
+  coord_flip() +     # ruota il grafico (etichette lunghe)
+  labs(
+    title = "STARS total per tipo di scuola superiore",
+    x = "",
+    y = "Punteggio STARS"
+  ) +
+  theme_minimal()
+```
+
+---
+
+## Scatterplot
+
+```r
+ggplot(d, aes(x = autovalutazione_math, y = STARS_total)) +
+  geom_point(alpha = 0.4, color = "steelblue") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(
+    title = "Ansia statistica e autovalutazione in matematica",
+    x = "Autovalutazione matematica (1–10)",
+    y = "STARS total"
+  ) +
+  theme_minimal()
+```
+
+. . .
+
+`geom_point()` disegna i punti, `geom_smooth(method = "lm")` aggiunge la retta di tendenza.
+
+---
+
+```{r}
+#| echo: false
+ggplot(d, aes(x = autovalutazione_math, y = STARS_total)) +
+  geom_point(alpha = 0.4, color = "steelblue") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(
+    title = "Ansia statistica e autovalutazione in matematica",
+    x = "Autovalutazione matematica (1–10)",
+    y = "STARS total"
+  ) +
+  theme_minimal()
+```
+
+---
+
+## Combinare dplyr e ggplot
+
+Possiamo usare la pipe per preparare i dati e poi passarli direttamente a ggplot:
+
+```r
+d |>
+  group_by(scuola_superiore) |>
+  summarise(media = mean(STARS_total)) |>
+  ggplot(aes(x = reorder(scuola_superiore, media), y = media)) +
+    geom_col(fill = "steelblue") +
+    coord_flip() +
+    labs(title = "Media STARS per scuola superiore",
+         x = "", y = "Punteggio medio STARS") +
+    theme_minimal()
+```
+
+---
+
+```{r}
+#| echo: false
+d |>
+  group_by(scuola_superiore) |>
+  summarise(media = mean(STARS_total)) |>
+  ggplot(aes(x = reorder(scuola_superiore, media), y = media)) +
+    geom_col(fill = "steelblue") +
+    coord_flip() +
+    labs(title = "Media STARS per scuola superiore",
+         x = "", y = "Punteggio medio STARS") +
+    theme_minimal()
+```
+
+---
+
+## Il "vocabolario" minimo di ggplot2
+
+| Geometria | Uso tipico |
+|:----------|:-----------|
+| `geom_histogram()` | Distribuzione di una variabile continua |
+| `geom_boxplot()` | Distribuzione per gruppi |
+| `geom_point()` | Relazione tra due variabili continue |
+| `geom_smooth()` | Linea di tendenza |
+| `geom_col()` / `geom_bar()` | Grafici a barre |
+
+. . .
+
+Non serve impararne altri per ora. Con queste cinque geometrie si copre la maggior parte dei grafici della statistica descrittiva.
+
+# Mettere tutto insieme {background-color="#2c3e50" style="color: white;"}
+
+## Un'analisi completa in poche righe
+
+Supponiamo di voler rispondere a: **"Chi proviene dal liceo scientifico ha meno ansia statistica?"**
+
+```{r}
+d |>
+  group_by(scuola_superiore) |>
+  summarise(
+    n = n(),
+    media = round(mean(STARS_total), 1),
+    sd = round(sd(STARS_total), 1)
+  ) |>
+  arrange(media)
+```
+
+---
+
+```{r}
+#| fig-width: 9
+#| fig-height: 4.5
+ggplot(d, aes(x = reorder(scuola_superiore, STARS_total),
+              y = STARS_total)) +
+  geom_boxplot(fill = "steelblue", alpha = 0.7) +
+  coord_flip() +
+  labs(x = "", y = "STARS total",
+       title = "Distribuzione per scuola superiore") +
+  theme_minimal()
+```
+
+---
+
+## Ricapitolando: il flusso
+
+1. **Importare** → `read.csv()` (+ progetto RStudio o `here()`)
+
+2. **Esplorare** → `head()`, `summary()`, `dim()`, `names()`
+
+3. **Trasformare** → `mutate()` per creare nuove variabili
+
+4. **Riassumere** → `group_by()` + `summarise()`
+
+5. **Visualizzare** → `ggplot()` + `geom_*()`
+
+. . .
+
+Questo flusso è sufficiente per la grande maggioranza delle analisi descrittive.
+
+---
+
+## Riepilogo: le idee da portare a casa
+
+. . .
+
+**Aritmetica vettorializzata**: le operazioni si applicano a tutti gli elementi. Le formule con $\Sigma$ si traducono quasi letteralmente in R.
+
+. . .
+
+**La pipe** (`|>`): collega le operazioni in sequenza leggibile.
+
+. . .
+
+**`group_by()` + `summarise()`**: il duo che permette di calcolare statistiche per gruppo.
+
+. . .
+
+**`mutate()`**: crea nuove variabili (es. punteggi di sottoscale).
+
+. . .
+
+**ggplot2**: grafici costruiti a strati (`data + aes + geom`).
+
+---
+
+## Per approfondire
+
+- [Cap. 6 — Sintassi R](https://ccaudek.github.io/utet-eda/chapters/R/01_r_syntax.html): oggetti, vettori, funzioni
+- [Cap. 10 — Usare dplyr](https://ccaudek.github.io/utet-eda/chapters/R/05_dplyr.html): trasformare i dati
+- [Cap. 11 — Visualizzazione con ggplot2](https://ccaudek.github.io/utet-eda/chapters/R/06_ggplot2.html): grafici
+
+. . .
+
+Nella prossima lezione: **fondamenti della probabilità** — eventi, spazi campionari, assiomi.
