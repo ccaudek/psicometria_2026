@@ -1,7 +1,7 @@
 ---
 title: "Distribuzione predittiva a posteriori"
 subtitle: "Applicazioni pratiche con brms — Segmento 2"
-version: 1.0
+version: 2.0
 author:
   - name: Corrado Caudek
     orcid: 0000-0002-1404-0420
@@ -52,7 +52,7 @@ set.seed(42)
 
 Abbiamo imparato che:
 
-- La **posterior predictive** risponde: "Cosa mi aspetto in futuro, dato ciò che ho osservato?"
+- La **posterior predictive distribution** risponde alla domanda: "Cosa mi aspetto in futuro, dato ciò che ho osservato?"
 - Si ottiene estraendo θ dalla posterior e generando nuovi dati.
 - Combina incertezza sui parametri e variabilità nei dati.
 
@@ -69,8 +69,8 @@ Nella pratica, non calcoleremo mai la posterior predictive "a mano".
 Il pacchetto **brms** (Bayesian Regression Models using Stan):
 
 - stima modelli bayesiani con sintassi familiare (simile a `lm()`);
-- genera automaticamente la posterior predictive;
-- fornisce strumenti per il posterior predictive check;
+- genera automaticamente la *posterior predictive distribution*;
+- fornisce strumenti per il *posterior predictive check*;
 - gestisce modelli molto più complessi di quelli che potremmo calcolare a mano.
 
 # Parte 2: un esempio completo
@@ -79,6 +79,8 @@ Il pacchetto **brms** (Bayesian Regression Models using Stan):
 
 Uno studio valuta l'efficacia di un intervento CBT. Misuriamo i punteggi **BDI-II** post-trattamento in 20 pazienti.
 
+Ricordate la Lezione 22: abbiamo usato il BDI-II per il prior predictive check. Ora usiamo lo stesso strumento, ma con **dati reali** e un modello stimato.
+
 ```{r}
 # Dati osservati
 dati <- data.frame(
@@ -86,9 +88,19 @@ dati <- data.frame(
   bdi = c(18, 22, 15, 28, 19, 24, 21, 17, 25, 20,
           23, 16, 27, 19, 22, 18, 26, 21, 24, 20)
 )
+```
 
+---
+
+```{r}
 cat("n =", nrow(dati), "pazienti\n")
+```
+
+```{r}
 cat("Media:", round(mean(dati$bdi), 1), "\n")
+```
+
+```{r}
 cat("SD:", round(sd(dati$bdi), 1), "\n")
 ```
 
@@ -116,8 +128,7 @@ Il modello è:
 $$
 \text{BDI}_i \sim \text{Normale}(\mu, \sigma).
 $$
-
-La funzione `brm()` stima la distribuzione a posteriori di $\mu$ e $\sigma$.
+Questo è il modello Normale che abbiamo studiato nella Lezione 19 — la funzione `brm()` stima la distribuzione a posteriori di $\mu$ e $\sigma$ usando i metodi MCMC.
 
 ---
 
@@ -131,10 +142,16 @@ summary(fit)
 
 ## Interpretazione
 
-- **Intercept (μ):** media stimata ≈ 21, intervallo credibile 95%: [19, 23].
-- **sigma (σ):** deviazione standard stimata ≈ 3.8.
+```{r}
+#| echo: false
+post_summary <- fixef(fit)
+sigma_summary <- VarCorr(fit)
+```
 
-Questi sono i parametri della distribuzione a posteriori.
+- **Intercept (μ):** media stimata dei punteggi BDI-II, con intervallo credibile al 95%.
+- **sigma (σ):** deviazione standard stimata.
+
+Ricordate la Lezione 20: l'intervallo credibile al 95% indica il range di valori più plausibili per il parametro — ed è interpretabile direttamente come probabilità.
 
 # Parte 3: generare la posterior predictive
 
@@ -228,7 +245,7 @@ dove i parametri $\mu$ (media) e $\sigma$ (deviazione standard) non sono stimati
 
 ## Generazione delle previsioni
 
-La funzione `posterior_predict()` di `brms` utilizza queste distribuzioni a posteriori per generare dati simulati. In particolare, per ciascuna iterazione dell’algoritmo MCMC:
+La funzione `posterior_predict()` di `brms` utilizza queste distribuzioni a posteriori per generare dati simulati. In particolare, per ciascuna iterazione dell'algoritmo MCMC:
 
 1. viene estratta una coppia di valori ($\mu^{(s)}, \sigma^{(s)}$) dalla posterior;
 2. viene simulato un punteggio BDI-II da una distribuzione Normale con tali parametri:
@@ -244,7 +261,7 @@ Nel nostro caso, per il paziente 1 otteniamo un vettore di circa 4000 valori (`p
 
 ---
 
-## Significato del “punteggio BDI-II previsto”
+## Significato del "punteggio BDI-II previsto"
 
 Il **punteggio BDI-II previsto** non corrisponde a una stima puntuale del punteggio del paziente 1, né a una previsione deterministica.
 Esso rappresenta invece **un possibile valore del BDI-II che il modello considera plausibile**, tenendo conto simultaneamente di:
@@ -263,11 +280,11 @@ In questo senso, la distribuzione predittiva a posteriori descrive ciò che potr
 
 ## Interpretazione del grafico
 
-L’istogramma mostra la distribuzione dei punteggi BDI-II previsti per il paziente 1.
+L'istogramma mostra la distribuzione dei punteggi BDI-II previsti per il paziente 1.
 
-* L’asse orizzontale (“Punteggio BDI-II previsto”) rappresenta i valori del BDI-II generati dal modello.
-* L’asse verticale (“Densità”) indica la frequenza relativa di tali valori.
-* La forma della distribuzione riflette la combinazione dell’incertezza sui parametri e della variabilità individuale.
+* L'asse orizzontale ("Punteggio BDI-II previsto") rappresenta i valori del BDI-II generati dal modello.
+* L'asse verticale ("Densità") indica la frequenza relativa di tali valori.
+* La forma della distribuzione riflette la combinazione dell'incertezza sui parametri e della variabilità individuale.
 
 ---
 
@@ -279,17 +296,17 @@ L’istogramma mostra la distribuzione dei punteggi BDI-II previsti per il pazie
 
 ## Perché la distribuzione non è centrata sul valore osservato
 
-* È importante notare che il modello utilizzato include solo un’intercetta (`bdi ~ 1`) e non incorpora informazioni specifiche del singolo paziente. Di conseguenza, la distribuzione predittiva non è centrata sul valore osservato del paziente 1, ma sulla **media stimata della popolazione**.
+* È importante notare che il modello utilizzato include solo un'intercetta (`bdi ~ 1`) e non incorpora informazioni specifiche del singolo paziente. Di conseguenza, la distribuzione predittiva non è centrata sul valore osservato del paziente 1, ma sulla **media stimata della popolazione**.
 
-* Il punteggio osservato rappresenta quindi una singola realizzazione possibile all’interno della distribuzione predittiva, non il suo valore centrale.
+* Il punteggio osservato rappresenta quindi una singola realizzazione possibile all'interno della distribuzione predittiva, non il suo valore centrale.
 
 ---
 
 ## Sintesi
 
-In conclusione, il grafico della distribuzione predittiva a posteriori mostra l’insieme dei punteggi BDI-II che il modello bayesiano considera plausibili per un paziente come il paziente 1. 
+In conclusione, il grafico della distribuzione predittiva a posteriori mostra l'insieme dei punteggi BDI-II che il modello bayesiano considera plausibili per un paziente come il paziente 1. 
 
-Esso fornisce una rappresentazione intuitiva dell’incertezza predittiva del modello e permette di confrontare direttamente le osservazioni empiriche con le previsioni generate dal modello.
+Esso fornisce una rappresentazione intuitiva dell'incertezza predittiva del modello e permette di confrontare direttamente le osservazioni empiriche con le previsioni generate dal modello.
 
 
 # Parte 4: previsioni per nuovi pazienti
@@ -354,7 +371,7 @@ cat("P(BDI < 14) =", round(prob_remissione * 100, 1), "%\n")
 
 . . .
 
-C'è circa il **4%** di probabilità che un nuovo paziente sia in remissione.
+La probabilità di remissione per un nuovo paziente è bassa — il trattamento riduce i sintomi ma non li elimina per la maggior parte dei pazienti.
 
 ---
 
@@ -370,7 +387,7 @@ cat("P(BDI < 20) =", round(prob_miglioramento * 100, 1), "%\n")
 
 . . .
 
-Circa il **38%** di probabilità di miglioramento clinicamente rilevante.
+Una quota rilevante di nuovi pazienti potrebbe mostrare un miglioramento clinicamente rilevante.
 
 ---
  
@@ -386,7 +403,7 @@ cat("P(BDI > 28) =", round(prob_grave * 100, 1), "%\n")
 
 . . .
 
-Circa il **5%** di probabilità che il paziente abbia una depressione grave.
+Il rischio di depressione grave dopo il trattamento è contenuto.
 
 ---
 
@@ -403,15 +420,15 @@ cat("Intervallo 80%:", round(intervallo_80[1], 1), "-",
 
 . . .
 
-L'80% dei nuovi pazienti avrà un punteggio tra **16 e 26**.
+Questo intervallo è più largo dell'intervallo di credibilità per $\mu$ (Lezione 20) perché include anche la **variabilità individuale**, non solo l'incertezza sul parametro.
 
 # Parte 6: Posterior predictive check
 
 ## Il modello riproduce adeguatamente i dati?
 
-Il **posterior predictive check (PPC)** è uno strumento fondamentale nella modellistica bayesiana per valutare l’adeguatezza del modello ai dati osservati.
+Il **posterior predictive check (PPC)** è uno strumento fondamentale nella modellistica bayesiana per valutare l'adeguatezza del modello ai dati osservati.
 
-L’idea di base è semplice: un buon modello dovrebbe essere in grado di **generare dati simili a quelli realmente osservati**.
+L'idea di base è semplice: un buon modello dovrebbe essere in grado di **generare dati simili a quelli realmente osservati**.
 
 ---
 
@@ -422,11 +439,15 @@ Il PPC confronta quindi:
 
 Se i dati osservati appaiono plausibili rispetto alle simulazioni, il modello può essere considerato coerente con i dati.
 
+Ricordate la Lezione 22: il prior predictive check verificava se le *prior* producevano dati sensati. Ora il posterior predictive check verifica se il *modello stimato* riproduce i dati osservati.
+
 ---
 
 ## Visualizzazione con `pp_check()`
 
 La funzione `pp_check()` di `brms` permette di effettuare questi confronti in modo grafico.
+
+---
 
 ```{r}
 pp_check(fit, type = "dens_overlay", ndraws = 100)
@@ -446,7 +467,11 @@ Questo grafico sovrappone:
 * **Linea scura:** distribuzione dei dati osservati.
 * **Linee chiare:** distribuzioni dei dati simulati dal modello.
 
-Se la distribuzione osservata è ben “avvolta” dalle distribuzioni simulate, significa che il modello riesce a riprodurre forma, posizione e dispersione dei dati reali.
+. . .
+
+Se la distribuzione osservata è ben "avvolta" dalle distribuzioni simulate, significa che il modello riesce a riprodurre forma, posizione e dispersione dei dati reali.
+
+. . .
 
 Al contrario, scostamenti sistematici (ad esempio differenze nella media, nella variabilità o nelle code) suggerirebbero una possibile inadeguatezza del modello.
 
@@ -469,7 +494,7 @@ pp_check(fit, type = "stat", stat = "mean")
 In questo grafico:
 
 * la **linea verticale** rappresenta la media osservata;
-* l’istogramma rappresenta la distribuzione delle medie simulate.
+* l'istogramma rappresenta la distribuzione delle medie simulate.
 
 Se la media osservata cade in una regione di alta densità delle medie simulate, il modello riproduce adeguatamente il livello medio dei dati.
 
@@ -504,7 +529,7 @@ Questo controllo considera simultaneamente:
 
 Il punto rappresenta le statistiche osservate, mentre la nuvola di punti rappresenta le statistiche ottenute dai dati simulati.
 
-Se il punto osservato cade all’interno della nuvola, il modello riproduce in modo congiunto sia il livello medio sia la dispersione dei dati.
+Se il punto osservato cade all'interno della nuvola, il modello riproduce in modo congiunto sia il livello medio sia la dispersione dei dati.
 
 ---
 
@@ -514,181 +539,33 @@ Nel complesso, i **posterior predictive check** consentono di valutare se il mod
 
 In questo esempio, la coerenza tra dati osservati e simulati suggerisce che il modello con sola intercetta e distribuzione Normale costituisce una descrizione adeguata dei punteggi BDI-II post-trattamento.
 
-<!-- # Parte 7: previsioni per più pazienti -->
+# Riepilogo e percorso del corso
 
-<!-- ## Prevedere i prossimi 10 pazienti -->
+## Il percorso fin qui {background-color="#27ae60" style="color: white;"}
 
-<!-- Finora abbiamo stimato un modello molto semplice: -->
+. . .
 
-<!-- $$ -->
-<!-- \text{BDI}_i \sim \mathcal{N}(\mu, \sigma). -->
-<!-- $$ -->
+**Lezioni 5–11** — Probabilità, distribuzioni, verosimiglianza.
 
-<!-- Questo significa che ogni punteggio BDI segue una distribuzione Normale con centro μ (media) e larghezza σ (deviazione standard).  -->
+**Lezioni 14–16** — Inferenza frequentista, IC, p-value, crisi di replicabilità.
 
-<!-- * Se μ e σ fossero numeri fissi, potremmo prevedere un nuovo paziente semplicemente come una realizzazione casuale da una Normale con parametri $\mu$ e $\sigma$. -->
+**Lezione 17** — I tre ingredienti bayesiani. Approssimazione a griglia.
 
-<!-- --- -->
+**Lezione 18** — Apprendimento sequenziale.
 
-<!-- ##  La differenza bayesiana -->
+**Lezione 19** — Famiglie coniugate: Beta-Binomiale e Normale-Normale.
 
-<!-- Nell'approccio bayesiano, dopo aver visto i dati, `μ` e `σ` non sono numeri fissi.  -->
+**Lezione 20** — Sintesi del posterior: stime puntuali, ETI, HDI, domande probabilistiche.
 
-<!-- * Hanno una **distribuzione di probabilità** (distribuzione a posteriori).  -->
+**Lezione 22** — Distribuzione predittiva a priori e prior predictive check.
 
-<!-- * Questo significa che abbiamo molte coppie `(μ, σ)` plausibili, ognuna con la sua probabilità. -->
+**Lezione 23 (oggi)** — Distribuzione predittiva a posteriori e posterior predictive check.
 
-<!-- --- -->
+. . .
 
-<!-- Quando prevediamo un nuovo paziente, dobbiamo considerare **tutte queste coppie plausibili**, non una sola.  -->
+Nella prossima lezione studieremo l'**influenza della distribuzione a priori**: analisi di sensibilità e robustezza. Quando possiamo fidarci dei risultati? E cosa succede se cambiamo il prior?
 
-<!-- * La **distribuzione predittiva a posteriori** fa esattamente questo: per ogni coppia plausibile `(μ, σ)`, estrae un possibile punteggio e poi mescola tutti i risultati, dando più peso alle coppie più probabili. -->
-
-<!-- --- -->
-
-<!-- Risultato: la nostra previsione è più incerta (più dispersa) perché include sia -->
-
-<!-- - l'incertezza su dove sia il centro della curva; -->
-<!-- - la normale variabilità dei pazienti attorno al centro. -->
-
-<!-- --- -->
-
-<!-- ## Come si simula in pratica -->
-
-<!-- Invece di fare calcoli analitici complessi, usiamo un approccio simulativo. -->
-
-<!-- 1. **Creiamo dati "vuoti" per 10 nuovi pazienti**: -->
-<!--    ```{r} -->
-<!--    nuovi_pazienti <- data.frame(paziente = 21:30) -->
-<!--    ``` -->
-<!--    Sono solo identificativi. Il modello userà solo la struttura. -->
-
-<!-- --- -->
-
-<!-- ```{r} -->
-<!-- nuovi_pazienti -->
-<!-- ``` -->
-
-<!-- --- -->
-
-<!-- 2. **Chiediamo a `brms` di generare previsioni**: -->
-<!--    ```{r} -->
-<!--    pred_10 <- posterior_predict(fit, newdata = nuovi_pazienti) -->
-<!--    ``` -->
-<!--    Questa funzione fa internamente: -->
-
-<!--    - prende un campione `(μ, σ)` dalla distribuzione a posteriori; -->
-<!--    - usa quei valori per estrarre 10 punteggi dalla Normale corrispondente; -->
-<!--    - ripete per tutte le migliaia di campioni della catena MCMC. -->
-
-<!-- --- -->
-
-<!-- 3. **Il risultato è una matrice**: -->
-
-<!--    - **Righe**: 4000 simulazioni (una per ogni campione MCMC); -->
-<!--    - **Colonne**: 10 pazienti. -->
-
-<!--    Ogni riga è uno "scenario futuro possibile" con 10 nuovi pazienti. -->
-
-<!-- --- -->
-
-<!-- ```{r} -->
-<!-- dim(pred_10) -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- pred_10[1:20, 1:5] -->
-<!-- ``` -->
-
-<!-- --- -->
-
-<!-- ### Da previsioni a risposte cliniche -->
-
-<!-- Non ci interessa solo il punteggio, ma quanti pazienti miglioreranno (es. BDI < 20). -->
-
-<!-- ```{r} -->
-<!-- n_migliorati <- apply(pred_10, 1, function(x) sum(x < 20)) -->
-<!-- ``` -->
-
-<!-- * Per ogni scenario (riga), contiamo quanti dei 10 punteggi sono sotto la soglia.  -->
-<!-- * Otteniamo così 4000 numeri possibili di "migliorati". -->
-
-
-<!-- ## Interpretazione dei risultati -->
-
-<!-- - **Media di `n_migliorati`**: numero medio atteso di migliorati su 10 pazienti. -->
-<!-- - **Intervallo 95%**: in 95 scenari su 100, il numero di migliorati cadrà in questo range. -->
-<!-- - **Probabilità di almeno 5 migliorati**:  -->
-
-<!--   ```{r} -->
-<!--   mean(n_migliorati >= 5) -->
-<!--   ``` -->
-
-<!--   è semplicemente la percentuale di scenari in cui la condizione è vera. -->
-
-<!-- ---  -->
-
-<!-- ## Perché funziona? -->
-
-<!-- Stiamo sfruttando la **logica delle simulazioni**: -->
-
-<!-- 1. il modello bayesiano ci dà tutte le possibili coppie `(μ, σ)` plausibili; -->
-<!-- 2. per ognuna, simuliamo cosa accadrebbe con 10 nuovi pazienti; -->
-<!-- 3. le proprietà della distribuzione dei risultati (media, intervalli, probabilità) rispecchiano direttamente la nostra conoscenza predittiva, incertezza inclusa. -->
-
-<!-- **In sintesi**: invece di dire "prevedo X pazienti migliorati", diciamo "ecco la distribuzione completa di ciò che potrebbe accadere, data la nostra incertezza". -->
-
-<!-- --- -->
-
-<!-- ## Visualizziamo la distribuzione predetta -->
-
-<!-- Questo grafico mostra con quale probabilità il modello prevede 0, 1, 2, …, 10 miglioramenti su 10 pazienti. -->
-
-<!-- ```{r} -->
-<!-- #| echo: false -->
-
-<!-- df_migliorati <- data.frame(n = n_migliorati) -->
-
-<!-- ggplot(df_migliorati, aes(x = n)) + -->
-<!--   geom_bar(aes(y = after_stat(prop)), fill = "coral", alpha = 0.7) + -->
-<!--   scale_x_continuous(breaks = 0:10) + -->
-<!--   labs(title = "Quanti pazienti su 10 miglioreranno?", -->
-<!--        subtitle = "Distribuzione predittiva a posteriori (BDI-II < 20)", -->
-<!--        x = "Numero di pazienti migliorati", y = "Probabilità") + -->
-<!--   theme_minimal(base_size = 14) -->
-<!-- ``` -->
-
-<!-- <!-- Nota tecnica: `after_stat(prop)` fa sì che l’asse y rappresenti **proporzioni** (cioè probabilità stimate) invece dei conteggi grezzi. --> -->
-
-<!-- --- -->
-
-<!-- ## Probabilità di almeno 5 miglioramenti -->
-
-<!-- Infine, possiamo stimare direttamente una probabilità decisionale, ad esempio: -->
-
-<!-- $$ -->
-<!-- P(\text{almeno 5 su 10 migliorano}). -->
-<!-- $$ -->
-
-<!-- Nel nostro campione di simulazioni, questa probabilità è semplicemente la quota di volte in cui `n_migliorati` è ≥ 5. -->
-
-<!-- ```{r} -->
-<!-- prob_almeno_5 <- mean(n_migliorati >= 5) -->
-
-<!-- cat("P(almeno 5 su 10 migliorano) =", round(prob_almeno_5 * 100, 1), "%\n") -->
-<!-- ``` -->
-
-<!-- --- -->
-
-<!-- **Interpretazione:**   -->
-
-<!-- > “Dato il modello e i dati osservati, la probabilità che almeno 5 dei prossimi 10 pazienti abbiano BDI-II < 20 è circa 30.5%”. -->
-
-
-<!-- **Nota:**   -->
-<!-- con questo modello (solo intercetta) i 10 pazienti sono **scambiabili**, quindi stai facendo una previsione “per pazienti medi”, non personalizzata.  -->
-
-# Riepilogo
+---
 
 ## Le funzioni chiave di brms
 

@@ -1,7 +1,7 @@
 ---
 title: "Confronto tra modelli"
 subtitle: "Come scegliere il modello migliore — un'introduzione"
-version: 1.0
+version: 2.0
 author:
   - name: Corrado Caudek
     orcid: 0000-0002-1404-0420
@@ -34,15 +34,26 @@ library(tidyverse)
 set.seed(2026)
 ```
 
-## La domanda
+## Dalla struttura dei dati alla scelta del modello {background-color="#2c3e50" style="color: white;"}
 
-Nella prima metà di questa lezione abbiamo visto che i dati psicologici possono essere analizzati con modelli diversi: più semplici o più complessi, con o senza struttura gerarchica.
+Nella prima metà di questa lezione abbiamo visto che i dati psicologici hanno una struttura gerarchica e possono essere analizzati con modelli diversi: più semplici o più complessi, con o senza partial pooling.
 
 . . .
 
 Ma questo solleva una domanda fondamentale:
 
 > Se ho due (o più) modelli, **come scelgo il modello migliore?**
+
+---
+
+## Perché questa domanda conta per lo psicologo
+
+Nella pratica professionale, la scelta del modello non è un esercizio accademico:
+
+- Uno psicologo clinico deve decidere se il disagio del paziente è spiegato meglio da un modello con un solo predittore (es. depressione) o da uno con più predittori (es. depressione + ansia + contesto sociale).
+- Un ricercatore in psicologia dello sviluppo si chiede se il modello multilivello (che tiene conto della classe scolastica) aggiunge davvero potere predittivo rispetto a un modello più semplice.
+
+La risposta dipende da un principio che abbiamo già incontrato nella Lezione 28: un buon modello è quello che **prevede bene nuove osservazioni**, non quello che si adatta perfettamente ai dati già visti.
 
 ---
 
@@ -135,13 +146,13 @@ Aggiungere parametri migliora sempre l'adattamento, ma a un certo punto peggiora
 
 . . .
 
-Il confronto tra modelli cerca di stimare la **capacità predittiva**: quanto bene il modello funzionerebbe su dati che non ha ancora visto.
+Il confronto tra modelli cerca di stimare la **capacità predittiva**: quanto bene il modello funzionerebbe su dati che non ha ancora visto. È lo stesso principio della distribuzione predittiva a posteriori (Lezioni 22–23) applicato alla scelta tra modelli alternativi.
 
 # L'idea chiave: la capacità predittiva {background-color="#2c3e50" style="color: white;"}
 
-## Cosa significa “prevedere bene”?
+## Cosa significa "prevedere bene"?
 
-Dire che un modello “prevede bene” **non significa** che indovina esattamente ogni valore.
+Dire che un modello "prevede bene" **non significa** che indovina esattamente ogni valore.
 Significa qualcosa di più sottile (e più realistico).
 
 Immaginiamo di avere già stimato un modello sui dati osservati.
@@ -160,16 +171,11 @@ Questa è la **probabilità predittiva**.
 . . .
 
 * Un **buon modello** assegna **alta probabilità** a ciò che poi accade davvero.
-* Un **cattivo modello** viene “colto di sorpresa” e assegna **bassa probabilità** al dato osservato.
+* Un **cattivo modello** viene "colto di sorpresa" e assegna **bassa probabilità** al dato osservato.
 
----
+. . .
 
-## La probabilità predittiva e il modello
-
-👉 Quindi valutiamo un modello non chiedendogli
-“hai indovinato?”
-ma
-**“quanto eri sicuro di ciò che è successo?”**
+Quindi valutiamo un modello non chiedendogli "hai indovinato?", ma **"quanto eri sicuro di ciò che è successo?"**
 
 ---
 
@@ -193,27 +199,19 @@ $$
 ### Perché il logaritmo?
 
 Il logaritmo serve solo a rendere i numeri **più gestibili** e **comparabili**.
-Ma soprattutto ha un’interpretazione molto chiara:
+Ma soprattutto ha un'interpretazione molto chiara: **misura quanto il modello è "sorpreso" dal dato osservato**.
 
-👉 **misura quanto il modello è “sorpreso” dal dato osservato**.
+. . .
 
----
+* **Valori vicini a 0** (es. −0.2, −0.5) → il dato era **molto plausibile**, il modello *se lo aspettava*.
 
-### Come interpretare i valori
+* **Valori molto negativi** (es. −10, −15) → il dato era **poco plausibile**, il modello è rimasto *molto sorpreso*.
 
-* **Valori vicini a 0** (es. −0.2, −0.5)
-  → il dato era **molto plausibile**,
-  → il modello *se lo aspettava*.
-
-* **Valori molto negativi** (es. −10, −15)
-  → il dato era **poco plausibile**,
-  → il modello è rimasto *molto sorpreso*.
-
-👉 Più il valore è negativo, **peggio** il modello ha previsto quel dato.
+Più il valore è negativo, **peggio** il modello ha previsto quel dato.
 
 ---
 
-### Dall’osservazione singola al modello nel suo insieme
+### Dall'osservazione singola al modello nel suo insieme
 
 Un singolo dato può andare bene o male per caso.
 Per valutare un modello nel complesso, sommiamo la log-densità predittiva su **tutti** i nuovi dati:
@@ -226,29 +224,24 @@ Questo numero si chiama **Expected Log Predictive Density** (ELPD).
 
 ---
 
-### Interpretazione dell’ELPD
+### Interpretazione dell'ELPD
 
-* L’ELPD misura **quanto bene, in media, il modello prevede dati nuovi**.
+* L'ELPD misura **quanto bene, in media, il modello prevede dati nuovi**.
 * **Più è alto (cioè meno negativo)** → migliore capacità predittiva.
 * Le differenze di ELPD tra modelli indicano **quale modello si sorprende meno dei dati**.
 
-👉 In altre parole:
-**il modello migliore è quello che, complessivamente, rimane meno sorpreso dalla realtà.**
+In altre parole: **il modello migliore è quello che, complessivamente, rimane meno sorpreso dalla realtà.**
 
 ---
 
 ## ELPD e overfitting: il collegamento intuitivo
 
 Un modello può adattarsi **molto bene** ai dati osservati e tuttavia prevedere **male** dati nuovi.
-Questo succede quando il modello è **troppo flessibile** e inizia a inseguire il rumore nei dati.
-
-. . .
-
-👉 Questo fenomeno si chiama **overfitting**.
+Questo succede quando il modello è **troppo flessibile** e inizia a inseguire il rumore nei dati — il fenomeno dell'**overfitting**.
 
 ---
 
-## Perché l’ELPD “punisce” l’overfitting
+## Perché l'ELPD "punisce" l'overfitting
 
 Un modello caratterizzato dall'*overfitting* tende a fare previsioni **troppo sicure**:
 
@@ -262,7 +255,7 @@ Se arriva un nuovo dato leggermente diverso da quelli visti prima:
 * il modello viene **fortemente sorpreso**,
 * la log-densità predittiva diventa **molto negativa**.
 
-👉 Anche pochi dati “inaspettati” possono abbassare drasticamente l’ELPD.
+Anche pochi dati "inaspettati" possono abbassare drasticamente l'ELPD.
 
 ---
 
@@ -278,22 +271,21 @@ Se arriva un nuovo dato leggermente diverso da quelli visti prima:
 
 . . .
 
-L’ELPD favorisce i modelli che trovano il **giusto equilibrio**:
+L'ELPD favorisce i modelli che trovano il **giusto equilibrio**:
 abbastanza flessibili da cogliere la struttura dei dati, ma non così rigidi da "rompersi" al primo dato nuovo.
 
 ---
 
 ## Intuizione finale 
 
-Valutare un modello con l’ELPD significa chiedere:
+Valutare un modello con l'ELPD significa chiedere:
 
 > *se questo modello fosse la mia teoria sul mondo,
 > quanto spesso rimarrei sorpreso da ciò che osservo?*
 
 . . .
 
-👉 Il modello migliore non è quello che spiega perfettamente il passato,
-ma quello che **si sorprende meno del futuro**.
+Il modello migliore non è quello che spiega perfettamente il passato, ma quello che **si sorprende meno del futuro**.
 
 ---
 
@@ -311,7 +303,7 @@ C'è un ostacolo: per calcolare l'ELPD servirebbero dati nuovi che **non abbiamo
 
 # Leave-One-Out Cross-Validation {background-color="#2c3e50" style="color: white;"}
 
-## L’idea della LOO-CV
+## L'idea della LOO-CV
 
 La **Leave-One-Out Cross-Validation** (LOO-CV) è una procedura che serve a valutare **quanto bene un modello generalizza**, cioè quanto bene funzionerebbe su dati che non ha mai visto.
 
@@ -319,16 +311,16 @@ La **Leave-One-Out Cross-Validation** (LOO-CV) è una procedura che serve a valu
 
 Funziona così:
 
-1. **Togliamo un’osservazione** dal campione.
+1. **Togliamo un'osservazione** dal campione.
 2. Stimiamo il modello usando **tutti gli altri dati**.
-3. Chiediamo al modello di **prevedere l’osservazione esclusa**.
+3. Chiediamo al modello di **prevedere l'osservazione esclusa**.
 4. Ripetiamo questa operazione **per ogni osservazione** del dataset.
 
 ---
 
 In questo modo, ogni dato viene usato:
 
-* una volta come **dato “nuovo”** da prevedere,
+* una volta come **dato "nuovo"** da prevedere,
 * tutte le altre volte come **dato di addestramento**.
 
 ---
@@ -338,7 +330,7 @@ In questo modo, ogni dato viene usato:
 Alla fine, otteniamo una stima realistica della capacità predittiva del modello,
 perché **nessuna osservazione viene mai usata sia per stimare il modello sia per valutarlo**.
 
-👉 È come testare una teoria chiedendole di spiegare ogni caso *come se non lo avesse mai visto prima*.
+È come testare una teoria chiedendole di spiegare ogni caso *come se non lo avesse mai visto prima*.
 
 ---
 
@@ -389,23 +381,18 @@ Per modelli complessi, questo sarebbe **computazionalmente molto costoso**.
 
 . . .
 
-La buona notizia è che, nei modelli bayesiani, esiste un’approssimazione **rapida ed efficace** chiamata **PSIS-LOO**
+La buona notizia è che, nei modelli bayesiani, esiste un'approssimazione **rapida ed efficace** chiamata **PSIS-LOO**
 (*Pareto Smoothed Importance Sampling*), implementata nel pacchetto `loo` di R.
 
 ---
 
-## La buona notizia: non serve rifarlo $n$ volte
-
 Questa procedura sfrutta il modello stimato **una sola volta** per ottenere lo stesso risultato concettuale:
-una stima dell’**ELPD** per ciascun modello, calcolata in modo che **ogni dato venga valutato come se fosse nuovo**.
+una stima dell'**ELPD** per ciascun modello, calcolata in modo che **ogni dato venga valutato come se fosse nuovo**.
 
 . . .
 
-Per ora non è importante capire *come* funziona l’approssimazione a livello tecnico.
-La cosa importante è *cosa ci restituisce*:
-
-👉 **una stima affidabile della capacità predittiva del modello**,
-senza barare e senza costi computazionali proibitivi.
+Per ora non è importante capire *come* funziona l'approssimazione a livello tecnico.
+La cosa importante è *cosa ci restituisce*: **una stima affidabile della capacità predittiva del modello**, senza barare e senza costi computazionali proibitivi.
 
 # Confrontare due modelli {background-color="#2c3e50" style="color: white;"}
 
@@ -435,14 +422,14 @@ loo_compare(mod1, mod2)
 
 . . .
 
-Il confronto non restituisce un “vincitore” automatico, ma mostra:
+Il confronto non restituisce un "vincitore" automatico, ma mostra:
 
 * la **differenza in ELPD** tra i modelli,
-* l’**incertezza** associata a questa differenza.
+* l'**incertezza** associata a questa differenza.
 
 ---
 
-## Come leggere l’output
+## Come leggere l'output
 
 ```
          elpd_diff   se_diff
@@ -471,7 +458,7 @@ Una regola pratica utile (Sivula, Magnusson & Vehtari, 2020):
 
 * Se $|\text{elpd_diff}| < 4$
   → i due modelli sono **sostanzialmente equivalenti**
-  → non c’è evidenza sufficiente per preferirne uno.
+  → non c'è evidenza sufficiente per preferirne uno.
 
 . . .
 
@@ -484,7 +471,7 @@ Una regola pratica utile (Sivula, Magnusson & Vehtari, 2020):
 
 ---
 
-## Applicazione all’esempio
+## Applicazione all'esempio
 
 Nel nostro caso:
 
@@ -499,7 +486,7 @@ Questo valore suggerisce che:
 * `mod2` **tende** a prevedere meglio di `mod1`,
 * ma la differenza è **modesta** e ancora piuttosto incerta.
 
-👉 Come regola empirica, un rapporto **maggiore di 2** indicherebbe una preferenza più solida.
+Come regola empirica, un rapporto **maggiore di 2** indicherebbe una preferenza più solida.
 
 ---
 
@@ -524,37 +511,23 @@ Nella LOO-CV bayesiana, la penalizzazione emerge **naturalmente** dall'approccio
 
 ---
 
-## Un’analogia
+## Un'analogia: due clinici a confronto
 
-Immaginate due meteorologi.
-
-. . .
-
-**Meteorologo A** (modello semplice):
-
-> “Domani piove con probabilità del 70%.”
-
-**Meteorologo B** (modello complesso):
-
-> “Domani piove con probabilità del 95%.”
-
----
-
-## Un’analogia
-
-* Se domani piove, **entrambi** hanno previsto correttamente l’evento,
-ma il meteorologo B era **molto più sicuro**.
-
-* Se domani **non** piove, però, il meteorologo B viene penalizzato **molto di più**:
-era eccessivamente sicuro di una previsione sbagliata.
+Immaginate due psicologi che devono prevedere come andrà una terapia per un nuovo paziente.
 
 . . .
 
-Alla lunga, non vince chi fa le previsioni più estreme,
-ma chi è **ben calibrato**:
-sicuro quando l’evidenza è forte, cauto quando la situazione è ambigua.
+**Psicologo A** (modello semplice): "Sulla base dell'evidenza, c'è il 70% di probabilità che la CBT funzioni per questo tipo di disturbo."
 
-👉 **L’ELPD misura esattamente questa calibrazione.**
+**Psicologo B** (modello complesso): "Considerando tutti i fattori, sono sicuro al 95% che la CBT funzionerà."
+
+. . .
+
+Se la terapia funziona, **entrambi** avevano previsto correttamente, ma lo psicologo B era **molto più sicuro**. Se la terapia **non** funziona, però, lo psicologo B viene penalizzato **molto di più**: era eccessivamente sicuro di una previsione sbagliata.
+
+. . .
+
+Alla lunga, non vince chi fa le previsioni più estreme, ma chi è **ben calibrato**: sicuro quando l'evidenza è forte, cauto quando la situazione è ambigua. **L'ELPD misura esattamente questa calibrazione.**
 
 # Il quadro generale {background-color="#2c3e50" style="color: white;"}
 
@@ -565,13 +538,13 @@ Il confronto tra modelli è utile ogni volta che abbiamo **ipotesi alternative**
 . . .
 
 **Un predittore vs. due predittori**
-→ l’ansia statistica è predetta meglio dalla sola autovalutazione in matematica
+→ l'ansia statistica è predetta meglio dalla sola autovalutazione in matematica
 oppure migliora includendo anche il tipo di scuola superiore?
 
 . . .
 
 **Modello con vs. senza effetti gerarchici**
-→ tenere conto dell’università di appartenenza migliora la capacità predittiva?
+→ tenere conto dell'università di appartenenza migliora la capacità predittiva?
 
 . . .
 
@@ -581,36 +554,26 @@ oppure con due tassi distinti (ricompense vs. punizioni)?
 
 . . .
 
-In tutti questi casi, l’ELPD stimato tramite LOO-CV fornisce un criterio
+In tutti questi casi, l'ELPD stimato tramite LOO-CV fornisce un criterio
 **quantitativo, comparabile e fondato sulla previsione**.
 
 ---
 
-## Cosa l’ELPD *non* dice
+## Cosa l'ELPD *non* dice
 
-L’ELPD è uno strumento potente, ma **non decide da solo**.
-
-. . .
-
-* **Interpretabilità**
-  Un modello leggermente peggiore in termini di ELPD, ma molto più semplice e leggibile, può essere preferibile.
+L'ELPD è uno strumento potente, ma **non decide da solo**.
 
 . . .
 
-* **Coerenza teorica**
-  Se una teoria psicologica forte prevede un certo effetto, può avere senso mantenerlo anche se l’ELPD migliora poco.
+* **Interpretabilità** — Un modello leggermente peggiore in termini di ELPD, ma molto più semplice e leggibile, può essere preferibile.
+
+* **Coerenza teorica** — Se una teoria psicologica forte prevede un certo effetto, può avere senso mantenerlo anche se l'ELPD migliora poco.
+
+* **Dimensione del campione** — Con pochi dati, le differenze di ELPD possono essere troppo incerte per giustificare conclusioni nette.
 
 . . .
 
-* **Dimensione del campione**
-  Con pochi dati, le differenze di ELPD possono essere troppo incerte per giustificare conclusioni nette.
-
----
-
-## Cosa l’ELPD *non* dice
-
-👉 Il confronto tra modelli è un **supporto alla decisione scientifica**,
-non un oracolo che sostituisce il ragionamento teorico.
+Il confronto tra modelli è un **supporto alla decisione scientifica**, non un oracolo che sostituisce il ragionamento teorico. Come per la scelta tra approccio frequentista e bayesiano (Lezione 28), la decisione finale richiede sempre giudizio professionale.
 
 ---
 
@@ -624,7 +587,7 @@ L'idea: invece di scegliere un solo modello, combinarli assegnando a ciascuno un
 
 . . .
 
-Questo è coerente con il principio bayesiano: se siamo incerti su quale modello sia vero, usiamo tutti i modelli, pesati per la loro plausibilità.
+Questo è coerente con il principio bayesiano (Lezione 17): se siamo incerti su quale modello sia vero, usiamo tutti i modelli, pesati per la loro plausibilità.
 
 . . .
 
@@ -672,9 +635,9 @@ Questi capitoli contengono la formalizzazione matematica (entropia, divergenza K
 
 ---
 
-## In chiusura
+## In chiusura {background-color="#27ae60" style="color: white;"}
 
-Questo è l'ultimo argomento nuovo del corso. Nella prossima lezione faremo un **ripasso generale** in preparazione alla seconda prova in itinere.
+Questo è l'ultimo argomento nuovo del corso. Nella Lezione 30 faremo un **ripasso generale** in preparazione alla seconda prova in itinere: un'esercitazione che attraversa tutti i temi, dalla statistica descrittiva al confronto tra modelli.
 
 . . .
 
@@ -687,4 +650,4 @@ Ricapitolando il percorso del corso:
 
 . . .
 
-Dall'esplorazione alla decisione: un flusso coerente di ragionamento in condizioni di incertezza.
+Dall'esplorazione alla decisione: un flusso coerente di ragionamento in condizioni di incertezza. Questo è il modo di pensare che vi accompagnerà nella vostra pratica professionale.

@@ -1,7 +1,7 @@
 ---
 title: "Flusso di lavoro riproducibile"
 subtitle: "Struttura del progetto e pulizia dei dati"
-version: 1.0
+version: 2.0
 author:
   - name: Corrado Caudek
     orcid: 0000-0002-1404-0420
@@ -29,6 +29,16 @@ bibliography: ../references.bib
 csl: ../apa.csl
 ---
 
+## Dal modello al metodo {background-color="#2c3e50" style="color: white;"}
+
+Nelle Lezioni 24–26 abbiamo costruito modelli bayesiani sempre più complessi: regressione, inferenza su una media e confronto tra due gruppi. Ma un'analisi vale solo quanto la sua **riproducibilità**.
+
+. . .
+
+Oggi passiamo dal "cosa" al "come": come organizzare un progetto di analisi dalla domanda di ricerca al report, in modo che ogni passaggio sia **tracciabile, verificabile e ripetibile**.
+
+---
+
 ## Obiettivi del segmento
 
 Al termine di questo segmento lo studente deve sapere:
@@ -51,7 +61,7 @@ Proprietà:
 
 - riguarda il *processo*,
 - è verificabile,
-- è indipendente da chi esegue l’analisi.
+- è indipendente da chi esegue l'analisi.
 
 ---
 
@@ -62,19 +72,19 @@ Proprietà:
 | Riproducibilità | stessi dati, stesso codice |
 | Replicabilità | nuovi dati, stesso protocollo |
 
-👉 La riproducibilità è una **condizione necessaria** per la replicabilità.
+La riproducibilità è una **condizione necessaria** per la replicabilità.
 
 ---
 
 ## Perché la riproducibilità è critica in psicologia
 
-- dati complessi (questionari, scale, item)
-- molte decisioni intermedie
-- analisi iterative
+- Dati complessi (questionari, scale, item);
+- molte decisioni intermedie;
+- analisi iterative.
 
-⚠️ Senza riproducibilità:
+Senza riproducibilità:
 
-- gli errori non sono individuabili,
+- gli errori non sono individuabili;
 - le decisioni non sono verificabili.
 
 ---
@@ -84,6 +94,8 @@ Proprietà:
 **Workflow di analisi**  
 : sequenza di operazioni che porta  
   dai **dati grezzi** ai **risultati finali**.
+  
+. . .
 
 Include:
 
@@ -98,10 +110,10 @@ Include:
 
 1. File dati modificato manualmente.
 2. Pulizia non documentata.
-3. Analisi ripetute “a tentativi”.
+3. Analisi ripetute "a tentativi".
 4. Risultati copiati nel report.
 
-👉 Il problema è la **mancanza di tracciabilità**.
+Il problema è la **mancanza di tracciabilità**.
 
 ---
 
@@ -130,7 +142,7 @@ project/
  └── README.md
 ```
 
-👉 La struttura del progetto **fa parte del metodo**.
+La struttura del progetto **fa parte del metodo**.
 
 ---
 
@@ -140,7 +152,7 @@ project/
   dati originali, non modificati
 
 - `data/clean`  
-  dati pronti per l’analisi
+  dati pronti per l'analisi
 
 - `R/`  
   script di pulizia e analisi
@@ -150,13 +162,13 @@ project/
 
 ---
 
-## Regola fondamentale sui dati
+## Regola fondamentale sui dati {background-color="#2c3e50" style="color: white;"}
 
-⚠️ **I dati grezzi non si modificano mai**
+**I dati grezzi non si modificano mai**
 
 Motivi:
 
-- preservare l’informazione originale,
+- preservare l'informazione originale,
 - poter rifare la pulizia,
 - evitare errori irreversibili.
 
@@ -171,7 +183,7 @@ I dati reali contengono spesso:
 - risposte fuori range,
 - formati incoerenti.
 
-👉 La pulizia dei dati è una **fase metodologica**, non tecnica.
+La pulizia dei dati è una **fase metodologica**, non tecnica.
 
 ---
 
@@ -198,6 +210,8 @@ Pulizia manuale:
 - non è ripetibile,
 - introduce errori.
 
+. . .
+
 Pulizia tramite script:
 
 - è documentata,
@@ -213,12 +227,14 @@ Pulizia tramite script:
 - dati originali,
 - mai modificati.
 
+. . .
+
 **Clean data**
 
 - ottenuti dai raw tramite script,
-- pronti per l’analisi.
+- pronti per l'analisi.
 
-👉 La distinzione raw/clean è **concettuale e operativa**.
+La distinzione raw/clean è **concettuale e operativa**.
 
 ---
 
@@ -227,7 +243,7 @@ Pulizia tramite script:
 - Trasparenza del processo.
 - Controllo delle decisioni.
 - Facilità di revisione.
-- Riproducibilità dell’analisi.
+- Riproducibilità dell'analisi.
 
 ---
 
@@ -239,26 +255,26 @@ Pulizia tramite script:
 4. Analisi statistica.
 5. Report automatico.
 
-👉 Ogni passaggio è **esplicito**.
+Ogni passaggio è **esplicito** — esattamente come lo era la nostra pipeline nelle Lezioni 24–26 (dati → modello brms → posterior → previsioni → conclusioni).
 
 ---
 
-## Collegamento con l’Open Science
+## Collegamento con l'Open Science
 
 **Open Science**  
 : insieme di pratiche che promuovono  
   **trasparenza, verificabilità e riproducibilità**.
 
-La struttura del progetto e la pulizia tracciata:
+La struttura del progetto e la pulizia dei dati documentata:
 
-- sono pratiche di Open Science,
-- non richiedono di “pubblicare tutto”.
+- sono pratiche dell'Open Science,
+- non richiedono di "pubblicare tutto".
 
 ---
 
-## Cosa NON è l’Open Science
+## Cosa NON è l'Open Science
 
-L’Open Science non significa:
+L'Open Science non significa:
 
 - eliminare il giudizio del ricercatore,
 - rinunciare al controllo dei dati,
@@ -266,9 +282,17 @@ L’Open Science non significa:
 
 ---
 
-## Riepilogo (da sapere per l’esame)
+## Cosa è l'Open Science
 
-- definizione di riproducibilità
+L'Open Science significa:  
+
+mettere altri colleghi nella condizione di potere verificare le conclusioni a partire dai dati grezzi.
+
+---
+
+## Riepilogo (da sapere per l'esame)
+
+- Definizione di riproducibilità
 - differenza riproducibilità / replicabilità
 - struttura standard di un progetto
 - regola sui dati grezzi
@@ -277,7 +301,7 @@ L’Open Science non significa:
 
 ---
 
-## Domande tipiche d’esame
+## Domande tipiche d'esame
 
 - Quale passaggio compromette la riproducibilità?
 - Dove vanno salvati i dati puliti?

@@ -1,7 +1,7 @@
 ---
 title: "Flusso di lavoro riproducibile"
-subtitle: "Dall’analisi al report: decisioni tracciabili"
-version: 1.0
+subtitle: "Dall'analisi al report: decisioni tracciabili"
+version: 2.0
 author:
   - name: Corrado Caudek
     orcid: 0000-0002-1404-0420
@@ -33,23 +33,25 @@ csl: ../apa.csl
 
 Al termine di questo segmento lo studente deve sapere:
 
-- distinguere **analisi esplorativa** e **analisi confermativa**
-- definire cosa si intende per **decisione analitica**
-- spiegare il ruolo degli **script di analisi**
-- descrivere cos’è un **report riproducibile**
-- riconoscere pratiche che compromettono la riproducibilità
+- distinguere **analisi esplorativa** e **analisi confermativa**;
+- definire cosa si intende per **decisione analitica**;
+- spiegare il ruolo degli **script di analisi**;
+- descrivere cos'è un **report riproducibile**;
+- riconoscere pratiche che compromettono la riproducibilità.
 
 ---
 
 ## Analisi dei dati: non è un atto unico
 
-In psicologia l’analisi dei dati è spesso:
+In psicologia l'analisi dei dati è spesso:
 
-- iterativa
-- multi-step
-- guidata da decisioni
+- iterativa,
+- multi-step,
+- guidata da decisioni.
 
-👉 L’analisi è un **processo**, non un singolo comando.
+. . .
+
+L'analisi è un **processo**, non un singolo comando.
 
 ---
 
@@ -58,13 +60,15 @@ In psicologia l’analisi dei dati è spesso:
 **Decisione analitica**  
 : scelta che influisce sui risultati  
   e che deve essere **esplicitata e documentata**.
+  
+. . .
 
 Esempi:
 
-- gestione dei valori mancanti
-- esclusione di casi
-- trasformazioni delle variabili
-- scelta del modello statistico
+- gestione dei valori mancanti;
+- esclusione di casi;
+- trasformazioni delle variabili;
+- scelta del modello statistico.
 
 ---
 
@@ -72,12 +76,32 @@ Esempi:
 
 Decisioni diverse possono produrre:
 
-- risultati diversi
-- interpretazioni diverse
-- conclusioni incompatibili
+- risultati diversi;
+- interpretazioni diverse;
+- conclusioni incompatibili.
 
-⚠️ Decisioni non documentate  
-= risultati non verificabili.
+. . .
+
+Decisioni non documentate = risultati non verificabili.
+
+---
+
+## Un esempio concreto: le nostre analisi bayesiane
+
+Nelle Lezioni 24–26 abbiamo preso molte decisioni analitiche, anche se non le abbiamo chiamate così:
+
+- quale distribuzione per la verosimiglianza? (Normale)
+- quali prior? (Lezione 17: la scelta dei prior è una decisione esplicita)
+- quante catene MCMC? quante iterazioni?
+- quale soglia per l'effetto clinicamente rilevante?
+
+---
+
+Ciascuna di queste scelte influenza i risultati. 
+
+. . .
+
+Un workflow riproducibile le rende **tutte visibili**.
 
 ---
 
@@ -89,9 +113,9 @@ Decisioni diverse possono produrre:
 
 Caratteristiche:
 
-- flessibile
-- descrittiva
-- orientata alla scoperta
+- flessibile,
+- descrittiva,
+- orientata alla scoperta.
 
 ---
 
@@ -103,13 +127,13 @@ Caratteristiche:
 
 Caratteristiche:
 
-- strutturata
-- inferenziale
-- orientata al test di ipotesi
+- strutturata,
+- inferenziale,
+- orientata al test di ipotesi.
 
 ---
 
-## EDA ≠ Analisi confermativa
+## EDA ≠ Analisi confermativa {background-color="#2c3e50" style="color: white;"}
 
 | EDA | Confermativa |
 |----|-------------|
@@ -117,8 +141,7 @@ Caratteristiche:
 | flessibile | predefinita |
 | descrittiva | inferenziale |
 
-👉 Confondere i due livelli  
-compromette l’interpretazione dei risultati.
+Confondere i due livelli compromette l'interpretazione dei risultati.
 
 ---
 
@@ -130,9 +153,9 @@ compromette l’interpretazione dei risultati.
 
 Funzioni:
 
-- documentare le decisioni
-- rendere l’analisi ripetibile
-- permettere la verifica
+- documentare le decisioni,
+- rendere l'analisi ripetibile,
+- permettere la verifica.
 
 ---
 
@@ -140,19 +163,17 @@ Funzioni:
 
 Analisi manuale:
 
-- non tracciabile
-- non verificabile
-- difficile da replicare
+- non tracciabile,
+- non verificabile,
+- difficile da replicare.
 
 ---
 
-## Perché usare script (e non analisi manuali)
-
 Analisi tramite script:
 
-- documentata
-- riproducibile
-- modificabile in modo controllato
+- documentata,
+- riproducibile,
+- modificabile in modo controllato.
 
 ---
 
@@ -160,16 +181,16 @@ Analisi tramite script:
 
 Uno script di analisi dovrebbe includere:
 
-1. importazione dei clean data
-2. trasformazioni analitiche
-3. modelli statistici
-4. produzione di output (tabelle, grafici)
+1. importazione dei clean data;
+2. trasformazioni analitiche;
+3. modelli statistici;
+4. produzione di output (tabelle, grafici).
 
-👉 Ogni passaggio è **esplicito**.
+Ogni passaggio è **esplicito**.
 
 ---
 
-## Cos’è un report riproducibile
+## Cos'è un report riproducibile
 
 **Report riproducibile**  
 : documento generato automaticamente  
@@ -177,9 +198,9 @@ Uno script di analisi dovrebbe includere:
 
 Caratteristiche:
 
-- nessun copia-incolla
-- risultati sempre aggiornati
-- coerenza tra analisi e testo
+- nessun copia-incolla;
+- risultati sempre aggiornati;
+- coerenza tra analisi e testo.
 
 ---
 
@@ -189,62 +210,64 @@ Caratteristiche:
 
 - analisi → copia risultati → report
 
+. . .
+
 **Workflow riproducibile**
 
 - analisi + testo + output → report automatico
 
-👉 Il secondo riduce errori e incoerenze.
+Il secondo riduce errori e incoerenze.
 
 ---
 
 ## Vantaggi del report riproducibile
 
-- trasparenza
-- riduzione degli errori
-- facilità di revisione
-- coerenza metodologica
+- trasparenza;
+- riduzione degli errori;
+- facilità di revisione;
+- coerenza metodologica.
 
 ---
 
 ## Pratiche che compromettono la riproducibilità
 
-- copia-incolla dei risultati
-- modifica manuale delle tabelle
-- analisi non salvate
-- versioni multiple incoerenti
+- copia-incolla dei risultati;
+- modifica manuale delle tabelle;
+- analisi non salvate;
+- versioni multiple incoerenti.
 
 ---
 
-## Collegamento con l’Open Science
+## Collegamento con l'Open Science
 
 Il report riproducibile:
 
-- è una pratica di Open Science
-- favorisce la verifica indipendente
-- non implica la pubblicazione automatica dei dati
+- è una pratica di Open Science;
+- favorisce la verifica indipendente;
+- non implica la pubblicazione automatica dei dati.
 
 ---
 
 ## Sintesi concettuale
 
-- l’analisi è un processo decisionale
-- le decisioni devono essere documentate
-- gli script rendono l’analisi verificabile
-- il report deve essere generato dal codice
+- L'analisi è un processo decisionale;
+- le decisioni devono essere documentate;
+- gli script rendono l'analisi verificabile;
+- il report deve essere generato dal codice.
 
 ---
 
-## Riepilogo (da sapere per l’esame)
+## Riepilogo (da sapere per l'esame)
 
-- definizione di decisione analitica
-- differenza EDA / analisi confermativa
-- ruolo degli script di analisi
-- definizione di report riproducibile
-- pratiche che compromettono la riproducibilità
+- Definizione di decisione analitica;
+- differenza EDA / analisi confermativa;
+- ruolo degli script di analisi;
+- definizione di report riproducibile;
+- pratiche che compromettono la riproducibilità.
 
 ---
 
-## Domande tipiche d’esame
+## Domande tipiche d'esame
 
 - Qual è la differenza tra EDA e analisi confermativa?
 - Perché le decisioni analitiche devono essere documentate?

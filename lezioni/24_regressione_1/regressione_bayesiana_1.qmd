@@ -1,7 +1,7 @@
 ---
 title: "Il modello di regressione lineare bayesiano"
 subtitle: "Concetti fondamentali — Segmento 1"
-version: 1.0
+version: 2.0
 author:
   - name: Corrado Caudek
     orcid: 0000-0002-1404-0420
@@ -35,8 +35,19 @@ csl: ../apa.csl
 #| warning: false
 library(ggplot2)
 library(dplyr)
+library(patchwork)
 set.seed(42)
 ```
+
+## Dalle distribuzioni ai modelli {background-color="#2c3e50" style="color: white;"}
+
+Nelle Lezioni 22 e 23 abbiamo imparato a usare le distribuzioni predittive per **verificare** e **prevedere**. Ora facciamo il passo decisivo: usiamo il framework bayesiano per modellare la **relazione tra variabili**.
+
+. . .
+
+Il modello di regressione lineare è lo strumento più usato in psicologia per questo scopo — e la prospettiva bayesiana ci permette di interpretarlo in modo più ricco.
+
+---
 
 ## Obiettivi {.unnumbered .unlisted}
 
@@ -203,22 +214,25 @@ La variazione attesa di $y$ quando $x$ aumenta di un'unità.
 
 # Calcoliamo i coefficienti
 fit_lm <- lm(sonno ~ stress, data = dati)
-alpha <- coef(fit_lm)[1]
-beta <- coef(fit_lm)[2]
+alpha_hat <- coef(fit_lm)[1]
+beta_hat <- coef(fit_lm)[2]
 
 ggplot(dati, aes(x = stress, y = sonno)) +
   geom_point(size = 3, alpha = 0.3, color = "steelblue") +
-  geom_abline(intercept = alpha, slope = beta, color = "coral", linewidth = 1.2) +
+  geom_abline(intercept = alpha_hat, slope = beta_hat, color = "coral", linewidth = 1.2) +
   # Intercetta
-  geom_point(aes(x = 0, y = alpha), size = 4, color = "forestgreen") +
-  annotate("text", x = 3, y = alpha + 0.3, label = expression(alpha), 
+  geom_point(aes(x = 0, y = alpha_hat), size = 4, color = "forestgreen") +
+  annotate("text", x = 3, y = alpha_hat + 0.3, label = expression(alpha), 
            size = 6, color = "forestgreen") +
   # Pendenza
-  annotate("segment", x = 20, xend = 30, y = alpha + beta*20, yend = alpha + beta*20,
+  annotate("segment", x = 20, xend = 30,
+           y = alpha_hat + beta_hat * 20, yend = alpha_hat + beta_hat * 20,
            color = "purple", linewidth = 1, linetype = "dashed") +
-  annotate("segment", x = 30, xend = 30, y = alpha + beta*20, yend = alpha + beta*30,
+  annotate("segment", x = 30, xend = 30,
+           y = alpha_hat + beta_hat * 20, yend = alpha_hat + beta_hat * 30,
            color = "purple", linewidth = 1, linetype = "dashed") +
-  annotate("text", x = 32, y = alpha + beta*25 - 0.2, label = expression(10 * beta), 
+  annotate("text", x = 32, y = alpha_hat + beta_hat * 25 - 0.2,
+           label = expression(10 * beta), 
            size = 6, color = "purple") +
   xlim(-2, 50) +
   labs(title = "Interpretazione dei parametri",
@@ -242,9 +256,9 @@ Questa variabilità è catturata dal termine di errore $\varepsilon_i$.
 
 ---
 
-## L’assunzione sulla distribuzione dell’errore (regressione classica)
+## L'assunzione sulla distribuzione dell'errore (regressione classica)
 
-Nel modello di regressione lineare classico assumiamo che l’errore sia distribuito normalmente:
+Nel modello di regressione lineare classico assumiamo che l'errore sia distribuito normalmente:
 
 $$
 \varepsilon_i \sim \mathcal{N}(0, \sigma).
@@ -264,7 +278,7 @@ $$
 * i dati osservati si distribuiscono **simmetricamente attorno alla retta**;
 * $\sigma$ misura quanto i punti sono dispersi verticalmente rispetto alla retta.
 
----
+# Parte 3: dalla regressione classica a quella bayesiana
 
 ## Cosa è casuale nel modello frequentista?
 
@@ -276,11 +290,13 @@ Punto cruciale:
 * gli errori $\varepsilon_i$ sono casuali;
 * **i parametri $\alpha$, $\beta$, $\sigma$ sono fissi ma sconosciuti**.
 
+Ricordate la Lezione 14: nel paradigma frequentista l'incertezza riguarda il *processo di campionamento*, non i parametri stessi.
+
 ---
 
-## Regressione frequentista: cosa significa “stimare”?
+## Regressione frequentista: cosa significa "stimare"?
 
-Nell’approccio classico:
+Nell'approccio classico:
 
 * esiste un *vero* valore di $\alpha$, $\beta$, $\sigma$;
 * noi non lo conosciamo;
@@ -293,25 +309,27 @@ Il metodo più comune è quello dei **minimi quadrati**.
 
 ---
 
-## L’incertezza nel mondo frequentista
+## L'incertezza nel mondo frequentista
 
-Nel frequentismo l’incertezza riguarda il **processo di campionamento**, non i parametri.
+Nel frequentismo l'incertezza riguarda il **processo di campionamento**, non i parametri.
 
 * Un intervallo di confidenza al 95% **non** significa:
 
-  > “c’è il 95% di probabilità che $\beta$ stia qui”
+  > "c'è il 95% di probabilità che $\beta$ sia contenuto nell'intervallo"
 
 * significa invece:
 
-  > “se ripetessimo infinite volte il campionamento, il 95% degli intervalli così costruiti conterrebbe il vero $\beta$”.
+  > "se ripetessimo il campionamento infinite volte, il 95% degli intervalli così costruiti conterrebbe il vero $\beta$".
+  
+---
 
-Questo è spesso controintuitivo.
+Questa è l'interpretazione che abbiamo discusso nelle Lezioni 14–16 e che ha contribuito alla crisi di riproducibilità.
 
 ---
 
-## Passiamo all’approccio bayesiano
+## Passiamo all'approccio bayesiano
 
-Nell’approccio **bayesiano** cambiamo prospettiva:
+Nell'approccio **bayesiano** cambiamo prospettiva:
 
 > non trattiamo più i parametri come quantità fisse ma ignote,
 > bensì come **variabili casuali**.
@@ -326,15 +344,16 @@ Nel modello bayesiano sono trattati come variabili casuali:
 * gli errori $\varepsilon_i$;
 * **i parametri del modello $\alpha$, $\beta$, $\sigma$**.
 
-Questa “casualità” **non descrive il funzionamento fisico del mondo**, ma la nostra **incertezza conoscitiva** sui valori dei parametri.
+Questa "casualità" **non descrive il funzionamento fisico del mondo**, ma la nostra **incertezza conoscitiva** sui valori dei parametri.
 
 Si tratta quindi di una casualità **epistemica**, non ontologica.
 
 ---
 
-## Cosa significa “casualità epistemica”?
+## Cosa significa "casualità epistemica"?
 
-Dire che un parametro è casuale **non significa** che esso cambi realmente da un esperimento all’altro.
+Dire che un parametro è casuale **non significa** che esso cambi realmente da un esperimento all'altro.
+
 Significa invece che:
 
 > noi non conosciamo il suo valore esatto
@@ -346,7 +365,7 @@ Le distribuzioni a priori e a posteriori formalizzano ciò che sappiamo (e non s
 
 ## Modelli bayesiani come modelli di conoscenza
 
-I modelli bayesiani non sono modelli diretti del mondo “così com’è”,
+I modelli bayesiani non sono modelli diretti del mondo "così com'è",
 ma modelli di **ciò che possiamo razionalmente conoscere del mondo** considerando:
 
 * i dati osservati;
@@ -357,21 +376,21 @@ ma modelli di **ciò che possiamo razionalmente conoscere del mondo** consideran
 
 ## Il progetto frequentista
 
-Storicamente, il frequentismo si è sviluppato con l’obiettivo di garantire una forma di **oggettività assoluta**:
+Storicamente, il frequentismo si è sviluppato con l'obiettivo di garantire una forma di **oggettività assoluta**:
 
 * eliminare ogni riferimento a stati di conoscenza soggettivi;
-* fondare l’inferenza esclusivamente su frequenze di lungo periodo;
-* separare nettamente “dati” e “credenze”.
+* fondare l'inferenza esclusivamente su frequenze di lungo periodo;
+* separare nettamente "dati" e "credenze".
 
 Come discusso in
 [https://ccaudek.github.io/utet-companion/](https://ccaudek.github.io/utet-companion/)
-questa posizione è legata anche a precise scelte storiche e ideologiche, tra cui l’idea di un’oggettività statistica necessaria per giustificare il progetto eugenetico.
+questa posizione è legata anche a precise scelte storiche e ideologiche, tra cui l'idea di un'oggettività statistica necessaria per giustificare il progetto eugenetico.
 
 ---
 
-## L’approccio bayesiano: un modello epistemico
+## L'approccio bayesiano: un modello epistemico
 
-L’approccio bayesiano adotta una prospettiva diversa:
+L'approccio bayesiano adotta una prospettiva diversa:
 
 * accetta che ogni inferenza parta da informazioni incomplete;
 * riconosce che le assunzioni non possono essere eliminate, ma solo **esplicitate**;
@@ -409,7 +428,7 @@ $$
 \sigma \sim p(\sigma).
 $$
 
-Queste distribuzioni rappresentano ciò che sappiamo (o non sappiamo) **prima di osservare i dati**.
+Queste distribuzioni rappresentano ciò che sappiamo (o non sappiamo) **prima di osservare i dati**. Questo è il passo che abbiamo imparato a calibrare nella Lezione 22 con il prior predictive check.
 
 ---
 
@@ -422,18 +441,18 @@ p(\alpha, \beta, \sigma \mid y) \propto
 p(y \mid \alpha, \beta, \sigma)\, p(\alpha, \beta, \sigma).
 $$
 
-La **posterior** è il cuore dell’inferenza bayesiana.
+La **posterior** è il cuore dell'inferenza bayesiana — come abbiamo visto sin dalla Lezione 17.
 
 ---
 
-## Interpretazione dei parametri 
+## Interpretazione dei parametri: frequentista vs bayesiano
 
 ### Frequentista
 
 * $\hat{\beta}$ è una stima puntuale;
-* l’intervallo di confidenza è una procedura di lungo periodo;
+* l'intervallo di confidenza è una procedura di lungo periodo;
 * non possiamo dire:
-  “$\beta$ ha probabilità 0.95 di stare in questo intervallo”.
+  "$\beta$ ha probabilità 0.95 di essere incluso in questo intervallo".
 
 ---
 
@@ -442,9 +461,9 @@ La **posterior** è il cuore dell’inferenza bayesiana.
 * $\beta$ ha una distribuzione a posteriori;
 * un intervallo credibile al 95% significa:
 
-  > “dato il modello e i dati, la probabilità che $\beta$ cada in questo intervallo è 95%”.
+  > "dato il modello e i dati, la probabilità che $\beta$ cada in questo intervallo è 95%".
 
-Questa interpretazione è **diretta e intuitiva**.
+Questa interpretazione è **diretta e intuitiva** — è la stessa che abbiamo usato nella Lezione 20 per sintetizzare le distribuzioni a posteriori.
 
 ---
 
@@ -453,20 +472,20 @@ Questa interpretazione è **diretta e intuitiva**.
 ### Frequentista
 
 * Si usano stime puntuali dei parametri;
-* l’incertezza è spesso trattata separatamente;
+* l'incertezza è spesso trattata separatamente;
 * la previsione è spesso meno naturale.
 
 ---
 
 ### Bayesiano
 
-* la predizione integra automaticamente:
+* La predizione integra automaticamente:
 
   * incertezza sui parametri;
   * variabilità dei dati;
-* la **distribuzione predittiva a posteriori** risponde direttamente a domande del tipo:
+* la **distribuzione predittiva a posteriori** (Lezione 23) risponde direttamente a domande del tipo:
 
-  > “quali valori di $y$ sono plausibili per un nuovo individuo?”
+  > "quali valori di $y$ sono plausibili per un nuovo individuo?"
 
 ---
 
@@ -482,14 +501,14 @@ Questa interpretazione è **diretta e intuitiva**.
 
 ---
 
-## Messaggio chiave 
+## Messaggio chiave {background-color="#2c3e50" style="color: white;"}
 
 > Il modello bayesiano non cambia la forma della regressione,
-> cambia **il significato dell’incertezza** e **il modo in cui interpretiamo i parametri**.
+> cambia **il significato dell'incertezza** e **il modo in cui interpretiamo i parametri**.
 
----
+# Parte 4: scegliere le prior
 
-## Il modello bayesiano 
+## Il modello bayesiano completo
 
 Consideriamo le distribuzioni a priori:
 
@@ -552,8 +571,6 @@ Per il nostro esempio (stress → sonno), ragioniamo:
 #| echo: false
 #| fig-height: 4.5
 
-library(patchwork)
-
 # Prior per alpha
 p1 <- ggplot(data.frame(x = c(2, 14)), aes(x)) +
   stat_function(fun = dnorm, args = list(mean = 8, sd = 2),
@@ -599,7 +616,7 @@ In pratica:
 - usiamo metodi **MCMC** (campionamento) per approssimarla;
 - software come `brms` gestisce tutto automaticamente.
 
-# Parte 4: interpretazione dei risultati
+# Parte 5: interpretazione dei risultati bayesiani
 
 ## Cosa otteniamo dall'analisi bayesiana?
 
@@ -627,16 +644,27 @@ A differenza dell'approccio classico, otteniamo:
 
 ## Interpretare la pendenza
 
-**Approccio classico:** $\hat{\beta} = -0.12\ (SE = 0.03)$.
+```{r}
+#| echo: false
+fit_lm_c <- lm(sonno ~ stress, data = dati)
+beta_lm <- coef(fit_lm_c)[2]
+se_lm <- summary(fit_lm_c)$coefficients[2, 2]
+```
+
+**Approccio classico:** $\hat{\beta}$ = `r round(beta_lm, 3)` (SE = `r round(se_lm, 3)`).
 
 *Interpretazione:*
-"La stima puntuale della pendenza è -0.12, con errore standard 0.03."
+"La stima puntuale della pendenza è `r round(beta_lm, 3)`, con errore standard `r round(se_lm, 3)`."
+
+. . .
 
 **Approccio bayesiano:**
 distribuzione a posteriori di $\beta$.
 
 *Interpretazione:*
-"La distribuzione completa della pendenza ha media -0.12 e intervallo di credibilità 95% [-0.18, -0.06]."
+"La distribuzione completa della pendenza ci permette di quantificare direttamente la probabilità di qualsiasi affermazione su $\beta$."
+
+. . .
 
 **Differenza fondamentale:**  
 l'incertezza non è sintetizzata in un solo numero (SE), ma è **visibile e interpretabile direttamente** nella distribuzione di probabilità.
@@ -655,7 +683,7 @@ Con la posterior, possiamo calcolare:
 
 Queste sono **probabilità dirette**, non valori-$p$.
 
-# Parte 5: trasformazione delle variabili
+# Parte 6: trasformazione delle variabili
 
 ## Il problema dell'intercetta
 
@@ -736,9 +764,14 @@ fit_z <- lm(sonno_z ~ stress_z, data = dati)
 cat("Beta standardizzato:", round(coef(fit_z)[2], 3), "\n")
 ```
 
-. . .
+---
 
-Il coefficiente standardizzato è equivalente alla **correlazione** tra le due variabili.
+Il coefficiente standardizzato è equivalente alla **correlazione** tra le due variabili:
+
+```{r}
+cor(dati$stress, dati$sonno) |> round(3)
+```
+
 
 # Riepilogo
 
@@ -770,10 +803,8 @@ $$
 
 ---
 
-## Per la prossima lezione
-
-Materiale di studio: https://ccaudek.github.io/utet-companion/
+## Per il prossimo segmento
 
 **Prossimo segmento:**
 
-implementazione pratica con `brms`: stima del modello, diagnostica, interpretazione dei risultati e posterior predictive check.
+Implementazione pratica con `brms`: stima del modello, diagnostica, interpretazione dei risultati e posterior predictive check.

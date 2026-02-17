@@ -1,7 +1,7 @@
 ---
 title: "Inferenza bayesiana su una media"
 subtitle: "Stima, incertezza e confronto con l'approccio frequentista — Segmento 1"
-version: 1.0
+version: 2.0
 author:
   - name: Corrado Caudek
     orcid: 0000-0002-1404-0420
@@ -40,6 +40,16 @@ library(bayesplot)
 set.seed(42)
 ```
 
+## Dalla regressione al caso più semplice {background-color="#2c3e50" style="color: white;"}
+
+Nella Lezione 24 abbiamo introdotto il modello di regressione lineare bayesiano: `sonno ~ stress_c`. Oggi ci concentriamo sul caso più semplice possibile: il modello a **sola intercetta** `y ~ 1`.
+
+. . .
+
+Questo modello stima un unico parametro — la **media** della popolazione — e ci permette di vedere in azione tutti gli strumenti bayesiani che abbiamo costruito finora: prior, posterior, probabilità dirette, confronto cn il frequentismo.
+
+---
+
 ## Obiettivi {.unnumbered .unlisted}
 
 1. Comprendere il problema dell'**inferenza su una media**.
@@ -52,11 +62,11 @@ set.seed(42)
 
 ## Una domanda semplice
 
-Un ricercatore misura il livello di **ansia di stato** in un campione di studenti universitari durante la sessione d’esami.
+Un ricercatore misura il livello di **ansia di stato** in un campione di studenti universitari durante la sessione d'esami.
 
 . . .
 
-**Domanda:** Il livello medio di ansia in questa popolazione è diverso dal valore normativo (μ₀ = 40)?
+**Domanda:** Il livello medio di ansia in questa popolazione è diverso dal valore normativo ($\mu_0$ = 40)?
 
 . . .
 
@@ -105,20 +115,19 @@ ggplot(df, aes(x = ansia)) +
 
 # Parte 2: l'approccio frequentista
 
-## Il test t per un campione
+## Il test $t$ per un campione
 
-L'approccio classico usa il **test t**:
+L'approccio classico — quello discusso nelle Lezioni 14–16 — usa il **test $t$**:
 
 $$
 t = \frac{\bar{x} - \mu_0}{s / \sqrt{n}},
 $$
-
 dove:
 
-- $\bar{x}$ è la media campionaria
-- $\mu_0$ è il valore di riferimento (40)
-- $s$ è la deviazione standard campionaria
-- $n$ è la numerosità
+- $\bar{x}$ è la media campionaria,
+- $\mu_0$ è il valore di riferimento (40),
+- $s$ è la deviazione standard campionaria,
+- $n$ è la numerosità.
 
 ---
 
@@ -143,25 +152,26 @@ cat("t osservato:", round(t_obs, 3), "\n")
 
 ```{r}
 # Gradi di libertà
-df <- n - 1
+gdl <- n - 1
 
 # p-value (test a due code)
-p_value <- 2 * (1 - pt(abs(t_obs), df))
+p_value <- 2 * (1 - pt(abs(t_obs), gdl))
 
-cat("Gradi di libertà:", df, "\n")
+cat("Gradi di libertà:", gdl, "\n")
 cat("p-value:", round(p_value, 4), "\n")
 ```
 
 . . .
 
-Con p < 0.05, l'approccio frequentista conclude: **"rifiutiamo H₀"**.
+Con p < 0.05, l'approccio frequentista conclude: **"rifiutiamo $H_0$"**.
 
 ---
  
 ## Verifica con R
 
 ```{r}
-t.test(ansia, mu = 40)
+risultato_t <- t.test(ansia, mu = 40)
+risultato_t
 ```
 
 ---
@@ -170,17 +180,19 @@ t.test(ansia, mu = 40)
 
 L'interpretazione frequentista:
 
-> "Se la vera media fosse 40, la probabilità di osservare una differenza così estrema (o più estrema) è inferiore a 0.001."
+. . .
+
+> "Se la vera media fosse 40, la probabilità di osservare una differenza così estrema (o più estrema) è inferiore a `r format(risultato_t$p.value, digits = 3, scientific = FALSE)`."
 
 . . .
 
-**Ma attenzione:** questo NON dice:
+**Ma attenzione:** come abbiamo visto nella Lezione 15, questo NON dice:
 
 - quanto è probabile che μ = 40;
 - quanto è probabile che μ ≠ 40;
 - qual è il valore più plausibile di μ.
 
-# Parte 3: quando il test t inganna
+# Parte 3: quando il test $t$ inganna
 
 ## Un nuovo scenario
 
@@ -227,30 +239,40 @@ ggplot(df_tempi, aes(x = tempi)) +
 
 Poniamoci il problema di stabilire se la media della popolazione abbia un valore **minore di 320**.
 
+. . .
+
 Un ricercatore "pigro" usa R **senza guardare i dati**:
 
 ```{r}
-t.test(tempi, mu = 320, alternative = "less")
+test_con_outlier <- t.test(tempi, mu = 320, alternative = "less")
 ```
+
+---
 
 Questo testa formalmente:
 
 * **H₀:** μ $\geq$ 320;
 * **H₁:** μ < 320.
 
+. . .
+
+```{r}
+test_con_outlier
+```
+
 ---
 
 ## Il risultato "non significativo"
 
-Con $p$ = 0.2629, il ricercatore conclude:
+Con $p$ = `r round(test_con_outlier$p.value, 4)`, il ricercatore conclude:
 
-> "Il tempo di reazione medio è **non** è significativamente minore di 320 ms."
+> "Il tempo di reazione medio non è significativamente minore di 320 ms."
 
 . . .
 
 **Ma è corretto?**
 
-L'outlier (890 ms) ha gonfiato la media e distorto il test.
+L'outlier (890 ms) ha gonfiato la media e introdotto una distorsione nel risultato del test.
 
 ---
 
@@ -268,10 +290,11 @@ cat("  n =", length(tempi_puliti), "\n")
 ---
 
 ```{r}
-t.test(tempi_puliti, mu = 320, alternative = "less")
+test_senza_outlier <- t.test(tempi_puliti, mu = 320, alternative = "less")
+test_senza_outlier
 ```
 
-Ora $p$ = 0.01584 → **risultato significativo**.
+Ora $p$ = `r round(test_senza_outlier$p.value, 4)` → **risultato significativo**.
 
 ---
 
@@ -286,7 +309,7 @@ L'approccio frequentista richiede:
 
 . . .
 
-Tutte queste sono **decisioni arbitrarie** che influenzano il risultato -- si ricordino il problema dei **gradi di libertà del ricercatore** e la **crisi della replicabilità** dei risultati della ricerca psicologica.
+Tutte queste sono **decisioni arbitrarie** che influenzano il risultato — si ricordino il problema dei **gradi di libertà del ricercatore** e la **crisi della replicabilità** discussi nelle Lezioni 15–16.
 
 # Parte 4: l'approccio bayesiano
 
@@ -296,17 +319,16 @@ Invece di "correggere" i dati, possiamo usare un **modello più flessibile**.
 
 . . .
 
-L'idea: sostituire la distribuzione normale con la **distribuzione t di Student**, che ha code più pesanti.
+L'idea: sostituire la distribuzione normale con la **distribuzione $t$ di Student**, che ha code più pesanti.
 
 $$
 y_i \sim \text{Student-}t(\nu, \mu, \sigma),
 $$
-
 dove $\nu$ (gradi di libertà) controlla quanto le code sono "pesanti".
 
 ---
 
-## Perché la t di Student?
+## Perché la $t$ di Student?
 
 ```{r}
 #| echo: false
@@ -333,8 +355,11 @@ ggplot(df_dist, aes(x = x, y = densita, color = distribuzione)) +
 
 ## Il modello bayesiano robusto
 
+Nella Lezione 24 abbiamo usato `brms` per la regressione `sonno ~ stress_c`. Qui il modello è più semplice — solo l'intercetta — ma cambiamo la *famiglia* della distribuzione:
+
 ```{r}
 #| output: false
+#| cache: true
 
 # Creiamo il dataframe
 dati_tempi <- data.frame(tempo = tempi)
@@ -343,7 +368,7 @@ dati_tempi <- data.frame(tempo = tempi)
 fit_robusto <- brm(
   tempo ~ 1,
   data = dati_tempi,
-  family = student(),  # Distribuzione t invece di Normale
+  family = student(),  # Distribuzione t invece della Normale
   seed = 42,
   backend = "cmdstanr",
   silent = 2,
@@ -357,6 +382,7 @@ fit_robusto <- brm(
 
 ```{r}
 #| output: false
+#| cache: true
 
 # Modello normale (standard)
 fit_normale <- brm(
@@ -425,7 +451,7 @@ df_post <- data.frame(
 ggplot(df_post, aes(x = media, fill = modello)) +
   geom_density(alpha = 0.5) +
   geom_vline(xintercept = 320, linetype = "dashed", color = "black", linewidth = 1) +
-  annotate("text", x = 320, y = 0.06, label = "Valore di\nriferimento", hjust = 1.1) +
+  annotate("text", x = 330, y = 0.25, label = "Valore di\nriferimento") +
   scale_fill_manual(values = c("coral", "steelblue")) +
   labs(title = "Distribuzioni a posteriori della media",
        x = "Tempo di reazione medio (ms)", y = "Densità",
@@ -437,6 +463,8 @@ ggplot(df_post, aes(x = media, fill = modello)) +
 ---
 
 ## Calcolo della probabilità
+
+Possiamo rispondere direttamente alla domanda di ricerca — proprio come nella Lezione 20:
 
 ```{r}
 # Probabilità che la media sia > 320 ms
@@ -454,17 +482,17 @@ cat("  Modello robusto:", round(prob_robusta * 100, 1), "%\n")
 
 **Filosofia:**
 
-- I parametri sono numeri fissi ma sconosciuti.
-- Stimiamo usando i dati.
-- Il valore-$p$ misura quanto i dati sono "sorprendenti" sotto H₀.
+- i parametri sono numeri fissi ma sconosciuti;
+- stimiamo usando i dati;
+- il valore-$p$ misura quanto i dati sono "sorprendenti" sotto H₀.
 
 . . .
 
 **Problemi:**
 
-- Richiede assunzioni rigide (normalità).
-- Outlier = problema da "correggere".
-- Il risultato dipende da decisioni arbitrarie.
+- richiede assunzioni rigide (normalità);
+- outlier = problema da "correggere";
+- il risultato dipende da decisioni arbitrarie.
 
 ---
 
@@ -472,17 +500,17 @@ cat("  Modello robusto:", round(prob_robusta * 100, 1), "%\n")
 
 **Filosofia:**
 
-- I parametri sono variabili casuali.
-- Esprimiamo incertezza con distribuzioni.
-- Possiamo scegliere modelli flessibili.
+- i parametri sono variabili casuali (Lezione 17);
+- esprimiamo incertezza con le distribuzioni;
+- possiamo scegliere modelli flessibili.
 
 . . .
 
 **Vantaggi:**
 
-- Modelli robusti integrati naturalmente.
-- Nessuna decisione arbitraria sugli outlier.
-- Risposte dirette: "Qual è la probabilità che μ > 320?"
+- modelli robusti integrati naturalmente;
+- nessuna decisione arbitraria sugli outlier;
+- risposte dirette: "Qual è la probabilità che μ > 320?"
 
 ---
 
@@ -501,7 +529,7 @@ Ogni correzione introduce **nuove assunzioni** e **decisioni arbitrarie**.
 
 ---
 
-## L'approccio bayesiano: un framework unificato
+## L'approccio bayesiano: un framework unificato {background-color="#2c3e50" style="color: white;"}
 
 Invece di "correggere", **modelliamo** il fenomeno:
 
@@ -512,13 +540,13 @@ Invece di "correggere", **modelliamo** il fenomeno:
 
 . . .
 
-Tutto dentro un **unico framework coerente**.
+Tutto dentro un **unico framework coerente** — lo stesso framework `brms` che abbiamo usato nella Lezione 24 per la regressione.
 
 # Riepilogo
 
 ## I punti chiave
 
-1. Il **test t** assume normalità e può essere ingannato da outlier.
+1. Il **test $t$** assume la normalità e può essere ingannato dagli outlier.
 
 2. L'approccio frequentista richiede **correzioni ad hoc**.
 
@@ -530,11 +558,9 @@ Tutto dentro un **unico framework coerente**.
 
 ---
 
-## Il messaggio fondamentale
+## Il messaggio fondamentale {background-color="#2c3e50" style="color: white;"}
 
 > "Non correggere i dati per adattarli al modello. Scegli un modello che si adatti ai dati."
-
-. . .
 
 L'approccio bayesiano ci permette di costruire modelli più realistici, senza dover prendere decisioni arbitrarie su cosa fare con i dati "problematici".
 
@@ -544,12 +570,14 @@ L'approccio bayesiano ci permette di costruire modelli più realistici, senza do
 
 Abbiamo visto come stimare una media in modo robusto.
 
+. . .
+
 **Ma c'è un problema più profondo:**
 
-Quando stimiamo una media, stiamo descrivendo cosa succede "in media" nel gruppo.
+quando stimiamo una media, stiamo descrivendo cosa succede "in media" nel gruppo.
 
 . . .
 
 **Ma cosa succede al singolo individuo?**
 
-Nel prossimo segmento vedremo perché questa distinzione è cruciale per la psicologia.
+Nel prossimo segmento vedremo perché questa distinzione è cruciale per la psicologia clinica — e come la distribuzione predittiva (Lezione 23) ci aiuta a rispondere a questa domanda.

@@ -1,7 +1,7 @@
 ---
 title: "Confronto tra due gruppi"
 subtitle: "Implementazione bayesiana e previsioni individuali — Segmento 2"
-version: 1.0
+version: 2.0
 author:
   - name: Corrado Caudek
     orcid: 0000-0002-1404-0420
@@ -52,6 +52,10 @@ set.seed(42)
 
 ## Lo studio sulla mindfulness
 
+Continuiamo con l'esempio del segmento precedente, dove abbiamo confrontato l'ansia tra gruppo Controllo e Mindfulness e visto quanto la variabilità individuale supera la differenza tra le medie.
+
+---
+
 ```{r}
 # Ricreiamo i dati dello studio
 set.seed(123)
@@ -84,12 +88,13 @@ dati |>
   )
 ```
 
-# Parte 2: il modello bayesiano con brms
+# Parte 2: il modello bayesiano con `brms`
 
 ## Specificazione del modello
 
 ```{r}
 #| output: false
+#| cache: true
 
 # Modello bayesiano per il confronto tra due gruppi
 fit <- brm(
@@ -106,6 +111,8 @@ fit <- brm(
 ---
 
 ## Cosa fa brms "dietro le quinte"
+
+La stessa procedura che abbiamo visto nella Lezione 24 per la regressione:
 
 1. Traduce la formula R in codice **Stan**.
 2. Genera i **prior di default** se non specificati.
@@ -147,15 +154,16 @@ Catene che si sovrappongono → buona convergenza.
 
 ```{r}
 # Estraiamo le stime
-fixef(fit)
+coefs_bayes <- fixef(fit)
+coefs_bayes
 ```
 
 . . .
 
 **Significato:**
 
-- `Intercept` (54.4) = media attesa per il gruppo **Controllo**;
-- `gruppoMindfulness` (-6.5) = **differenza** rispetto al controllo.
+- `Intercept` (`r round(coefs_bayes[1,1], 1)`) = media attesa per il gruppo **Controllo**;
+- `gruppoMindfulness` (`r round(coefs_bayes[2,1], 1)`) = **differenza** rispetto al controllo.
 
 ---
 
@@ -227,10 +235,9 @@ ggplot(df_medie, aes(x = valore, fill = gruppo)) +
 
 ## La distribuzione di β
 
-Otteniamo i campioni a posteriodi di $\beta$:
+Otteniamo i campioni a posteriori di $\beta$:
 
 ```{r}
-# 
 beta <- post$b_gruppoMindfulness
 ```
 
@@ -247,7 +254,7 @@ df_beta <- data.frame(
 
 ggplot(df_beta, aes(x = valore)) +
   geom_density(alpha = 0.6) +
-  labs(title = "Distribuzioni a posteriori della differenza tra le medie dei gruppi",
+  labs(title = "Distribuzione a posteriori della differenza tra le medie dei gruppi",
        x = "Punteggio di differenza dell'ansia", y = "Densità") +
   theme_minimal(base_size = 14) 
 ```
@@ -282,7 +289,8 @@ c(
 Probabilità che il trattamento sia efficace (riduca l'ansia):
 
 ```{r}
-mean(beta < 0)
+prob_eff <- mean(beta < 0)
+prob_eff
 ```
 
 . . .
@@ -290,7 +298,8 @@ mean(beta < 0)
 Probabilità di un effetto clinicamente rilevante (> 5 punti):
 
 ```{r}
-mean(beta < -5)
+prob_rel <- mean(beta < -5)
+prob_rel
 ```
 
 . . .
@@ -333,13 +342,9 @@ ggplot(df_beta, aes(x = differenza)) +
 
 ## Cos'è la distribuzione predittiva?
 
-Nel segmento precedente abbiamo visto che i dati individuali sono molto variabili (alcuni pazienti migliorano di più, altri di meno, altri ancora peggiorano).
+Nel segmento precedente abbiamo visto che i dati individuali sono molto variabili. Ora vogliamo rispondere alla domanda — la stessa della Lezione 23 sulla distribuzione predittiva a posteriori:
 
-. . .
-
-Ora vogliamo rispondere alla domanda:
-
-> "Dato il modello stimato, quale punteggio di ansia ci aspettiamo per un paziente?"
+> "Dato il modello stimato, quale punteggio di ansia ci aspettiamo per un **singolo** paziente?"
 
 . . .
 
@@ -379,7 +384,7 @@ Stiamo per utilizzare il nostro modello statistico per fare una **previsione per
 
 ### Perché un data frame "vuoto"?
 
-Nella statistica bayesiana (e in molti modelli di regressione), dobbiamo fornire i dati nelle stesse strutture utilizzate per costruire il modello originale. 
+Nella statistica bayesiana (e in molti modelli di regressione), dobbiamo fornire i dati nello stesso formato utilizzato per costruire il modello originale. 
 
 Anche se Mario non è stato effettivamente osservato nei dati originali, dobbiamo inserirlo in un formato compatibile.
 
@@ -406,7 +411,7 @@ print(mario)
 
 Quando un modello statistico viene addestrato su dati categorici (come "Controllo" e "Mindfulness"), mantiene internamente una mappatura tra le etichette e i codici numerici. Specificare `levels = levels(dati$gruppo)` garantisce che:
 
-1. la codifica di "Mindfulness" sia identica a quella usata durante il fit de modello;
+1. la codifica di "Mindfulness" sia identica a quella usata durante il fit del modello;
 2. senza questa specifica, R potrebbe creare nuovi livelli o riordinarli in modo diverso;
 3. il modello potrà interpretare correttamente il dato di input.
 
@@ -416,8 +421,8 @@ Quando un modello statistico viene addestrato su dati categorici (come "Controll
 
 Possiamo pensare a questo come ad un modulo per l'ammissione ospedaliera:
 
-- Nome paziente: **Mario**  
-- Gruppo di trattamento: **Mindfulness** ✓  
+- Nome paziente: **Mario**.  
+- Gruppo di trattamento: **Mindfulness**.  
 - Tutti gli altri dati: non specificati (il modello li stimerà).
 
 ---
@@ -435,7 +440,7 @@ Una volta creato questo data frame con Mario, lo passeremo alla funzione `predic
 
 ## Due tipi di previsione per Mario
 
-Possiamo fare due domande diverse:
+La stessa distinzione che abbiamo appreso nella Lezione 25 tra inferenza sulla media e previsione individuale:
 
 1. **Qual è la media attesa per pazienti come Mario?**  
   Questa domanda riguarda il **parametro** $\mu$ (la media del gruppo).
@@ -462,8 +467,8 @@ print(pred_media_mario)
 
 **Interpretazione:**
 
-- la media attesa per pazienti nel gruppo Mindfulness è circa 48 punti;
-- l'incertezza (Est.Error ≈ 2) riflette solo la nostra **incertezza sui parametri**.
+- la media attesa per pazienti nel gruppo Mindfulness è circa `r round(pred_media_mario[1], 0)` punti;
+- l'incertezza (Est.Error $\approx$ `r round(pred_media_mario[2], 0)`) riflette solo la nostra **incertezza sui parametri**.
 
 ---
   
@@ -480,9 +485,9 @@ print(pred_ind_mario)
 
 **Interpretazione:**
 
-- ci aspettiamo che Mario abbia un punteggio attorno a 48;
-- ma l'incertezza (Est.Error ≈ 12) è **molto maggiore**;
-- l'intervallo 95% va da circa 26 a 69 punti.
+- ci aspettiamo che Mario abbia un punteggio attorno a `r round(pred_ind_mario[1], 0)`;
+- ma l'incertezza (Est.Error $\approx$ `r round(pred_ind_mario[2], 0)`) è **molto maggiore**;
+- l'intervallo 95% va da circa `r round(pred_ind_mario[3], 0)` a `r round(pred_ind_mario[4], 0)` punti.
 
 ---
 
@@ -505,46 +510,47 @@ cat("  IC 95%: [", round(pred_ind_mario[3], 1), ",",
 cat("  Ampiezza IC:", round(pred_ind_mario[4] - pred_ind_mario[3], 1), "punti\n")
 ```
 
-L'intervallo individuale è circa **5 volte più ampio**.
+```{r}
+#| echo: false
+rapporto_ampiezza <- round(
+  (pred_ind_mario[4] - pred_ind_mario[3]) / (pred_media_mario[4] - pred_media_mario[3]), 0
+)
+```
+
+L'intervallo individuale è circa **`r rapporto_ampiezza` volte più ampio**.
 
 ---
 
-## La spiegazione: due fonti di incertezza
+## La spiegazione: due fonti di incertezza {background-color="#2c3e50" style="color: white;"}
 
 **Previsione della media (`fitted`)**
 
 Include solo l'**incertezza epistemica**: non conosciamo esattamente i parametri del modello.
 
+---
+
+## La spiegazione: due fonti di incertezza {background-color="#2c3e50" style="color: white;"}
+
 **Previsione individuale (`predict`)**
 
 Include:
 
-1. l'**incertezza epistemica** (sui parametri)
-2. la **variabilità aleatoria** (tra i pazienti)
-
-. . .
+1. l'**incertezza epistemica** (sui parametri);
+2. la **variabilità aleatoria** (tra i pazienti);
 
 $$
 \sigma_{\text{pred}}^2 = \sigma_{\text{param}}^2 + \sigma^2.
 $$
 
+È la stessa formula della Lezione 25.
+
 ---
 
 ## Visualizziamo le due previsioni per Mario
 
-Estraiamo i campioni dalla posterior:
-
-```{r}
-pred_media_samples <- fitted(fit, newdata = mario, summary = FALSE)
-pred_ind_samples <- predict(fit, newdata = mario, summary = FALSE)
-```
-
----
-
 ```{r}
 #| echo: false
 
-# Estraiamo i campioni dalla posterior
 pred_media_samples <- fitted(fit, newdata = mario, summary = FALSE)
 pred_ind_samples <- predict(fit, newdata = mario, summary = FALSE)
 
@@ -569,14 +575,15 @@ ggplot(df_mario, aes(x = valore, fill = tipo)) +
 
 ## Probabilità specifiche per Mario
 
-Con la distribuzione predittiva possiamo calcolare probabilità concrete.
+Con la distribuzione predittiva possiamo calcolare probabilità concrete — esattamente come nella Lezione 20.
 
-. . .
+---
 
 Probabilità che Mario abbia ansia bassa (< 40):
 
 ```{r}
-mean(pred_ind_samples < 40)
+prob_bassa <- mean(pred_ind_samples < 40)
+prob_bassa
 ```
 
 . . .
@@ -584,7 +591,8 @@ mean(pred_ind_samples < 40)
 Probabilità che Mario abbia ansia alta (> 60):
 
 ```{r}
-mean(pred_ind_samples > 60)
+prob_alta <- mean(pred_ind_samples > 60)
+prob_alta
 ```
 
 . . .
@@ -601,13 +609,13 @@ mean(pred_ind_samples >= 40 & pred_ind_samples <= 60)
 
 **Comunicazione problematica:**
 
-> "Il trattamento funziona. La media del gruppo è 48."
+> "Il trattamento funziona. La media del gruppo è `r round(pred_media_mario[1], 0)`."
 
 . . .
 
 **Comunicazione onesta:**
 
-> "Dopo il trattamento, ci aspettiamo che il tuo punteggio sia attorno a 48, ma potrebbe variare molto: c'è circa il 23% di probabilità che sia sotto 40, e circa il 13% che sia sopra 60."
+> "Dopo il trattamento, ci aspettiamo che il tuo punteggio sia attorno a `r round(pred_ind_mario[1], 0)`, ma potrebbe variare molto: c'è circa il `r round(prob_bassa * 100, 0)`% di probabilità che sia sotto 40 e circa il `r round(prob_alta * 100, 0)`% che sia sopra 60."
 
 # Parte 5: dall'individuo all'insieme
 
@@ -619,6 +627,8 @@ Ora allarghiamo lo sguardo a livello di gruppo:
 
 * costruiamo un **paziente tipo** per ciascun gruppo;
 * usiamo il modello per simulare **quali valori di ansia potremmo osservare** per un individuo appartenente a quel gruppo.
+
+---
 
 Questo è diverso da: "Qual è la differenza media tra i gruppi?" 
 
@@ -685,13 +695,15 @@ combina:
 
 Vogliamo rispondere a una domanda clinicamente rilevante:
 
-> *Di quanto potrebbe cambiare l’ansia di un individuo se appartenesse al gruppo Mindfulness invece che al gruppo di Controllo?*
+> *Di quanto potrebbe cambiare l'ansia di un individuo se appartenesse al gruppo Mindfulness invece che al gruppo di Controllo?*
+
+. . .
 
 Lo facciamo confrontando **due previsioni individuali generate dal modello**,
 non confrontando due medie osservate nei dati.
 
-L’obiettivo non è stimare un effetto medio di popolazione,
-ma descrivere **la variabilità plausibile dell’effetto a livello individuale**.
+L'obiettivo non è stimare un effetto medio di popolazione,
+ma descrivere **la variabilità plausibile dell'effetto a livello individuale**.
 
 ---
 
@@ -703,6 +715,8 @@ $$
 $$
 dove $\tilde y$ indica un **valore futuro predetto** dal modello.
 
+. . .
+
 ```{r}
 # Differenza individuale prevista tra i due gruppi
 beneficio_ind <- pred_mindfulness - pred_controllo
@@ -713,24 +727,28 @@ per **un individuo generico**, cioè non caratterizzato da covariate specifiche.
 
 ---
 
-## Attenzione all’interpretazione
+## Attenzione all'interpretazione
 
 Questa distribuzione **non** descrive:
 
 * il beneficio di un paziente reale già osservato;
-* l’effetto medio del trattamento;
+* l'effetto medio del trattamento;
 * una garanzia di miglioramento per ogni individuo.
+
+. . .
 
 Descrive invece:
 
 * una **previsione probabilistica** per un individuo qualunque appartenente a quel gruppo,
-* ottenuta combinando l’incertezza sui parametri del modello
+* ottenuta combinando l'incertezza sui parametri del modello
   e la variabilità individuale residua.
 
 È quindi una previsione su ciò che *potrebbe accadere*,
 non una quantità osservata né deterministica.
 
 ---
+
+## Come funzionano le dimensioni
 
 ```{r}
 dim(pred_mindfulness)
@@ -741,7 +759,7 @@ Il modello genera **4000 valori predetti** per **un singolo individuo** nel grup
 Questi 4000 valori derivano da:
 
 * 4000 campioni posteriori dei parametri;
-* la distribuzione dell’errore individuale.
+* la distribuzione dell'errore individuale.
 
 Lo stesso processo viene applicato al gruppo Controllo.
 
@@ -764,21 +782,29 @@ Ogni valore rappresenta un **confronto ipotetico controfattuale**:
 * il beneficio è calcolato a livello **individuale**;
 * **non** è la differenza tra due medie di gruppo.
 
-L’incertezza sulla differenza tra le medie è tipicamente **molto più piccola**
-dell’incertezza associata ai punteggi del singolo individuo.
+. . .
+
+L'incertezza sulla differenza tra le medie è tipicamente **molto più piccola**
+dell'incertezza associata ai punteggi del singolo individuo.
 
 --- 
 
 ## Distribuzione dei benefici individuali
 
+```{r}
+#| echo: false
+
+cat("BENEFICIO INDIVIDUALE DEL TRATTAMENTO:\n\n")
+cat("  Media:", round(mean(beneficio_ind), 1), "punti\n")
+cat("  DS:", round(sd(beneficio_ind), 1), "\n")
+cat("  IC 95%: [", round(quantile(beneficio_ind, 0.025), 1), ",",
+    round(quantile(beneficio_ind, 0.975), 1), "]\n")
+```
+
 La distribuzione seguente mostra come varia il beneficio individuale previsto:
 
-* valori negativi indicano una **riduzione dell’ansia** (beneficio);
+* valori negativi indicano una **riduzione dell'ansia** (beneficio);
 * la dispersione riflette la variabilità individuale attesa.
-
-Questa figura rende visibile perché,
-anche in presenza di un effetto medio favorevole,
-il beneficio per il singolo individuo rimane incerto.
 
 ---
 
@@ -804,22 +830,6 @@ ggplot(df_benef, aes(x = beneficio)) +
 
 ---
 
-## Distribuzione dei benefici individuali
-
-```{r}
-# Differenza individuale: cosa guadagna un paziente passando
-# da controllo a mindfulness?
-beneficio_ind <- pred_mindfulness - pred_controllo
-
-cat("BENEFICIO INDIVIDUALE DEL TRATTAMENTO:\n\n")
-cat("  Media:", round(mean(beneficio_ind), 1), "punti\n")
-cat("  DS:", round(sd(beneficio_ind), 1), "\n")
-cat("  IC 95%: [", round(quantile(beneficio_ind, 0.025), 1), ",",
-    round(quantile(beneficio_ind, 0.975), 1), "]\n")
-```
-
----
-
 ## Probabilità clinicamente rilevanti
 
 **Domande concrete per il clinico:**
@@ -827,13 +837,15 @@ cat("  IC 95%: [", round(quantile(beneficio_ind, 0.025), 1), ",",
 Probabilità di qualsiasi beneficio:
 
 ```{r}
- mean(beneficio_ind < 0)
+prob_beneficio <- mean(beneficio_ind < 0)
+prob_beneficio
 ```
 
 Probabilità di beneficio rilevante (> 5 punti):
 
 ```{r}
-mean(beneficio_ind < -5)
+prob_rilevante_ind <- mean(beneficio_ind < -5)
+prob_rilevante_ind
 ```
 
 ---
@@ -841,7 +853,8 @@ mean(beneficio_ind < -5)
 Probabilità di **non** migliorare:
 
 ```{r}
-mean(beneficio_ind >= 0)
+prob_non_migliora <- mean(beneficio_ind >= 0)
+prob_non_migliora
 ```
 
 Probabilità di peggiorare (> 5 punti in più di ansia):
@@ -854,14 +867,16 @@ mean(beneficio_ind > 5)
 
 ## Il pattern è sempre lo stesso
 
-I risultati presenti confermano quelli che abbiamo ottenuto in precedenza:
+I risultati confermano quelli della Lezione 25:
+
+. . .
 
 - a livello di **gruppo**: siamo molto certi che il trattamento funzioni;
 - a livello **individuale**: c'è molta più incertezza.
 
 . . .
 
-È la stessa distinzione $\mu$ vs $X$ che abbiamo visto nella lezione precedente:
+È la stessa distinzione $\mu$ vs $X$:
 
 $$
 \sigma_{\text{pred}}^2 = \sigma_{\text{post}}^2 + \sigma^2.
@@ -886,10 +901,11 @@ covariate che lo caratterizzano meglio, ad esempio:
 
 ---
 
-Questo si ottiene naturalmente usando un **modello di regressione**:
-è uno dei grandi benefici di questo approccio.
+Questo si ottiene naturalmente usando un **modello di regressione** con più predittori — un'estensione diretta del modello della Lezione 24.
 
-👉 È un tema avanzato che qui non trattiamo,
+. . .
+
+È un tema avanzato che qui non trattiamo,
 ma è fondamentale riconoscere che **questa è la direzione**
 per ottenere stime individuali più precise.
 
@@ -913,7 +929,7 @@ Ma **non può** rispondere facilmente a:
 
 ### 1. Nessuna distribuzione sui parametri
 
-Nel framework frequentista, i parametri sono **numeri fissi** (anche se sconosciuti).
+Nel framework frequentista, i parametri sono **numeri fissi** (anche se sconosciuti) — come abbiamo visto nella Lezione 14.
 
 * Non esiste una "distribuzione a posteriori" da cui derivare previsioni probabilistiche.
 
@@ -921,13 +937,15 @@ Nel framework frequentista, i parametri sono **numeri fissi** (anche se sconosci
 
 ### 2. Intervalli di confidenza ≠ probabilità
 
-Un intervallo di confidenza al 95% **non** significa:
+Come abbiamo discusso nelle Lezioni 15–16, un intervallo di confidenza al 95% **non** significa:
 
 > "C'è il 95% di probabilità che il vero parametro sia in questo intervallo."
 
 Significa (in modo contorto):
 
 > "Se ripetessimo lo studio infinite volte, il 95% degli intervalli conterrebbe il vero parametro."
+
+L'intervallo di credibilità bayesiano (Lezione 20) ha invece l'interpretazione diretta.
 
 ---
 
@@ -945,10 +963,10 @@ Per ottenere una "previsione individuale" nel framework frequentista, si usano *
 
 Nel framework bayesiano:
 
-1. I parametri hanno una **distribuzione** (la posterior).
-2. Possiamo **propagare l'incertezza** dai parametri alle previsioni.
-3. La distribuzione predittiva emerge **naturalmente** dal modello.
-4. Possiamo calcolare **qualsiasi probabilità** ci interessi.
+1. i parametri hanno una **distribuzione** (la posterior);
+2. possiamo **propagare l'incertezza** dai parametri alle previsioni;
+3. la distribuzione predittiva emerge **naturalmente** dal modello;
+4. possiamo calcolare **qualsiasi probabilità** ci interessi.
 
 ---
 
@@ -983,17 +1001,52 @@ Per la psicologia clinica, le domande idiografiche sono spesso le più important
 
 **Problemi:**
 
-- Non quantifica l'effetto.
-- Non considera la variabilità individuale.
-- Suggerisce una certezza che non c'è.
+- non quantifica l'effetto;
+- non considera la variabilità individuale;
+- suggerisce una certezza che non c'è.
 
 ---
 
 ## Comunicazione migliore
 
-> "Il trattamento di mindfulness riduce l'ansia in media di circa 7 punti (IC 95%: 2-12 punti). Tuttavia, la risposta individuale varia molto: stimiamo che circa il 70% dei pazienti mostri miglioramento, ma circa il 30% potrebbe non beneficiarne. Per un nuovo paziente come Mario, ci aspettiamo un livello di ansia tra 25 e 70 punti dopo il trattamento."
+```{r}
+#| echo: false
+ic_beta <- quantile(beta, c(0.025, 0.975))
+```
 
-# Riepilogo
+> "Il trattamento di mindfulness riduce l'ansia in media di circa `r abs(round(mean(beta), 0))` punti (IC 95%: `r round(ic_beta[1], 0)` a `r round(ic_beta[2], 0)` punti). Tuttavia, la risposta individuale varia molto: stimiamo che circa il `r round(prob_beneficio * 100, 0)`% dei pazienti mostri miglioramento, ma circa il `r round(prob_non_migliora * 100, 0)`% potrebbe non beneficiarne. Per un nuovo paziente come Mario, ci aspettiamo un livello di ansia tra `r round(pred_ind_mario[3], 0)` e `r round(pred_ind_mario[4], 0)` punti dopo il trattamento."
+
+# Riepilogo e percorso del corso
+
+## Il percorso fin qui {background-color="#27ae60" style="color: white;"}
+
+. . .
+
+**Lezioni 14–16** — Inferenza frequentista, test t, p-value, crisi di replicabilità.
+
+**Lezione 17** — Prior, verosimiglianza, posterior.
+
+**Lezioni 18–19** — Apprendimento sequenziale, famiglie coniugate.
+
+**Lezione 20** — Sintesi della posterior, intervalli credibili, probabilità dirette.
+
+**Lezioni 22–23** — Distribuzione predittiva a priori e a posteriori.
+
+---
+
+## Il percorso fin qui {background-color="#27ae60" style="color: white;"}
+
+**Lezione 24** — Regressione lineare bayesiana.
+
+**Lezione 25** — Inferenza su una media: dal gruppo all'individuo.
+
+**Lezione 26 (oggi)** — Confronto tra due gruppi: dalla differenza tra medie alla previsione individuale.
+
+. . .
+
+Nella prossima lezione passeremo dalla modellazione al **flusso di lavoro riproducibile**: come organizzare un'analisi completa dalla domanda di ricerca al report.
+
+---
 
 ## I punti chiave
 
@@ -1005,11 +1058,11 @@ Per la psicologia clinica, le domande idiografiche sono spesso le più important
 
 4. L'approccio **frequentista** ha difficoltà con le previsioni individuali probabilistiche.
 
-5. L'approccio **bayesiano** gestisce naturalmente sia domande nomotetico che idiografiche.
+5. L'approccio **bayesiano** gestisce naturalmente sia domande nomotetiche che idiografiche.
 
 ---
 
-## Il messaggio fondamentale
+## Il messaggio fondamentale {background-color="#2c3e50" style="color: white;"}
 
 > "La psicologia clinica richiede risposte a domande idiografiche: cosa succederà a *questo* paziente? L'approccio bayesiano è naturalmente attrezzato per rispondere, mentre l'approccio frequentista rimane ancorato alle domande sui gruppi."
 
@@ -1025,10 +1078,10 @@ $$
 
 **In parole:**
 
-L'incertezza sulla previsione individuale combina:
+l'incertezza sulla previsione individuale combina:
 
-- l'incertezza sui **parametri** del modello
-- la **variabilità tra pazienti**
+- l'incertezza sui **parametri** del modello,
+- la **variabilità tra pazienti**.
 
 Solo considerando entrambe possiamo dare risposte clinicamente oneste.
 
@@ -1040,4 +1093,4 @@ Materiale di studio: https://ccaudek.github.io/utet-companion/
 
 **Prossimo argomento:**
 
-Estenderemo questi concetti all'**ANOVA bayesiana**: confronto tra più di due gruppi, con particolare attenzione ai contrasti e alle previsioni individuali.
+Nella Lezione 27 passeremo dal "cosa" al "come": il **flusso di lavoro riproducibile**, dalla domanda di ricerca al report finale. Impareremo a organizzare un'analisi bayesiana completa in modo trasparente e replicabile.

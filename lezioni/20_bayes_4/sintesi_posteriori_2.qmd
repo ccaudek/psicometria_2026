@@ -1,7 +1,7 @@
 ---
 title: "Sintesi della distribuzione a posteriori"
 subtitle: "Intervalli di credibilità — Segmento 2"
-version: 1.0
+version: 2.0
 author:
   - name: Corrado Caudek
     orcid: 0000-0002-1404-0420
@@ -31,6 +31,8 @@ csl: ../apa.csl
 
 ```{r}
 #| echo: false
+#| message: false
+#| warning: false
 library(ggplot2)
 set.seed(42)
 ```
@@ -46,16 +48,13 @@ set.seed(42)
 
 ## Il limite delle stime puntuali
 
-Nel segmento precedente abbiamo visto come riassumere la distribuzione a posteriori con un singolo numero.
+Nel segmento precedente abbiamo visto come riassumere la distribuzione a posteriori con un singolo numero (media, mediana e MAP).
 
 Ma una stima puntuale **nasconde l'incertezza**.
 
 . . .
 
-Dire "la probabilità di remissione è 0.68" non comunica se siamo:
-
-- molto certi (distribuzione stretta),
-- molto incerti (distribuzione ampia).
+Dire "la probabilità di remissione è 0.68" non comunica se siamo molto certi (distribuzione stretta) o molto incerti (distribuzione ampia).
 
 ---
 
@@ -66,13 +65,8 @@ Dire "la probabilità di remissione è 0.68" non comunica se siamo:
 
 x <- seq(0, 1, length.out = 300)
 
-# Scenario 1: pochi dati, molta incertezza
 y1 <- dbeta(x, 7, 3)
-media1 <- 7/10
-
-# Scenario 2: molti dati, poca incertezza  
 y2 <- dbeta(x, 70, 30)
-media2 <- 70/100
 
 df_confronto <- data.frame(
   x = rep(x, 2),
@@ -84,7 +78,7 @@ ggplot(df_confronto, aes(x = x, y = y, color = scenario)) +
   geom_line(linewidth = 1.2) +
   geom_vline(xintercept = 0.7, linetype = "dashed", color = "gray40") +
   scale_color_manual(values = c("steelblue", "coral")) +
-  annotate("text", x = 0.72, y = 12, label = "Stessa media ≈ 0.70", color = "gray40") +
+  annotate("text", x = 0.72, y = 12, label = "Stessa media = 0.70", color = "gray40") +
   labs(title = "Stessa stima puntuale, incertezza molto diversa",
        x = "θ", y = "Densità", color = "") +
   theme_minimal(base_size = 14) +
@@ -93,58 +87,57 @@ ggplot(df_confronto, aes(x = x, y = y, color = scenario)) +
 
 ---
 
-## L’intervallo di credibilità
+## L'intervallo di credibilità
 
-Un **intervallo di credibilità** è un intervallo che contiene una certa percentuale della *massa* della distribuzione a posteriori:
+Un **intervallo di credibilità** è un intervallo $[a,b]$ che contiene una certa percentuale della *massa* della distribuzione a posteriori di $\theta$.
+
+Formalmente:
 
 $$
-P(\theta \in [a, b] \mid \text{dati}) = 1 - \alpha.
+P(\theta \in [a,b] \mid \text{dati}) = 1 - \alpha,
 $$
+dove:
 
-Ad esempio, un intervallo di credibilità al **95%** contiene il **95% della massa a posteriori**.
+* $1 - \alpha$ è il **livello di credibilità**,
+* $\alpha$ è la **probabilità lasciata fuori dall’intervallo** (massa totale nelle code).
 
 ---
 
-## Un’interpretazione intuitiva
+### Esempio
 
-> *“C’è una probabilità del 95% che il parametro sia compreso tra $a$ e $b$.”*
+Se $\alpha = 0.05$:
 
-Questa è l’interpretazione **corretta** di un intervallo di credibilità bayesiano.
+$$
+P(\theta \in [a,b] \mid \text{dati}) = 0.95.
+$$
+
+Un **intervallo di credibilità al 95%** contiene il **95% della massa a posteriori**, lasciando il **5% fuori**.
+
+---
+
+## Un'interpretazione intuitiva {background-color="#2c3e50" style="color: white;"}
+
+> *"C'è una probabilità del 95% che il parametro sia compreso tra $a$ e $b$."*
 
 . . .
 
-**Nota:** questa interpretazione è diversa — e più diretta — di quella dell’intervallo di confidenza frequentista.
+Questa è l'interpretazione **corretta** di un intervallo di credibilità bayesiano. Ricordate la Lezione 14: per l'intervallo di confidenza frequentista questa affermazione è *scorretta* — l'IC descrive una proprietà della procedura, non del parametro. L'intervallo di credibilità bayesiano, invece, è una probabilità diretta su $\theta$.
+
+. . .
+
+Questa differenza non è una sottigliezza tecnica. È la ragione per cui l'approccio bayesiano produce risposte più naturali alle domande cliniche.
 
 ---
 
 ## Significato dei simboli
 
-Nell’espressione $P(\theta \in [a, b] \mid \text{dati}) = 1 - \alpha$, ogni simbolo ha un ruolo preciso:
+Nell'espressione $P(\theta \in [a, b] \mid \text{dati}) = 1 - \alpha$, ogni simbolo ha un ruolo preciso:
 
-* **$\theta$:**
-  il *parametro di interesse* (es. una probabilità o una media);
-
-* **$[a, b]$:**
-  l’**intervallo di credibilità**, cioè l’insieme dei valori plausibili di $\theta$;
-
-* **$\text{dati}$:**
-  le osservazioni effettivamente raccolte;
-
-* **$P(\,\cdot \mid \text{dati})$:**
-  una **probabilità a posteriori**, che riflette ciò che crediamo *dopo* aver osservato i dati;
-
-* **$1 - \alpha$:**
-  il **livello di credibilità** (ad es. $0.95$ per un intervallo al 95%).
-
----
-
-## Interpretazione finale
-
-> Dopo aver osservato i dati,
-> attribuiamo una probabilità pari a $1 - \alpha$
-> al fatto che il vero valore di $\theta$ si trovi tra $a$ e $b$.
-
-👉 Si tratta di una **affermazione probabilistica diretta su $\theta$**, che rappresenta una delle differenze concettuali fondamentali tra l’approccio bayesiano e quello frequentista.
+* **$\theta$:** il *parametro di interesse* (es. una probabilità o una media);
+* **$[a, b]$:** l'**intervallo di credibilità**, cioè l'insieme dei valori plausibili di $\theta$;
+* **$\text{dati}$:** le osservazioni effettivamente raccolte;
+* **$P(\,\cdot \mid \text{dati})$:** una **probabilità a posteriori**, che riflette ciò che crediamo *dopo* aver osservato i dati;
+* **$1 - \alpha$:** il **livello di credibilità** (ad es. $0.95$ per un intervallo al 95%).
 
 # Parte 2: due tipi di intervalli
 
@@ -155,7 +148,7 @@ L'**Equal-Tailed Interval** (ETI) lascia la stessa quantità di massa in ciascun
 Per un intervallo al 95%:
 
 - 2.5% della massa è sotto il limite inferiore,
-- 2.5% della massa è sopra il limite superiore,
+- 2.5% della massa è sopra il limite superiore.
 
 $$
 \text{ETI}_{95\%} = [q_{0.025}, q_{0.975}].
@@ -168,21 +161,15 @@ $$
 Riprendiamo l'esempio CBT: Beta(27, 13).
 
 ```{r}
-alpha_post <- 27
-beta_post <- 13
+alpha_post_cbt <- 27
+beta_post_cbt <- 13
+
+# Intervallo di credibilità al 95% (ETI)
+eti_lower <- qbeta(0.025, alpha_post_cbt, beta_post_cbt)
+eti_upper <- qbeta(0.975, alpha_post_cbt, beta_post_cbt)
+
+cat("ETI 95%: [", round(eti_lower, 3), ",", round(eti_upper, 3), "]\n")
 ```
-
-Intervallo di credibilità al 95% (ETI):
-
-```{r}
-eti_lower <- qbeta(0.025, alpha_post, beta_post)
-eti_upper <- qbeta(0.975, alpha_post, beta_post)
-```
-
-```{r}
-cat("[", round(eti_lower, 3), ",", round(eti_upper, 3), "]\n")
-```
-
 
 ---
 
@@ -192,7 +179,7 @@ cat("[", round(eti_lower, 3), ",", round(eti_upper, 3), "]\n")
 #| echo: false
 
 x <- seq(0, 1, length.out = 300)
-y <- dbeta(x, alpha_post, beta_post)
+y <- dbeta(x, alpha_post_cbt, beta_post_cbt)
 
 df <- data.frame(x = x, y = y)
 
@@ -250,22 +237,23 @@ ggplot(df_asim, aes(x = x, y = y)) +
 
 ## Intervallo a densità più alta (HDI)
 
-* L’**Highest Density Interval (HDI)** è l’intervallo che contiene i valori **più plausibili** del parametro, secondo la distribuzione a posteriori.
+L’**Highest Density Interval (HDI)** è l’intervallo che contiene la quota $1-\alpha$ di probabilità a posteriori concentrata nelle regioni di **maggiore densità**.
 
-* Include **tutti e soli** i valori con **densità a posteriori più alta**.
+In altre parole, raccoglie i valori del parametro che sono **più supportati dai dati**, secondo la distribuzione a posteriori.
 
 ---
 
 ### Proprietà fondamentali
 
-* Ogni valore **all’interno** dell’HDI ha densità maggiore
-  di qualunque valore **all’esterno**.
+* Ogni punto all’interno dell’HDI ha **densità a posteriori maggiore o uguale** a quella di qualsiasi punto esterno.
+* Tra tutti gli intervalli che contengono la stessa probabilità (es. 95%), l’HDI è quello di **ampiezza minima**.
+* Può non essere simmetrico rispetto alla media o alla mediana.
 
-* È l’intervallo **più corto possibile** che contiene
-  una data probabilità (es. 95%).
+---
 
-👉 Per questo motivo, l’HDI è particolarmente informativo
-quando la distribuzione è **asimmetrica**.
+### Perché è utile?
+
+L’HDI è particolarmente informativo quando la distribuzione a posteriori è **asimmetrica** o non normale, perché si concentra nelle regioni dove la massa di probabilità è effettivamente più densa.
 
 ---
 
@@ -287,10 +275,18 @@ calcola_hdi <- function(campioni, prob = 0.95) {
   c(lower = campioni_ordinati[idx_min], 
     upper = campioni_ordinati[idx_min + n_inclusi])
 }
+```
 
+---
+
+```{r}
 # Generiamo campioni
-campioni <- rbeta(10000, alpha_post, beta_post)
+campioni <- rbeta(10000, alpha_post_cbt, beta_post_cbt)
+```
 
+. . .
+
+```{r}
 # Calcoliamo HDI
 hdi <- calcola_hdi(campioni, 0.95)
 cat("HDI al 95%: [", round(hdi["lower"], 3), ",", round(hdi["upper"], 3), "]\n")
@@ -302,7 +298,6 @@ cat("HDI al 95%: [", round(hdi["lower"], 3), ",", round(hdi["upper"], 3), "]\n")
 
 ```{r}
 #| echo: false
-#| fig-height: 4.5
 
 # Per una distribuzione quasi simmetrica, sono simili
 cat("Distribuzione quasi simmetrica Beta(27, 13):\n")
@@ -319,9 +314,7 @@ Con distribuzioni simmetriche, ETI e HDI sono praticamente identici.
 
 ```{r}
 #| echo: false
-#| fig-height: 4
 
-# Distribuzione asimmetrica
 campioni_asim <- rbeta(10000, 3, 15)
 hdi_asim <- calcola_hdi(campioni_asim, 0.95)
 eti_asim <- quantile(campioni_asim, c(0.025, 0.975))
@@ -383,15 +376,27 @@ Un nuovo test psicologico per l'ADHD viene validato. Vogliamo stimare la sua **s
 # Dati
 veri_positivi <- 42
 totale_adhd <- 50
+```
 
+. . .
+
+```{r}
 # Prior: Beta(15, 5) - centrata su 0.75, moderata incertezza
-alpha_prior <- 15
-beta_prior <- 5
+alpha_prior_adhd <- 15
+beta_prior_adhd <- 5
+```
 
+. . .
+
+```{r}
 # Posterior
-alpha_post_adhd <- alpha_prior + veri_positivi
-beta_post_adhd <- beta_prior + (totale_adhd - veri_positivi)
+alpha_post_adhd <- alpha_prior_adhd + veri_positivi
+beta_post_adhd <- beta_prior_adhd + (totale_adhd - veri_positivi)
+```
 
+. . .
+
+```{r}
 cat("Posterior: Beta(", alpha_post_adhd, ",", beta_post_adhd, ")\n")
 ```
 
@@ -402,11 +407,19 @@ cat("Posterior: Beta(", alpha_post_adhd, ",", beta_post_adhd, ")\n")
 ```{r}
 # Generiamo campioni
 campioni_adhd <- rbeta(10000, alpha_post_adhd, beta_post_adhd)
+```
 
+. . .
+
+```{r}
 # Stime puntuali
 media_adhd <- mean(campioni_adhd)
 mediana_adhd <- median(campioni_adhd)
+```
 
+. . .
+
+```{r}
 # Intervalli di credibilità
 eti_adhd <- quantile(campioni_adhd, c(0.025, 0.975))
 hdi_adhd <- calcola_hdi(campioni_adhd, 0.95)
@@ -414,10 +427,21 @@ hdi_adhd <- calcola_hdi(campioni_adhd, 0.95)
 
 ---
 
+Sensibilità stimata:
+
 ```{r}
-cat("Sensibilità stimata:\n")
 cat("Media:", round(media_adhd, 3), "\n")
+```
+
+. . .
+
+```{r}
 cat("ETI 95%: [", round(eti_adhd[1], 3), ",", round(eti_adhd[2], 3), "]\n")
+```
+
+. . .
+
+```{r}
 cat("HDI 95%: [", round(hdi_adhd["lower"], 3), ",", round(hdi_adhd["upper"], 3), "]\n")
 ```
 
@@ -454,7 +478,7 @@ ggplot(df_adhd, aes(x = x, y = y)) +
 
 ## Comunicare i risultati
 
-> "Il test ha una sensibilità stimata dell'**81%** (HDI 95%: 73% - 90%). Questo significa che è plausibile, con probabilità a posteriori del 95%, che la vera sensibilità del test sia compresa tra il 73% e il 90%."
+> "Il test ha una sensibilità stimata dell'**`r round(media_adhd * 100)`%**. Con probabilità a posteriori del 95%, la vera sensibilità del test è compresa nell'intervallo HDI 95%: `r round(hdi_adhd["lower"] * 100)`% - `r round(hdi_adhd["upper"] * 100)`%."
 
 # Parte 4: domande probabilistiche
 
@@ -472,16 +496,27 @@ Esempi:
 
 ## Rispondere con i campioni
 
+P(sensibilità > 0.80):
+
 ```{r}
-# P(sensibilità > 0.80)
 prob_gt_80 <- mean(campioni_adhd > 0.80)
 cat("P(sensibilità > 80%) =", round(prob_gt_80 * 100, 1), "%\n")
+```
 
-# P(sensibilità tra 0.75 e 0.85)
+. . .
+
+P(sensibilità tra 0.75 e 0.85):
+
+```{r}
 prob_75_85 <- mean(campioni_adhd > 0.75 & campioni_adhd < 0.85)
 cat("P(75% < sensibilità < 85%) =", round(prob_75_85 * 100, 1), "%\n")
+```
 
-# P(sensibilità < 0.70) - sotto lo standard
+. . .
+
+P(sensibilità < 0.70) - sotto lo standard:
+ 
+```{r}
 prob_lt_70 <- mean(campioni_adhd < 0.70)
 cat("P(sensibilità < 70%) =", round(prob_lt_70 * 100, 1), "%\n")
 ```
@@ -492,8 +527,6 @@ cat("P(sensibilità < 70%) =", round(prob_lt_70 * 100, 1), "%\n")
 
 ```{r}
 #| echo: false
-
-# Probabilità che il test soddisfi lo standard (> 75%)
 prob_standard <- mean(campioni_adhd > 0.75)
 ```
 
@@ -503,6 +536,8 @@ Possiamo ora fare affermazioni clinicamente rilevanti:
 
 > "La probabilità che il test sia inadeguato (sensibilità < 70%) è solo del **`r round(prob_lt_70 * 100, 1)`%**."
 
+Queste sono **affermazioni probabilistiche dirette** — non risultati di test indiretti.
+
 ---
 
 ## Visualizzare le probabilità
@@ -511,7 +546,6 @@ Possiamo ora fare affermazioni clinicamente rilevanti:
 #| echo: false
 #| fig-height: 4.5
 
-# Area sotto la curva per P(theta > 0.80)
 x <- seq(0.5, 1, length.out = 300)
 y <- dbeta(x, alpha_post_adhd, beta_post_adhd)
 
@@ -531,7 +565,23 @@ ggplot(df, aes(x = x, y = y)) +
 
 # Parte 5: confronto con l'approccio frequentista
 
-## Due filosofie, due interpretazioni
+## Due filosofie, due interpretazioni {background-color="#2c3e50" style="color: white;"}
+
+. . .
+
+Nella Lezione 14 avevamo visto che l'intervallo di confidenza frequentista *non* è una probabilità sul parametro: è una proprietà della *procedura*. Avevamo detto che "il 95% si riferisce alla percentuale di intervalli che, in campionamenti ripetuti, conterrebbero il vero valore."
+
+. . .
+
+Ora abbiamo lo strumento che risolve quel limite. L'intervallo di credibilità bayesiano **è** una probabilità sul parametro: "dato ciò che sappiamo, c'è il 95% di probabilità che $\theta$ sia nell'intervallo."
+
+. . .
+
+Questa è esattamente la differenza che avevamo anticipato — e che le famiglie coniugate (Lezione 19) ci permettono di calcolare in modo esatto.
+
+---
+
+## Confronto sistematico
 
 ```{r}
 #| echo: false
@@ -554,107 +604,60 @@ ci_upper <- p_hat + 1.96 * se
 
 ## Confronto numerico
 
-```{r}
-cat("Intervallo di credibilità bayesiano (HDI 95%):\n")
-cat("[", round(hdi_adhd["lower"], 3), ",", round(hdi_adhd["upper"], 3), "]\n\n")
+. . .
 
-cat("Intervallo di confidenza frequentista (Wald 95%):\n")
-cat("[", round(ci_lower, 3), ",", round(ci_upper, 3), "]\n")
+Intervallo di credibilità bayesiano (HDI 95%):
+
+```{r}
+cat("[", round(hdi_adhd["lower"], 3), ",", round(hdi_adhd["upper"], 3), "]\n\n")
 ```
 
 . . .
 
-Con **campioni ampi** e **prior poco informativi**,
-i due approcci producono risultati **molto simili**.
+Intervallo di confidenza frequentista (Wald 95%):
+
+```{r}
+cat("[", round(ci_lower, 3), ",", round(ci_upper, 3), "]\n")
+```
 
 ---
 
-## Ma attenzione
+* Con **campioni ampi** e **prior poco informativi**, i due approcci producono risultati molto simili. 
 
-Con **campioni piccoli**, i risultati possono invece
-**divergere in modo sostanziale**.
+. . .
 
-E questo è il punto cruciale:
-
-> in psicologia, i piccoli campioni sono la **regola**,
-non l’eccezione.
-
-👉 In questi contesti, l’approccio bayesiano offre
-maggiore stabilità, interpretabilità e trasparenza sulle assunzioni.
-
----
-
-## Il vantaggio dell’interpretazione bayesiana
-
-L’**intervallo di credibilità** (bayesiano) risponde **direttamente** alla domanda del clinico:
-
-> *“Quanto siamo sicuri che il parametro assuma questo valore?”*
-
-L’**intervallo di confidenza** (frequentista) risponde invece a una domanda **indiretta**:
-
-> *“Se ripetessimo l’esperimento molte volte, in quale percentuale dei casi
-> l’intervallo conterrebbe il vero valore?”*
+* Ma con **campioni piccoli** — che in psicologia sono la regola, non l'eccezione — i risultati possono divergere in modo sostanziale.
 
 ---
 
 ## Due prospettive a confronto 
 
-### Approccio frequentista
+**Approccio frequentista:**
 
-* Il **parametro è fisso** (ma sconosciuto)
-* Gli **intervalli cambiano** da campione a campione
-
-```
-campione 1:   [------|------]
-campione 2:        [------|------]
-campione 3: [------|------]
-                     ^
-                 vero valore
-```
-
-👉 Il 95% si riferisce alla **procedura**:
-nel lungo periodo, il 95% degli intervalli contiene il vero valore.
+- il parametro è *fisso*, gli intervalli cambiano da campione a campione;
+- il 95% si riferisce alla **procedura**: nel lungo periodo, il 95% degli intervalli contiene il vero valore.
 
 ---
 
-### Approccio bayesiano
+**Approccio bayesiano:**
 
-* I **dati sono fissi**.
-* Il **parametro è incerto**.
+- i dati sono *fissi*, il parametro è *incerto*;
+- il 95% si riferisce al **parametro**: dato ciò che sappiamo, c'è il 95% di probabilità che il parametro sia nell'intervallo.
 
-```
-           densità a posteriori
-                /\ 
-               /  \
---------------[----]--------------
-                 ^
-              valori plausibili
-```
-
-👉 Il 95% si riferisce al **parametro**:
-dato ciò che sappiamo, c’è il 95% di probabilità che il parametro sia nell’intervallo.
-
----
-
-## Messaggio finale
-
-> L’intervallo di confidenza parla di **ripetizioni ipotetiche**.
-> L’intervallo di credibilità parla di **ciò che crediamo ora** sul parametro.
-
-👉 Per questo l’interpretazione bayesiana è spesso
-più naturale e utile in contesti clinici e psicologici.
+Per questo l'interpretazione bayesiana è spesso più naturale e utile in contesti clinici e psicologici.
 
 
 # Parte 6: livelli di credibilità
 
 ## Non solo il 95%
 
-Il 95% è convenzionale, ma non c'è nulla di speciale in questo valore.
+Il 95% è *convenzionale*, ma **non c'è nulla di speciale** in questo valore. 
+
+. . .
 
 Possiamo calcolare intervalli a **qualsiasi livello**:
 
 ```{r}
-# Intervalli a diversi livelli
 livelli <- c(0.50, 0.80, 0.95, 0.99)
 
 for (liv in livelli) {
@@ -669,12 +672,10 @@ for (liv in livelli) {
 
 ```{r}
 #| echo: false
-#| fig-height: 5
 
 x <- seq(0.5, 1, length.out = 300)
 y <- dbeta(x, alpha_post_adhd, beta_post_adhd)
 
-# Intervalli
 int50 <- quantile(campioni_adhd, c(0.25, 0.75))
 int80 <- quantile(campioni_adhd, c(0.10, 0.90))
 int95 <- quantile(campioni_adhd, c(0.025, 0.975))
@@ -683,13 +684,10 @@ df <- data.frame(x = x, y = y)
 
 ggplot(df, aes(x = x, y = y)) +
   geom_line(linewidth = 1.2, color = "gray30") +
-  # 95%
   geom_area(data = subset(df, x >= int95[1] & x <= int95[2]),
             fill = "steelblue", alpha = 0.2) +
-  # 80%
   geom_area(data = subset(df, x >= int80[1] & x <= int80[2]),
             fill = "steelblue", alpha = 0.3) +
-  # 50%
   geom_area(data = subset(df, x >= int50[1] & x <= int50[2]),
             fill = "steelblue", alpha = 0.5) +
   geom_vline(xintercept = media_adhd, color = "coral", linewidth = 1) +
@@ -718,54 +716,36 @@ La scelta dipende dal **costo dell'errore** e dalla **cultura del campo**.
 
 ## Scenario: terapia di coppia
 
-Un terapeuta familiare valuta l’efficacia di un nuovo protocollo di **terapia di coppia**.
+Un terapeuta familiare valuta l'efficacia di un nuovo protocollo di **terapia di coppia**.
 
-### Dati osservati
+**Dati osservati:**  
+25 coppie hanno completato il trattamento; 18 coppie riportano un miglioramento clinicamente rilevante.
 
-* **25 coppie** hanno completato il trattamento;
-* **18 coppie** riportano un miglioramento clinicamente rilevante.
+---
 
---- 
+**Domande cliniche:**
 
-## Le domande cliniche 
+1. Qual è l'efficacia media plausibile del trattamento?
+2. Quanto siamo incerti su questa stima?
+3. Qual è la probabilità che l'efficacia sia superiore al 60%? superiore al 75%? inferiore al 50%?
 
-Il terapeuta vuole rispondere a queste domande:
+. . .
 
-1. **Qual è l’efficacia media plausibile** del trattamento?
-2. **Quanto siamo incerti** su questa stima?
-3. Qual è la probabilità che l’efficacia sia:
-
-   * superiore al **60%** (clinicamente soddisfacente)?
-   * superiore al **75%** (molto efficace)?
-   * inferiore al **50%** (potenzialmente inefficace)?
-
-👉 L’inferenza bayesiana permette di rispondere **direttamente** a tutte queste domande.
+L'inferenza bayesiana permette di rispondere **direttamente** a tutte queste domande.
 
 ---
 
 ## Informazione pregressa (prior)
 
-Sulla base dell’esperienza clinica, il terapeuta ritiene che:
+Sulla base dell'esperienza clinica, il terapeuta ritiene che l'efficacia del trattamento sia probabilmente tra 0.50 e 0.80, con il valore più plausibile intorno a 0.60.
 
-* l’efficacia del trattamento sia probabilmente tra **0.50 e 0.80**;
-* il valore più plausibile sia intorno a **0.60**.
+. . .
 
-Questo viene formalizzato con una distribuzione **Beta(6, 4)**,
-moderatamente informativa e centrata su 0.60.
+Questo viene formalizzato con una distribuzione **Beta(6, 4)**, moderatamente informativa e centrata su 0.60.
 
 ---
 
-## Aggiornamento con i dati
-
-Combinando prior e dati osservati (18 miglioramenti su 25 coppie),
-otteniamo una distribuzione **a posteriori** per l’efficacia del trattamento.
-
-Questa distribuzione rappresenta **tutte le credenze plausibili** sull’efficacia,
-dato ciò che sapevamo prima e ciò che abbiamo osservato ora.
-
----
-
-## Soluzione — Passo 1: setup
+## Soluzione — Setup e aggiornamento
 
 ```{r}
 # Dati
@@ -785,7 +765,7 @@ cat("Posterior: Beta(", alpha_post_coppia, ",", beta_post_coppia, ")\n")
 
 ---
 
-## Soluzione — Passo 2: statistiche
+## Soluzione — Statistiche
 
 ```{r}
 # Campioni
@@ -806,16 +786,11 @@ cat("HDI 95%: [", round(hdi_coppia["lower"], 3), ",", round(hdi_coppia["upper"],
 
 ---
 
-## Soluzione — Passo 3: domande cliniche
+## Soluzione — Domande cliniche
 
 ```{r}
-# Probabilità che l'efficacia sia > 60%
 prob_gt_60 <- mean(campioni_coppia > 0.60)
-
-# Probabilità che sia > 75% (molto efficace)
 prob_gt_75 <- mean(campioni_coppia > 0.75)
-
-# Probabilità che sia < 50% (inefficace)
 prob_lt_50 <- mean(campioni_coppia < 0.50)
 
 cat("P(efficacia > 60%) =", round(prob_gt_60 * 100, 1), "%\n")
@@ -825,36 +800,10 @@ cat("P(efficacia < 50%) =", round(prob_lt_50 * 100, 1), "%\n")
 
 ---
 
-## Risultati principali
-
-Dalla distribuzione a posteriori otteniamo:
-
-* **efficacia media stimata:** circa **0.72**;
-* **intervallo di credibilità (HDI 95%)**: valori plausibili concentrati
-  in un intervallo relativamente stretto.
-
-👉 I dati spostano chiaramente la stima verso valori **più alti** rispetto al prior,
-riducendo anche l’incertezza.
-
----
-
-## Risposte alle domande cliniche
-
-Sulla base della distribuzione a posteriori:
-
-* la probabilità che l’efficacia sia **> 60%** è **alta**;
-* la probabilità che sia **> 75%** è **non trascurabile**, ma più incerta;
-* la probabilità che sia **< 50%** è **molto bassa**.
-
-👉 Queste sono **affermazioni probabilistiche dirette**, non test indiretti.
-
----
-
-## Visualizzazione finale
+## Visualizzazione
 
 ```{r}
 #| echo: false
-#| fig-height: 4.5
 
 x <- seq(0.3, 1, length.out = 300)
 y <- dbeta(x, alpha_post_coppia, beta_post_coppia)
@@ -878,36 +827,56 @@ ggplot(df, aes(x = x, y = y)) +
 
 ---
 
-## Visualizzazione finale
-
-* La curva rappresenta le **ipotesi plausibili** sull’efficacia;
-* l’area evidenziata mostra l’**HDI 95%**;
-* la linea verticale indica la **stima media**;
+* La curva rappresenta le ipotesi plausibili sull'efficacia; 
+* l'area evidenziata mostra l'HDI 95%; 
 * la soglia al 60% separa efficacia clinicamente adeguata da insufficiente.
 
 ---
 
 ## Interpretazione clinica
 
-> Alla luce dei dati e delle credenze iniziali, è altamente plausibile che il protocollo di terapia di coppia produca un miglioramento clinicamente rilevante in **una larga maggioranza delle coppie trattate**.
+> Alla luce dei dati e delle credenze iniziali, è altamente plausibile che il protocollo di terapia di coppia produca un miglioramento clinicamente rilevante in una larga maggioranza delle coppie trattate.
 
-**Messaggio chiave:**
+L'inferenza bayesiana consente di passare direttamente dai dati alle **domande clinicamente rilevanti**, senza passaggi indiretti o interpretazioni ambigue.
 
-l’inferenza bayesiana consente di passare direttamente dai dati alle **domande clinicamente rilevanti**, senza passaggi indiretti o interpretazioni ambigue.
+# Riepilogo e percorso del corso
+
+## Il percorso fin qui {background-color="#27ae60" style="color: white;"}
+
+. . .
+
+**Lezioni 5-11** — Probabilità, distribuzioni, verosimiglianza.
+
+**Lezioni 14-16** — Inferenza frequentista, IC, valore-$p$, crisi di replicabilità.
+
+**Lezione 17** — I tre ingredienti bayesiani. Approssimazione a griglia.
+
+**Lezione 18** — Apprendimento sequenziale.
+
+**Lezione 19** — Famiglie coniugate: Beta-Binomiale e Normale-Normale.
+
+**Lezione 20 (oggi)** — Sintesi del posterior: stime puntuali, ETI, HDI e domande probabilistiche.
 
 ---
 
-## Riepilogo del segmento
+## Il percorso fin qui {background-color="#27ae60" style="color: white;"}
 
-1. L'**intervallo di credibilità** quantifica l'incertezza sul parametro.
+Nella prossima lezione studieremo l'**influenza della distribuzione a priori**: analisi di sensibilità e robustezza. 
+
+* Quando possiamo fidarci dei risultati? 
+* E cosa succede se cambiamo il prior?
+
+---
+
+## Riepilogo
+
+1. L'**intervallo di credibilità** quantifica l'incertezza sul parametro — ed è interpretabile direttamente come probabilità, a differenza dell'IC frequentista.
 
 2. **ETI** (Equal-Tailed Interval): uguale massa in ogni coda. Semplice da calcolare.
 
-3. **HDI** (Highest Density Interval): include solo i valori più credibili. Più stretto.
+3. **HDI** (Highest Density Interval): include solo i valori più credibili. Più stretto per distribuzioni asimmetriche.
 
-4. L'**interpretazione bayesiana** è diretta: "95% di probabilità che θ sia nell'intervallo."
-
-5. Possiamo rispondere a **qualsiasi domanda probabilistica** sul parametro.
+4. Possiamo rispondere a **qualsiasi domanda probabilistica** sul parametro.
 
 ---
 
@@ -915,9 +884,7 @@ l’inferenza bayesiana consente di passare direttamente dai dati alle **domande
 
 > La distribuzione a posteriori è una **mappa completa** della nostra conoscenza sul parametro.
 
-Le stime puntuali e gli intervalli sono **riassunti utili**, ma non sostituiscono l'informazione completa.
-
-Quando possibile, **mostrate la distribuzione intera** — è il modo più onesto di comunicare l'incertezza.
+Le stime puntuali e gli intervalli sono riassunti utili, ma non sostituiscono l'informazione completa. Quando possibile, mostrate la distribuzione intera — è il modo più onesto di comunicare l'incertezza.
 
 ---
 

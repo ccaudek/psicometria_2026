@@ -1,6 +1,7 @@
 ---
 title: "Esercitazione finale: dal dataset al giudizio scientifico"
 subtitle: "Ripensare i dati alla luce dei due paradigmi inferenziali — Segmento 1"
+version: 2.0
 author:
   - name: Corrado Caudek
     orcid: 0000-0002-1404-0420
@@ -40,18 +41,25 @@ library(posterior)
 set.seed(42)
 ```
 
-## Obiettivi dell'esercitazione {.unnumbered .unlisted}
+## Una situazione che vi capiterà davvero {background-color="#2c3e50" style="color: white;"}
+
+Immaginate di essere uno psicologo dello sviluppo. Un genitore vi chiede: *"È vero che cantare al mio bambino lo aiuta a fidarsi delle persone?"*
+
+Trovate un articolo su *Psychological Science* che sembra rispondere proprio a questa domanda. Riporta: "effetto significativo, $p$ = .006".
+
+. . .
+
+Ma cosa significa *davvero* per quel genitore? E quanto dovreste fidarvi di quel numero per orientare il vostro consiglio professionale?
+
+---
+
+## Obiettivi dell'esercitazione
 
 > **Domanda guida**
 >
 > *Dato questo dataset, che cosa possiamo dire **onestamente** sul fenomeno che stiamo studiando?*
 
-Questa esercitazione **non è un ripasso meccanico** del corso.
-È un tentativo di **ricomporre tutti i concetti visti** in un'unica storia coerente:
-
-- dalla raccolta dei dati  
-- alle scelte analitiche  
-- fino al giudizio scientifico finale.
+Questa esercitazione **non è un ripasso meccanico** del corso. È un tentativo di **ricomporre tutti i concetti visti** dalla Lezione 14 alla 27 in un'unica storia coerente: dalla raccolta dei dati, alle scelte analitiche, fino al giudizio scientifico finale.
 
 ---
 
@@ -59,17 +67,21 @@ Alla fine di questa sessione, non ci limiteremo a conoscere le procedure di appl
 
 . . .
 
-L’obiettivo principale è **comprendere i criteri che guidano la scelta di un approccio piuttosto che dell’altro**, sviluppando una consapevolezza critica sul perché, in un determinato contesto, un metodo possa essere preferibile.
+L'obiettivo principale è **comprendere i criteri che guidano la scelta di un approccio piuttosto che dell'altro**, sviluppando una consapevolezza critica sul perché, in un determinato contesto, un metodo possa essere preferibile.
 
 ---
 
 ## Cosa NON faremo oggi
 
-* Non applicheremo procedure “a memoria”.
+* Non applicheremo procedure "a memoria".
 
-* Non cercheremo la risposta “giusta”.
+* Non cercheremo la risposta "giusta".
 
 * Non separeremo tecnica e interpretazione.
+
+. . .
+
+Faremo quello che fa uno psicologo quando legge la letteratura scientifica: **valutare criticamente l'evidenza** per decidere cosa comunicare a chi si affida a noi.
 
 
 # Parte 1: lo studio
@@ -88,20 +100,38 @@ Pubblicato su *Psychological Science* — una delle riviste più prestigiose in 
 
 ---
 
+## Perché questo studio vi riguarda come futuri psicologi
+
+Questo studio tocca un tema centrale per chi lavorerà con bambini e famiglie:
+
+- **Psicologia dello sviluppo:** come si formano i primi legami sociali?
+- **Intervento precoce:** il canto genitoriale può essere uno strumento terapeutico?
+- **Valutazione:** come si misura qualcosa di così sottile in bambini di 5 mesi?
+
+---
+
+La risposta a queste domande dipende dalla **qualità dell'evidenza**. 
+
+. . .
+
+Ed è qui che entra in gioco la statistica.
+
+---
+
 ## Il disegno sperimentale
 
 **Fase 1: Familiarizzazione** (1-2 settimane a casa)
 
-- I genitori imparano una ninna-nanna nuova
-- La cantano regolarmente ai loro bambini (5 mesi)
+- I genitori imparano una ninna-nanna nuova.
+- La cantano regolarmente ai loro bambini (5 mesi).
 
 . . .
 
 **Fase 2: Test** (in laboratorio)
 
-- Il bambino vede due adulti sconosciuti
-- Uno canta la melodia **familiare**, l'altro una melodia **sconosciuta**
-- Si misura il **tempo di fissazione** dello sguardo
+- Il bambino vede due adulti sconosciuti (in video).
+- Uno canta la melodia **familiare**, l'altro una melodia **sconosciuta**.
+- Si misura il **tempo di fissazione** dello sguardo.
 
 ---
 
@@ -115,9 +145,9 @@ $$
 
 . . .
 
-- Se = 0.5 → nessuna preferenza
-- Se > 0.5 → preferenza per la melodia familiare
-- Se < 0.5 → preferenza per la melodia sconosciuta
+- Se = 0.5 → nessuna preferenza.
+- Se > 0.5 → preferenza per la melodia familiare.
+- Se < 0.5 → preferenza per la melodia sconosciuta.
 
 ---
 
@@ -129,13 +159,13 @@ $$
 
 Formalmente:
 
-- **H₀ (frequentista):** $\mu = 0.5$ (nessuna preferenza)
-- **H₁:** $\mu \neq 0.5$ (c'è una preferenza)
+- **$H_0$ (frequentista):** $\mu = 0.5$ (nessuna preferenza).
+- **H₁:** $\mu \neq 0.5$ (c'è una preferenza).
 
 . . .
 
 ::: {.callout-note}
-Notate: questa formulazione è già un **compromesso**. La domanda naturale sarebbe: "Qual è la probabilità che i bambini preferiscano la melodia familiare?"
+Notate: questa formulazione è già un **compromesso**. La domanda naturale — quella che farebbe il genitore — sarebbe: "Qual è la probabilità che i bambini preferiscano la melodia familiare?" Ma il framework frequentista (Lezione 14) non può rispondere a una domanda di questo tipo.
 :::
 
 # Parte 2: esplorazione dei dati
@@ -153,6 +183,8 @@ cat("Campione:", nrow(df), "bambini\n")
 cat("Età media:", round(mean(df$age), 2), "mesi\n")
 ```
 
+Un aspetto importante: questi dati sono **pubblicamente disponibili** su OSF. Come abbiamo discusso nella Lezione 27, la condivisione dei dati è una pratica fondamentale dell'Open Science.
+
 ---
 
 ## Il dataset non parla da solo
@@ -167,10 +199,8 @@ Prima ancora di calcolare una media, facciamo scelte implicite:
 
 . . .
 
-> **Insight chiave**
->
 > La statistica non *estrae* informazione dai dati.
-> La **costruisce**, a partire da assunzioni.
+> La **costruisce**, a partire da una serie di assunzioni.
 
 ---
 
@@ -194,19 +224,21 @@ cat("Min-Max:", round(min(y), 2), "-", round(max(y), 2), "\n")
 #| echo: false
 #| fig-height: 4.5
 
+media_y <- mean(y)
+
 ggplot(data.frame(y = y), aes(x = y)) +
   geom_histogram(aes(y = after_stat(density)), bins = 12, 
                  fill = "steelblue", alpha = 0.7, color = "white") +
   geom_density(linewidth = 1, color = "darkblue") +
   geom_vline(xintercept = 0.5, linetype = "dashed", color = "darkred", linewidth = 1) +
-  geom_vline(xintercept = mean(y), linetype = "solid", color = "forestgreen", linewidth = 1) +
+  geom_vline(xintercept = media_y, linetype = "solid", color = "forestgreen", linewidth = 1) +
   annotate("text", x = 0.52, y = 2.8, label = "Nessuna preferenza", 
            color = "darkred", hjust = 0, size = 4) +
-  annotate("text", x = mean(y) + 0.02, y = 2.5, 
-           label = paste0("Media = ", round(mean(y), 2)), 
+  annotate("text", x = media_y + 0.02, y = 2.5, 
+           label = paste0("Media = ", round(media_y, 2)), 
            color = "forestgreen", hjust = 0, size = 4) +
   labs(title = "Distribuzione della proporzione di fissazione",
-       subtitle = "Esperimento 1: n = 32 bambini",
+       subtitle = paste0("Esperimento 1: n = ", nrow(df), " bambini"),
        x = "Proporzione verso cantante melodia familiare", y = "Densità") +
   theme_minimal(base_size = 14)
 ```
@@ -215,67 +247,50 @@ ggplot(data.frame(y = y), aes(x = y)) +
 
 ## Statistica descrittiva come prima forma di modellazione
 
-La statistica descrittiva non è una fase “obbligatoria” e neutra.
-
-* È già una **forma primitiva di modellazione**.
+La statistica descrittiva non è una fase "obbligatoria" e neutra. È già una **forma primitiva di modellazione**.
 
 . . .
 
-Quando calcoliamo:
+Quando calcoliamo media, deviazione standard, distribuzioni marginali, stiamo implicitamente assumendo simmetria, continuità, rilevanza della tendenza centrale.
 
-- media, deviazione standard, distribuzioni marginali,  
+. . .
 
-stiamo implicitamente assumendo:
-
-- simmetria, continuità, rilevanza della tendenza centrale.
-
----
-
-## Statistica descrittiva come prima forma di modellazione
-
-> **Nuova prospettiva**
->
-> Ogni statistica descrittiva è una **ipotesi sul mondo**, non solo un riassunto.
+> Ogni statistica descrittiva è un'**ipotesi sul mondo**, non solo un riassunto.
 
 ---
 
 ## Prima osservazione
 
-La media campionaria è **0.59**, superiore a 0.5.
+```{r}
+#| echo: false
+cat("La media campionaria è", round(mean(y), 2), ", superiore a 0.5.\n")
+```
 
-. . .
-
-Ma questa è solo **una stima puntuale** da un campione di 32 bambini.
+Ma questa è solo **una stima puntuale** da un campione di `r nrow(df)` bambini.
 
 . . .
 
 ::: {.callout-important}
 ## La domanda cruciale
 
-Quanto siamo **sicuri** che questa differenza rifletta una vera preferenza nella popolazione, e non sia solo fluttuazione casuale?
+Quanto siamo **sicuri** che questa differenza rifletta una vera preferenza nella popolazione e non sia solo una fluttuazione casuale?
+
+Questa è la stessa domanda che ci siamo posti nella Lezione 25, quando abbiamo introdotto l'inferenza bayesiana su una media.
 :::
 
 ---
 
-## Cosa stiamo trattando come incerto?
+## Dove collochiamo l'incertezza? {background-color="#2c3e50" style="color: white;"}
 
-Qui avviene il primo vero bivio concettuale.
+La probabilità non è solo matematica. È una risposta alla domanda:
 
-. . .
+**dove collochiamo l'incertezza?**
 
-La probabilità non è solo matematica.
-
-. . .
-
-È una risposta alla domanda:
-
-> **Dove collochiamo l'incertezza?**
-
-- Nei dati?
-- Nei parametri?
+- Nei dati? (approccio frequentista)
+- Nei parametri? (approccio bayesiano)
 - Nel modello stesso?
 
-Questo punto distingue radicalmente i due paradigmi inferenziali.
+Questo punto distingue radicalmente i due paradigmi inferenziali che abbiamo costruito nelle Lezioni 14–26.
 
 ---
 
@@ -283,18 +298,13 @@ Questo punto distingue radicalmente i due paradigmi inferenziali.
 
 L'approccio frequentista risponde in modo rigoroso a una domanda precisa:
 
-> *Cosa succede se ripetiamo infinite volte lo stesso esperimento?*
+> *cosa succede se ripetiamo infinite volte lo stesso esperimento?*
 
-È estremamente potente quando:
-
-- il processo è ripetibile,
-- il campionamento è ben definito,
-- l'obiettivo è il controllo dell'errore a lungo termine.
+È estremamente potente quando il processo è ripetibile, il campionamento è ben definito e l'obiettivo è il controllo dell'errore a lungo termine.
 
 . . .
 
-Il problema **non è tecnico**.
-È epistemologico.
+Il problema **non è tecnico**. È epistemologico.
 
 ---
 
@@ -302,103 +312,75 @@ Il problema **non è tecnico**.
 
 In psicologia, di solito vogliamo sapere:
 
-> *Quanto è plausibile questo valore del parametro, dato ciò che abbiamo osservato?*
+> *quanto è plausibile questo valore del parametro, dato ciò che abbiamo osservato?*
 
-Ma:
+Ma, come abbiamo visto nelle Lezioni 15–16:
 
 - gli intervalli di confidenza **non** sono probabilità sui parametri,
 - i valori-$p$ **non** quantificano l'evidenza a favore di un'ipotesi.
 
----
+. . .
 
-## Il limite frequentista
-
-> **Insight chiave**
->
-> Il frequentismo non sbaglia.
-> Risponde semplicemente a **domande diverse** da quelle che ci interessano.
+> Il frequentismo non sbaglia. Risponde semplicemente a **domande diverse** da quelle che ci interessano.
 
 ---
 
 ## Il passaggio bayesiano
 
-L'inferenza bayesiana sposta il focus:
+L'inferenza bayesiana (Lezione 17: prior, likelihood, posterior) sposta il focus:
 
 - dai risultati puntuali
 - alla **plausibilità relativa** dei valori del parametro.
 
 . . .
 
-Il risultato dell'analisi non è un numero,
-ma una **distribuzione di credenze aggiornata dai dati**.
-
-. . .
-
-Questo consente di formulare direttamente le domande scientifiche che ci interessano.
+Il risultato dell'analisi non è un numero, ma una **distribuzione di credenze aggiornata dai dati**. Questo consente di formulare direttamente le domande scientifiche che ci interessano.
 
 ---
 
-### Dal parametro alla predizione
+## Dal parametro alla predizione
 
 L'obiettivo ultimo della modellazione statistica è spesso la **predizione**, non la stima fine a sé stessa.
 
 - Non stimiamo parametri *solo per conoscerli*.
 - Stimiamo parametri **per fare previsioni su ciò che osserveremo**.
 
----
+. . .
 
-### Dal parametro alla predizione
-
-Lo strumento chiave è la **distribuzione predittiva**:
+Lo strumento chiave è la **distribuzione predittiva** (Lezioni 22–23, ripresa nella 25–26):
 
 - **integra** la nostra incertezza sui parametri del modello;
 - **esplicita** ciò che il modello si aspetta di osservare per una nuova osservazione.
 
 ---
 
-### Cosa significa 'integrare l'incertezza'?
+## Cosa significa "integrare l'incertezza"
 
-**Ricordiamo: l'incertezza sui parametri**
+In un modello bayesiano, dopo aver visto i dati, non otteniamo un singolo valore per la media $\mu$, ma una **distribuzione a posteriori** che rappresenta tutta la nostra conoscenza e incertezza su di esso.
 
-In un modello bayesiano, dopo aver visto i dati, otteniamo non un singolo valore per un parametro (es. la media `μ`), ma una **distribuzione a posteriori** che rappresenta tutta la nostra conoscenza e incertezza su di esso.
+Se usassimo solo una stima puntuale per fare previsioni, ignoreremmo questa incertezza. Le nostre previsioni risulterebbero troppo "sicure".
 
-**Problema:** se usassimo solo una stima puntuale (es. la media a posteriori) per fare previsioni, ignoreremmo questa incertezza. Le nostre previsioni risulterebbero troppo "sicure".
+. . .
 
----
-
-### Cosa significa 'integrare l'incertezza'?
-
-**Soluzione: La distribuzione predittiva**
-
-La previsione per una nuova osservazione `y_new` non viene fatta con un solo `μ`, ma considerando *tutti* i possibili valori di `μ`, ciascuno ponderato per la sua credibilità (probabilità) a posteriori.
+La soluzione è la **distribuzione predittiva**: la previsione per una nuova osservazione $y_{\text{new}}$ non viene fatta con un solo $\mu$, ma considerando *tutti* i possibili valori di $\mu$, ciascuno ponderato per la sua credibilità a posteriori.
 
 ---
 
-### Cosa significa 'integrare l'incertezza'?
-
-**In una formula:**
+## Distribuzione predittiva: la formula
 
 $$
-p(y_{\text{new}} \mid \text{dati}) = \int p(y_{\text{new}} \mid \boldsymbol{\theta}) \, p(\boldsymbol{\theta} \mid \text{dati}) \, d\boldsymbol{\theta} .
+p(y_{\text{new}} \mid \text{dati}) = \int p(y_{\text{new}} \mid \boldsymbol{\theta}) \, p(\boldsymbol{\theta} \mid \text{dati}) \, d\boldsymbol{\theta}
 $$
 
 **(Previsione)** = (Previsione dato un parametro) × (Credibilità di quel parametro), **sommato su tutti i parametri**.
 
----
+. . .
 
-### Cosa significa 'integrare l'incertezza'?
-
-**In pratica:**  
-simuliamo migliaia di scenari possibili del modello (prendendo parametri dalla loro distribuzione a posteriori) e osserviamo la varietà di `y_new` che ciascuno genera. L’istogramma risultante di tutti questi `y_new` simulati **è** la distribuzione predittiva.
+**In pratica:** simuliamo migliaia di scenari possibili dal modello (prendendo parametri dalla distribuzione a posteriori) e osserviamo la varietà di $y_{\text{new}}$ generata. L'istogramma risultante **è** la distribuzione predittiva.
 
 ---
 
-## Dal parametro alla predizione
-
-> **Nuovo insight**
->
-> Un buon modello non è quello che “stima bene”,
-> ma quello che **fa predizioni sensate**.
+> Un buon modello non è quello che "stima bene", ma quello che **fa predizioni sensate**.
 
 # Parte 3: l'analisi frequentista
 
@@ -406,7 +388,7 @@ simuliamo migliaia di scenari possibili del modello (prendendo parametri dalla l
 
 **Ipotesi:**
 
-- H₀: $\mu = 0.5$
+- $H_0$: $\mu = 0.5$
 - H₁: $\mu \neq 0.5$
 
 ```{r}
@@ -420,9 +402,7 @@ risultato_t <- t.test(y, mu = 0.5)
 #| echo: false
 
 risultato_t
-
 ```
-
 
 ---
 
@@ -442,7 +422,7 @@ cat("IC 95%:", round(risultato_t$conf.int[1], 3), "-",
 
 **Conclusione frequentista:**
 
-> "Rifiutiamo H₀ al livello α = 0.05. I bambini mostrano una preferenza significativa (p = .006)."
+> "Rifiutiamo $H_0$ al livello $\alpha$ = 0.05. I bambini mostrano una preferenza significativa ($p$ = `r round(risultato_t$p.value, 3)`)."
 
 ---
 
@@ -453,16 +433,16 @@ cat("IC 95%:", round(risultato_t$conf.int[1], 3), "-",
 
 Il valore-$p$ **NON** ci dice:
 
-- La probabilità che H₀ sia vera
-- La probabilità che i bambini preferiscano la melodia familiare
-- Quanto è grande l'effetto
+- qual è la probabilità che $H_0$ sia vera;
+- qual è la probabilità che i bambini preferiscano la melodia familiare;
+- quanto è grande l'effetto.
 :::
 
 . . .
 
 Ci dice solo:
 
-> "Se non ci fosse alcuna preferenza, la probabilità di osservare una media così estrema sarebbe circa 0.6%."
+> "Se non ci fosse alcuna preferenza, la probabilità di osservare una media così estrema sarebbe circa `r round(risultato_t$p.value * 100, 1)`%."
 
 ---
 
@@ -470,7 +450,6 @@ Ci dice solo:
 
 ```{r}
 #| echo: false
-#| fig-height: 4
 
 # Visualizzazione IC
 ic <- risultato_t$conf.int
@@ -506,12 +485,12 @@ ggplot(df_ic, aes(x = "Proporzione", y = stima)) +
 
 **Interpretazione ERRATA (ma comune):**
 
-> "C'è il 95% di probabilità che μ sia tra 0.53 e 0.66."
+> "C'è il 95% di probabilità che μ sia tra `r round(ic[1], 2)` e `r round(ic[2], 2)`."
 
 . . .
 
 ::: {.callout-note}
-Ricordate: nel framework frequentista, il **parametro** μ è **fisso** (non casuale), quindi non ha una "probabilità" di essere in un intervallo.
+Ricordate (Lezione 20): nel framework frequentista, il **parametro** μ è **fisso** (non casuale), quindi non ha una "probabilità" di essere in un intervallo.
 :::
 
 ---
@@ -524,9 +503,14 @@ effect_size <- cohens_d(y, mu = 0.5)
 effect_size
 ```
 
+```{r}
+#| echo: false
+d_val <- round(as.numeric(effect_size$Cohens_d), 2)
+```
+
 . . .
 
-**d = 0.52** → effetto "medio" secondo le convenzioni di Cohen.
+**d = `r d_val`** → effetto "medio" secondo le convenzioni di Cohen.
 
 Ma attenzione: questo è un effetto **standardizzato**, che dipende dalla variabilità del campione.
 
@@ -534,23 +518,24 @@ Ma attenzione: questo è un effetto **standardizzato**, che dipende dalla variab
 
 ## Riepilogo dell'analisi frequentista
 
-| Statistica | Valore | Interpretazione |
-|------------|--------|-----------------|
-| Media | 0.59 | Stima puntuale |
-| t(31) | 2.96 | Statistica test |
-| valore-$p$ | .006 | Incompatibilità con H₀ |
-| IC 95% | [0.53, 0.66] | Procedura, non probabilità |
-| $d$ di Cohen | 0.52 | Effetto standardizzato |
+```{r}
+#| echo: false
 
----
+t_val <- round(risultato_t$statistic, 2)
+p_val <- round(risultato_t$p.value, 3)
 
-## Riepilogo dell'analisi frequentista
+cat("| Statistica   | Valore                        | Interpretazione              |\n")
+cat("|-------------|-------------------------------|------------------------------|\n")
+cat("| Media       |", round(mean(y), 2), "                        | Stima puntuale               |\n")
+cat("| t(", risultato_t$parameter, ")    |", t_val, "                        | Statistica test              |\n")
+cat("| valore-p    |", p_val, "                       | Incompatibilità con H0       |\n")
+cat("| IC 95%      | [", round(ic[1], 2), ",", round(ic[2], 2), "]               | Procedura, non probabilità   |\n")
+cat("| d di Cohen  |", d_val, "                        | Effetto standardizzato       |\n")
+```
 
-**Cosa manca?**
+. . .
 
-- La probabilità che H₁ sia vera
-- La distribuzione di credibilità su μ
-- La probabilità che l'effetto sia "clinicamente rilevante"
+**Cosa manca?** La probabilità che H₁ sia vera, la distribuzione di credibilità su μ, la probabilità che l'effetto sia "clinicamente rilevante".
 
 # Parte 4: i limiti della decisione dicotomica
 
@@ -558,12 +543,8 @@ Ma attenzione: questo è un effetto **standardizzato**, che dipende dalla variab
 
 ```{r}
 #| echo: false
-#| fig-height: 4
 
-# Simuliamo due studi quasi identici
-set.seed(456)
-studio_a <- mean(y) + rnorm(1, 0, 0.01)  # leggermente sopra
-studio_b <- mean(y) - rnorm(1, 0, 0.02)  # leggermente sotto
+library(ggplot2)
 
 df_studi <- data.frame(
   studio = c("Studio A", "Studio B"),
@@ -576,11 +557,11 @@ ggplot(df_studi, aes(x = studio, y = media, fill = conclusione)) +
   geom_col(width = 0.5) +
   geom_hline(yintercept = 0.5, linetype = "dashed", color = "darkred") +
   geom_text(aes(label = paste0("p = ", p)), vjust = -0.5, size = 5) +
-  scale_fill_manual(values = c("gray60", "steelblue")) +
+  scale_fill_manual(values = c("steelblue", "gray60")) +
   labs(title = "Due studi, conclusioni opposte",
        subtitle = "La dicotomia nasconde la somiglianza dei risultati",
        x = "", y = "Media", fill = "") +
-  ylim(0.45, 0.65) +
+  coord_cartesian(ylim = c(0, 1)) +  # Mostra l'intero range da 0 a 1
   theme_minimal(base_size = 14) +
   theme(legend.position = "bottom")
 ```
@@ -593,52 +574,78 @@ Questi due studi direbbero **cose diverse nella letteratura**
 
 . . .
 
-ma descrivono **quasi lo stesso fenomeno**.
+ma descrivono **lo stesso fenomeno**.
 
 . . . 
 
-La differenza non è nei dati.
-
-. . .
-
-
-È nella soglia.
+La differenza non è nei dati. È nella soglia.
 
 ---
 
-## Cosa vorremmo sapere (ma non possiamo)
+## Una situazione quotidiana per lo psicologo
 
-Con l’approccio frequentista non possiamo rispondere a:
+Pensate a questo in termini professionali: un collega legge "effetto significativo" e consiglia ai genitori di cantare; un altro legge "effetto non significativo" e non ne parla.
 
 . . .
 
-**1. Qual è la probabilità che i bambini preferiscano la melodia familiare?**  
-Il frequentismo non assegna probabilità alle ipotesi.
+Ma l'evidenza nei due studi è quasi identica. La differenza sta solo nel numero di bambini reclutati nello studio, non nella forza dell'effetto.
 
-**2. Quanto siamo sicuri che la preferenza sia almeno del 5%?**  
-Non fornisce una misura diretta di “certezza” su un parametro.
-
-**3. Se ripetessimo lo studio, quale range di risultati ci aspetteremmo?**  
-Non calcola intervalli probabilistici intorno ai parametri.
-
----
-
-## Cosa vorremmo sapere (ma non possiamo)
+. . .
 
 ::: {.callout-important}
-**Queste sono le domande che i ricercatori *vorrebbero* porre —**  
-**ma il frequentismo risponde a domande diverse.**
+È necessario distinguere tra le domande che i ricercatori *vorrebbero* porre dalle domande (del tutto diverse) a cui il frequentismo risponde.
 :::
 
 ---
 
-## Il gap tra domanda e risposta
+## Il divario tra domande sostanziali e risposte frequentiste
 
-| Domanda del ricercatore | Risposta frequentista |
-|-------------------------|----------------------|
-| "Qual è la probabilità che ci sia una preferenza?" | "p = .006" (NON è questa probabilità!) |
-| "Quanto è grande la preferenza?" | "d = 0.52" (dipende da σ) |
-| "Quanto siamo sicuri?" | "95% CI" (riguarda la procedura) |
+```{r}
+#| echo: false
+#| message: false
+
+library(knitr)
+library(kableExtra)
+
+# Definisci i valori (se non sono già definiti altrove)
+p_val <- 0.06  # esempio
+d_val <- 0.20  # esempio
+
+# Crea il dataframe per la tabella
+df_gap <- data.frame(
+  "Domanda del ricercatore" = c(
+    "Qual è la probabilità che ci sia una preferenza?",
+    "Quanto è grande la preferenza?",
+    "Quanto siamo sicuri?"
+  ),
+  "Risposta frequentista" = c(
+    paste0("p = ", p_val, " (NON è questa probabilità!)"),
+    paste0("d = ", d_val, " (dipende da sigma)"),
+    "95% CI (riguarda la procedura, non i parametri)"
+  ),
+  check.names = FALSE
+)
+
+# Crea la tabella formattata
+kable(df_gap, 
+      format = "html",
+      # caption = "Il divario tra domande sostanziali e risposte frequentiste",
+      align = c("l", "l")) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed"),
+    full_width = FALSE,
+    position = "center",
+    font_size = 30
+  ) %>%
+  column_spec(1, width = "25em", background = "#f0f0f0") %>%
+  column_spec(2, width = "20em", background = "#ffffff") %>%
+  row_spec(0, bold = TRUE, background = "#2c3e50", color = "white") %>%
+  footnote(
+    general = "L'approccio frequentista non risponde direttamente alle domande sostanziali dei ricercatori.",
+    general_title = "Nota:",
+    footnote_as_chunk = TRUE
+  )
+```
 
 . . .
 
@@ -646,35 +653,47 @@ Nella seconda parte vedremo come l'approccio **bayesiano** risponde direttamente
 
 ---
 
-## Riepilogo della Parte 1
+## Riepilogo del segmento 1
 
-1. **Studio ben progettato**, con dati condivisi (Open Science).
+```{r}
+#| echo: false
+#| results: asis
+```
 
-2. **L'analisi frequentista** restituisce:  
-   $t = 2.96$, $p = .006$, $d = 0.52$.
+1. Studio ben progettato, con dati condivisi (Open Science).
 
-3. Il risultato è classico: otteniamo un **"effetto statisticamente significativo"**.  
+2. L'analisi frequentista restituisce:  
+   t(`r risultato_t$parameter`) = `r round(t_val, 2)`, p = `r round(p_val, 3)`, d = `r round(d_val, 2)`
+
+3. Il risultato è il classico effetto "statisticamente significativo".  
    Ma cosa significa davvero?
 
-4. Il metodo frequentista quantifica **P(dati | H₀)**,  
-   non ciò che ci interessa: **P(H₀ | dati)**.
+4. Il metodo frequentista quantifica $P(\text{dati} \mid H_0)$,  
+   non ciò che ci interessa: $P(H_0 \mid \text{dati})$.
 
-5. La decisione binaria ("significativo" / "non significativo") nasconde un’**incertezza sostanziale e graduale**.
+5. La decisione binaria nasconde un'incertezza sostanziale e graduale.
 
 ---
 
 ## Un punto spesso ignorato
 
-Il frequentismo **non è sbagliato**  
-quando il problema è decisionale (accetta / rifiuta).
+Il frequentismo **non è sbagliato** quando il problema è decisionale (accetta / rifiuta).
 
-**Ma la ricerca psicologica raramente è decisionale.**
+. . .
+
+**Ma la pratica psicologica raramente è puramente decisionale.**
+
+. . .
 
 È:
 
 - esplorativa,
 - cumulativa,
 - orientata alla **stima** e alla **previsione**.
+
+. . .
+
+Quando un genitore chiede "quanto è probabile che funzioni?", vuole una risposta graduale, non un sì/no.
 
 ---
 
@@ -684,12 +703,7 @@ Il report finale **non è un contenitore di risultati**.
 
 . . .
 
-È una **argomentazione epistemica** che rende espliciti:
-
-- assunzioni,
-- scelte,
-- compromessi,
-- incertezze residue.
+È una **argomentazione epistemica** che rende espliciti le assunzioni, le scelte, i compromessi e le incertezze residue.
 
 . . .
 
@@ -697,45 +711,18 @@ Scrivere un report significa:
 
 > *difendere pubblicamente il proprio ragionamento.*
 
+Come abbiamo visto nella Lezione 27, la riproducibilità è la condizione necessaria perché questa difesa sia verificabile.
+
 ---
 
-## Cosa abbiamo imparato davvero
+## Dove siamo arrivati {background-color="#2c3e50" style="color: white;"}
 
-Alla fine di questo percorso, “fare inferenza” in psicologia significa:
+Abbiamo dati chiari, un effetto plausibile, ma permane un'incertezza residua.
 
-- non applicare procedure in modo automatico, ma **giustificare le proprie scelte metodologiche**;
-- non limitarsi a produrre numeri, ma **quantificare e comunicare l’incertezza**;
-- non inseguire certezze illusorie, ma **controllare e limitare sistematicamente l'errore**.
+Non possiamo ancora dire: *quanto* è probabile la preferenza, *quanto* è grande e *quanto* è affidabile per nuove osservazioni.
 
 . . .
 
-Se questa esercitazione vi sembra diversa dalle prime analisi del corso,
-è un buon segno.
+Nel Segmento 2 non cambieremo i dati. Non cambieremo la domanda.
 
-Significa che **state guardando oltre la superficie**.
-
----
-
-## Dove siamo arrivati
-
-Abbiamo:
-
-- dati chiari,
-- un effetto plausibile,
-- incertezza residua.
-
-Ma non possiamo ancora dire:
-
-> *quanto* è probabile la preferenza,  
-> *quanto* è grande, 
-> *quanto* è affidabile per nuove osservazioni.
-
----
-
-## Nella Parte 2 faremo una cosa radicale
-
-Non cambieremo i dati.
-Non cambieremo la domanda.
-
-Cambieremo **il modo in cui trattiamo l’incertezza**.
-
+Cambieremo **il modo in cui trattiamo l'incertezza**.

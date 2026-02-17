@@ -1,7 +1,7 @@
 ---
 title: "Inferenza bayesiana su una media"
 subtitle: "Dal gruppo all'individuo — Segmento 2"
-version: 1.0
+version: 2.0
 author:
   - name: Corrado Caudek
     orcid: 0000-0002-1404-0420
@@ -50,23 +50,23 @@ set.seed(42)
 
 ## Ricapitolando
 
-Nel segmento precedente abbiamo visto come stimare una media usando l'approccio bayesiano.
+Nel segmento precedente abbiamo visto come stimare una media con `brms`, confrontando modello normale e modello robusto ($t$ di Student).
 
 . . .
 
-Ora approfondiamo il modello **normale-normale**: il caso più semplice di inferenza bayesiana su una media.
+Ora approfondiamo il modello **normale-normale**: il caso più semplice di inferenza bayesiana su una media. Si tratta della stessa famiglia coniugata che abbiamo studiato nella Lezione 19.
 
 ---
 
 ## Il modello in parole semplici
 
-Abbiamo tre ingredienti:
+Abbiamo tre ingredienti — gli stessi della Lezione 17:
 
-1. **Prior:** ciò che crediamo sulla media **prima** di osservare i dati.
+1. **prior:** ciò che crediamo sulla media **prima** di osservare i dati;
 
-2. **Verosimiglianza:** come i dati dipendono dalla media.
+2. **verosimiglianza:** come i dati dipendono dalla media;
 
-3. **Posterior:** ciò che crediamo sulla media **dopo** aver osservato i dati.
+3. **posterior:** ciò che crediamo sulla media **dopo** aver osservato i dati.
 
 . . .
 
@@ -90,7 +90,7 @@ $$
 
 ### L'intuizione importante
 
-La posterior è una **media pesata** tra prior e dati. 
+La posterior è una **media pesata** tra prior e dati — lo stesso principio che abbiamo visto nella Lezione 19 per il caso Beta-Binomiale.
 
 Chi è più "preciso" (ovvero, ha varianza minore) conta di più.
 
@@ -115,15 +115,114 @@ Questa domanda può essere affrontata in **due modi molto diversi**:
 
 **Prior (popolazione maschile italiana):**
 
-- Aspettativa di vita media: $\mu_0 = 80$ anni.
-- Incertezza (DS): $\sigma_0 = 8$ anni.
+- aspettativa di vita media: $\mu_0 = 81.4$ anni;
+- incertezza (DS): $\sigma_0 = 8$ anni.
 
 . . .
 
 **Informazione specifica (profilo di rischio):**
 
-- Stima per un profilo simile: $y_{\text{obs}} = 76$ anni.
-- Incertezza di questa stima: $\sigma_{\text{obs}} = 10$ anni.
+- stima per un profilo simile: $y_{\text{obs}} = 76$ anni;
+- incertezza di questa stima: $\sigma_{\text{obs}} = 10$ anni.
+
+---
+
+## Perché non usare solo la distribuzione del gruppo specifico?
+
+Una domanda naturale è:
+
+> "Se per questo profilo la stima è 76 anni (DS = 10),
+> perché non usare direttamente quella distribuzione?"
+
+. . .
+
+Perché **76 ± 10 non è una verità certa**.
+È **una stima con incertezza**, ottenuta da dati limitati.
+
+---
+
+## Il problema del campione piccolo
+
+La stima “76 anni”:
+
+* potrebbe provenire da uno studio con pochi soggetti;
+* potrebbe essere influenzata dal caso;
+* potrebbe sovrastimare o sottostimare il vero valore.
+
+. . .
+
+Se ignoriamo il prior della popolazione:
+
+* trattiamo 76 come se fosse perfettamente affidabile;
+* perdiamo informazione già disponibile (81.4 anni nella popolazione generale).
+
+---
+
+## L’idea bayesiana: non buttiamo via informazioni
+
+Abbiamo **due fonti di informazione**:
+
+1. ciò che sappiamo sulla popolazione generale (81.4 ± 8);
+2. ciò che osserviamo per questo profilo specifico (76 ± 10).
+
+. . .
+
+Il principio bayesiano è:
+
+> **Non scegliere tra le due informazioni.
+> Combinale, pesandole per la loro precisione.**
+
+---
+
+## Intuizione: shrinkage 
+
+Quando il dato specifico è incerto (DS = 10):
+
+* la posterior si sposta **verso la media della popolazione**;
+* ma non ignora le informazioni del profilo specifico.
+
+. . .
+
+Questo fenomeno si chiama:
+
+**shrinkage.**
+
+La stima estrema (76) viene “attirata” verso 81.4
+perché riconosciamo che potrebbe essere rumorosa.
+
+---
+
+## Cosa succederebbe senza prior?
+
+Se usassimo solo la distribuzione del profilo:
+
+$$
+\mu \sim \text{Normale}(76, 10)
+$$
+
+staremmo implicitamente assumendo che:
+
+* la popolazione generale non esista,
+* oppure non sia informativa,
+* oppure che la stima 76 sia perfettamente affidabile.
+
+. . .
+
+Ma nessuna di queste ipotesi è realistica.
+
+---
+
+## Messaggio chiave
+
+> Usare solo il gruppo specifico equivale a ignorare conoscenza già disponibile.
+
+> Usare solo la popolazione generale equivale a ignorare l’informazione specifica.
+
+. . .
+
+La soluzione razionale è:
+
+**Combinare le due fonti in modo proporzionale alla loro precisione.**
 
 ---
 
@@ -131,7 +230,7 @@ Questa domanda può essere affrontata in **due modi molto diversi**:
 
 ```{r}
 # I nostri dati
-mu_0 <- 80       # Media prior (popolazione generale)
+mu_0 <- 81.4     # Media prior (popolazione generale)
 sigma_0 <- 8     # DS prior
 y_obs <- 76      # Stima per questo profilo specifico
 sigma_obs <- 10  # Incertezza della stima
@@ -188,9 +287,9 @@ cat("Media posterior:", round(mu_post, 2), "anni\n")
 
 **Cosa è successo?**
 
-- Il prior indica: "In media 80 anni".
-- I dati indicano: "Per questo profilo, circa 76 anni". 
-- La posterior indica: "Combinando le due informazioni, circa 78.4 anni".
+- Il prior indica: "In media `r mu_0` anni".
+- I dati indicano: "Per questo profilo, circa `r y_obs` anni". 
+- La posterior indica: "Combinando le due informazioni, circa `r round(mu_post, 1)` anni".
 
 La posterior si colloca **tra** i due valori, più vicina a quello più preciso.
 
@@ -207,7 +306,7 @@ cat("  σ_post =", round(sigma_post, 2), "anni\n")
 In termini formali:
 
 $$
-\mu \mid \text{dati} \sim \text{Normale}(78.4, \ 6.25).
+\mu \mid \text{dati} \sim \text{Normale}(\mu_{\text{post}}, \ \sigma_{\text{post}}).
 $$
 
 La nostra **incertezza sulla media** del gruppo è rappresentata da questa distribuzione.
@@ -262,7 +361,7 @@ cat("P(μ > 90) =", round(prob_media_90 * 100, 2), "%\n")
 
 **Interpretazione:** 
 
-La probabilità che l'aspettativa di vita **media** per persone con questo profilo superi i 90 anni è molto bassa: circa **3%**.
+La probabilità che l'aspettativa di vita **media** per persone con questo profilo superi i 90 anni è molto bassa: circa il `r round(prob_media_90 * 100, 0)`%.
 
 ---
 
@@ -278,11 +377,11 @@ cat("  [", round(ic_95[1], 1), ",", round(ic_95[2], 1), "] anni\n")
 
 . . .
 
-L'intervallo arriva fino a circa 90 anni, ma la probabilità che μ > 90 rimane comunque bassa.
+Come abbiamo imparato nella Lezione 20, questo intervallo ha un'interpretazione diretta: c'è il 95% di probabilità che la media vera si collochi in questo range.
 
 # Parte 3: cosa succede all'individuo?
 
-## La domanda cruciale
+## La domanda cruciale {background-color="#2c3e50" style="color: white;"}
 
 Finora abbiamo ragionato sulla **media del gruppo**.
 
@@ -294,7 +393,7 @@ Ma la persona vuole sapere:
 
 . . .
 
-Si tratta di una domanda **completamente diversa**.
+Si tratta di una domanda **completamente diversa** — ed è qui che la distribuzione predittiva della Lezione 23 diventa fondamentale.
 
 ---
 
@@ -338,7 +437,7 @@ $$
 
 ## Il modello a due livelli
 
-Per collegare media e individuo, dobbiamo ragionare su **due livelli** distinti.
+Per collegare media e individuo, dobbiamo ragionare su **due livelli** distinti — la stessa struttura che abbiamo visto nella Lezione 22 (prior predictive) e nella Lezione 23 (posterior predictive).
 
 ---
 
@@ -346,7 +445,7 @@ Per collegare media e individuo, dobbiamo ragionare su **due livelli** distinti.
 
 Non conosciamo esattamente il valore della media. Dopo aver osservato i dati:
 $$
-\mu \mid \text{dati} \sim \text{Normale}(78.4, \ 6.25).
+\mu \mid \text{dati} \sim \text{Normale}(\mu_{\text{post}}, \ \sigma_{\text{post}}).
 $$
 
 ---
@@ -369,38 +468,38 @@ Per simulare **una possibile vita** coerente con i dati, il modello procede in *
 
 ---
 
-### 1️⃣ Estraiamo una media plausibile del gruppo
+### Primo passo: estraiamo una media plausibile del gruppo
 
 Prima immaginiamo quale potrebbe essere la **vera aspettativa di vita media** per questo profilo:
 
 $$
-\mu^{*} \sim \text{Normale}(78.4,\ 6.25).
+\mu^{*} \sim \text{Normale}(\mu_{\text{post}},\ \sigma_{\text{post}}).
 $$
 
-👉 Questo riflette la nostra **incertezza sulla media**.
+Questo riflette la nostra **incertezza sulla media**.
 
 ---
 
-### 2️⃣ Data quella media, estraiamo una vita individuale
+### Secondo passo: data quella media, estraiamo una vita individuale
 
 Fissata quella media, simuliamo la durata della vita di **una persona specifica**:
 
 $$
-X \mid \mu^{*} \sim \text{Normale}(\mu^{*},\ 12).
+X \mid \mu^{*} \sim \text{Normale}(\mu^{*},\ \sigma_{\text{ind}}).
 $$
 
-👉 Questo riflette la **variabilità tra individui**, anche a media nota.
+Questo riflette la **variabilità tra individui**, anche a media nota.
 
 ---
 
 ### Perché due estrazioni?
 
-Stiamo combinando **due fonti di incertezza**:
+Stiamo combinando **due fonti di incertezza** — esattamente come nella distribuzione predittiva a posteriori della Lezione 23:
 
 * non sappiamo esattamente **dove si colloca la media**;
 * anche conoscendo la media, le **vite individuali sono molto disperse**.
 
-➡️ Il risultato è una distribuzione predittiva per $X$ **molto più ampia** di quella per la media $\mu$.
+Il risultato è una distribuzione predittiva per $X$ **molto più ampia** di quella per la media $\mu$.
 
 ---
 
@@ -446,7 +545,7 @@ Per ogni riga:
 
 * $X$ = la durata della vita di una persona, che può essere **molto diversa dalla media**.
 
-👉 Anche con medie simili, le vite individuali possono variare moltissimo.
+Anche con medie simili, le vite individuali possono variare moltissimo.
 
 ---
 
@@ -487,13 +586,13 @@ $$
 * Stimare **una media** → incertezza relativamente contenuta.
 * Predire **una vita reale** → incertezza molto maggiore.
 
-👉 Una vita reale "porta con sé" **tutta la variabilità individuale**.
+Una vita reale "porta con sé" **tutta la variabilità individuale**.
 
 ---
 
 ## Spiegazione approfondita
 
-### 1️⃣ Riscriviamo il modello
+### Riscriviamo il modello
 
 Il modello può essere espresso come:
 
@@ -514,7 +613,7 @@ L'idea fondamentale:
 
 ---
 
-### 2️⃣ Applichiamo la regola della varianza della somma
+### Applichiamo la regola della varianza della somma
 
 Dato che $\mu$ e $\varepsilon$ sono variabili casuali indipendenti, vale:
 
@@ -522,11 +621,11 @@ $$
 \mathrm{Var}(X) = \mathrm{Var}(\mu) + \mathrm{Var}(\varepsilon) = \sigma_{\text{post}}^2 + \sigma_{\text{ind}}^2.
 $$
 
-È esattamente la **regola della varianza della somma** di variabili indipendenti.
+È esattamente la **regola della varianza della somma** di variabili indipendenti — un concetto che abbiamo introdotto nelle Lezioni 10–11 sulle variabili casuali.
 
 ---
 
-### 3️⃣ Il legame con la legge della varianza totale
+### Il legame con la legge della varianza totale
 
 Formalmente, il risultato deriva dalla **legge della varianza totale**:
 
@@ -540,7 +639,7 @@ ma il concetto è il medesimo:
 
 ---
 
-### 4️⃣ Messaggio chiave
+### Messaggio chiave
 
 > **Predire un individuo = media incerta + variabilità individuale**.
 >
@@ -552,7 +651,7 @@ ma il concetto è il medesimo:
 
 ```{r}
 # Le due fonti di incertezza
-sigma_post <- 6.25  # Incertezza sulla media
+# sigma_post calcolato in precedenza
 sigma_ind <- 12     # Variabilità individuale
 
 # Calcoliamo la varianza totale
@@ -578,8 +677,8 @@ cat("DS predittiva:", round(sigma_pred, 2), "anni\n")
 
 **Confronto:**
 
-- DS per la media: **6.25** anni
-- DS per l'individuo: **13.53** anni
+- DS per la media: **`r round(sigma_post, 2)`** anni;
+- DS per l'individuo: **`r round(sigma_pred, 2)`** anni.
 
 L'incertezza sull'individuo è **più del doppio**.
 
@@ -590,15 +689,15 @@ L'incertezza sull'individuo è **più del doppio**.
 La previsione per un **singolo individuo** X è:
 
 $$
-X \mid \text{dati} \sim \text{Normale}(78.4, \ 13.53).
+X \mid \text{dati} \sim \text{Normale}(\mu_{\text{post}}, \ \sigma_{\text{pred}}).
 $$
 
 . . .
 
 **In parole:**
 
-- Il centro della previsione rimane 78.4 anni (la nostra stima migliore della media).
-- L'incertezza è **molto maggiore** perché include la variabilità tra persone.
+- Il centro della previsione rimane `r round(mu_post, 1)` anni (la nostra stima migliore della media).
+- L'incertezza è **molto maggiore** perché include la variabilità tra le persone.
 
 ---
 
@@ -616,8 +715,10 @@ df_conf <- data.frame(
     dnorm(x, mu_post, sigma_post),
     dnorm(x, mu_post, sigma_pred)
   ),
-  tipo = rep(c("Posterior della MEDIA (σ = 6.25)", 
-               "Predittiva INDIVIDUALE (σ = 13.53)"), each = length(x))
+  tipo = rep(c(
+    paste0("Posterior della MEDIA (σ = ", round(sigma_post, 2), ")"), 
+    paste0("Predittiva INDIVIDUALE (σ = ", round(sigma_pred, 2), ")")
+  ), each = length(x))
 )
 
 ggplot(df_conf, aes(x = x, y = densita, fill = tipo)) +
@@ -637,7 +738,7 @@ ggplot(df_conf, aes(x = x, y = densita, fill = tipo)) +
 
 ## Perché le probabilità cambiano così tanto?
 
-Il punto cruciale non è il numeratore (90 − 78.4), ma **il denominatore**.
+Il punto cruciale non è il numeratore (90 − `r round(mu_post, 1)`), ma **il denominatore**.
 
 ---
 
@@ -646,7 +747,7 @@ Il punto cruciale non è il numeratore (90 − 78.4), ma **il denominatore**.
 Ci chiediamo se **il centro del gruppo** supera i 90 anni.
 
 $$
-P(\mu > 90) = 1 - \Phi\!\left(\frac{90 - 78.4}{6.25}\right).
+P(\mu > 90) = 1 - \Phi\!\left(\frac{90 - \mu_{\text{post}}}{\sigma_{\text{post}}}\right).
 $$
 
 ```{r}
@@ -655,7 +756,7 @@ cat("z per la media:", round(z_media, 2), "\n")
 cat("P(μ > 90) =", round((1 - pnorm(z_media)) * 100, 2), "%\n")
 ```
 
-Lo scarto è **1.85 deviazioni standard**: siamo nella coda destra → **probabilità piccola**.
+Lo scarto è `r round(z_media, 2)` deviazioni standard: siamo nella coda destra → **probabilità piccola**.
 
 ---
 
@@ -664,7 +765,7 @@ Lo scarto è **1.85 deviazioni standard**: siamo nella coda destra → **probabi
 Ci chiediamo se **una persona reale** supera i 90 anni.
 
 $$
-P(X > 90) = 1 - \Phi\!\left(\frac{90 - 78.4}{13.53}\right).
+P(X > 90) = 1 - \Phi\!\left(\frac{90 - \mu_{\text{post}}}{\sigma_{\text{pred}}}\right).
 $$
 
 ```{r}
@@ -673,7 +774,7 @@ cat("z per l'individuo:", round(z_ind, 2), "\n")
 cat("P(X > 90) =", round((1 - pnorm(z_ind)) * 100, 2), "%\n")
 ```
 
-Lo stesso scarto è ora solo **0.86 deviazioni standard**: siamo più vicini al centro → **probabilità molto maggiore**.
+Lo stesso scarto è ora solo `r round(z_ind, 2)` deviazioni standard: siamo più vicini al centro → **probabilità molto maggiore**.
 
 ---
 
@@ -716,15 +817,15 @@ Se il gruppo è molto disperso ($\sigma_{\text{ind}}$ elevata):
 * il centro può trovarsi **sotto** 90;
 * ma le **code** possono essere molto ampie.
 
-👉 E nelle code si collocano **le persone reali**.
+E nelle code si collocano **le persone reali**.
 
 ---
 
 ## Un esempio intuitivo
 
-Immaginiamo un gruppo con media 78 anni ma molto eterogeneo.
+Immaginiamo un gruppo con media `r round(mu_post, 0)` anni ma molto eterogeneo.
 
-Anche se la media è 78:
+Anche se la media è `r round(mu_post, 0)`:
 
 * alcuni muoiono prima,
 * **altri arrivano tranquillamente a 95-100 anni**.
@@ -747,7 +848,7 @@ cat("Intervallo predittivo 95% per un individuo:\n")
 cat("  [", round(ic_pred_95[1], 1), ",", round(ic_pred_95[2], 1), "] anni\n")
 ```
 
-👉 Da circa **52 a 105 anni**: una variabilità enorme, coerente con ciò che accade nella realtà.
+Da circa `r round(ic_pred_95[1], 0)` a `r round(ic_pred_95[2], 0)` anni: una variabilità enorme, coerente con ciò che accade nella realtà.
 
 # Parte 4: implicazioni per la psicologia
 
@@ -756,10 +857,10 @@ cat("  [", round(ic_pred_95[1], 1), ",", round(ic_pred_95[2], 1), "] anni\n")
 In psicologia, la maggior parte della ricerca è **nomotetica**:
 
 * studia **gruppi** di persone;
-* stima **medie**;
-* fa inferenze su **parametri di popolazione**.
+* stima le **medie**;
+* fa inferenze sui **parametri della popolazione**.
 
-👉 Risponde bene a domande del tipo: "In media, cosa succede?"
+Risponde bene a domande del tipo: "In media, cosa succede?"
 
 . . .
 
@@ -772,10 +873,18 @@ Ma la pratica clinica richiede qualcosa di diverso.
 In clinica, le domande reali sono:
 
 * Questo **specifico paziente** migliorerà con la terapia?
+
+. . .
+
 * Questa **specifica persona** è a rischio di depressione?
+
+. . .
+
 * Quanto è probabile un **esito negativo** per *questa* persona?
 
-👉 Non ci interessa la media: ci interessa **la distribuzione degli esiti individuali**.
+. . .
+
+Non ci interessa la media: ci interessa **la distribuzione degli esiti individuali**.
 
 ---
 
@@ -783,7 +892,7 @@ In clinica, le domande reali sono:
 
 Immaginiamo uno studio che conclude:
 
-> "In media, i pazienti migliorano di **5 punti** sulla scala BDI."
+> "In media, i pazienti migliorano sulla scala BDI."
 
 . . .
 
@@ -807,17 +916,20 @@ Questa affermazione è **statisticamente corretta**, ma **clinicamente incomplet
 set.seed(123)
 
 # Simuliamo miglioramenti individuali
-miglioramenti <- rnorm(200, mean = 5, sd = 8)
+miglioramento_medio <- 5
+miglioramento_sd <- 8
+miglioramenti <- rnorm(200, mean = miglioramento_medio, sd = miglioramento_sd)
 
 df_migliora <- data.frame(miglioramento = miglioramenti)
 
 ggplot(df_migliora, aes(x = miglioramento)) +
   geom_histogram(aes(y = after_stat(density)), bins = 25,
                  fill = "steelblue", alpha = 0.7, color = "white") +
-  geom_vline(xintercept = 5, color = "coral", linewidth = 1.2) +
+  geom_vline(xintercept = mean(miglioramenti), color = "coral", linewidth = 1.2) +
   geom_vline(xintercept = 0, color = "darkred", linetype = "dashed", linewidth = 1) +
-  annotate("text", x = 5.5, y = 0.055,
-           label = "Media = 5", color = "coral", hjust = 0) +
+  annotate("text", x = mean(miglioramenti) + 0.5, y = 0.055,
+           label = paste0("Media = ", round(mean(miglioramenti), 1)),
+           color = "coral", hjust = 0) +
   annotate("text", x = 0.5, y = 0.055,
            label = "Nessun\nmiglioramento", color = "darkred",
            hjust = 0, size = 3) +
@@ -844,14 +956,14 @@ perc_molto <- mean(miglioramenti > 10) * 100
 
 ```{r}
 cat("Su 200 pazienti:\n")
-cat("  Miglioramento medio: 5 punti BDI\n")
+cat("  Miglioramento medio:", round(mean(miglioramenti), 1), "punti BDI\n")
 cat("  Pazienti che peggiorano:", n_peggiorano,
     "(", round(perc_peggiorano, 1), "%)\n")
 cat("  Pazienti con forte miglioramento (>10 punti):",
     round(perc_molto, 1), "%\n")
 ```
 
-👉 **Una media positiva non implica un beneficio universale.**
+**Una media positiva non implica un beneficio universale.**
 
 ---
 
@@ -867,21 +979,27 @@ Ma la domanda clinicamente rilevante è un'altra:
 
 > "Qual è la probabilità che **questo paziente** tragga beneficio dal trattamento?"
 
+È la stessa distinzione tra inferenza su $\mu$ e previsione su $X$ che abbiamo sviluppato in questa lezione.
+
 ---
 
 ## Il parallelo con μ e X
 
-* **Test $t$ / approccio nomotetico** → inferenza su **μ** (la media)
+* **Test $t$ / approccio nomotetico** → inferenza su **μ** (la media).
 
-* **Decisione clinica / approccio idiografico** → previsione su **X** (l'individuo)
+* **Decisione clinica / approccio idiografico** → previsione su **X** (l'individuo).
 
-👉 Domande **diverse** che richiedono strumenti **diversi**.
+Domande **diverse** che richiedono strumenti statistici **diversi**.
 
 ---
 
-### Messaggio chiave
+## Messaggio chiave {background-color="#c0392b" style="color: white;"}
 
-> **La statistica dei gruppi descrive le medie. La clinica decide sulle persone.**
+> **La statistica dei gruppi descrive le medie.** 
+
+:::{.fragment}
+> **La clinica decide sulle persone.**
+:::
 
 ---
 
@@ -891,9 +1009,7 @@ Immaginiamo uno studio che conclude:
 
 > "Il trattamento ha un effetto medio positivo e statisticamente significativo."
 
-✔️ p < 0.05;
-
-✔️ effetto medio ≠ 0.
+Il valore-$p$ è inferiore a 0.05 e l'effetto medio è diverso da zero.
 
 ---
 
@@ -913,7 +1029,7 @@ Perché:
 * la **distribuzione** può essere molto ampia;
 * una parte consistente dei pazienti può non migliorare o peggiorare.
 
-👉 Tutto ciò è **compatibile con un effetto medio significativo**.
+Tutto ciò è **compatibile con un effetto medio significativo**.
 
 ---
 
@@ -932,13 +1048,13 @@ Perché:
 | Ricerca              | Clinica                        |
 | -------------------- | ------------------------------ |
 | Media ($\mu$)        | Individuo ($X$)                |
-| Test t               | Distribuzione predittiva       |
-| p-value              | Probabilità di beneficio       |
-| "Funziona in media?" | "Qual è il rischio per *lui*?" |
+| Test $t$             | Distribuzione predittiva       |
+| valore-$p$           | Probabilità di beneficio       |
+| "Funziona in media?" | "Qual è il rischio per *lei/lui*?" |
 
 ---
 
-### In sintesi
+## In sintesi {background-color="#c0392b" style="color: white;"}
 
 > **La statistica classica supporta studi accademici.** 
 
@@ -952,7 +1068,7 @@ Perché:
 
 2. **Calcolare intervalli predittivi**, non solo intervalli di confidenza per la media.
 
-3. **Ragionare in termini di distribuzione**, non di singoli numeri.
+3. **Ragionare in termini di distribuzioni**, non di singoli numeri.
 
 4. **Comunicare l'incertezza** in modo comprensibile.
 
@@ -960,15 +1076,21 @@ Perché:
 
 ## Esempio: comunicare i risultati
 
+```{r}
+#| echo: false
+# Calcoliamo i valori per la comunicazione
+ic_pred_bdi <- round(mean(miglioramenti) + c(-1.96, 1.96) * sd(miglioramenti), 0)
+```
+
 **Comunicazione tipica (problematica):**
 
-> "La terapia è efficace (p < 0.05). I pazienti migliorano in media di 5 punti."
+> "La terapia è efficace (p < 0.05). I pazienti migliorano in media di `r round(mean(miglioramenti), 0)` punti."
 
 . . .
 
 **Comunicazione più completa:**
 
-> "In media i pazienti migliorano di 5 punti, ma la risposta varia molto: circa il 27% non mostra miglioramento o peggiora. Per un nuovo paziente, ci aspettiamo un miglioramento compreso tra -11 e +21 punti (intervallo al 95%)."
+> "In media i pazienti migliorano di `r round(mean(miglioramenti), 0)` punti, ma la risposta varia molto: circa il `r round(perc_peggiorano, 0)`% non mostra miglioramento o peggiora. Per un nuovo paziente, ci aspettiamo un miglioramento compreso tra `r ic_pred_bdi[1]` e `r ic_pred_bdi[2]` punti (intervallo al 95%)."
 
 ---
 
@@ -978,13 +1100,13 @@ L'approccio bayesiano permette di:
 
 1. quantificare l'incertezza sulla **media** (posterior del parametro);
 
-2. quantificare l'incertezza sull'**individuo** (distribuzione predittiva);
+2. <mark>quantificare l'incertezza sull'**individuo** (distribuzione predittiva);</mark>
 
 3. distinguere chiaramente tra le due;
 
 4. comunicare in termini di **probabilità dirette**.
 
-# Riepilogo
+# Riepilogo e percorso del corso
 
 ## Torniamo all'esempio dell'aspettativa di vita
 
@@ -1026,6 +1148,36 @@ L'incertezza sulla previsione individuale combina:
 
 ---
 
+## Il percorso fin qui {background-color="#27ae60" style="color: white;"}
+
+. . .
+
+**Lezioni 5–11** — Probabilità, distribuzioni, variabili casuali (varianza della somma).
+
+**Lezioni 14–16** — Inferenza frequentista, test t, p-value, crisi di replicabilità.
+
+**Lezione 17** — Prior, verosimiglianza, posterior.
+
+**Lezioni 18–19** — Apprendimento sequenziale, famiglie coniugate (Normale-Normale).
+
+**Lezione 20** — Sintesi della posterior, intervalli credibili, domande probabilistiche.
+
+**Lezioni 22–23** — Distribuzione predittiva a priori e a posteriori.
+
+---
+
+## Il percorso fin qui {background-color="#27ae60" style="color: white;"}
+
+**Lezione 24** — Regressione lineare bayesiana.
+
+**Lezione 25 (oggi)** — Inferenza su una media: dal gruppo all'individuo.
+
+. . .
+
+Nella prossima lezione estenderemo il ragionamento al **confronto tra due gruppi**, completando il parallelo bayesiano con il test $t$ a due campioni.
+
+---
+
 ## I punti chiave
 
 1. L'inferenza sulla **media** e la previsione **individuale** sono concetti distinti.
@@ -1040,13 +1192,11 @@ L'incertezza sulla previsione individuale combina:
 
 ---
 
-## Il messaggio fondamentale
+## Il messaggio fondamentale {background-color="#2c3e50" style="color: white;"}
 
 > "Quando la domanda riguarda un individuo, non possiamo rispondere considerando solo la media. La variabilità individuale è la realtà con cui dobbiamo fare i conti."
 
-. . .
-
-L'approccio bayesiano ci spinge a ragionare in termini di **distribuzioni**, non di singoli numeri — e questo ci avvicina alla complessità del reale.
+L'approccio bayesiano ci spinge a ragionare in termini di **distribuzioni**, non di singoli numeri — e questo ci avvicina alla complessità del mondo reale.
 
 ---
 

@@ -1,6 +1,7 @@
 ---
 title: "Esercitazione pratica"
 subtitle: "Analisi completa di un dataset psicologico — Segmento 2"
+version: 2.0
 author:
   - name: Corrado Caudek
     orcid: 0000-0002-1404-0420
@@ -42,17 +43,27 @@ set.seed(42)
 df_full <- read.csv("MehrSongSpelke_exp_1.csv")
 df <- df_full[df_full$exp1 == 1, ]
 y <- df$Test_Proportion_Gaze_to_Singer
+
+# Ricalcoliamo il test t per i confronti
+risultato_t <- t.test(y, mu = 0.5)
+ic_freq <- risultato_t$conf.int
+t_val <- round(risultato_t$statistic, 2)
+p_val <- round(risultato_t$p.value, 3)
 ```
 
 # Cambiare la domanda, non i dati
 
-* Useremo **gli stessi dati**.
+## Dove eravamo
 
-* La stessa variabile.
+Nel Segmento 1 abbiamo analizzato lo studio di Mehr et al. (2016) con l'approccio frequentista:
 
-* La stessa domanda sostanziale.
+- $t$(`r risultato_t$parameter`) = `r t_val`, $p$ = `r p_val`,
+- IC 95%: [`r round(ic_freq[1], 2)`, `r round(ic_freq[2], 2)`],
+- conclusione: "effetto significativo".
 
-Ma **una domanda statistica diversa**.
+. . .
+
+Ma abbiamo visto che questa risposta non soddisfa le domande che ci interessano come psicologi. Ora cambiamo prospettiva.
 
 ---
 
@@ -60,54 +71,25 @@ Ma **una domanda statistica diversa**.
 
 Non chiediamo più:
 
-> *Quanto sono incompatibili i dati con H₀?*
+> *Quanto sono incompatibili i dati con $H_0$?*
+
+. . .
 
 Chiediamo:
 
-> *Quanto sono plausibili i diversi valori di μ, **dopo aver visto i dati**?*
+> *Quanto sono plausibili i diversi valori di $\mu$, **dopo aver visto i dati**?*
 
----
+. . .
 
-### **Dove eravamo e dove andiamo**  
-**Un confronto tra paradigmi statistici**  
-
----
-
-#### **SEGMENTO INTRODUTTIVO – L’approccio frequentista**  
-**Risultato di uno studio tipico**  
-
-- $t(31) = 2.96, \; p = .006, \; d = 0.52$  
-- **Intervallo di confidenza 95%:** $[0.53, 0.66]$ 
-- Conclusione consueta: *“risultato statisticamente significativo”*  
-
-📌 **Limiti evidenziati:**  
-✔️ Risposta binaria (significativo/non significativo)  
-✔️ L’IC non è una distribuzione di probabilità sul parametro  
-✔️ Difficile quantificare l’evidenza a favore di $H_0$ o $H_1$  
-
----
-
-#### **SEGMENTO PRESENTE – La prospettiva bayesiana**  
-
-**Ora esploreremo:**  
-
-1. **Come l’approccio bayesiano risponde alle stesse domande**  
-   - Stima del parametro, verifica di ipotesi, decisione  
-2. **La ricchezza informativa delle risposte bayesiane**  
-   - Probabilità direttamente sui parametri  
-   - Aggiornamento dinamico delle credenze  
-3. **Il confronto epistemologico tra i due approcci**  
-   - Filosofia, interpretazione, vantaggi e criticità  
-
----
-
-**Pronti a cambiare prospettiva?**  
+Questa è la domanda che il genitore nello studio vuole sentirsi rispondere. Ed è la domanda che l'approccio bayesiano (Lezione 17: prior, likelihood, posterior) ci consente di formulare direttamente.
 
 # Parte 1: l'analisi bayesiana
 
-## Il prior: non è un “trucco”, ma un’assunzione esplicita
+## Il prior: non è un "trucco", ma un'assunzione esplicita
 
 Il prior **non serve** a forzare i dati verso una conclusione prestabilita né a confermare pregiudizi.
+
+. . .
 
 Serve invece a rispondere a una domanda inevitabile in qualunque processo di modellazione:
 
@@ -115,59 +97,42 @@ Serve invece a rispondere a una domanda inevitabile in qualunque processo di mod
 
 . . .
 
-Ignorare questa domanda non la elimina.
-L’alternativa a dichiarare esplicitamente un prior è semplicemente **avere comunque delle assunzioni — ma implicite**.
+Ignorare questa domanda non la elimina. L'alternativa a dichiarare esplicitamente un prior è semplicemente **avere comunque delle assunzioni — ma implicite**.
 
 ---
 
 ## Un prior debole ≠ un prior neutro
 
-Anche un’affermazione apparentemente innocua come
+Anche un'affermazione apparentemente innocua come
 
-> “μ è probabilmente compreso tra 0 e 1”
+> "$\mu$ è probabilmente compreso tra 0 e 1"
 
-è già un’assunzione informativa e sostanziale.
-
-Il vantaggio del paradigma bayesiano non è l’assenza di assunzioni, ma il fatto di **renderle esplicite**, mentre nell’approccio frequentista esse restano spesso implicite, distribuite tra modello, procedura e interpretazione.
-
----
-
-## Anche l’approccio frequentista poggia su assunzioni implicite
-
-Se il bayesiano dichiara il prior, il frequentista opera comunque sotto una serie di presupposti che raramente vengono messi in primo piano.
-
----
-
-### **Assunzioni spesso date per scontate**
-
-1. **Il modello probabilistico è corretto**
-   Ad esempio, che i dati provengano esattamente da una distribuzione normale o che gli errori siano i.i.d.
-
-2. **La procedura di campionamento è “ideale”**
-   Il campione è davvero casuale, privo di bias di selezione e senza struttura gerarchica non modellata.
-
-3. **L’inferenza è pre-dati (pre-experimental)**
-   La validità del valore-$p$ e degli intervalli di confidenza si fonda su un’idea di campionamento ripetuto *prima* di osservare i dati.
-   
----
-
-4. **Non esiste informazione esterna rilevante**
-   L’unica evidenza ammessa è quella del campione corrente; qualsiasi conoscenza pregressa viene ignorata.
-
-5. **La “non-informatività” è neutrale**
-   Metodi come il massimo di verosimiglianza o gli IC al 95% sono spesso presentati come oggettivi, ma impongono comunque una specifica logica inferenziale.
-
----
-
-## Perché rendere esplicite le assunzioni è un vantaggio epistemico
-
-* **Trasparenza:** è chiaro su quali basi si fonda l’inferenza.
-* **Criticabilità:** assunzioni dichiarate possono essere discusse, giustificate o contestate.
-* **Coerenza:** si riconosce che ogni approccio statistico incorpora una visione del mondo e dei compromessi metodologici.
+è già un'assunzione informativa e sostanziale.
 
 . . .
 
-> Il punto è che **sapere cosa si sta assumendo** rafforza la solidità delle conclusioni e ne aumenta l’onestà scientifica.
+Il vantaggio del paradigma bayesiano non è l'assenza di assunzioni, ma il fatto di **renderle esplicite**, 
+
+. . .
+
+mentre nell'approccio frequentista esse restano spesso implicite, distribuite tra modello, procedura e interpretazione.
+
+---
+
+## Anche l'approccio frequentista poggia su assunzioni implicite
+
+Se il bayesiano dichiara il prior, il frequentista opera comunque sotto una serie di presupposti che raramente vengono messi in primo piano:
+
+---
+
+1. **Il modello probabilistico è corretto** — ad esempio, che i dati provengano da una distribuzione normale.
+2. **La procedura di campionamento è "ideale"** — campione casuale, privo di bias di selezione.
+3. **L'inferenza è pre-dati** — la validità del valore-$p$ si fonda su un'idea di campionamento ripetuto *prima* di osservare i dati.
+4. **Non esiste informazione esterna rilevante** — qualsiasi conoscenza pregressa viene ignorata.
+
+. . .
+
+Rendere esplicite le assunzioni è un vantaggio epistemico: **sapere cosa si sta assumendo** rafforza la solidità delle conclusioni.
 
 ---
 
@@ -181,7 +146,7 @@ $$
 
 . . .
 
-E specifichiamo le distribuzioni a priori per i parametri:
+e specifichiamo le distribuzioni a priori per i parametri:
 
 $$
 \mu \sim \text{Normal}(0.5, 0.25)
@@ -192,7 +157,7 @@ $$
 
 ---
 
-## Interpretazione della prior per μ
+## Interpretazione della prior per $\mu$
 
 ```{r}
 #| echo: false
@@ -214,25 +179,33 @@ ggplot(data.frame(x = x, y = prior_mu), aes(x = x, y = y)) +
 
 - **Centratura**: 0.5 rappresenta lo scetticismo iniziale ("nessuna preferenza sistematica").
 - **Dispersione**: deviazione standard di 0.25 permette valori moderatamente diversi.
-- **Trasparenza**: esplicita formalmente la **conoscenza iniziale** pre-dati.
+- **Trasparenza**: esplicita formalmente la **conoscenza iniziale** prima di osservare i dati.
 
 ---
 
 ## Le assunzioni del modello
 
 - Ogni bambino produce una proporzione osservata.
-- Le osservazioni variano attorno a una media μ con deviazione standard σ.
+- Le osservazioni variano attorno a una media $\mu$ con deviazione standard σ.
 - La variabilità è descritta da una distribuzione Normale.
 
-👉 Stiamo assumendo un **modello generativo** che descrive come i dati potrebbero essere stati prodotti.
+. . .
+
+Stiamo assumendo un **modello generativo** che descrive come i dati potrebbero essere stati prodotti. È la stessa logica vista nelle Lezioni 22–23 con le *prior predictive checks*.
 
 ---
 
 ### Nota sulla scelta della distribuzione
 
 * Usiamo la `Normal` come approssimazione ($n$ moderato, valori non estremi), per coerenza con le scelte dell'articolo originale.
-* In alternativa, per proporzioni sarebbe più appropriata una distribuzione Beta (supporto [0,1]).
+
+:::{.fragment}
+* In alternativa, per **proporzioni** sarebbe più appropriata una distribuzione **Beta** (supporto [0,1]).
+:::
+
+:::{.fragment}
 * Questa scelta illustra un punto importante: **tutte le analisi statistiche comportano compromessi**.
+:::
 
 ---
 
@@ -260,12 +233,10 @@ fit <- brm(
 )
 ```
 
-**Ricordate**: il codice è solo l'implementazione tecnica,  
-il **modello** è l'insieme delle assunzioni concettuali che abbiamo specificato.
-
 ---
 
-## Nota
+**Ricordate**: il codice è solo l'implementazione tecnica,  
+il **modello** è l'insieme delle assunzioni concettuali che abbiamo specificato.
 
 In `brms` il prior su `sigma` è applicato sul dominio positivo: è di fatto una half-Cauchy.
 
@@ -280,12 +251,16 @@ mcmc_trace(fit, pars = c("b_Intercept", "sigma")) +
   labs(title = "Trace plots: le catene convergono")
 ```
 
+---
+
+### Diagnostica: $\hat{R}$
+
 $\hat{R} \approx 1.00$ → le catene MCMC hanno raggiunto convergenza,  
 possiamo considerare i campioni rappresentativi della distribuzione a posteriori.
 
 ---
 
-## La distribuzione a posteriori di μ
+## La distribuzione a posteriori di $\mu$
 
 ```{r}
 # Estraiamo i campioni a posteriori
@@ -301,7 +276,7 @@ cat("CrI 95%:", round(quantile(mu_samples, 0.025), 3), "-",
 
 ---
 
-## Visualizzazione della distribuzione a posteriori
+## Visualizzazione 
 
 ```{r}
 #| echo: false
@@ -330,17 +305,17 @@ Non solo un intervallo.
 
 **L'intera distribuzione a posteriori.**
 
-Tutto ciò che possiamo affermare sul parametro μ,  
-tutta la nostra incertezza aggiornata,  
-è rappresentata da questa distribuzione.
+. . .
+
+Tutto ciò che possiamo affermare sul parametro $\mu$, tutta la nostra incertezza aggiornata, è rappresentata da questa distribuzione. Nella Lezione 20 avevamo introdotto l'intervallo di credibilità — ora ne vediamo la potenza in un contesto reale.
 
 ---
 
 ## Estensione: un modello Beta (più coerente con proporzioni)
 
-Per variabili tra 0 e 1, la Beta è spesso più appropriata della Normale.
+Per variabili tra 0 e 1, la Beta **è più appropriata** della Normale.
 
-* Ma attenzione: nel modello Beta la media è su scala **logit**.
+* Ma attenzione: nel modello Beta in `brm()` la media è su scala **logit**.
 
 . . .
 
@@ -353,7 +328,7 @@ se le conclusioni restano simili, il risultato è più convincente.
 #| output: false
 #| cache: true
 
-# "squeeze" per evitare problemi se ci fossero 0 o 1
+# "squeeze" per evitare problemi se ci sono valori 0 o 1
 n <- length(y)
 y_beta <- (y*(n - 1) + 0.5) / n
 
@@ -373,7 +348,41 @@ fit_beta <- brm(
 
 ---
 
-## Risultato (modello Beta): μ sulla scala originale
+### Esaminare i risultati
+
+Dato che il coefficiente del modello (in questo caso, l'intercetta) si trova su una scala logit $[-\infty, + \infty]$, dobbiamo convertire il risultato sulla scala delle probabilità (da 0 a 1).
+
+```{r}
+post_beta <- as_draws_df(fit_beta)
+```
+
+:::{.fragment}
+Per fare questo usiamo la funzione R `plogis()`, ovvero 
+
+$$
+\text{logit}^{-1}(x) = \frac{e^x}{1 + e^x} = \frac{1}{1 + e^{-x}}.
+$$
+:::
+
+---
+
+```{r}
+# Calcola la probabilità media dalla distribuzione a posteriori
+prob_media <- plogis(post_beta$b_Intercept) |> mean()
+prob_media
+
+# Oppure, per vedere l'intera distribuzione delle probabilità
+prob_post <- plogis(post_beta$b_Intercept)
+quantile(prob_post, c(0.025, 0.5, 0.975))
+```
+
+. . .
+
+**Risultato:** la probabilità a posteriori media è `r round(prob_media, 3)`, con un intervallo di credibilità al 95% che va da `r round(quantile(prob_post, 0.025), 3)` a `r round(quantile(prob_post, 0.975), 3)`.
+
+---
+
+## Risultato (modello Beta): $\mu$ sulla scala originale
 
 ```{r}
 #| echo: false
@@ -388,7 +397,7 @@ c(
 )
 ```
 
-👉 Conclusione: il modello Beta verifica (o mette in crisi) la robustezza delle conclusioni rispetto alle assunzioni distributive.
+Il modello Beta verifica (o mette in crisi) la robustezza delle conclusioni rispetto alle assunzioni distributive.
 
 ---
 
@@ -396,14 +405,30 @@ c(
 
 L'analisi bayesiana ci fornisce:
 
-1. **Una distribuzione completa** di credibilità per i parametri.
-2. **Probabilità dirette** per ipotesi di interesse (es. P(μ > 0.5)).
-3. **Trasparenza completa** su tutte le assunzioni del modello.
+1. **una distribuzione completa** di credibilità per i parametri;
+2. **probabilità dirette** per ipotesi di interesse (es. P($\mu$ > 0.5));
+3. **trasparenza completa** su tutte le assunzioni del modello.
 
+:::{.fragment}
 Il confronto tra modello Normale e Beta illustra un principio fondamentale:  
 **diverse assunzioni modellistiche possono portare a conclusioni leggermente diverse** — ed è importante esserne consapevoli.
+:::
 
 # Parte 2: risposte alle domande del ricercatore
+
+## Le domande che uno psicologo si pone davvero {background-color="#2c3e50" style="color: white;"}
+
+Ricordate il genitore che chiede: "cantare al mio bambino lo aiuta?"
+
+Ora possiamo rispondere alle domande che contano:
+
+1. I bambini preferiscono la melodia familiare? (**direzione**)
+2. Di quanto preferiscono? (**entità**)
+3. Quanto siamo sicuri? (**incertezza**)
+4. L'effetto è clinicamente rilevante? (**decisione**)
+5. Cosa ci aspettiamo per un nuovo bambino? (**predizione**)
+
+---
 
 ## Domanda 1: "I bambini preferiscono la melodia familiare?"
 
@@ -429,20 +454,76 @@ Questa è **esattamente** la domanda che volevamo porre!
 
 ## Confronto con il frequentismo
 
-| Domanda | Frequentista | Bayesiano |
-|---------|--------------|-----------|
-| "I bambini preferiscono la melodia familiare?" | p = .006 *(NON è questa probabilità)* | P(μ > 0.5 \| dati) = 99.7% |
+```{r}
+#| echo: false
+#| message: false
 
-. . .
+library(knitr)
+library(kableExtra)
+
+# Valori di esempio (da sostituire con quelli reali)
+p_val <- 0.06
+prob_preferenza <- 0.82  # 82% di probabilità che μ > 0.5
+
+# Crea il dataframe per la tabella
+df_confronto <- data.frame(
+  "Domanda" = c("I bambini preferiscono la melodia?"),
+  "Frequentista" = c(paste0("p = ", p_val, " (NON è questa probabilità!)")),
+  "Bayesiano" = c(paste0("P(μ > 0.5 | dati) = ", round(prob_preferenza*100, 1), 
+                         "% (è esattamente questa la probabilità!)")),
+  check.names = FALSE
+)
+
+# Crea la tabella formattata
+kable(df_confronto, 
+      format = "html",
+      align = c("l", "l", "l")) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed"),
+    full_width = FALSE,
+    position = "center",
+    font_size = 30
+  ) %>%
+  column_spec(1, width = "18em", background = "#f8f9fa", bold = TRUE) %>%
+  column_spec(2, width = "18em", background = "#f8d7da") %>%
+  column_spec(3, width = "20em", background = "#d4edda") %>%
+  row_spec(0, bold = TRUE, background = "#2c3e50", color = "white") %>%
+  footnote(
+    general = "Il valore-p non risponde alla domanda sostanziale; la probabilità bayesiana sì.",
+    general_title = "Nota:",
+    footnote_as_chunk = TRUE
+  )
+```
+
+---
 
 Il valore-$p$ **non è** la probabilità che esista una preferenza.
 
-Nel modello bayesiano possiamo calcolare direttamente la probabilità di un *claim quantitativo* di interesse, ad esempio:
+. . .
 
-- P(μ > 0.5 \| dati, modello, prior)
-- P(μ > 0.55 \| dati, modello, prior)
+Nel modello bayesiano possiamo calcolare direttamente **la probabilità di un'affermazione sostanziale di interesse**, ad esempio:
 
-👉 Le probabilità bayesiane sono **condizionate** a modello e prior (che dichiariamo).
+- **P(μ > 0.5 | dati, modello, prior)** — preferenza generica,
+- **P(μ > 0.55 | dati, modello, prior)** — preferenza più marcata.
+
+```{r}
+#| echo: false
+
+# Calcoli (da sostituire con valori reali dal modello)
+prob_marcata <- 0.67  # probabilità che μ > 0.55
+prob_preferenza <- 0.82  # probabilità che μ > 0.5
+```
+
+. . .
+
+Ad esempio, nel nostro caso:
+
+- P(μ > 0.50 | dati) = **`r round(prob_preferenza * 100, 1)`%**;
+- P(μ > 0.55 | dati) = **`r round(prob_marcata * 100, 1)`%**.
+
+---
+
+Le probabilità bayesiane sono **condizionate** a modello e prior (che dichiariamo esplicitamente), rendendo le assunzioni trasparenti e discutibili.
 
 ---
 
@@ -468,9 +549,124 @@ ggplot(data.frame(x = preferenza), aes(x = x)) +
 
 ---
 
+### Cosa ci dice questo grafico?
+
+- **L'effetto medio** è di circa `r round(mean(preferenza)*100, 1)` punti percentuali sopra lo 0.5 (il caso di nessuna preferenza)
+- L'intera **distribuzione** è spostata verso destra
+- Possiamo quantificare l'incertezza: qual è l'intervallo che contiene il 95% della distribuzione?
+
+---
+
+## Quantificare l'incertezza sull'entità
+
+```{r}
+#| echo: false
+
+# Calcolo intervallo di credibilità
+ic_preferenza <- quantile(preferenza, c(0.025, 0.975))
+
+ggplot(data.frame(x = preferenza), aes(x = x)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 50, 
+                 fill = "steelblue", alpha = 0.7) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "darkred", linewidth = 1) +
+  geom_vline(xintercept = mean(preferenza), color = "forestgreen", linewidth = 1) +
+  geom_vline(xintercept = ic_preferenza, linetype = "dotted", color = "orange", linewidth = 1) +
+  annotate("text", x = ic_preferenza[1], y = 2, 
+           label = paste0("2.5%: ", round(ic_preferenza[1]*100, 1), "%"), 
+           hjust = 1.1, color = "orange", size = 4) +
+  annotate("text", x = ic_preferenza[2], y = 2, 
+           label = paste0("97.5%: ", round(ic_preferenza[2]*100, 1), "%"), 
+           hjust = -0.1, color = "orange", size = 4) +
+  labs(title = "Intervallo di credibilità al 95%",
+       subtitle = paste0("C'è una probabilità del 95% che la preferenza sia tra ", 
+                        round(ic_preferenza[1]*100, 1), "% e ", 
+                        round(ic_preferenza[2]*100, 1), "%"),
+       x = "Preferenza (punti percentuali)", y = "Densità") +
+  theme_minimal(base_size = 14)
+```
+
+---
+
+## Confronto con l'approccio frequentista
+
+```{r}
+#| echo: false
+library(effectsize)
+d_val <- t_to_d(t = t_val, df_error = 31)
+```
+
+| Domanda | Frequentista | Bayesiano |
+|---------|--------------|-----------|
+| **"Di quanto preferiscono?"** | d = 1.06 (effect size) | **Distribuzione completa** della preferenza |
+
+. . .
+
+**Cosa otteniamo in più con l'approccio bayesiano?**
+
+- **Una risposta graduale**, non solo "significativo/non significativo".
+- **L'intervallo di credibilità**: possiamo dire che c'è il 95% di probabilità che la preferenza sia tra `r round(ic_preferenza[1]*100, 1)`% e `r round(ic_preferenza[2]*100, 1)`%.
+- **La probabilità di effetti clinicamente rilevanti**: ad esempio, P(preferenza > 5%) = `r round(mean(preferenza > 0.05)*100, 1)`%.
+
+---
+
+## Perché questa è una risposta migliore?
+
+**Frequentista**
+
+- "C'è un effetto statisticamente significativo (p = 0.04)".
+- Ma non dice *quanto è grande* l'effetto.
+- Il $d$ di Cohen è solo una stima puntuale.
+
+**Bayesiano**
+
+- "La preferenza media è di `r round(mean(preferenza)*100, 1)` punti percentuali".
+- "Con una probabilità del 95%, la preferenza è tra `r round(ic_preferenza[1]*100, 1)`% e `r round(ic_preferenza[2]*100, 1)`%".
+- "C'è una probabilità dell'`r round(mean(preferenza > 0.05)*100, 1)`% che la preferenza superi il 5%".
+
+---
+
+**La differenza chiave:**  
+
+l'approccio bayesiano fornisce una risposta diretta alla domanda del genitore, quantificando *quanto* è grande l'effetto e *con che incertezza* possiamo giungere a tale conclusione.
+
+---
+
+## Cosa ci dice questo per il genitore?
+
+```{r}
+#| echo: false
+
+# Probabilità di effetti clinicamente rilevanti
+soglie <- seq(0, 0.15, 0.01)
+prob_soglie <- sapply(soglie, function(s) mean(preferenza > s))
+
+df_soglie <- data.frame(
+  soglia = soglie * 100,
+  probabilità = prob_soglie * 100
+)
+
+ggplot(df_soglie, aes(x = soglia, y = probabilità)) +
+  geom_line(color = "steelblue", linewidth = 1.5) +
+  geom_point(color = "steelblue", size = 3) +
+  geom_hline(yintercept = c(50, 95), linetype = "dashed", alpha = 0.5) +
+  labs(title = "Probabilità che la preferenza superi diverse soglie",
+       x = "Soglia di preferenza (punti percentuali sopra lo 0.5)",
+       y = "Probabilità (%)") +
+  scale_y_continuous(limits = c(0, 100), breaks = seq(0, 100, 20)) +
+  theme_minimal(base_size = 12)
+```
+
+---
+
+**Risposta per il genitore:** 
+
+> "Possiamo essere abbastanza sicuri che il tuo bambino preferisca la melodia familiare, con una preferenza media di circa `r round(mean(preferenza)*100, 1)` punti percentuali. C'è il `r round(mean(preferenza > 0.05)*100, 1)`% di probabilità che questa preferenza sia clinicamente rilevante (oltre il 5%)."
+
+---
+
 ## Domanda 3: "Quanto siamo sicuri?"
 
-L'**intervallo di credibilità** bayesiano ha un'interpretazione **diretta**:
+L'**intervallo di credibilità** bayesiano ha un'interpretazione **diretta** (Lezione 20):
 
 ```{r}
 # Intervallo di credibilità al 95%
@@ -483,34 +679,51 @@ cat("CrI 95%:", round(ic_bayes[1], 3), "-", round(ic_bayes[2], 3), "\n")
 ::: {.callout-important}
 ## Interpretazione
 
-C'è il **95% di probabilità** che il vero valore di μ sia compreso tra `r round(ic_bayes[1], 2)` e `r round(ic_bayes[2], 2)`.
+C'è il **95% di probabilità** che il vero valore di $\mu$ sia compreso tra `r round(ic_bayes[1], 2)` e `r round(ic_bayes[2], 2)`.
 
 Questa interpretazione **non è valida** per l'IC frequentista!
 :::
 
 ---
 
-## Due frasi, una sola è corretta
+## Due frasi a confronto
 
-✔️ “C’è il 95% di probabilità che μ sia tra 0.54 e 0.65”.
-✔️ **(Freq)** “Nel lungo periodo, il 95% degli intervalli costruiti così contiene μ”.
-❌ **(Errore comune)** “C’è il 95% di probabilità che μ sia tra 0.54 e 0.65"(ma questo NON vale per l’IC frequentista)”.
+**(Bayesiano)** "C'è il 95% di probabilità che $\mu$ sia tra `r round(ic_bayes[1], 2)` e `r round(ic_bayes[2], 2)`."
+
+**(Frequentista)** "Nel lungo periodo, il 95% degli intervalli costruiti in questo modo contiene $\mu$."
+
+. . .
+
+L'**errore comune** è applicare l'interpretazione bayesiana all'IC frequentista. 
 
 ---
 
-## Perché questo è importante?
+### Una diversa interpretazione della probabilità
+
+La distinzione fondamentale risiede nel concetto di probabilità: 
+
+* nell'inferenza bayesiana, il parametro è considerato una variabile aleatoria descrita da una distribuzione; 
+* nell'inferenza frequentista, invece, il parametro è una costante fissa e incognita, e la probabilità è interpretata come la frequenza relativa al ripetersi dell'esperimento casuale.
+
+---
+
+## Perché questo è importante per lo psicologo?
 
 Perché ora possiamo:
 
-- parlare del parametro,
-- prendere decisioni graduali,
-- confrontare modelli,
-- fare predizioni realistiche.
+- parlare del *parametro* **in termini di probabilità**,
+- prendere decisioni **graduali** (non solo sì/no),
+- fare **predizioni realistiche** per i casi individuali.
 
+. . .
+
+Come abbiamo visto nella Lezione 26, questa capacità di <mark>passare dal gruppo all'**individuo** è cruciale per la **pratica clinica**</mark>.
+
+---
 
 ## Domanda 4: "L'effetto è clinicamente rilevante?"
 
-Supponiamo che una preferenza di almeno 5 punti percentuali (μ > 0.55) sia "clinicamente rilevante":
+Supponiamo che una preferenza di almeno 5 punti percentuali ($\mu$ > 0.55) sia "clinicamente rilevante":
 
 ```{r}
 # Probabilità di effetto rilevante
@@ -528,46 +741,115 @@ Questa è una domanda a cui è **impossibile** rispondere nel framework frequent
 
 ---
 
-## Domanda 5: "Cosa ci aspettiamo per un nuovo bambino?"
+## Domanda 5: **"Cosa ci aspettiamo per un nuovo bambino?"**
 
-La **distribuzione predittiva a posteriori** ci dice cosa aspettarci:
+La domanda fondamentale qui non è più «qual è la media di gruppo?» ma:
 
-```{r}
+> *Dato ciò che abbiamo imparato, quali valori potremmo aspettarci di osservare per un nuovo bambino?*
+
+. . .
+
+Questa è esattamente la funzione della **distribuzione predittiva a posteriori**: combina l'incertezza sui parametri (la posterior su $\mu$ e $\sigma$) con la variabilità individuale per dare una previsione sull'osservazione futura $y_{\text{new}}$.
+
+---
+
+### Cosa calcoliamo (e perché conta)
+
+* La **posterior predictive** descrive la variabilità attesa di una singola osservazione futura: include sia l'incertezza sulla media di popolazione sia la variabilità tra bambini.
+* Un **intervallo predittivo (PI)** è quindi più largo del CrI su $\mu$, perché deve coprire anche la variabilità individuale.
+* Per decisioni cliniche o comunicazione ai genitori è spesso più utile riportare il PI che l'intervallo sul parametro di gruppo.
+
+```r
 # Distribuzione predittiva
 pp_check(fit, type = "dens_overlay", ndraws = 100)
 ```
 
 ---
 
-## Ricordate la domanda iniziale?
-
-> *Cosa possiamo dire onestamente sul fenomeno?*
-
-Ora possiamo dire:
-
-- cosa ci aspettiamo per un nuovo bambino,
-- con quale incertezza,
-- e perché.
+```{r}
+#| echo: false
+# Distribuzione predittiva
+pp_check(fit, type = "dens_overlay", ndraws = 100)
+```
 
 ---
 
-## Un numero che parla: l’intervallo predittivo
-
 ```{r}
-y_new <- posterior_predict(fit, ndraws = 4000)
-pi <- quantile(y_new, c(.05, .95))   # 90% PI
-pi
+#| echo: false
+# Calcola campioni predittivi per nuovi individui
+# usa il modello 'fit' già stimato (gaussian) o 'fit_beta' se usi il modello Beta
+set.seed(2026)
+
+# posterior predictive draws (una riga per ogni draw, una colonna per ciascuna nuova osservazione)
+y_new_draws <- posterior_predict(fit, ndraws = 4000)  # matrice n_draws x n_new (qui n_new=1 per default)
+
+# Per semplicità prendiamo i 4000 valori predittivi per un singolo "nuovo bambino"
+y_new <- as.numeric(y_new_draws)
+
+# Intervallo predittivo al 90%
+pi90 <- quantile(y_new, probs = c(0.05, 0.95))
+
+# Probabilità che il nuovo bambino preferisca (>0.5) o abbia effetto clinico (>0.55)
+p_new_gt_05 <- mean(y_new > 0.5)
+p_new_gt_055 <- mean(y_new > 0.55)
+
+# Riepilogo
+# list(
+#   PI90 = round(pi90, 3),
+#   P(y_new > 0.5) = round(p_new_gt_05, 3),
+#   P(y_new > 0.55) = round(p_new_gt_055, 3),
+#   mean_pred = round(mean(y_new), 3),
+#   sd_pred = round(sd(y_new), 3)
+# )
 ```
 
-Per un nuovo bambino ci aspettiamo tipicamente una proporzione tra
-`r round(pi[1], 2)` e `r round(pi[2], 2)` (90% PI).
+### Interpretazione 
+
+> *"Per un nuovo bambino, la nostra analisi prevede tipicamente una proporzione di fissazione al cantante della melodia familiare compresa fra `r round(pi90[1], 2)` e `r round(pi90[2], 2)` (90% PI). C'è circa il `r round(100 * p_new_gt_05, 1)`% di probabilità che un nuovo bambino mostri una preferenza generale (µ > 0.5) e il `r round(100 * p_new_gt_055, 1)`% di probabilità che questa preferenza sia almeno del 5% (cioè clinicamente rilevante)."*
+
+---
+
+Si noti che l'intervallo predittivo è straordinariamente ampio: copre praticamente quasi tutto lo spazio parametrico possibile. 
 
 . . .
 
-Questo intervallo è spesso molto più largo del CrI su μ:
+È interessante notare il contrasto con l'inferenza sul parametro di gruppo: sebbene i risultati a livello di gruppo (ad esempio, la media $\mu$) possano essere stimati con relativa precisione — offrendo una forte certezza "frequentista" sulla tendenza centrale — le predizioni a livello individuale rimangono estremamente incerte.
 
-* perché include l’incertezza sul parametro,
-* e la variabilità individuale.
+---
+
+* Questa discrepanza è proprio la manifestazione pratica della distinzione tra incertezza sul parametro e variabilità individuale (Lezione 25). 
+
+. . .
+
+* L'ampiezza dell'intervallo predittivo suggerisce che, accanto a un effetto medio ben identificato, esistono sostanziali differenze individuali tra bambini. 
+
+. . .
+
+* In altre parole, la variabilità tra soggetti (indicizzata dalla deviazione standard $\sigma$) è tale da rendere ogni nuovo individuo potenzialmente molto diverso dalla media di gruppo.
+
+---
+
+### Cosa comunica (e cosa NON comunica) il PI
+
+* **Comunica** la variabilità che un genitore può effettivamente osservare: quanto ragionevolmente ci si può aspettare che il comportamento di un singolo bambino differisca dalla media di gruppo.
+
+:::{.fragment}
+* **Non comunica** la probabilità che la media di popolazione sia > 0.5 (quella è P(µ>0.5) e va riportata separatamente).
+:::
+
+:::{.fragment}
+* Poiché il PI include la variabilità individuale, è spesso **molto più ampio** del CrI su µ: questo sottolinea che una forte stima della media non implica previsioni precise per singoli individui.
+:::
+
+---
+
+### Nota finale 
+
+Questa distinzione tra incertezza sul parametro e variabilità individuale è cruciale nella pratica clinica: l'approccio Bayesiano ci fornisce entrambe le informazioni — **"quanto abbiamo imparato sulla media"** (posterior su $\mu$) e **"quanto può variare un singolo bambino"** (posterior predictive). 
+
+:::{.fragment}
+Entrambe le informazioni dovrebbero entrare nella comunicazione con i genitori, clinici e lettori del report dello studio.
+:::
 
 ---
 
@@ -586,6 +868,61 @@ cat("4. P(effetto rilevante, μ > 0.55):", round(mean(mu_samples > 0.55) * 100, 
 cat("5. P(effetto nullo o negativo, μ ≤ 0.5):", round(mean(mu_samples <= 0.5) * 100, 1), "%\n")
 ```
 
+---
+
+### Predizioni per un nuovo bambino
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+# --- Predizione dal modello gaussian (fit) ---
+set.seed(2026)
+
+# Se 'fit' è presente (modello gaussian usato sopra)
+if (exists("fit")) {
+  y_new_draws <- posterior_predict(fit, ndraws = 4000)   # matrice draws x new (qui new=1)
+  y_new <- as.numeric(y_new_draws)
+
+  # Intervalli predittivi
+  pi90 <- quantile(y_new, c(0.05, 0.95))
+  pi95 <- quantile(y_new, c(0.025, 0.975))
+
+  # Probabilità di interesse per un singolo nuovo individuo
+  p_gt_05   <- mean(y_new > 0.5)
+  p_gt_055  <- mean(y_new > 0.55)
+
+  # Statistiche descrittive
+  mean_pred <- mean(y_new)
+  sd_pred   <- sd(y_new)
+
+  # Stampa riepilogo compatto
+  cat("=== PREDIZIONI PER UN NUOVO BAMBINO (modello gaussian) ===\n\n")
+  cat("Mean predittiva:", round(mean_pred, 3), "\n")
+  cat("SD predittiva:", round(sd_pred, 3), "\n")
+  cat("PI 90%: [", round(pi90[1], 3), ",", round(pi90[2], 3), "]\n")
+  cat("PI 95%: [", round(pi95[1], 3), ",", round(pi95[2], 3), "]\n")
+  cat("P(y_new > 0.5) =", round(p_gt_05 * 100, 1), "%\n")
+  cat("P(y_new > 0.55) =", round(p_gt_055 * 100, 1), "%\n\n")
+}
+
+# --- Se hai stimato anche il modello Beta (fit_beta) ---
+if (exists("fit_beta")) {
+  y_new_b_draws <- posterior_predict(fit_beta, ndraws = 4000)
+  y_new_b <- as.numeric(y_new_b_draws)
+
+  pi90_b <- quantile(y_new_b, c(0.05, 0.95))
+  p_gt_05_b <- mean(y_new_b > 0.5)
+  p_gt_055_b <- mean(y_new_b > 0.55)
+
+  cat("=== PREDIZIONI PER UN NUOVO BAMBINO (modello Beta) ===\n\n")
+  cat("PI 90% (Beta): [", round(pi90_b[1], 3), ",", round(pi90_b[2], 3), "]\n")
+  cat("P(y_new > 0.5) (Beta) =", round(p_gt_05_b * 100, 1), "%\n")
+  cat("P(y_new > 0.55) (Beta) =", round(p_gt_055_b * 100, 1), "%\n\n")
+}
+```
+
 # Parte 3: confronto epistemologico
 
 ## Le due conclusioni a confronto
@@ -594,11 +931,14 @@ cat("5. P(effetto nullo o negativo, μ ≤ 0.5):", round(mean(mu_samples <= 0.5)
 ::: {.column width="48%"}
 ### Frequentista
 
-- t(31) = 2.96, **p = .006**
-- IC 95%: [0.53, 0.66]
-- d = 0.52
+```{r}
+#| echo: false
+cat("t(", risultato_t$parameter, ") =", t_val, "\n")
+cat("p =", p_val, "\n")
+cat("IC 95%: [", round(ic_freq[1], 2), ",", round(ic_freq[2], 2), "]\n")
+```
 
-**Conclusione:** "Rifiutiamo H₀"
+**Conclusione:** "Rifiutiamo $H_0$"
 :::
 
 ::: {.column width="4%"}
@@ -607,9 +947,12 @@ cat("5. P(effetto nullo o negativo, μ ≤ 0.5):", round(mean(mu_samples <= 0.5)
 ::: {.column width="48%"}
 ### Bayesiano
 
-- P(μ > 0.5 | dati) = **99.7%**
-- CrI 95%: [0.53, 0.66]
-- Preferenza: ~9 punti %
+```{r}
+#| echo: false
+cat("P(μ > 0.5 | dati) =", round(prob_preferenza * 100, 1), "%\n")
+cat("CrI 95%: [", round(ic_bayes[1], 2), ",", round(ic_bayes[2], 2), "]\n")
+cat("Preferenza:", round(mean(preferenza)*100, 0), "punti %\n")
+```
 
 **Conclusione:** "Forte evidenza per la preferenza"
 :::
@@ -627,8 +970,8 @@ cat("5. P(effetto nullo o negativo, μ ≤ 0.5):", round(mean(mu_samples <= 0.5)
 df_conf <- data.frame(
   approccio = c("Frequentista", "Bayesiano"),
   stima = c(mean(y), mean(mu_samples)),
-  lower = c(0.529, quantile(mu_samples, 0.025)),
-  upper = c(0.658, quantile(mu_samples, 0.975))
+  lower = c(ic_freq[1], quantile(mu_samples, 0.025)),
+  upper = c(ic_freq[2], quantile(mu_samples, 0.975))
 )
 
 ggplot(df_conf, aes(x = approccio, y = stima, color = approccio)) +
@@ -646,53 +989,50 @@ ggplot(df_conf, aes(x = approccio, y = stima, color = approccio)) +
 
 ---
 
-## La differenza fondamentale
-
 | Aspetto | Frequentista | Bayesiano |
 |---------|--------------|-----------|
-| **Cosa quantifica** | P(dati \| H₀) | P(parametri / quantità \| dati, modello) |
+| **Cosa quantifica** | P(dati \| $H_0$) | P(parametri \| dati, modello) |
 | **Parametro** | Fisso (sconosciuto) | Ha una distribuzione |
 | **Intervallo** | Proprietà della procedura (IC) | Probabilità diretta (CrI) |
-| **Decisione** | Spesso binaria (sig/non sig) | Graduale (probabilità su quantità) |
+| **Decisione** | Binaria (sig/non sig) | Graduale (probabilità su quantità) |
 | **Assunzioni** | Spesso implicite | Esplicite (prior + likelihood) |
 
 ---
 
 ## Quando i due approcci divergono
 
-I risultati numerici sono simili perché:
+Nel caso presente, i risultati numerici sono simili perché:
 
-1. Campione moderato (n = 32).
-2. Prior debolmente informativa.
-3. Effetto abbastanza chiaro.
+1. campione moderato (n = `r nrow(df)`);
+2. prior debolmente informativa;
+3. effetto abbastanza chiaro.
 
 . . .
 
 Ma le **interpretazioni** sono radicalmente diverse:
 
-- **Frequentista:** "i dati sono incompatibili con H₀".
-- **Bayesiano:** "c'è il 99.7% di probabilità che ci sia una preferenza".
+- **Frequentista:** "i dati sono incompatibili con $H_0$".
+- **Bayesiano:** "c'è il `r round(prob_preferenza*100, 1)`% di probabilità che ci sia una preferenza".
 
 ---
 
-
-## Un caso di studio: risultato *marginale* (simulato)
+## Un caso di studio: risultato *marginale* 
 
 Ora costruiamo uno scenario in cui:
 
-- l’effetto esiste ma è debole,
+- l'effetto esiste ma è debole,
 - il campione è piccolo,
 - il valore-$p$ è *appena sopra* 0.05.
 
-Vediamo cosa dicono i due approcci.
+Questa situazione è molto comune nella ricerca psicologica — e nella lettura critica della letteratura che farete come professionisti.
 
 ---
 
-##  Simulazione dei dati 
+## Simulazione dei dati 
 
 Parametri della simulazione:
 
-* vero μ = 0.55 (preferenza di 4 punti percentuali),
+* vero $\mu$ = 0.55 (preferenza di 5 punti percentuali),
 * n = 20 bambini,
 * σ simile a quello osservato.
 
@@ -709,7 +1049,7 @@ sigma_true <- sd(y)   # usiamo la variabilità reale come riferimento
 
 y_sim <- rnorm(n_sim, mean = mu_true, sd = sigma_true)
 
-mean(y_sim)
+cat("Media simulata:", round(mean(y_sim), 3), "\n")
 ```
 
 ---
@@ -719,13 +1059,10 @@ mean(y_sim)
 ```{r}
 # Test t frequentista
 t_sim <- t.test(y_sim, mu = 0.5)
-t_sim$p.value
+cat("p-value:", round(t_sim$p.value, 3), "\n")
 ```
 
-👉 **Tipicamente** con questi parametri si ottiene un risultato del tipo:
-
-* $p$ ≈ 0.05–0.10,
-* quindi *non significativo* per $\alpha$ = 0.05.
+Con questi parametri si ottiene tipicamente un risultato del tipo $p$ ≈ 0.05–0.10, quindi *non significativo* per $\alpha$ = 0.05.
 
 ---
 
@@ -735,13 +1072,13 @@ $p$ = `r round(t_sim$p.value, 3)`
 
 → **Risultato non statisticamente significativo**.
 
-→ Non possiamo rifiutare H₀.
+→ Non possiamo rifiutare $H_0$.
 
-→ Risultato etichettato come “negativo”.
+→ Risultato etichettato come "negativo".
 
 ---
 
-## Analisi bayesiana sullo stesso dataset simulato
+## Analisi bayesiana sullo stesso dataset 
 
 Usiamo **lo stesso modello di prima**, con lo stesso prior.
 
@@ -767,7 +1104,7 @@ fit_sim <- brm(
 
 ---
 
-##  La quantità chiave: P(μ > 0.5 | dati)
+## La quantità chiave: P($\mu$ > 0.5 | dati)
 
 ```{r}
 post_sim <- as_draws_df(fit_sim)
@@ -778,18 +1115,18 @@ Calcoliamo la quantità di interesse:
 
 ```{r}
 prob_sim <- mean(mu_sim > 0.5)
-prob_sim
+cat("P(μ > 0.5 | dati) =", round(prob_sim, 4), "\n")
 ```
 
 ---
 
 ## Conclusione bayesiana
 
-P(μ > 0.5 | dati) = **`r round(prob_sim * 100, 1)`%**
+P($\mu$ > 0.5 | dati) = **`r round(prob_sim * 100, 1)`%**
 
 → Evidenza **sostanziale** per una preferenza.
 
-→ Non certezza, ma informazione utile.
+→ Non certezza, ma l'informazione è utile.
 
 ---
 
@@ -797,52 +1134,122 @@ P(μ > 0.5 | dati) = **`r round(prob_sim * 100, 1)`%**
 
 :::: {.columns}
 ::: {.column width="48%"}
-### Frequentista
+
+**Frequentista**
 
 p = `r round(t_sim$p.value, 3)`
 
-→ “Non significativo”
+* Non supera la soglia α = 0.05
+* Non possiamo rifiutare $H_0$
 
-→ Nessuna conclusione formale
+**Conclusione formale:**
+
+> “Risultato non significativo”
+
 :::
 
 ::: {.column width="4%"}
 :::
 
 ::: {.column width="48%"}
-### Bayesiano
 
-P(μ > 0.5 | dati) = `r round(prob_sim * 100, 1)`%
+**Bayesiano**
 
-→ Evidenza **sostanziale**
+P($\mu$ > 0.5 | dati) = `r round(prob_sim * 100, 1)`%
 
-→ Risultato informativo
+* L'effetto è più probabile che no
+* L'incertezza è quantificata
+
+**Conclusione sostanziale:**
+
+> “Evidenza sostanziale per una preferenza”
+
 :::
 ::::
 
 ---
 
+## Notate bene cosa è diverso
+
+I **dati sono identici**.
+La **stima della media è identica**.
+
+Quello che cambia è:
+
+* cosa viene considerato una “conclusione”;
+* cosa viene considerato “informazione utile”.
+
+---
+
 ## Cosa sta succedendo davvero?
 
-L’effetto è:
+L'effetto è piccolo, stimato con incertezza e compatibile sia con un effetto debole sia con l’assenza di effetto.
 
-- troppo piccolo per superare una soglia arbitraria,
-- ma **sufficientemente plausibile** dati i dati osservati.
+. . .
 
-Il frequentismo deve fermarsi.
-Il bayesiano **continua a parlare**.
+Il valore-$p$ risponde solo alla domanda:
+
+> “Quanto sono rari questi dati se μ = 0.5?”
+
+L'approccio Bayesiano risponde invece alla domanda:
+
+> “Quanto è plausibile che μ > 0.5, dati questi dati?”
+
+Sono **domande diverse**.
+
+---
+
+## Dove il frequentismo si ferma
+
+Il framework NHST richiede una decisione:
+
+* superi la soglia → “significativo”
+* non la superi → “non significativo”
+
+Non esiste una categoria intermedia formalmente riconosciuta.
+
+. . .
+
+Quando l’evidenza è marginale, il sistema è costretto a **collassare un gradiente in un’etichetta binaria**.
+
+---
+
+## Dove l'approccio bayesiano continua
+
+L'approccio bayesiano non deve prendere una decisione binaria.
+
+Può dire:
+
+* c’è il 58% di probabilità che l’effetto sia positivo;
+* c’è il 72% di probabilità che superi una soglia clinica;
+* c’è il 18% di probabilità che sia nullo o negativo.
+
+L’incertezza non viene nascosta.
+Viene **misurata**.
 
 ---
 
 ## Il punto non è “chi ha ragione”
 
-Il punto è che:
+Non è una gara.
 
-- il frequentismo **collassa l’incertezza in una decisione**,
-- il bayesiano **mantiene l’incertezza visibile**.
+È una differenza strutturale:
 
-Quando l’evidenza è marginale,
-**vedere l’incertezza è un vantaggio**, non un difetto.
+* Il frequentismo controlla l’errore nel lungo periodo (**SE** l'analisi viene fatta in un certo modo -- ma nella pratica **questo non avviene**).
+* Il metodo bayesiano aggiorna il grado di credenza alla luce dei dati.
+
+---
+
+Quando l’evidenza è forte, i due approcci convergono.
+Quando l’evidenza è debole o marginale, emergono le differenze.
+
+. . .
+
+* Ed è proprio lì che la scelta epistemologica diventa importante.
+
+. . .
+
+* Sono queste le circostanze in cui **sbagliare** produce le coseguenze peggiori (pensiamo alla *crisi della replicabilità*).
 
 ---
 
@@ -850,44 +1257,47 @@ Quando l’evidenza è marginale,
 
 Se il risultato bayesiano dipende dalla prior, allora:
 
-> *Quanto stiamo imparando dai dati,  
-> e quanto stiamo solo riflettendo ciò che pensavamo prima?*
+> *Quanto stiamo imparando dai dati?*
+> *Quanto dipende dalle nostre assunzioni iniziali?*
 
-Questa non è una critica al Bayesiano.
-È **la domanda giusta da porsi**.
+Questa non è un’obiezione.
+È il cuore dell’inferenza bayesiana.
+
+---
+
+## La domanda giusta da fare
+
+Un risultato è:
+
+* **robusto**, se prior ragionevoli portano a conclusioni simili;
+* **fragile**, se piccole variazioni della prior cambiano radicalmente l’esito.
+
+La sensibilità alla prior non è un difetto.
+
+È un indicatore di **quanto i dati siano informativi**.
 
 ---
 
 ## Robustezza: cosa succede se cambiamo prior?
 
-Un risultato è **robusto** se:
+Un risultato è **robusto** se prior diverse, ma plausibili, portano a **conclusioni simili**.
 
-- prior diverse, ma plausibili
+Un risultato è **sensibile alla prior** se prior diverse portano a **conclusioni diverse**.
 
-portano a **conclusioni simili**.
+. . .
 
----
-
-Un risultato è **sensibile alla prior** se:
-
-- prior diverse,
-
-portano a **conclusioni diverse**.
-
-👉 La sensibilità alla prior non è un difetto.  
-È **informazione** sulla forza dei dati.
+La sensibilità alla prior non è un difetto. È **informazione** sulla forza dei dati.
 
 ---
 
 ## Quanto contano davvero le assunzioni iniziali?
 
-Stesso dataset simulato.  
-Stesso modello.  
-Cambiamo solo le assunzioni iniziali su μ:
+Stesso dataset simulato. Stesso modello.  
+Cambiamo solo le assunzioni iniziali su $\mu$. Distinguiamo tra una prior
 
-- **Scettica**: Normal(0.5, 0.10).
-- **Moderata**: Normal(0.5, 0.25).
-- **Entusiasta**: Normal(0.55, 0.15).
+- **scettica**: Normal(0.5, 0.10);
+- **moderata**: Normal(0.5, 0.25);
+- **entusiasta**: Normal(0.55, 0.15).
 
 ```{r}
 #| cache: true
@@ -939,6 +1349,10 @@ mu_entusiasta <- as_draws_df(fit_entusiasta)$b_Intercept
 
 ---
 
+Analizziamo come la distribuzione a posteriori del parametro $\mu$ venga modificata dall'adozione di ciascuno dei tre prior precedentemente considerati.
+
+---
+
 ## Cosa cambia davvero?
 
 ```{r}
@@ -965,14 +1379,12 @@ ggplot(df_sens, aes(x = mu, fill = prior)) +
 
 ## Come leggere questo grafico
 
-- Le posterior **non sono identiche**  
-  → le assunzioni contano.
+- Le posterior **non sono identiche** → le assunzioni contano.
+- Ma tutte assegnano un'alta probabilità a $\mu$ > 0.5 → i dati sono informativi.
 
-- Ma tutte assegnano alta probabilità a μ > 0.5  
-  → i dati sono informativi.
+. . .
 
-👉 I dati **non cancellano** la prior.  
-👉 La **aggiornano**.
+I dati **non cancellano** la prior. La **aggiornano**.
 
 ---
 
@@ -989,14 +1401,16 @@ summ <- tibble(
 summ
 ```
 
-👉 Se la conclusione (es. P(μ>0.5)) resta simile, i dati sono informativi.  
-👉 Se cambia molto, il risultato è fragile e va comunicato con cautela.
+. . .
+
+* Se la conclusione (es. P($\mu$>0.5)) resta simile, i dati sono informativi. 
+* Se cambia molto, il risultato è fragile e va comunicato con cautela.
 
 ---
 
 ## La vera lezione sulla prior
 
-La prior non serve a “vincere la discussione”.
+La prior non serve a "vincere la discussione".
 
 Serve a:
 
@@ -1007,7 +1421,7 @@ Serve a:
 Se conclusioni ragionevoli dipendono da prior ragionevoli,
 **il risultato è fragile**.
 
-Se non dipendono,
+Se non dipendono dai prior,
 **il risultato è solido**.
 
 ---
@@ -1016,13 +1430,201 @@ Se non dipendono,
 
 L'approccio bayesiano **rende esplicite** le assunzioni:
 
-1. **Prior:** Cosa sapevamo prima?
-2. **Likelihood:** Come i dati informano la stima?
-3. **Posterior:** Cosa sappiamo dopo?
+1. **Prior:** cosa sapevamo prima?
+2. **Likelihood:** come i dati informano la stima?
+3. **Posterior:** cosa sappiamo dopo?
 
 . . .
 
-Il frequentismo **nasconde** le assunzioni (es. decisione pre-studio sulla soglia α, assunzioni di campionamento ripetuto).
+Il frequentismo, al contrario, **nasconde** le assunzioni:
+
+- decisione pre-studio sulla soglia $\alpha$;
+- assunzioni di campionamento ripetuto;
+- definizione implicita di ciò che conta come "più estremo" dei dati osservati.
+
+---
+
+### L'assunzione del campionamento ripetuto
+
+Esaminiamo con maggiore attenzione l'assunzione di base del frequentismo.
+
+Il valore-$p$ **si fonda** sull'idea che possiamo ripetere infinite volte lo stesso esperimento **nelle medesime condizioni**.
+
+:::{.fragment}
+Cosa significa esattamente?
+:::
+
+:::{.fragment}
+Significa che in futuro dovremmo poter osservare soggetti **con esattamente le stesse caratteristiche** del campione esaminato — un'ipotesi già difficile da accettare.
+:::
+
+---
+
+Ma significa anche che le **condizioni di raccolta dati** siano replicabili:
+
+- le stesse procedure,
+- lo stesso laboratorio,
+- lo stesso sperimentatore con lo stesso stato d'animo,
+- lo stesso contesto storico e culturale.
+
+:::{.fragment}
+Nelle scienze umane, questa è una **finzione teorica** difficile da difendere.
+:::
+
+---
+
+### Un'architettura concettuale fragile
+
+Per quanto apparentemente "innocua", l'assunzione di base del frequentismo — ripetere infinite volte l'esperimento in condizioni identiche — può avere senso in campi come la fisica o la chimica.
+
+:::{.fragment}
+Ma in psicologia? È estremamente implausibile.
+:::
+
+:::{.fragment}
+Se il fondamento stesso è implausibile, l'intero **edificio concettuale** che vi si regge diventa inevitabilmente fragile.
+:::
+
+:::{.fragment}
+> "Non possiamo ripetere lo stesso esperimento nelle stesse condizioni — possiamo solo avvicinarci, e ogni replica porta con sé nuove variazioni."
+:::
+
+---
+
+## Un’eredità agricola
+
+Ronald A. Fisher sviluppò l’ANOVA e formalizzò il valore-$p$ lavorando su esperimenti agricoli, in particolare per confrontare diverse tecniche di coltivazione.
+
+---
+
+In quel contesto, l’assunzione centrale era la **ripetibilità controllata**:
+
+* appezzamenti omogenei,
+* trattamenti replicabili,
+* condizioni ambientali relativamente stabili,
+* variabilità trattata come “errore” da stimare e ridurre.
+
+L’idea di “ripetere l’esperimento sotto le stesse condizioni” era una finzione teorica — ma una finzione ragionevole.
+
+---
+
+## Il problema psicologico
+
+In psicologia, la situazione è profondamente diversa.
+
+. . .
+
+Non studiamo appezzamenti di terreno omogenei, ma:
+
+* individui con storie diverse,
+* contesti che cambiano,
+* processi mentali dinamici,
+* interazioni tra fattori biologici, cognitivi e sociali.
+
+. . .
+
+Qui, ciò che varia tra individui non è semplicemente rumore.
+
+È **ciò che vogliamo capire**.
+
+---
+
+## La variabilità come oggetto di studio
+
+In agricoltura, la variabilità tra parcelle di terreno è un disturbo da controllare.
+
+In psicologia, la variabilità tra persone è:
+
+* differenza individuale,
+* sviluppo,
+* vulnerabilità,
+* resilienza,
+* plasticità.
+
+---
+
+La variabilità non è un errore sperimentale.
+
+È il fenomeno stesso che vogliamo studiare e capire.
+
+---
+
+## Uno strumento nato altrove
+
+Il paradigma del valore-$p$ è stato progettato per:
+
+* controllare il tasso di errore nel lungo periodo,
+* guidare decisioni su trattamenti replicabili,
+* operare sotto l’idea di campionamento ripetuto ideale.
+
+. . .
+
+Questo framework funziona bene quando:
+
+* le condizioni sono stabili,
+* la ripetizione è concettualmente sensata,
+* l’obiettivo è una decisione binaria (accetta / rifiuta).
+
+---
+
+## Il problema del trasferimento
+
+Quando lo applichiamo alla mente umana, lo stiamo trasferendo in un contesto diverso:
+
+* fenomeni storici e situati,
+* individui non intercambiabili,
+* forte variabilità interindividuale,
+* interesse per la stima e la previsione, non solo per la decisione.
+
+. . .
+
+Non è un errore tecnico.
+
+È uno **slittamento epistemologico**.
+
+---
+
+## La domanda da porsi
+
+Non è:
+
+> “Il valore-$p$ è giusto o sbagliato?”
+
+ma piuttosto:
+
+> “È lo strumento più adatto per il tipo di conoscenza che vogliamo produrre?”
+
+---
+
+## Il punto critico {background-color="#2c3e50" style="color: white;"}
+
+Se la variabilità individuale è centrale,
+se il contesto conta,
+se le condizioni non sono realmente ripetibili,
+
+. . .
+
+allora un framework costruito sull’idea di ripetizione ideale e decisione binaria può diventare concettualmente non sostenibile.
+
+. . .
+
+Non perché sia tecnicamente scorretto.
+Ma perché si applica ad un contesto strutturalmente diverso.
+
+---
+
+## Una metafora (da prendere sul serio)
+
+> Non si può arare la mente con lo stesso aratro che solca i campi.
+
+La statistica non è neutrale:
+porta con sé una visione implicita di cosa significhi “conoscere”.
+
+La domanda non è quale strumento sia “giusto”.
+
+La domanda è:
+**quale strumento è più adatto al tipo di fenomeno che stiamo studiando?**
+
 
 # Parte 4: conclusioni e implicazioni
 
@@ -1040,14 +1642,14 @@ Il frequentismo **nasconde** le assunzioni (es. decisione pre-studio sulla sogli
 
 ---
 
-## Implicazioni per la ricerca in psicologia
+## Implicazioni per la pratica professionale
 
 :::: {.columns}
 ::: {.column width="48%"}
-**Il mondo dei `p-value`**
+**Il mondo dei p-value**
 
 - Più familiare a revisori e redazioni
-- Non richiede scelte a priori
+- Non richiede scelte a priori esplicite
 - Rimane lo standard di fatto
 :::
 
@@ -1060,46 +1662,85 @@ Il frequentismo **nasconde** le assunzioni (es. decisione pre-studio sulla sogli
 - Risponde alla domanda che ci interessa
 - Evita soglie dicotomiche arbitrarie
 - Quantifica l'incertezza in modo diretto
-- Comunica risultati più intuitivamente
+- Comunica i risultati più intuitivamente
 :::
 ::::
 
 ---
 
-## Come comunicare i risultati
+## Come comunicare i risultati: due modi
 
 **Versione frequentista (tipica):**
 
-> "I bambini hanno mostrato una preferenza significativa per il cantante della melodia familiare (t(31) = 2.96, p = .006, d = 0.52)."
+> "I bambini hanno mostrato una preferenza significativa per il cantante della melodia familiare (t(`r risultato_t$parameter`) = `r t_val`, p = `r p_val`)."
 
 ---
 
 **Versione bayesiana (più informativa):**
 
-> "I bambini hanno mostrato una preferenza per il cantante della melodia familiare (M = 59%, CrI 95% = [53%, 66%]). La probabilità che questa preferenza sia reale è del 99.7%, e la probabilità che superi i 5 punti percentuali è dell'89%."
+```{r}
+#| echo: false
+cat(paste0(
+  '"I bambini hanno mostrato una preferenza per il cantante della melodia familiare ',
+  '(M = ', round(mean(mu_samples)*100, 0), '%, CrI 95% = [',
+  round(ic_bayes[1]*100, 0), '%, ', round(ic_bayes[2]*100, 0), '%]). ',
+  'La probabilità che questa preferenza sia reale è del ',
+  round(prob_preferenza*100, 1), '%, e la probabilità che superi i 5 punti ',
+  'percentuali è del ', round(prob_rilevante*100, 0), '%."'
+))
+```
+
+. . .
+
+Quale delle due risposte preferireste ricevere se foste il genitore che ha fatto la domanda iniziale?
 
 ---
 
-## Il messaggio finale
-
-::: {.callout-important}
-## Take-home message
+## Il messaggio per voi come futuri psicologi {background-color="#2c3e50" style="color: white;"}
 
 L'approccio frequentista domina la psicologia per ragioni storiche e istituzionali, non epistemologiche.
 
-L'approccio bayesiano offre risposte **più dirette**, **più interpretabili**, e **più utili** per il ricercatore e per chi deve prendere decisioni basate sui risultati.
+L'approccio bayesiano offre risposte **più dirette**, **più interpretabili** e **più utili** per il ricercatore e per il professionista che deve prendere decisioni basate sui risultati.
 
-La scelta dell'approccio non è solo tecnica — è una scelta su **quale tipo di conoscenza** vogliamo produrre.
-:::
+La scelta dell'approccio non è solo tecnica — è una scelta su **quale tipo di conoscenza** vogliamo produrre e cosa vogliamo comunicare ai nostri pazienti, ai colleghi e alla società.
 
 ---
 
 ## In sintesi
 
-* Il frequentismo controlla l’errore.
-* Il bayesiano **gestisce l’incertezza**.
+* Il frequentismo controlla l’errore nel lungo periodo,
+  **assumendo la possibilità di ripetere idealmente l’esperimento nelle stesse condizioni**.
 
-La ricerca psicologica vive di incertezza.
+* L’approccio bayesiano quantifica direttamente l’incertezza
+  **nelle condizioni concrete in cui i dati sono stati osservati**.
+
+---
+
+La **pratica psicologica** non si svolge in un mondo idealmente ripetibile.
+
+Si svolge in presenza di:
+
+* differenze individuali profonde,
+* contesti mutevoli,
+* informazioni parziali e incomplete.
+
+. . .
+
+Questa variabilità non è un “errore statistico” da eliminare.
+È **il fenomeno che vogliamo comprendere**.
+
+---
+
+## Implicazione per la pratica
+
+Ogni colloquio clinico, ogni valutazione diagnostica, ogni intervento con i genitori richiede di comunicare:
+
+* non certezze assolute,
+* non decisioni dicotomiche,
+* ma **gradi di fiducia nell’evidenza disponibile**.
+
+Gestire l’incertezza in modo esplicito non è un limite della psicologia.
+È la sua condizione naturale.
 
 ---
 
@@ -1118,13 +1759,6 @@ Mehr, S. A., Song, L. A., & Spelke, E. S. (2016). For 5-month-old infants, melod
 
 ---
 
-## Esercizio per casa
+## Per la prossima lezione {background-color="#27ae60" style="color: white;"}
 
-1. Scaricare i dati dall'OSF
-2. Replicare l'analisi dell'**Esperimento 2** (esposizione via giocattolo)
-3. Confrontare i risultati con l'Esperimento 1
-4. Riflettere: i due esperimenti supportano la stessa conclusione?
-
-. . .
-
-**Suggerimento:** Nell'Esperimento 2, il p-value non è significativo. Ma cosa dice l'analisi bayesiana?
+Nella Lezione 29 faremo un passo ulteriore: i **modelli multilivello**, che permettono di stimare effetti a livello di gruppo e di individuo simultaneamente. Vedremo anche come **confrontare modelli** diversi per capire quale si adatta meglio ai dati — il tema naturale quando si hanno scelte modellistiche da giustificare.
