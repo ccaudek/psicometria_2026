@@ -53,7 +53,11 @@ Nella pratica professionale, la scelta del modello non è un esercizio accademic
 - Uno psicologo clinico deve decidere se il disagio del paziente è spiegato meglio da un modello con un solo predittore (es. depressione) o da uno con più predittori (es. depressione + ansia + contesto sociale).
 - Un ricercatore in psicologia dello sviluppo si chiede se il modello multilivello (che tiene conto della classe scolastica) aggiunge davvero potere predittivo rispetto a un modello più semplice.
 
-La risposta dipende da un principio che abbiamo già incontrato nella Lezione 28: un buon modello è quello che **prevede bene nuove osservazioni**, non quello che si adatta perfettamente ai dati già visti.
+---
+
+La risposta dipende da un principio che abbiamo già incontrato nella Lezione 28: 
+
+> un buon modello è quello che **prevede bene nuove osservazioni**, non quello che si adatta perfettamente ai dati già visti.
 
 ---
 
@@ -114,15 +118,15 @@ p1 + p2 + p3
 
 . . .
 
-Il **modello lineare** (verde) cattura la tendenza generale: più studi, più prendi.
+Il **modello lineare** (verde) cattura la tendenza generale: più studi, maggiore è il voto.
 
 . . .
 
-Il **polinomio di grado 3** (arancione) aggiunge qualche curva, forse plausibile.
+Il **polinomio di grado 3** (arancione) aggiunge alcuni aspetti non lineari, forse è plausibile.
 
 . . .
 
-Il **polinomio di grado 8** (rosso) passa quasi perfettamente per ogni punto. Si adatta benissimo ai dati che ha... ma farebbe previsioni assurde per un undicesimo studente.
+Il **polinomio di grado 8** (rosso) passa perfettamente per ogni punto. Si adatta benissimo ai dati osservati... ma farebbe previsioni assurde per un undicesimo studente.
 
 . . .
 
@@ -144,9 +148,11 @@ In ogni analisi statistica c'è una **tensione** tra due obiettivi:
 
 Aggiungere parametri migliora sempre l'adattamento, ma a un certo punto peggiora la generalizzazione.
 
-. . .
+---
 
-Il confronto tra modelli cerca di stimare la **capacità predittiva**: quanto bene il modello funzionerebbe su dati che non ha ancora visto. È lo stesso principio della distribuzione predittiva a posteriori (Lezioni 22–23) applicato alla scelta tra modelli alternativi.
+Il confronto tra modelli cerca di stimare la **capacità predittiva**: quanto bene il modello funzionerebbe su dati che non ha ancora visto. 
+
+È lo stesso principio della distribuzione predittiva a posteriori (Lezioni 22–23) applicato alla scelta tra modelli alternativi.
 
 # L'idea chiave: la capacità predittiva {background-color="#2c3e50" style="color: white;"}
 
@@ -201,19 +207,21 @@ $$
 Il logaritmo serve solo a rendere i numeri **più gestibili** e **comparabili**.
 Ma soprattutto ha un'interpretazione molto chiara: **misura quanto il modello è "sorpreso" dal dato osservato**.
 
-. . .
-
+:::{.fragment}
 * **Valori vicini a 0** (es. −0.2, −0.5) → il dato era **molto plausibile**, il modello *se lo aspettava*.
 
 * **Valori molto negativi** (es. −10, −15) → il dato era **poco plausibile**, il modello è rimasto *molto sorpreso*.
 
 Più il valore è negativo, **peggio** il modello ha previsto quel dato.
+:::
 
 ---
 
 ### Dall'osservazione singola al modello nel suo insieme
 
 Un singolo dato può andare bene o male per caso.
+
+:::{.fragment}
 Per valutare un modello nel complesso, sommiamo la log-densità predittiva su **tutti** i nuovi dati:
 
 $$
@@ -221,6 +229,7 @@ $$
 $$
 
 Questo numero si chiama **Expected Log Predictive Density** (ELPD).
+:::
 
 ---
 
@@ -376,7 +385,7 @@ Il triangolo rosso è il dato escluso. La retta è stimata **senza** quel dato. 
 
 ## La buona notizia: non serve rifarlo $n$ volte
 
-In teoria, la Leave-One-Out Cross-Validation richiederebbe di **ristimare il modello (n) volte**, una per ogni osservazione.
+In teoria, la Leave-One-Out Cross-Validation richiederebbe di **ristimare il modello $n$ volte**, una per ogni osservazione.
 Per modelli complessi, questo sarebbe **computazionalmente molto costoso**.
 
 . . .
@@ -525,9 +534,13 @@ Immaginate due psicologi che devono prevedere come andrà una terapia per un nuo
 
 Se la terapia funziona, **entrambi** avevano previsto correttamente, ma lo psicologo B era **molto più sicuro**. Se la terapia **non** funziona, però, lo psicologo B viene penalizzato **molto di più**: era eccessivamente sicuro di una previsione sbagliata.
 
-. . .
+---
 
-Alla lunga, non vince chi fa le previsioni più estreme, ma chi è **ben calibrato**: sicuro quando l'evidenza è forte, cauto quando la situazione è ambigua. **L'ELPD misura esattamente questa calibrazione.**
+Alla lunga, non vince chi fa le previsioni più estreme, ma chi è **ben calibrato**:  
+
+sicuro quando l'evidenza è forte, cauto quando la situazione è ambigua. 
+
+**L'ELPD misura esattamente questa calibrazione.**
 
 # Il quadro generale {background-color="#2c3e50" style="color: white;"}
 
@@ -552,7 +565,7 @@ oppure migliora includendo anche il tipo di scuola superiore?
 → un modello di apprendimento con un solo tasso $\alpha$
 oppure con due tassi distinti (ricompense vs. punizioni)?
 
-. . .
+---
 
 In tutti questi casi, l'ELPD stimato tramite LOO-CV fornisce un criterio
 **quantitativo, comparabile e fondato sulla previsione**.
@@ -565,15 +578,17 @@ L'ELPD è uno strumento potente, ma **non decide da solo**.
 
 . . .
 
-* **Interpretabilità** — Un modello leggermente peggiore in termini di ELPD, ma molto più semplice e leggibile, può essere preferibile.
+* **Interpretabilità** — Un modello leggermente peggiore in termini di ELPD, ma molto più semplice e comprensibile, può essere preferibile.
 
-* **Coerenza teorica** — Se una teoria psicologica forte prevede un certo effetto, può avere senso mantenerlo anche se l'ELPD migliora poco.
+* **Coerenza teorica** — Se una teoria psicologica consolidata prevede un certo effetto, può avere senso mantenerla anche se l'ELPD migliora poco.
 
 * **Dimensione del campione** — Con pochi dati, le differenze di ELPD possono essere troppo incerte per giustificare conclusioni nette.
 
-. . .
+---
 
-Il confronto tra modelli è un **supporto alla decisione scientifica**, non un oracolo che sostituisce il ragionamento teorico. Come per la scelta tra approccio frequentista e bayesiano (Lezione 28), la decisione finale richiede sempre giudizio professionale.
+Il confronto tra modelli è un **supporto alla decisione scientifica**, non un oracolo che sostituisce il ragionamento teorico. 
+
+Come per la scelta tra approccio frequentista e bayesiano (Lezione 28), la decisione finale richiede sempre **giudizio professionale** (siete dei fisici per i quali le condizioni dell'esperimento sono sempre le stesse? o degli psicologi che si confrontano con enormi variazioni individuali?).
 
 ---
 
@@ -593,9 +608,178 @@ Questo è coerente con il principio bayesiano (Lezione 17): se siamo incerti su 
 
 Il pacchetto `loo` di R implementa lo stacking con `loo_model_weights()`.
 
-# Riepilogo {background-color="#2c3e50" style="color: white;"}
+---
+
+## Applicazione concreta con `brms`
+
+Riprendiamo i dati:
+
+* 10 studenti;
+* ore di studio;
+* punteggio all’esame.
+
+Confronteremo due modelli:
+
+* **M1**: relazione lineare;
+* **M2**: relazione quadratica.
 
 ---
+
+La domanda è:
+
+> Il termine quadratico migliora davvero la capacità predittiva?
+
+---
+
+## Stimiamo i modelli con `brms`
+
+Modello lineare:
+
+```{r}
+library(brms)
+
+m1 <- brm(
+  punteggio ~ ore,
+  data = d_es,
+  family = gaussian(),
+  chains = 4, cores = 4, iter = 2000,
+  seed = 2026,
+  backend = "cmdstanr",
+  silent = 2,
+  refresh = 0
+)
+```
+
+---
+
+Modello quadratico:
+
+```{r}
+m2 <- brm(
+  punteggio ~ ore + I(ore^2),
+  data = d_es,
+  family = gaussian(),
+  chains = 4, cores = 4, iter = 2000,
+  seed = 2026,
+  backend = "cmdstanr",
+  silent = 2,
+  refresh = 0
+)
+```
+
+. . .
+
+Il secondo modello è più flessibile:
+può catturare un'eventuale curvatura.
+
+---
+
+## Aggiungiamo il criterio LOO
+
+```{r}
+library(loo)
+
+m1 <- add_criterion(m1, "loo")
+m2 <- add_criterion(m2, "loo")
+```
+
+Questo calcola:
+
+* l’ELPD stimato con PSIS-LOO;
+* l’effettivo numero di parametri (p_loo);
+* le diagnosi di affidabilità.
+
+---
+
+## Confronto tra modelli
+
+```{r}
+loo_compare(m1, m2)
+```
+
+---
+
+## Come interpretare il risultato
+
+* `m1` ha ELPD più alto → migliore capacità predittiva.
+* `m2` ha `elpd_diff = -2.2`,
+* L'incertezza è `se_diff = 1.0`.
+* Il rapporto (`|elpd_diff| / se_diff = 2.2`) è maggiore di 2.
+
+Con questi dati, il termine quadratico **non migliora la generalizzazione**.
+
+---
+
+## Cosa è successo?
+
+Il modello quadratico:
+
+* si adatta leggermente meglio ai 10 punti,
+* ma non migliora la previsione *leave-one-out*.
+
+Questo è esattamente ciò che ci aspettavamo guardando il grafico:
+
+> Un po’ più flessibile, ma non abbastanza da giustificare la complessità.
+
+---
+
+## Diagnostica PSIS
+
+Possiamo controllare la stabilità dell’approssimazione:
+
+```{r}
+pareto_k_table(m1$criteria$loo)
+```
+
+---
+
+Valori di `k`:
+
+* < 0.5 → ottimo;
+* 0.5–0.7 → accettabile;
+* $>$ 0.7 → attenzione;
+* $>$ 1 → LOO non affidabile.
+
+Questo è un vantaggio enorme rispetto ad AIC:
+abbiamo **diagnostica esplicita della validità del criterio**.
+
+---
+
+## Collegamento con l’intuizione iniziale
+
+Ricordate il grafico con:
+
+* modello lineare (verde);
+* polinomio grado 3 (arancione);
+* polinomio grado 8 (rosso).
+
+LOO sta facendo esattamente questo:
+
+> “Se tolgo un punto, il modello continua a funzionare?”
+
+Il modello troppo flessibile viene penalizzato perché
+fa previsioni **troppo sicure** sui punti esclusi.
+
+---
+
+## Dal grafico intuitivo al criterio quantitativo
+
+Prima abbiamo visto l’overfitting *a occhio*.
+Ora lo abbiamo misurato con:
+
+$$
+\text{ELPD}_{\text{LOO}}
+$$
+
+. . .
+
+Il principio è sempre lo stesso:
+
+> Il modello migliore è quello che si sorprende meno
+> quando incontra dati che non ha ancora visto.
+
+
+# Riepilogo {background-color="#2c3e50" style="color: white;"}
 
 ## Le idee da portare a casa
 
@@ -648,6 +832,11 @@ Ricapitolando il percorso del corso:
 - **stimare** parametri (prior → posterior)
 - **confrontare** modelli (ELPD, LOO-CV) ← *oggi*
 
-. . .
+---
 
-Dall'esplorazione alla decisione: un flusso coerente di ragionamento in condizioni di incertezza. Questo è il modo di pensare che vi accompagnerà nella vostra pratica professionale.
+## In chiusura {background-color="#27ae60" style="color: white;"}
+
+Dall'esplorazione alla decisione: un flusso coerente di ragionamento in condizioni di incertezza. 
+
+Questo è il modo di pensare che dovrebbe accompagnarvi nella vostra pratica professionale.
+

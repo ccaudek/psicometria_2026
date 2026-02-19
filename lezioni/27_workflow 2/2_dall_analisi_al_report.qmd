@@ -1,0 +1,275 @@
+---
+title: "Flusso di lavoro riproducibile"
+subtitle: "Dall'analisi al report: decisioni tracciabili"
+version: 2.0
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+lang: it
+
+execute:
+  echo: true
+
+format:
+  revealjs:
+    theme: [default, ../revealjs.scss]
+    title-slide-attributes:
+      data-background-color: "#0072bc"
+    slide-number: c
+    show-slide-number: print
+    highlight-style: github
+    math: mathjax
+
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+## Obiettivi del segmento
+
+Al termine di questo segmento lo studente deve sapere:
+
+- distinguere **analisi esplorativa** e **analisi confermativa**;
+- definire cosa si intende per **decisione analitica**;
+- spiegare il ruolo degli **script di analisi**;
+- descrivere cos'è un **report riproducibile**;
+- riconoscere pratiche che compromettono la riproducibilità.
+
+---
+
+## Analisi dei dati: non è un atto unico
+
+In psicologia l'analisi dei dati è spesso:
+
+- iterativa,
+- multi-step,
+- guidata da decisioni.
+
+. . .
+
+L'analisi è un **processo**, non un singolo comando.
+
+---
+
+## Decisioni analitiche
+
+**Decisione analitica**  
+: scelta che influisce sui risultati  
+  e che deve essere **esplicitata e documentata**.
+  
+. . .
+
+Esempi:
+
+- gestione dei valori mancanti;
+- esclusione di casi;
+- trasformazioni delle variabili;
+- scelta del modello statistico.
+
+---
+
+## Perché le decisioni contano
+
+Decisioni diverse possono produrre:
+
+- risultati diversi;
+- interpretazioni diverse;
+- conclusioni incompatibili.
+
+. . .
+
+Decisioni non documentate = risultati non verificabili.
+
+---
+
+## Un esempio concreto: le nostre analisi bayesiane
+
+Nelle Lezioni 24–26 abbiamo preso molte decisioni analitiche, anche se non le abbiamo chiamate così:
+
+- quale distribuzione per la verosimiglianza? (Normale)
+- quali prior? (Lezione 17: la scelta dei prior è una decisione esplicita)
+- quante catene MCMC? quante iterazioni?
+- quale soglia per l'effetto clinicamente rilevante?
+
+---
+
+Ciascuna di queste scelte influenza i risultati. 
+
+. . .
+
+Un workflow riproducibile le rende **tutte visibili**.
+
+---
+
+## Analisi esplorativa (EDA)
+
+**Analisi esplorativa (EDA)**  
+: insieme di procedure usate per  
+  **conoscere i dati** e guidare le analisi successive.
+
+Caratteristiche:
+
+- flessibile,
+- descrittiva,
+- orientata alla scoperta.
+
+---
+
+## Analisi confermativa
+
+**Analisi confermativa**  
+: analisi guidata da ipotesi  
+  definite **prima** di osservare i dati.
+
+Caratteristiche:
+
+- strutturata,
+- inferenziale,
+- orientata al test di ipotesi.
+
+---
+
+## EDA ≠ Analisi confermativa {background-color="#2c3e50" style="color: white;"}
+
+| EDA | Confermativa |
+|----|-------------|
+| esplora i dati | testa ipotesi |
+| flessibile | predefinita |
+| descrittiva | inferenziale |
+
+Confondere i due livelli compromette l'interpretazione dei risultati.
+
+---
+
+## Script di analisi: definizione
+
+**Script di analisi**  
+: file che contiene in modo esplicito  
+  tutte le operazioni analitiche eseguite sui dati.
+
+Funzioni:
+
+- documentare le decisioni,
+- rendere l'analisi ripetibile,
+- permettere la verifica.
+
+---
+
+## Perché usare script (e non analisi manuali)
+
+Analisi manuale:
+
+- non tracciabile,
+- non verificabile,
+- difficile da replicare.
+
+---
+
+Analisi tramite script:
+
+- documentata,
+- riproducibile,
+- modificabile in modo controllato.
+
+---
+
+## Dallo script ai risultati
+
+Uno script di analisi dovrebbe includere:
+
+1. importazione dei clean data;
+2. trasformazioni analitiche;
+3. modelli statistici;
+4. produzione di output (tabelle, grafici).
+
+Ogni passaggio è **esplicito**.
+
+---
+
+## Cos'è un report riproducibile
+
+**Report riproducibile**  
+: documento generato automaticamente  
+  a partire da **dati e codice**.
+
+Caratteristiche:
+
+- nessun copia-incolla;
+- risultati sempre aggiornati;
+- coerenza tra analisi e testo.
+
+---
+
+## Workflow tradizionale vs riproducibile
+
+**Workflow tradizionale**
+
+- analisi → copia risultati → report
+
+. . .
+
+**Workflow riproducibile**
+
+- analisi + testo + output → report automatico
+
+Il secondo riduce errori e incoerenze.
+
+---
+
+## Vantaggi del report riproducibile
+
+- trasparenza;
+- riduzione degli errori;
+- facilità di revisione;
+- coerenza metodologica.
+
+---
+
+## Pratiche che compromettono la riproducibilità
+
+- copia-incolla dei risultati;
+- modifica manuale delle tabelle;
+- analisi non salvate;
+- versioni multiple incoerenti.
+
+---
+
+## Collegamento con l'Open Science
+
+Il report riproducibile:
+
+- è una pratica di Open Science;
+- favorisce la verifica indipendente;
+- non implica la pubblicazione automatica dei dati.
+
+---
+
+## Sintesi concettuale
+
+- L'analisi è un processo decisionale;
+- le decisioni devono essere documentate;
+- gli script rendono l'analisi verificabile;
+- il report deve essere generato dal codice.
+
+---
+
+## Riepilogo (da sapere per l'esame)
+
+- Definizione di decisione analitica;
+- differenza EDA / analisi confermativa;
+- ruolo degli script di analisi;
+- definizione di report riproducibile;
+- pratiche che compromettono la riproducibilità.
+
+---
+
+## Domande tipiche d'esame
+
+- Qual è la differenza tra EDA e analisi confermativa?
+- Perché le decisioni analitiche devono essere documentate?
+- Quale pratica compromette la riproducibilità del report?
+- Qual è la funzione di uno script di analisi?

@@ -1,0 +1,459 @@
+---
+title: "Esercitazione di ripasso – Segmento 1"
+subtitle: "Distribuzioni predittive, algoritmo di Metropolis, limiti del frequentismo"
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+toc-depth: 2
+lang: it
+
+execute:
+  echo: true
+
+format:
+    revealjs:
+      theme: [default, ../revealjs.scss]
+      title-slide-attributes:
+        data-background-color: "#0072bc"
+      slide-number: c
+      show-slide-number: print
+      highlight-style: github
+      math: mathjax
+      mermaid:
+        theme: neutral
+      
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+```{r}
+#| echo: false
+#| output: false
+set.seed(42)
+suppressPackageStartupMessages({
+  library(brms)
+  library(ggplot2)
+})
+```
+
+## Obiettivi di questo segmento {.unnumbered .unlisted}
+
+In questo segmento affronteremo:
+
+1. **Prior predictive distribution** — cosa "sa" il modello prima dei dati;
+2. **Posterior predictive distribution** — cosa "prevede" il modello dopo i dati;
+3. **Algoritmo di Metropolis** — come il computer esplora la posterior;
+4. **Errori di tipo M e di tipo S** — perché il paradigma frequentista può ingannare.
+
+---
+
+## Formato della prova
+
+Ogni domanda avrà **5 alternative, una sola corretta**.
+
+Le risposte possono essere:
+
+- **verbali** (interpretazione, spiegazione concettuale);
+- **numeriche** (risultato di un calcolo o di una simulazione con `set.seed()` fissato e $N$ simulazioni alto).
+
+---
+
+## Esercizio 1 — Prior predictive distribution
+
+**Scenario:** Uno psicologo vuole stimare la proporzione $\theta$ di pazienti che migliorano dopo una terapia breve. Prima di raccogliere dati, sceglie una distribuzione a priori.
+
+Consideriamo **due possibili prior:**
+
+- **Prior A:** $\theta \sim \text{Beta}(1, 1)$
+- **Prior B:** $\theta \sim \text{Beta}(0.5, 0.5)$
+
+Per ciascuna prior, si genera la distribuzione predittiva a priori: si estraggono valori di $\theta$ dalla prior, poi per ciascun $\theta$ si simula il numero di successi su $n = 20$ pazienti.
+
+*(8 minuti; circa 2 minuti per ciascuna domanda)*
+
+---
+
+### Domanda 1.1 — [Numerica]
+
+Usate `set.seed(42)` e $N = 100\,000$ simulazioni dalla prior predictive con **Prior A** ($\text{Beta}(1,1)$). Qual è la deviazione standard del numero di successi? *(Arrotondate a una cifra decimale.)*
+
+---
+
+### Soluzione 1.1
+
+```{r}
+set.seed(42)
+n_sim <- 100000
+n_paz <- 20
+
+theta_A <- rbeta(n_sim, 1, 1)
+y_A <- rbinom(n_sim, size = n_paz, prob = theta_A)
+
+cat("SD (Prior A):", round(sd(y_A), 1), "\n")
+```
+
+**Risposta:** `r round(sd(y_A), 1)`
+
+---
+
+### Domanda 1.2 — [Numerica]
+
+Con lo stesso `set.seed(42)` e $N = 100\,000$, calcolate la deviazione standard dalla prior predictive con **Prior B** ($\text{Beta}(0.5, 0.5)$). *(Una cifra decimale.)*
+
+---
+
+### Soluzione 1.2
+
+```{r}
+set.seed(42)
+theta_B <- rbeta(n_sim, 0.5, 0.5)
+y_B <- rbinom(n_sim, size = n_paz, prob = theta_B)
+
+cat("SD (Prior B):", round(sd(y_B), 1), "\n")
+```
+
+**Risposta:** `r round(sd(y_B), 1)`
+
+---
+
+### Domanda 1.3 — [Scelta multipla]
+
+Quale affermazione descrive correttamente il significato del **prior predictive check**?
+
+  (a) Serve a verificare che la prior sia centrata sul valore vero del parametro.
+  (b) Serve a stimare la potenza statistica dello studio.
+  (c) Serve a verificare che la combinazione prior + modello produca previsioni a priori plausibili, prima di osservare i dati.
+  (d) Serve a confrontare la posterior con la prior.
+  (e) Serve a calcolare il valore-$p$ del modello.
+
+---
+
+### Soluzione 1.3
+
+**Risposta corretta: (c)**
+
+Il prior predictive check risponde alla domanda: "Se il mondo funzionasse come il mio modello + prior, che dati vedrei?" Se le previsioni sono implausibili (es. tutti 0 o tutti 20 successi), la prior va rivista — e lo si fa *prima* di toccare i dati reali.
+
+---
+
+## Esercizio 2 — Posterior predictive distribution
+
+**Scenario:** Lo psicologo raccoglie i dati: su $n = 20$ pazienti, $y = 14$ migliorano. Usa Prior A: $\theta \sim \text{Beta}(1, 1)$.
+
+La posterior è: $\text{Beta}(1 + 14, 1 + 6) = \text{Beta}(15, 7)$.
+
+*(8 minuti; circa 2 minuti per ciascuna domanda)*
+
+---
+
+### Domanda 2.1 — [Numerica]
+
+Qual è la media della distribuzione a posteriori $\text{Beta}(15, 7)$? *(Tre cifre decimali.)*
+
+---
+
+### Soluzione 2.1
+
+```{r}
+alpha_post <- 15
+beta_post  <- 7
+media_post <- alpha_post / (alpha_post + beta_post)
+cat("Media a posteriori:", round(media_post, 3), "\n")
+```
+
+**Risposta:** `r round(media_post, 3)`
+
+---
+
+### Domanda 2.2 — [Numerica]
+
+Usate `set.seed(42)` e $N = 100\,000$ simulazioni dalla **posterior predictive** (nuovo gruppo di 20 pazienti). Qual è $P(\tilde{Y} \geq 15 \mid \text{dati})$? *(Due cifre decimali.)*
+
+---
+
+### Soluzione 2.2
+
+```{r}
+set.seed(42)
+theta_post <- rbeta(n_sim, alpha_post, beta_post)
+y_pred <- rbinom(n_sim, size = 20, prob = theta_post)
+
+P_ge_15 <- mean(y_pred >= 15)
+cat("P(Y_nuovo >= 15 | dati) =", round(P_ge_15, 2), "\n")
+```
+
+**Risposta:** `r round(P_ge_15, 2)`
+
+---
+
+### Domanda 2.3 — [Scelta multipla]
+
+La posterior predictive distribution è più dispersa di una previsione generata usando solo la stima puntuale $\hat{\theta} = 14/20 = 0.70$. Perché?
+
+  (a) Perché il modello Beta-Binomiale sovrastima sempre la varianza.
+  (b) Perché la prior è troppo vaga.
+  (c) Perché la posterior predictive include sia l'incertezza campionaria sia l'incertezza sul parametro $\theta$.
+  (d) Perché la posterior è una distribuzione discreta.
+  (e) Non è più dispersa: le due distribuzioni hanno la stessa varianza.
+
+---
+
+### Soluzione 2.3
+
+**Risposta corretta: (c)**
+
+La previsione puntuale con $\hat{\theta} = 0.70$ genera dati simulati da $\text{Bin}(20, 0.70)$ — include solo la variabilità campionaria. La posterior predictive genera prima $\theta$ dalla posterior (incertezza sul parametro) e poi $\tilde{Y}$ da $\text{Bin}(20, \theta)$ — due fonti di variabilità.
+
+```{r}
+set.seed(42)
+y_puntuale <- rbinom(n_sim, size = 20, prob = 0.70)
+cat("SD puntuale:", round(sd(y_puntuale), 2), "\n")
+cat("SD posterior predictive:", round(sd(y_pred), 2), "\n")
+```
+
+---
+
+## Esercizio 3 — Algoritmo di Metropolis
+
+**Contesto:** L'algoritmo di Metropolis è il cuore dei metodi MCMC usati da Stan e brms.
+
+Ecco un'implementazione per campionare dalla $\text{Beta}(3, 7)$ senza usare `rbeta()`:
+
+---
+
+```{r}
+metropolis <- function(n_iter, theta_start, sd_proposta, seed = 42) {
+  set.seed(seed)
+  campioni <- numeric(n_iter)
+  campioni[1] <- theta_start
+  accettati <- 0
+  for (i in 2:n_iter) {
+    theta_proposto <- rnorm(1, mean = campioni[i-1], sd = sd_proposta)
+    if (theta_proposto < 0 | theta_proposto > 1) {
+      campioni[i] <- campioni[i-1]
+      next
+    }
+    r <- dbeta(theta_proposto, 3, 7) / dbeta(campioni[i-1], 3, 7)
+    if (runif(1) < r) {
+      campioni[i] <- theta_proposto
+      accettati <- accettati + 1
+    } else {
+      campioni[i] <- campioni[i-1]
+    }
+  }
+  list(campioni = campioni, tasso = accettati / n_iter)
+}
+```
+
+*(8 minuti; 2 minuti per ciascuna domanda)*
+
+---
+
+### Domanda 3.1 — [Numerica]
+
+Eseguite `metropolis(100000, 0.5, 0.1, seed = 42)`, scartate i primi 5 000 campioni (burn-in) e calcolate la media dei rimanenti. *(Due cifre decimali.)*
+
+Promemoria: la media teorica della $\text{Beta}(3, 7)$ è $3/(3+7) = 0.30$.
+
+---
+
+### Soluzione 3.1
+
+```{r}
+ris <- metropolis(100000, 0.5, 0.1, seed = 42)
+camp <- ris$campioni[5001:100000]
+cat("Media campioni:", round(mean(camp), 2), "\n")
+```
+
+**Risposta:** `r round(mean(camp), 2)`
+
+---
+
+### Domanda 3.2 — [Numerica]
+
+Qual è il tasso di accettazione (proporzione di proposte accettate)? *(Due cifre decimali.)*
+
+---
+
+### Soluzione 3.2
+
+```{r}
+cat("Tasso di accettazione:", round(ris$tasso, 2), "\n")
+```
+
+**Risposta:** `r round(ris$tasso, 2)`
+
+---
+
+### Domanda 3.3 — [Scelta multipla]
+
+Se si usa `sd_proposta = 0.01` anziché `0.1`, cosa succede?
+
+  (a) Il tasso di accettazione scende e la catena esplora meglio la distribuzione.
+  (b) Il tasso di accettazione sale ma la catena esplora lentamente, con alta autocorrelazione.
+  (c) Non cambia nulla: il risultato è identico.
+  (d) La catena diverge e non converge alla distribuzione target.
+  (e) L'algoritmo si blocca perché le proposte sono troppo piccole.
+
+---
+
+### Soluzione 3.3
+
+**Risposta corretta: (b)**
+
+```{r}
+ris_piccola <- metropolis(100000, 0.5, 0.01, seed = 42)
+cat("Tasso (SD=0.01):", round(ris_piccola$tasso, 2), "\n")
+cat("Tasso (SD=0.10):", round(ris$tasso, 2), "\n")
+```
+
+Proposte piccole → quasi tutte accettate, ma la catena si muove a passi microscopici → esplorazione inefficiente, alta autocorrelazione.
+
+---
+
+### Domanda 3.4 — [Scelta multipla]
+
+Perché l'algoritmo di Metropolis funziona senza conoscere la costante di normalizzazione $Z$ della distribuzione target?
+
+  (a) Perché usa solo le derivate della densità.
+  (b) Perché discretizza lo spazio dei parametri con una griglia.
+  (c) Perché al passo di accettazione si calcola un rapporto di densità, e la costante si cancella.
+  (d) Perché la distribuzione di proposta è già normalizzata.
+  (e) Perché la costante è sempre uguale a 1 per le distribuzioni continue.
+
+---
+
+### Soluzione 3.4
+
+**Risposta corretta: (c)**
+
+$$
+r = \frac{p(\theta^*)}{p(\theta_{t-1})} = \frac{f(\theta^*)/Z}{f(\theta_{t-1})/Z} = \frac{f(\theta^*)}{f(\theta_{t-1})}
+$$
+
+La costante $Z$ si cancella. Basta valutare la densità **a meno di una costante**: in ambito bayesiano, questo è semplicemente $\text{prior} \times \text{verosimiglianza}$.
+
+---
+
+## Esercizio 4 — Errori di tipo M e di tipo S
+
+**Contesto:** Un ricercatore vuole studiare un effetto piccolo $(d = 0.20)$ con $n = 25$ per gruppo.
+
+```{r}
+set.seed(42)
+n_studi <- 100000
+n_per_gruppo <- 25
+d_vero <- 0.20
+SE <- sqrt(2 / n_per_gruppo)
+
+d_hat <- rnorm(n_studi, mean = d_vero, sd = SE)
+z_stat <- d_hat / SE
+significativi <- abs(z_stat) > 1.96
+d_signif <- d_hat[significativi]
+```
+
+*(8 minuti; 2 minuti a domanda)*
+
+---
+
+### Domanda 4.1 — [Numerica]
+
+Qual è la potenza approssimata dello studio (proporzione di risultati significativi su 100 000 simulazioni)? *(Due cifre decimali.)*
+
+---
+
+### Soluzione 4.1
+
+```{r}
+potenza <- mean(significativi)
+cat("Potenza:", round(potenza, 2), "\n")
+```
+
+**Risposta:** `r round(potenza, 2)`
+
+---
+
+### Domanda 4.2 — [Numerica]
+
+Tra gli studi significativi, qual è il rapporto di esagerazione (Type M), cioè $\text{media}(|\hat{d}_\text{signif}|) \,/\, d_\text{vero}$? *(Una cifra decimale.)*
+
+---
+
+### Soluzione 4.2
+
+```{r}
+M_ratio <- mean(abs(d_signif)) / d_vero
+cat("Rapporto M:", round(M_ratio, 1), "\n")
+```
+
+**Risposta:** `r round(M_ratio, 1)` — l'effetto stimato tra i significativi è circa `r round(M_ratio, 1)` volte il valore vero.
+
+---
+
+### Domanda 4.3 — [Numerica]
+
+Tra gli studi significativi, quale percentuale ha il segno sbagliato (Type S error)? *(Arrotondate all'intero.)*
+
+---
+
+### Soluzione 4.3
+
+```{r}
+S_error <- mean(d_signif < 0) * 100
+cat("Errore di segno:", round(S_error), "%\n")
+```
+
+**Risposta:** `r round(S_error)`%
+
+---
+
+### Domanda 4.4 — [Scelta multipla]
+
+Quale affermazione descrive meglio le implicazioni degli errori di tipo M e S per la ricerca psicologica?
+
+  (a) Se la potenza è alta, gli errori M e S sono più gravi.
+  (b) La significatività statistica garantisce che la stima sia accurata indipendentemente dalla potenza.
+  (c) Con bassa potenza, il filtro della significatività tende a selezionare stime esagerate e talvolta di segno opposto al vero effetto.
+  (d) Gli errori M e S si verificano solo con l'approccio bayesiano.
+  (e) L'errore di tipo S è più frequente dell'errore di tipo M.
+
+---
+
+### Soluzione 4.4
+
+**Risposta corretta: (c)**
+
+La significatività statistica con bassa potenza funziona come un **filtro distorcente**: seleziona le stime che, per caso, hanno superato la soglia critica. Queste stime sono sistematicamente **esagerate** (Type M) e, in una piccola percentuale di casi, hanno il **segno invertito** (Type S).
+
+L'approccio bayesiano riduce il problema perché non filtra in base a una soglia, ma quantifica l'**intera distribuzione** dell'effetto.
+
+---
+
+## Riepilogo del Segmento 1
+
+### Concetti chiave
+
+| Argomento | Cosa ricordare |
+|---|---|
+| Prior predictive | Simulo dalla prior per verificare la plausibilità *prima* dei dati |
+| Posterior predictive | Simulo dalla posterior per prevedere nuovi dati, includendo *tutta* l'incertezza |
+
+---
+
+### Concetti chiave
+
+| Argomento | Cosa ricordare |
+|---|---|
+| Metropolis | Proponi → rapporto densità → accetta/rifiuta; la costante $Z$ si cancella |
+| Errori M e S | La significatività con bassa potenza esagera gli effetti e può invertirne il segno |
+
+---
+
+## Per approfondire
+
+- <https://ccaudek.github.io/utet-companion/> — Tutto il materiale del corso

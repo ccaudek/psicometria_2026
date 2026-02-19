@@ -464,7 +464,7 @@ Immaginate un esperimento in cui un partecipante deve imparare quale di due puls
 . . .
 
 Un modello puramente statistico potrebbe limitarsi a dire:
-"la probabilità di scegliere il pulsante A è (p = 0.72)".
+"la probabilità di scegliere il pulsante A è $p$ = 0.72".
 
 . . .
 
@@ -472,16 +472,72 @@ Questa informazione è utile, ma descrive solo il **comportamento osservato**, n
 
 ---
 
-## I modelli meccanicistici
+## Dal comportamento al processo
 
-Un **modello formale** (come il modello di Rescorla–Wagner) va oltre e propone una spiegazione del processo:
+La domanda diventa:
 
-> Il partecipante aggiorna, prova dopo prova, il valore atteso di ciascun pulsante sulla base dell'esito ottenuto, utilizzando un *tasso di apprendimento* $\alpha$ che determina quanto peso viene dato alle nuove informazioni.
+* Come il partecipante aggiorna le sue aspettative?
+* Quanto peso dà agli errori?
+* Impara velocemente o lentamente?
+
+Per rispondere serve un **modello del meccanismo**.
+
+---
+
+## Modello Rescorla-Wagner
+
+Dopo ogni prova, il valore atteso dello stimolo $s$ viene modificato secondo la regola:
+
+$$
+Q_{t+1}(s) \;=\; Q_t(s) \;+\; \alpha \, \delta_t ,
+$$
+dove
+
+$$
+\delta_t \;=\; R_t - Q_t(s)
+$$
+è l’*errore di previsione* (*prediction error*), cioè la differenza tra la ricompensa ottenuta $R_t$ e l’aspettativa precedente $Q_t(s)$.
+
+---
+
+## Il motore dell’apprendimento: la sorpresa
+
+$$
+\delta_t = R_t - Q_t(s),
+$$
+
+- se $\delta_t > 0$ → ricompensa **migliore** del previsto → **rafforzamento** della scelta;  
+- se $\delta_t < 0$ → ricompensa **peggiore** del previsto → **indebolimento**;  
+- se $\delta_t = 0$ → nessuna sorpresa → **nessun apprendimento**.
+
+---
+
+> L’apprendimento è guidato dalla discrepanza tra aspettativa ed esito: più siamo sorpresi, più correggiamo la nostra previsione.
 
 . . .
 
-In questo contesto, il parametro $\alpha$ non è soltanto un numero che "fa funzionare" il modello:
-rappresenta un'ipotesi esplicita su **come avviene l'apprendimento nella mente del partecipante**.
+L’apprendimento è guidato dalla "sorpresa": la discrepanza tra ciò che ci aspettavamo e ciò che è successo veramente.
+
+---
+
+## Il parametro $\alpha$: quanto velocemente impariamo?
+
+Il parametro $\alpha \in [0,1]$ è il tasso di apprendimento. 
+
+- **$\alpha$ alto** → l’ultimo esito ha molto peso → apprendimento rapido, ma anche instabile (sensibile al rumore);  
+- **$\alpha$ basso** → gli esiti passati contano di più → apprendimento lento e conservativo.  
+
+---
+
+## I modelli meccanicistici
+
+Un **modello formale** (come il modello di Rescorla–Wagner) non è solo una descrizione dei dati ma fornisce una spiegazione del processo:
+
+> Il partecipante aggiorna, prova dopo prova, il valore atteso di ciascun pulsante in base alla sorpresa generata dall’esito, usando un tasso di apprendimento $\alpha$.
+
+. . .
+
+**$\alpha$ non è un semplice parametro matematico**: è un’ipotesi psicologica su **come avviene l’apprendimento** (ad esempio, persone ansiose potrebbero avere $\alpha$ diverso).
 
 ---
 
@@ -523,25 +579,26 @@ ggplot() +
 
 . . .
 
-Nella modellazione formale, il confronto con i dati è l'**ultimo** passo. Prima viene la teoria, poi il modello che la formalizza, poi le previsioni che ne derivano.
+**Nella modellazione formale, il confronto con i dati è l'ultimo passo.**  
+Prima viene la teoria, poi la sua formalizzazione matematica, poi le previsioni da testare.
 
 ---
 
 ## Perché ci interessa?
 
-La modellazione formale è importante perché:
-
+1. **Rendono le teorie precise e falsificabili**  
+   - “Le persone imparano dall’esperienza” → vago.  
+   - “Aggiornano il valore atteso con tasso $\alpha$” → verificabile.  
+   
 . . .
 
-1. **Rende le teorie precise**: "le persone imparano dall'esperienza" è vago; "le persone aggiornano il valore atteso con tasso $\alpha$" è preciso e verificabile.
+2. **Permettono di distinguere teorie verbalmente simili**  
+   - Due teorie verbali possono sembrare identiche, ma i loro modelli formali producono previsioni diverse.  
+   
+---
 
-. . .
-
-2. **Permette di distinguere teorie**: due teorie verbali possono sembrare simili, ma i loro modelli formali fare previsioni diverse.
-
-. . .
-
-3. **Si integra con l'approccio bayesiano**: i parametri del modello cognitivo possono essere stimati con le stesse tecniche bayesiane che abbiamo studiato dalla Lezione 17 in poi.
+3. **Si integrano perfettamente con l’inferenza bayesiana**  
+   - I parametri cognitivi (come $\alpha$) possono essere stimati con i metodi bayesiani che abbiamo già incontrato (Lezioni 17 in poi).
 
 ---
 
@@ -551,11 +608,11 @@ Nella pratica, modellazione formale e modelli multilivello si incontrano spesso:
 
 * Se stimiamo un modello di apprendimento per ciascun partecipante, otteniamo un $\alpha$ per persona. Ma le stime individuali possono essere molto rumorose (pochi trial per partecipante).
 
-. . .
+---
 
 La soluzione? Un **modello gerarchico**: le $\alpha_j$ dei singoli partecipanti vengono da una distribuzione di gruppo.
 
-  $$\alpha_j \sim \text{Distribuzione}(\mu_\alpha, \sigma_\alpha)$$
+  $$\alpha_j \sim \text{Distribuzione}(\mu_\alpha, \sigma_\alpha).$$
 
 . . .
 
@@ -595,7 +652,7 @@ In questo corso, l'obiettivo è comprendere la **logica fondamentale**: i modell
 
 . . .
 
-**La modellazione formale** traduce le teorie psicologiche in modelli matematici con parametri interpretabili, e si integra naturalmente con l'approccio bayesiano e multilivello.
+**La modellazione formale** traduce le teorie psicologiche in modelli matematici con parametri interpretabili e si integra naturalmente con l'approccio bayesiano e multilivello.
 
 ---
 

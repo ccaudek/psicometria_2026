@@ -1,0 +1,309 @@
+---
+title: "Flusso di lavoro riproducibile"
+subtitle: "Struttura del progetto e pulizia dei dati"
+version: 2.0
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+lang: it
+
+execute:
+  echo: true
+
+format:
+  revealjs:
+    theme: [default, ../revealjs.scss]
+    title-slide-attributes:
+      data-background-color: "#0072bc"
+    slide-number: c
+    show-slide-number: print
+    highlight-style: github
+    math: mathjax
+
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+## Dal modello al metodo {background-color="#2c3e50" style="color: white;"}
+
+Nelle Lezioni 24–26 abbiamo costruito modelli bayesiani sempre più complessi: regressione, inferenza su una media e confronto tra due gruppi. Ma un'analisi vale solo quanto la sua **riproducibilità**.
+
+. . .
+
+Oggi passiamo dal "cosa" al "come": come organizzare un progetto di analisi dalla domanda di ricerca al report, in modo che ogni passaggio sia **tracciabile, verificabile e ripetibile**.
+
+---
+
+## Obiettivi del segmento
+
+Al termine di questo segmento lo studente deve sapere:
+
+- definire **riproducibilità** e **replicabilità**,
+- riconoscere un workflow **non** riproducibile,
+- descrivere la **struttura standard di un progetto**,
+- spiegare **perché** i dati vanno puliti tramite script,
+- distinguere **raw data** e **clean data**.
+
+---
+
+## Definizione: Riproducibilità
+
+**Riproducibilità**  
+: possibilità di ottenere **gli stessi risultati** utilizzando  
+  **gli stessi dati** e **lo stesso codice**.
+
+Proprietà:
+
+- riguarda il *processo*,
+- è verificabile,
+- è indipendente da chi esegue l'analisi.
+
+---
+
+## Riproducibilità ≠ Replicabilità
+
+| Concetto | Definizione |
+|--------|-------------|
+| Riproducibilità | stessi dati, stesso codice |
+| Replicabilità | nuovi dati, stesso protocollo |
+
+La riproducibilità è una **condizione necessaria** per la replicabilità.
+
+---
+
+## Perché la riproducibilità è critica in psicologia
+
+- Dati complessi (questionari, scale, item);
+- molte decisioni intermedie;
+- analisi iterative.
+
+Senza riproducibilità:
+
+- gli errori non sono individuabili;
+- le decisioni non sono verificabili.
+
+---
+
+## Workflow di analisi: definizione
+
+**Workflow di analisi**  
+: sequenza di operazioni che porta  
+  dai **dati grezzi** ai **risultati finali**.
+  
+. . .
+
+Include:
+
+- organizzazione del progetto,
+- pulizia dei dati,
+- analisi statistica,
+- produzione del report.
+
+---
+
+## Esempio di workflow NON riproducibile
+
+1. File dati modificato manualmente.
+2. Pulizia non documentata.
+3. Analisi ripetute "a tentativi".
+4. Risultati copiati nel report.
+
+Il problema è la **mancanza di tracciabilità**.
+
+---
+
+## Quando un workflow NON è riproducibile
+
+Un workflow non è riproducibile se:
+
+1. i dati grezzi vengono sovrascritti,
+2. la pulizia non è codificata,
+3. le analisi sono eseguite manualmente,
+4. il report non è generato dal codice.
+
+---
+
+## Struttura standard di un progetto
+
+Un progetto riproducibile ha una struttura esplicita:
+
+```
+project/
+ ├── data/
+ │   ├── raw/
+ │   └── clean/
+ ├── R/
+ ├── report/
+ └── README.md
+```
+
+La struttura del progetto **fa parte del metodo**.
+
+---
+
+## Ruolo delle cartelle principali
+
+- `data/raw`  
+  dati originali, non modificati
+
+- `data/clean`  
+  dati pronti per l'analisi
+
+- `R/`  
+  script di pulizia e analisi
+
+- `report/`  
+  documenti generati automaticamente
+
+---
+
+## Regola fondamentale sui dati {background-color="#2c3e50" style="color: white;"}
+
+**I dati grezzi non si modificano mai**
+
+Motivi:
+
+- preservare l'informazione originale,
+- poter rifare la pulizia,
+- evitare errori irreversibili.
+
+---
+
+## Perché la pulizia dei dati è necessaria
+
+I dati reali contengono spesso:
+
+- valori mancanti,
+- errori di codifica,
+- risposte fuori range,
+- formati incoerenti.
+
+La pulizia dei dati è una **fase metodologica**, non tecnica.
+
+---
+
+## Data cleaning: definizione
+
+**Pulizia dei dati (data cleaning)**  
+: insieme di operazioni che rendono i dati  
+  **coerenti, analizzabili e documentati**.
+
+Esempi:
+
+- ricodifica delle variabili,
+- gestione dei missing,
+- controllo dei range,
+- creazione di punteggi di scala.
+
+---
+
+## La pulizia deve essere fatta con script
+
+Pulizia manuale:
+
+- non è tracciabile,
+- non è ripetibile,
+- introduce errori.
+
+. . .
+
+Pulizia tramite script:
+
+- è documentata,
+- è riproducibile,
+- può essere verificata.
+
+---
+
+## Raw data vs Clean data
+
+**Raw data**
+
+- dati originali,
+- mai modificati.
+
+. . .
+
+**Clean data**
+
+- ottenuti dai raw tramite script,
+- pronti per l'analisi.
+
+La distinzione raw/clean è **concettuale e operativa**.
+
+---
+
+## Vantaggi della separazione raw / clean
+
+- Trasparenza del processo.
+- Controllo delle decisioni.
+- Facilità di revisione.
+- Riproducibilità dell'analisi.
+
+---
+
+## Workflow corretto (schema)
+
+1. Importazione raw data.
+2. Pulizia tramite script.
+3. Salvataggio clean data.
+4. Analisi statistica.
+5. Report automatico.
+
+Ogni passaggio è **esplicito** — esattamente come lo era la nostra pipeline nelle Lezioni 24–26 (dati → modello brms → posterior → previsioni → conclusioni).
+
+---
+
+## Collegamento con l'Open Science
+
+**Open Science**  
+: insieme di pratiche che promuovono  
+  **trasparenza, verificabilità e riproducibilità**.
+
+La struttura del progetto e la pulizia dei dati documentata:
+
+- sono pratiche dell'Open Science,
+- non richiedono di "pubblicare tutto".
+
+---
+
+## Cosa NON è l'Open Science
+
+L'Open Science non significa:
+
+- eliminare il giudizio del ricercatore,
+- rinunciare al controllo dei dati,
+- fare solo preregistrazioni.
+
+---
+
+## Cosa è l'Open Science
+
+L'Open Science significa:  
+
+mettere altri colleghi nella condizione di potere verificare le conclusioni a partire dai dati grezzi.
+
+---
+
+## Riepilogo (da sapere per l'esame)
+
+- Definizione di riproducibilità
+- differenza riproducibilità / replicabilità
+- struttura standard di un progetto
+- regola sui dati grezzi
+- definizione di data cleaning
+- distinzione raw / clean data
+
+---
+
+## Domande tipiche d'esame
+
+- Quale passaggio compromette la riproducibilità?
+- Dove vanno salvati i dati puliti?
+- Perché la pulizia deve essere fatta con script?
+- Qual è la differenza tra raw e clean data?

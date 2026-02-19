@@ -1,0 +1,547 @@
+---
+title: "Esercitazione di ripasso – Segmento 2"
+subtitle: "Regressione, inferenza su medie, confronto frequentista–bayesiano"
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+toc-depth: 2
+lang: it
+
+execute:
+  echo: true
+
+format:
+    revealjs:
+      theme: [default, ../revealjs.scss]
+      title-slide-attributes:
+        data-background-color: "#0072bc"
+      slide-number: c
+      show-slide-number: print
+      highlight-style: github
+      math: mathjax
+      mermaid:
+        theme: neutral
+      
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+```{r}
+#| echo: false
+#| output: false
+set.seed(42)
+suppressPackageStartupMessages({
+  library(brms)
+  library(ggplot2)
+})
+```
+
+## Obiettivi di questo segmento {.unnumbered .unlisted}
+
+In questo segmento metteremo a confronto **approccio frequentista e bayesiano** su tre problemi pratici:
+
+1. **Regressione lineare** con un predittore continuo;
+2. **Inferenza su una media**;
+3. **Confronto tra due medie**.
+
+Per ciascun problema: analisi frequentista, analisi bayesiana con `brms` e poi: **cosa posso concludere nei due approcci?**
+
+> Riferimento: <https://ccaudek.github.io/utet-companion/> — Capitoli 21, 23, 26, 27
+
+---
+
+## Formato della prova
+
+Ogni domanda ha **5 alternative, una sola corretta** (verbale o numerica).
+
+Per le risposte numeriche basate su simulazioni, usiamo `set.seed()` fisso e $N$ grande per garantire risultati stabili.
+
+---
+
+## Esercizio 5 — Regressione lineare bivariata
+
+**Scenario:** Un ricercatore studia la relazione tra ore di studio settimanali ($X$) e punteggio a un esame ($Y$, scala 0–30).
+
+```{r}
+set.seed(42)
+n <- 30
+ore <- round(rnorm(n, mean = 15, sd = 5), 1)
+punteggio <- round(12 + 0.8 * ore + rnorm(n, 0, 3), 1)
+dati_reg <- data.frame(ore = ore, punteggio = punteggio)
+```
+
+```{r}
+mod_freq <- lm(punteggio ~ ore, data = dati_reg)
+```
+
+*(8 minuti)*
+
+---
+
+### Domanda 5.1 — [Numerica]
+
+Qual è la stima della pendenza ($\hat{\beta}_1$) dal modello `lm()`? *(Due cifre decimali.)*
+
+---
+
+### Soluzione 5.1
+
+```{r}
+beta1 <- coef(mod_freq)["ore"]
+cat("Pendenza:", round(beta1, 2), "\n")
+```
+
+**Risposta:** `r round(beta1, 2)`
+
+---
+
+### Domanda 5.2 — [Numerica]
+
+Qual è il limite inferiore dell'intervallo di confidenza al 95% per la pendenza? *(Due cifre decimali.)*
+
+---
+
+### Soluzione 5.2
+
+```{r}
+ci <- confint(mod_freq)["ore", ]
+cat("IC 95% pendenza:", round(ci, 2), "\n")
+```
+
+**Risposta:** `r round(ci[1], 2)`
+
+---
+
+### Domanda 5.3 — [Numerica]
+
+Usate `brms` per stimare lo stesso modello. Qual è la media a posteriori della pendenza? *(Due cifre decimali.)*
+
+```{r}
+#| output: false
+mod_bayes <- brm(
+  punteggio ~ ore,
+  data = dati_reg,
+  family = gaussian(),
+  seed = 42,
+  backend = "cmdstanr",
+  silent = 2,
+  refresh = 0
+)
+```
+
+---
+
+### Soluzione 5.3
+
+```{r}
+post <- as_draws_df(mod_bayes)
+cat("Media a posteriori pendenza:", round(mean(post$b_ore), 2), "\n")
+```
+
+**Risposta:** `r round(mean(post$b_ore), 2)`
+
+Nota: con prior debolmente informative (default di brms), le stime frequentista e bayesiana sono molto simili.
+
+---
+
+### Domanda 5.4 — [Scelta multipla]
+
+Un collega legge l'IC al 95% della pendenza e dice: "C'è il 95% di probabilità che la vera pendenza sia in questo intervallo." Se l'analisi è stata fatta con `lm()`, questa frase è:
+
+  (a) Corretta: è esattamente il significato dell'intervallo di confidenza.
+  (b) Scorretta: l'intervallo di confidenza si riferisce alla procedura ripetuta, non al parametro fisso.
+  (c) Corretta solo se il campione è grande.
+  (d) Scorretta: l'IC al 95% copre il 95% dei dati, non del parametro.
+  (e) Corretta solo se la distribuzione è normale.
+
+---
+
+### Soluzione 5.4
+
+**Risposta corretta: (b)**
+
+L'IC frequentista al 95% significa: "Se ripetessi lo studio infinite volte, il 95% degli intervalli così calcolati conterrebbe il vero $\beta$." Non possiamo dire che *questo specifico* intervallo contenga $\beta$ con probabilità 0.95 — il parametro è fisso, non casuale.
+
+L'**intervallo di credibilità bayesiano** al 95%, invece, *ha* questa interpretazione: "C'è il 95% di probabilità che $\beta$ sia in questo intervallo."
+
+---
+
+### Domanda 5.5 — [Scelta multipla]
+
+Lo studente Matteo studia 20 ore. Si vuole prevedere il suo punteggio. Quale differenza c'è tra la previsione frequentista e quella bayesiana?
+
+  (a) La previsione bayesiana è sempre più accurata.
+  (b) La previsione frequentista è un singolo numero senza incertezza.
+  (c) La previsione bayesiana produce una distribuzione completa, da cui si può calcolare qualsiasi probabilità (es. $P(Y > 25)$).
+  (d) Non c'è alcuna differenza: entrambe danno lo stesso intervallo.
+  (e) La previsione frequentista è più conservativa perché usa un campione.
+
+---
+
+### Soluzione 5.5
+
+**Risposta corretta: (c)**
+
+La previsione frequentista produce un valore puntuale e un intervallo di previsione. La previsione bayesiana produce un'**intera distribuzione predittiva a posteriori**, da cui si può calcolare *qualsiasi* probabilità di interesse (es. $P(Y > 25 \mid X=20, \text{dati})$, $P(20 < Y < 28 \mid X=20, \text{dati})$, ecc.).
+
+```{r}
+pred_bayes <- posterior_predict(mod_bayes, newdata = data.frame(ore = 20))
+cat("P(Y > 25 | X=20, dati) =", round(mean(pred_bayes > 25), 2), "\n")
+```
+
+---
+
+## Esercizio 6 — Inferenza su una media
+
+**Scenario:** Si vuole stimare il livello medio di ansia ($\mu$) in studenti durante gli esami, misurato con lo STAI (scala 20–80).
+
+```{r}
+ansia <- c(48, 55, 42, 61, 50, 53, 47, 58, 44, 52,
+           56, 49, 63, 51, 45, 57, 54, 46, 60, 50)
+```
+
+*(8 minuti)*
+
+---
+
+### Domanda 6.1 — [Numerica]
+
+Eseguite un test-$t$ a un campione con $H_0: \mu = 45$. Qual è il valore della statistica $t$? *(Due cifre decimali.)*
+
+---
+
+### Soluzione 6.1
+
+```{r}
+tt <- t.test(ansia, mu = 45)
+cat("Statistica t:", round(tt$statistic, 2), "\n")
+```
+
+**Risposta:** `r round(tt$statistic, 2)`
+
+---
+
+### Domanda 6.2 — [Numerica]
+
+Qual è il valore-$p$ del test? *(Quattro cifre decimali.)*
+
+---
+
+### Soluzione 6.2
+
+```{r}
+cat("Valore-p:", round(tt$p.value, 4), "\n")
+```
+
+**Risposta:** `r round(tt$p.value, 4)`
+
+---
+
+### Domanda 6.3 — [Numerica]
+
+Stimate il modello solo-intercetta con `brms`. Calcolate $P(\mu > 50 \mid \text{dati})$ dai campioni della posterior. *(Due cifre decimali.)*
+
+```{r}
+#| output: false
+dati_ansia <- data.frame(ansia = ansia)
+mod_ansia <- brm(
+  ansia ~ 1,
+  data = dati_ansia,
+  family = gaussian(),
+  seed = 42,
+  silent = 2,
+  refresh = 0,
+  backend = "cmdstanr"
+)
+```
+
+---
+
+### Soluzione 6.3
+
+```{r}
+post_mu <- as_draws_df(mod_ansia)$b_Intercept
+P_gt_50 <- mean(post_mu > 50)
+cat("P(mu > 50 | dati) =", round(P_gt_50, 2), "\n")
+```
+
+**Risposta:** `r round(P_gt_50, 2)`
+
+---
+
+### Domanda 6.4 — [Scelta multipla]
+
+Con l'approccio frequentista, è possibile calcolare $P(\mu > 50 \mid \text{dati})$?
+
+  (a) Sì, basta usare la funzione `pnorm()` con la media campionaria e l'errore standard.
+  (b) Sì, il valore-$p$ del test $H_0: \mu = 50$ fornisce esattamente questa probabilità.
+  (c) No, perché nel paradigma frequentista $\mu$ è una costante fissa e non ha una distribuzione di probabilità.
+  (d) No, perché il test-$t$ funziona solo per $H_0: \mu = 0$.
+  (e) Sì, corrisponde a $1 - p/2$ dove $p$ è il valore-$p$ bilaterale.
+
+---
+
+### Soluzione 6.4
+
+**Risposta corretta: (c)**
+
+Nel paradigma frequentista, $\mu$ è trattato come una **costante fissa ignota**. La probabilità si riferisce ai dati (o a statistiche dei dati), **non al parametro**. L'espressione $P(\mu > 50 \mid \text{dati})$ non ha significato frequentista.
+
+L'approccio bayesiano tratta $\mu$ come una variabile casuale (con distribuzione a posteriori) e $P(\mu > 50 \mid \text{dati})$ è semplicemente l'area della posterior alla destra di 50.
+
+> Questa è la **differenza epistemologica fondamentale** tra i due paradigmi.
+
+---
+
+## Esercizio 7 — Confronto tra due medie
+
+**Scenario:** Uno studio confronta i punteggi di benessere psicologico (WEMWBS, scala 14–70) tra studenti che praticano mindfulness (T) e un controllo (C).
+
+```{r}
+gruppo_T <- c(52, 58, 55, 61, 49, 56, 53, 60, 57, 54,
+              51, 59, 55, 62, 50, 57, 53, 58, 56, 48)
+gruppo_C <- c(45, 50, 42, 48, 47, 44, 51, 46, 49, 43,
+              50, 47, 45, 52, 41, 48, 46, 44, 49, 47)
+```
+
+*(8 minuti)*
+
+---
+
+### Domanda 7.1 — [Numerica]
+
+Eseguite un test-$t$ per campioni indipendenti (`var.equal = TRUE`). Qual è la differenza tra le medie ($\bar{X}_T - \bar{X}_C$)? *(Una cifra decimale.)*
+
+---
+
+### Soluzione 7.1
+
+```{r}
+diff_medie <- mean(gruppo_T) - mean(gruppo_C)
+cat("Differenza medie:", round(diff_medie, 1), "\n")
+```
+
+**Risposta:** `r round(diff_medie, 1)`
+
+---
+
+### Domanda 7.2 — [Numerica]
+
+Qual è il valore della statistica $t$? *(Due cifre decimali.)*
+
+---
+
+### Soluzione 7.2
+
+```{r}
+tt2 <- t.test(gruppo_T, gruppo_C, var.equal = TRUE)
+cat("Statistica t:", round(tt2$statistic, 2), "\n")
+```
+
+**Risposta:** `r round(tt2$statistic, 2)`
+
+---
+
+### Domanda 7.3 — [Numerica]
+
+Stimate il modello con `brms`. Calcolate $P(\mu_T - \mu_C > 5 \mid \text{dati})$, cioè la probabilità che la differenza superi la soglia di rilevanza clinica di 5 punti. *(Due cifre decimali.)*
+
+```{r}
+#| output: false
+dati_gruppi <- data.frame(
+  benessere = c(gruppo_T, gruppo_C),
+  gruppo = factor(rep(c("T", "C"), each = 20))
+)
+
+mod_gruppi <- brm(
+  benessere ~ gruppo,
+  data = dati_gruppi,
+  family = gaussian(),
+  seed = 42,
+  silent = 2,
+  refresh = 0,
+  backend = "cmdstanr"
+)
+```
+
+---
+
+### Soluzione 7.3
+
+```{r}
+post_diff <- as_draws_df(mod_gruppi)$b_gruppoT
+
+cat("P(diff > 0 | dati) =", round(mean(post_diff > 0), 2), "\n")
+cat("P(diff > 5 | dati) =", round(mean(post_diff > 5), 2), "\n")
+```
+
+**Risposta:** `r round(mean(post_diff > 5), 2)`
+
+---
+
+### Domanda 7.4 — [Scelta multipla]
+
+Un clinico vi chiede: "Il trattamento mindfulness produce un beneficio *clinicamente rilevante*?" Quale approccio risponde meglio?
+
+  (a) Il frequentista, perché il valore-$p$ è piccolo.
+  (b) Il bayesiano, perché permette di calcolare direttamente la probabilità che la differenza superi una soglia clinica.
+  (c) Sono equivalenti: entrambi rispondono alla domanda.
+  (d) Nessuno dei due: serve un'analisi qualitativa.
+  (e) Il frequentista, perché l'IC al 95% indica la dimensione dell'effetto.
+
+---
+
+### Soluzione 7.4
+
+**Risposta corretta: (b)**
+
+Il test-$t$ risponde a "la differenza è diversa da zero?" (sì/no). Ma il clinico vuole sapere "la differenza è *abbastanza grande* da essere utile?" — una domanda sulla **magnitudine**, non sulla significatività.
+
+L'approccio bayesiano risponde calcolando $P(\delta > \text{soglia} \mid \text{dati})$ direttamente dalla posterior: questa è la probabilità che l'effetto sia clinicamente rilevante.
+
+---
+
+## Esercizio 8 — Interpretazioni e fraintendimenti
+
+Questo esercizio verifica la comprensione epistemologica del confronto tra i due paradigmi.
+
+---
+
+### Domanda 8.1 — [Scelta multipla]
+
+Un ricercatore trova $p = 0.03$ e scrive nel report: "C'è il 97% di probabilità che l'effetto sia reale." Quale affermazione è corretta?
+
+  (a) La frase è corretta: $1 - p$ è la probabilità che l'effetto esista.
+  (b) La frase è corretta solo se la potenza è superiore all'80%.
+  (c) La frase è scorretta: il valore-$p$ è $P(\text{dati} \mid H_0)$, non $P(H_0 \mid \text{dati})$; scambiarli è la fallacia della trasposizione del condizionale.
+  (d) La frase è scorretta perché $p = 0.03$ è troppo vicino a 0.05.
+  (e) La frase è corretta nel paradigma bayesiano, scorretta in quello frequentista.
+
+---
+
+### Soluzione 8.1
+
+**Risposta corretta: (c)**
+
+Il valore-$p$ risponde a: "Supponendo che $H_0$ sia vera, quanto sarebbero improbabili dati così estremi?" È $P(\text{dati} \mid H_0)$, non $P(H_0 \mid \text{dati})$.
+
+Scambiare i due è lo stesso errore del test diagnostico: $P(+ \mid \text{malattia}) \neq P(\text{malattia} \mid +)$.
+
+Solo l'approccio bayesiano calcola $P(\text{ipotesi} \mid \text{dati})$.
+
+---
+
+### Domanda 8.2 — [Scelta multipla]
+
+Un altro ricercatore trova $p = 0.06$ e conclude: "Il trattamento non ha effetto." Qual è il problema di questa conclusione?
+
+  (a) Non c'è alcun problema: $p > 0.05$ dimostra che l'effetto è nullo.
+  (b) Avrebbe dovuto usare $\alpha = 0.10$.
+  (c) "Non rifiutare $H_0$" non equivale a dimostrare che $H_0$ sia vera; con più dati, lo stesso effetto potrebbe risultare significativo.
+  (d) Il problema è solo che non ha riportato la dimensione dell'effetto.
+  (e) La conclusione è corretta se il campione è grande.
+
+---
+
+### Soluzione 8.2
+
+**Risposta corretta: (c)**
+
+"Non rifiutare $H_0$" non significa "accettare $H_0$": l'assenza di evidenza **non è** evidenza di assenza. Con un campione più grande, lo stesso effetto potrebbe raggiungere la significatività. Il test NHST non quantifica la plausibilità di $H_0$.
+
+---
+
+### Domanda 8.3 — [Scelta multipla]
+
+In un'analisi bayesiana con `brms`, l'intervallo di credibilità al 95% per la differenza tra due gruppi è $[0.2, \, 8.4]$. Qual è l'interpretazione corretta?
+
+  (a) Se ripetessimo lo studio, il 95% degli intervalli conterrebbe il vero valore.
+  (b) Il 95% dei dati si trova tra 0.2 e 8.4.
+  (c) C'è il 95% di probabilità che la vera differenza sia tra 0.2 e 8.4.
+  (d) L'effetto è significativo perché l'intervallo non contiene zero.
+  (e) C'è il 5% di probabilità che l'effetto sia negativo.
+
+---
+
+### Soluzione 8.3
+
+**Risposta corretta: (c)**
+
+L'intervallo di credibilità bayesiano ha un'interpretazione probabilistica **diretta**: "Data l'evidenza, c'è il 95% di probabilità che il parametro sia in questo intervallo." Questa è esattamente la domanda che il ricercatore si pone — e a cui l'IC frequentista *non* risponde.
+
+---
+
+### Domanda 8.4 — [Scelta multipla]
+
+Qual è la differenza **fondamentale** tra il paradigma frequentista e quello bayesiano?
+
+  (a) Il frequentismo usa campioni grandi, il bayesianesimo campioni piccoli.
+  (b) Il frequentismo assegna probabilità ai dati condizionalmente ai parametri; il bayesianesimo assegna probabilità ai parametri condizionalmente ai dati.
+  (c) Il frequentismo è oggettivo, il bayesianesimo è soggettivo.
+  (d) Il bayesianesimo non usa la verosimiglianza.
+  (e) Il frequentismo funziona solo con distribuzioni normali.
+
+---
+
+### Soluzione 8.4
+
+**Risposta corretta: (b)**
+
+- **Frequentismo:** calcola $P(\text{dati} \mid \theta)$ — il parametro è fisso, i dati variano.
+- **Bayesianesimo:** calcola $P(\theta \mid \text{dati})$ — i dati sono fissi (osservati), l'incertezza è sul parametro.
+
+Questa differenza ha conseguenze pratiche enormi: il bayesiano può rispondere *direttamente* a domande come "Qual è la probabilità che $\theta > 0$?" o "Qual è la probabilità che l'effetto sia clinicamente rilevante?"
+
+---
+
+### Domanda 8.5 — [Scelta multipla]
+
+In che senso la distribuzione a posteriori contiene "più informazione" del valore-$p$?
+
+  (a) Perché la posterior è calcolata su più dati.
+  (b) Perché il valore-$p$ risponde a una sola domanda ($H_0$ sì/no), mentre la posterior contiene la stima, l'incertezza, probabilità direzionali e previsioni per nuovi dati.
+  (c) Perché la posterior è sempre più precisa.
+  (d) Perché il valore-$p$ non tiene conto della dimensione campionaria.
+  (e) Perché il valore-$p$ ignora i dati.
+
+---
+
+### Soluzione 8.5
+
+**Risposta corretta: (b)**
+
+Il valore-$p$ è un **singolo numero** che risponde a una sola domanda: "Quanto sono estremi i dati sotto $H_0$?" La posterior è un'**intera distribuzione** che contiene:
+
+- la stima puntuale (media, mediana);
+- l'incertezza (ampiezza della distribuzione);
+- probabilità direzionali ($P(\theta > 0)$, $P(\theta > \text{soglia})$);
+- previsioni per nuovi dati (via posterior predictive).
+
+---
+
+## Riepilogo del Segmento 2
+
+### Competenze pratiche attese
+
+| Analisi | Frequentista | Bayesiano |
+|---|---|---|
+| Regressione bivariata | `lm()`, `coef()`, `confint()` | `brm()`, `as_draws_df()` |
+| Test su una media | `t.test(x, mu = ...)` | `brm(y ~ 1)` |
+| Confronto due medie | `t.test(x, y)` | `brm(y ~ gruppo)` |
+
+### Competenze concettuali attese
+
+- IC frequentista ≠ IC bayesiano (significato diverso).
+- $P(\text{dati} \mid H_0) \neq P(H_0 \mid \text{dati})$ (fallacia della trasposizione).
+- La posterior risponde direttamente alla domanda del ricercatore.
+
+---
+
+## Per approfondire
+
+- <https://ccaudek.github.io/utet-companion/> — Tutto il materiale del corso

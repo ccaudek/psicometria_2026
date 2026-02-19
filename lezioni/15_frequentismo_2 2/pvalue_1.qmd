@@ -1,0 +1,661 @@
+---
+title: "Il valore-$p$ e l'intervallo di confidenza"
+subtitle: "Cosa dicono davvero — Segmento 1"
+author:
+  - name: Corrado Caudek
+    orcid: 0000-0002-1404-0420
+    email: corrado.caudek@unifi.it
+    affiliations: Università degli Studi di Firenze
+date: today
+date-format: long
+toc: false
+lang: it
+
+execute:
+  echo: true
+
+format:
+  revealjs:
+    theme: [default, ../revealjs.scss]
+    title-slide-attributes:
+      data-background-color: "#0072bc"
+    slide-number: c
+    show-slide-number: print
+    highlight-style: github
+    math: mathjax
+
+bibliography: ../references.bib
+csl: ../apa.csl
+---
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+library(ggplot2)
+library(dplyr)
+set.seed(42)
+```
+
+# Il numero più frainteso della scienza {background-color="#e74c3c" style="color: white;"}
+
+## Un fatto sorprendente
+
+Nel 2016, l'American Statistical Association ha preso un provvedimento senza precedenti: ha pubblicato un comunicato ufficiale per chiarire cosa il valore-$p$ **non è**. Era la prima volta in 177 anni di storia dell'associazione che veniva emesso un documento del genere.
+
+. . .
+
+Il motivo: decenni di interpretazioni errate del valore-$p$ hanno contribuito a una crisi di fiducia nei risultati scientifici — quella che oggi chiamiamo **crisi della riproducibilità**.
+
+. . .
+
+In questa lezione capiremo perché un concetto apparentemente semplice genera così tanta confusione e perché questa confusione ha conseguenze concrete per la psicologia clinica e di ricerca.
+
+---
+
+## Obiettivi {.unnumbered .unlisted}
+
+1. Comprendere cosa il **valore-$p$** misura realmente.
+2. Identificare le **interpretazioni errate** più comuni.
+3. Capire la logica del **test di ipotesi**.
+4. Distinguere tra errori di **tipo I** e **tipo II**.
+5. Preparare il terreno per gli errori di tipo **S** e **M**.
+
+# Parte 1: il valore-$p$
+
+## Riprendiamo da dove eravamo rimasti
+
+Nella lezione precedente abbiamo visto che il frequentismo calcola:
+
+$$
+P(\text{dati} \mid \text{H}_0)
+$$
+
+invece di ciò che vorremmo veramente:
+
+$$
+P(\text{H} \mid \text{dati}).
+$$
+
+. . .
+
+Il **valore-$p$** è l'incarnazione concreta di questa logica.
+
+---
+
+## Definizione formale del valore-$p$
+
+::: {.callout-note}
+## Definizione
+
+Il **valore-$p$** è la probabilità di osservare dati **almeno così estremi** come quelli ottenuti, **assumendo che l'ipotesi nulla sia vera**.
+:::
+
+$$
+p = P(\text{dati così estremi o più} \mid \text{H}_0 \text{ vera})
+$$
+
+---
+
+## Un esempio concreto
+
+**Studio:** confrontiamo l'efficacia di un nuovo training per la regolazione emotiva rispetto a un gruppo di controllo in 60 studenti con ansia (30 partecipanti per gruppo).
+
+```{r}
+# Simuliamo i dati
+set.seed(123)
+n <- 30
+
+# Supponiamo che il training abbia un effetto reale di 5 punti
+controllo <- rnorm(n, mean = 50, sd = 10)  # Media ansia gruppo controllo
+training <- rnorm(n, mean = 45, sd = 10)   # Media ansia gruppo training
+
+# Differenza osservata
+diff_osservata <- mean(controllo) - mean(training)
+cat("Differenza osservata:", round(diff_osservata, 2), "punti\n")
+```
+
+---
+
+## Calcoliamo il valore-$p$
+
+```{r}
+# Test t per campioni indipendenti
+risultato <- t.test(controllo, training)
+risultato
+```
+
+---
+
+## Cosa significa questo valore-$p$?
+
+Il valore-$p$ di `r round(risultato$p.value, 4)` significa:
+
+> **Se** il training non avesse alcun effetto ($H_0$: differenza = 0),
+> la probabilità di osservare una differenza di almeno `r round(diff_osservata, 1)` punti
+> sarebbe circa `r round(risultato$p.value * 100, 1)`%.
+
+. . .
+
+::: {.callout-warning}
+**Non significa** che c'è il `r round((1 - risultato$p.value) * 100, 1)`% di probabilità che il training funzioni!
+:::
+
+---
+
+## Visualizziamo il valore-$p$
+
+```{r}
+#| echo: false
+
+# Distribuzione sotto H0
+x <- seq(-5, 5, length.out = 1000)
+y <- dt(x, df = 58)
+
+# Valore t osservato
+t_oss <- risultato$statistic
+
+df_t <- data.frame(x = x, y = y)
+
+ggplot(df_t, aes(x = x, y = y)) +
+  geom_line(linewidth = 1) +
+  geom_area(data = subset(df_t, x >= abs(t_oss)), 
+            aes(x = x, y = y), fill = "coral", alpha = 0.7) +
+  geom_area(data = subset(df_t, x <= -abs(t_oss)), 
+            aes(x = x, y = y), fill = "coral", alpha = 0.7) +
+  geom_vline(xintercept = c(-abs(t_oss), abs(t_oss)), 
+             color = "darkred", linetype = "dashed", linewidth = 1) +
+  annotate("text", x = 0, y = 0.25, 
+           label = "Distribuzione sotto H0", size = 4) +
+  annotate("text", x = 3.5, y = 0.05, 
+           label = paste0("p/2 = ", round(risultato$p.value/2, 3)), 
+           color = "coral", size = 4) +
+  labs(title = "Il valore-p: area nelle code della distribuzione",
+       subtitle = "Se H0 fosse vera, quanto sarebbero improbabili questi dati?",
+       x = "Valore t", y = "Densità") +
+  theme_minimal(base_size = 14)
+```
+
+---
+
+## Come leggere questo grafico
+
+Ci sono tre elementi da notare.
+
+. . .
+
+La **curva** rappresenta la distribuzione t di Student — cioè quali valori della statistica $t$ ci aspetteremmo **se il training non avesse alcun effetto reale** (se $H_0$ fosse vera). È centrata su zero perché sotto $H_0$ non ci aspettiamo differenze sistematiche.
+
+---
+
+Le **linee verticali tratteggiate** indicano il valore $t$ che abbiamo effettivamente osservato nel nostro studio (e il suo simmetrico). Più il valore è lontano da zero, più il risultato è "estremo" rispetto a ciò che $H_0$ prevede.
+
+. . .
+
+Le **aree colorate** nelle code sono il valore-$p$: la probabilità di ottenere un risultato almeno altrettanto estremo del nostro, supponendo che $H_0$ sia vera. Usiamo due code perché il test è bilaterale (ci interessa un effetto in entrambe le direzioni).
+
+---
+
+## Cos'è esattamente il valore-$p$
+
+Il valore-$p$ è l'**area totale delle due code colorate**:
+
+$$
+p = P(|T| \ge |t_{\text{osservato}}| \mid H_0).
+$$
+
+. . .
+
+Più l'area è piccola, più i dati sono **incompatibili con $H_0$**.
+
+Ma — e questo è il punto cruciale — la figura **non mostra** la probabilità che $H_0$ sia vera, né la probabilità che il training funzioni. Nel frequentismo, $H_0$ non è una variabile casuale e non ha una probabilità associata.
+
+# Parte 2: cosa il valore-$p$ NON è
+
+## Le interpretazioni errate più comuni
+
+Un sondaggio tra ricercatori e studenti rivela che la maggior parte interpreta **erroneamente** il valore-$p$. Questo non è un problema solo degli studenti: Gigerenzer (2004) ha mostrato che anche docenti di statistica producono interpretazioni scorrette.
+
+. . .
+
+Vediamo le interpretazioni errate più diffuse.
+
+---
+
+## Errore 1: "Probabilità che $H_0$ sia vera"
+
+> "Un valore-$p$ di 0.03 significa che c'è solo il 3% di probabilità che l'ipotesi nulla sia vera."
+
+. . .
+
+**Perché è sbagliato:**
+
+- il valore-$p$ è $P(\text{dati} \mid \text{H}_0)$, non $P(\text{H}_0 \mid \text{dati})$;
+- nel framework frequentista, $H_0$ è vera o falsa — non ha una "probabilità";
+- è l'errore di **invertire il condizionamento**.
+
+---
+
+## L'errore di invertire il condizionamento
+
+Un'analogia:
+
+> $P(\text{persona bagnata} \mid \text{piove}) = 0.95$
+
+non implica che:
+
+> $P(\text{piove} \mid \text{persona bagnata}) = 0.95$.
+
+. . .
+
+La persona potrebbe essere bagnata perché si è fatta una doccia, è andata a nuotare, oppure è stata sorpresa da un irrigatore automatico. Per passare dalla prima probabilità alla seconda servirebbe il teorema di Bayes — esattamente come nell'inferenza statistica.
+
+---
+
+## Errore 2: "Probabilità che il risultato sia dovuto al caso"
+
+> "Il valore-$p$ di 0.03 significa che c'è solo il 3% di probabilità che questo risultato sia dovuto al caso."
+
+. . .
+
+**Perché è sbagliato:**
+
+- il valore-$p$ **assume già** che $H_0$ sia vera (cioè che il caso sia l'unica spiegazione);
+- non confronta "caso" vs "effetto reale";
+- è una probabilità **condizionata**, non assoluta.
+
+---
+
+## Errore 3: "Probabilità di replicare il risultato"
+
+> "Con p = 0.03, se ripetessi lo studio avrei il 97% di probabilità di trovare di nuovo un risultato significativo."
+
+. . .
+
+**Perché è sbagliato:**
+
+- la probabilità di replicare dipende dalla **potenza** dello studio e dall'**effetto reale**;
+- un valore-$p$ basso non garantisce affatto la replicabilità;
+- studi con bassa potenza statistica possono ottenere un risultato significativo per caso ($p$ < .05) e quindi non essere replicabili.
+
+---
+
+## Errore 4: "Misura della grandezza dell'effetto"
+
+> "Un valore-$p$ più piccolo indica un effetto più grande."
+
+. . .
+
+**Perché è sbagliato:**
+
+lo stesso effetto può dare valori-$p$ molto diversi a seconda di $n$.
+
+---
+
+```{r}
+# Due studi con lo stesso effetto, diversa numerosità
+set.seed(42)
+
+# Studio piccolo: n = 20
+piccolo <- t.test(rnorm(20, 0.3, 1), mu = 0)
+
+# Studio grande: n = 200  
+grande <- t.test(rnorm(200, 0.3, 1), mu = 0)
+
+cat("Studio piccolo (n=20): p =", round(piccolo$p.value, 4), "\n")
+cat("Studio grande (n=200): p =", round(grande$p.value, 6), "\n")
+```
+
+Lo stesso effetto ($d$ = 0.3), ma il valore-$p$ differisce di ordini di grandezza. Un clinico che valutasse l'efficacia del trattamento dal valore-$p$ trarrebbe conclusioni fuorvianti.
+
+---
+
+## Riepilogo: cosa il valore-$p$ NON è
+
+| Interpretazione | Corretta? |
+|-----------------|-----------|
+| Probabilità che $H_0$ sia vera | No |
+| Probabilità che il risultato sia dovuto al caso | No |
+| Probabilità di replicare il risultato | No |
+| Misura della grandezza dell'effetto | No |
+| Probabilità che $H_1$ sia vera | No |
+
+---
+
+## Allora, cos'è il **valore-p**?
+
+::: {.callout-note}
+### Interpretazione corretta
+
+Il **valore-$p$** è la probabilità di osservare dati **almeno altrettanto estremi** rispetto a quelli ottenuti, **nell'ipotesi che l'ipotesi nulla $H_0$ sia vera**.
+:::
+
+. . .
+
+Rappresenta una misura di **quanto i dati siano sorprendenti** sotto l'assunzione che $H_0$ sia vera.
+
+Niente di più, niente di meno.
+
+---
+
+## Il comunicato dell'ASA (2016) {background-color="#2c3e50" style="color: white;"}
+
+. . .
+
+Nel 2016 l'American Statistical Association ha emesso sei principi sul valore-$p$. Tre sono particolarmente rilevanti per noi:
+
+. . .
+
+(1) I valori-$p$ non misurano la probabilità che l'ipotesi in esame sia vera, né la probabilità che i dati siano prodotti dal solo caso.
+
+. . .
+
+(2) Le conclusioni scientifiche e le decisioni politiche o aziendali non dovrebbero basarsi sulla sola verifica che un valore-$p$ superi una soglia specifica.
+
+. . .
+
+(3) Un valore-$p$, o la significatività statistica, non misura la dimensione di un effetto né l'importanza di un risultato.
+
+---
+
+## Il comunicato dell'ASA (2016) {background-color="#2c3e50" style="color: white;"}
+
+Il fatto che la più importante associazione di statistici al mondo abbia sentito il bisogno di emettere queste precisazioni la dice lunga su quanto siano diffuse le interpretazioni scorrette — anche tra i professionisti.
+
+# Parte 3: la logica del test di ipotesi
+
+## Il ragionamento per assurdo
+
+La logica del test di ipotesi è simile alla **dimostrazione per assurdo** in matematica:
+
+1. **assumiamo** che $H_0$ sia vera;
+2. **calcoliamo** quanto sarebbero improbabili i dati osservati;
+3. se sono molto improbabili → **rifiutiamo** $H_0$;
+4. se non sono troppo improbabili → **non rifiutiamo** $H_0$.
+
+---
+
+## La soglia arbitraria: $\alpha$ = 0.05
+
+Per decidere cosa sia "molto improbabile", si fissa una **soglia** (*livello di significatività*):
+
+$$
+\alpha = 0.05.
+$$
+
+. . .
+
+Criterio di decisione:
+
+- se $p < \alpha$: rifiutiamo $H_0$ ("risultato statisticamente significativo");
+- se $p \geq \alpha$: non rifiutiamo $H_0$ ("risultato statisticamente non significativo").
+
+---
+
+## Perché proprio 0.05?
+
+::: {.callout-note}
+## Un po' di storia
+
+La soglia di 0.05 fu proposta da **Ronald Fisher** negli anni '20 come convenzione pratica, non come verità scientifica.
+
+> "It is convenient to take this point as a limit in judging whether a deviation is to be considered significant or not."
+> — Fisher, 1925
+:::
+
+. . .
+
+È una **convenzione storica**, non un numero magico con proprietà speciali. Fisher stesso la intendeva come guida flessibile, non come criterio rigido. Il suo irrigidimento in regola binaria è avvenuto nei decenni successivi.
+
+---
+
+## I problemi della dicotomia significativo/non significativo
+
+```{r}
+#| echo: false
+
+# Confronto p = 0.049 vs p = 0.051
+df_soglia <- data.frame(
+  studio = c("Studio A", "Studio B"),
+  p_value = c(0.049, 0.051),
+  significativo = c("Sì", "No")
+)
+
+ggplot(df_soglia, aes(x = studio, y = p_value, fill = significativo)) +
+  geom_col(width = 0.5) +
+  geom_hline(yintercept = 0.05, linetype = "dashed", color = "darkred", linewidth = 1) +
+  annotate("text", x = 2.4, y = 0.055, label = "alpha = 0.05", color = "darkred", size = 4) +
+  scale_fill_manual(values = c("Sì" = "steelblue", "No" = "coral")) +
+  labs(title = "La dicotomia artificiale",
+       subtitle = "Due studi quasi identici, conclusioni opposte",
+       x = "", y = "valore-p", fill = "Significativo?") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "bottom")
+```
+
+---
+
+## Cosa significa per la pratica {background-color="#2c3e50" style="color: white;"}
+
+. . .
+
+Lo Studio A ($p = 0.049$) viene pubblicato, citato e il trattamento viene adottato. Lo Studio B ($p = 0.051$) resta nel cassetto. Eppure la differenza tra i due studi è trascurabile — i dati dicono essenzialmente la stessa cosa.
+
+. . .
+
+Questa dicotomia artificiale ha conseguenze reali: trattamenti vengono adottati o abbandonati sulla base di una soglia che non ha alcun fondamento scientifico profondo. È uno dei meccanismi attraverso cui la statistica frequentista contribuisce alla crisi di riproducibilità.
+
+---
+
+## "Significatività" ≠ importanza pratica
+
+Un risultato può essere:
+
+| | Effetto grande | Effetto piccolo |
+|---|---|---|
+| **p < .05** | Importante e significativo | Significativo ma irrilevante |
+| **p ≥ .05** | Importante ma non rilevato | Giustamente ignorato |
+
+::: {.callout-warning}
+Con un campione sufficientemente grande ($n$), qualsiasi effetto, anche se clinicamente irrilevante, risulta statisticamente "significativo".
+:::
+
+---
+
+## Esempio: un effetto minuscolo ma "significativo"
+
+```{r}
+set.seed(42)
+
+# Effetto minuscolo: 0.1 punti su una scala 0-100
+n_grande <- 100000
+gruppo_a <- rnorm(n_grande, mean = 50.0, sd = 10)
+gruppo_b <- rnorm(n_grande, mean = 50.1, sd = 10)
+```
+
+---
+
+```{r}
+t.test(gruppo_a, gruppo_b)
+```
+
+. . .
+
+$p$ < .005, ma la differenza è di **0.1 punti** — clinicamente irrilevante. Nessuno psicologo considererebbe **clinicamente rilevante** una differenza di 0.1 punti su una scala da 0 a 100, eppure il test statistico la dichiara "altamente significativa". Questo illustra perché la significatività statistica, da sola, non basta per prendere decisioni cliniche.
+
+# Parte 4: errori di tipo I e tipo II
+
+## Due modi di sbagliare
+
+Quando prendiamo una decisione basata sul test di ipotesi, possiamo commettere due tipi di errore:
+
+| | $H_0$ vera (nessun effetto) | $H_0$ falsa (effetto reale) |
+|---|---|---|
+| **Rifiutiamo $H_0$** | Errore Tipo I ($\alpha$) | Corretto |
+| **Non rifiutiamo $H_0$** | Corretto | Errore Tipo II ($\beta$) |
+
+---
+
+## Errore di Tipo I (falso positivo)
+
+::: {.callout-note}
+## Definizione
+
+**Errore di Tipo I:** Rifiutare $H_0$ quando in realtà è vera.
+
+Diciamo che c'è un effetto quando **non c'è**.
+:::
+
+. . .
+
+- La probabilità di questo errore è $\boldsymbol{\alpha}$ (tipicamente 0.05).
+- È il "falso allarme" o "falso positivo".
+
+---
+
+## Errore di Tipo II (falso negativo)
+
+::: {.callout-note}
+## Definizione
+
+**Errore di Tipo II:** Non rifiutare $H_0$ quando in realtà è falsa.
+
+**Non** rileviamo un effetto che **c'è**.
+:::
+
+. . .
+
+- La probabilità di questo errore è **$\beta$**.
+- **1 - $\beta$** è chiamata **potenza** del test.
+- Il "mancato allarme" o "falso negativo".
+
+---
+  
+## Visualizziamo i due errori
+
+```{r}
+#| echo: false
+
+# Due distribuzioni: sotto H0 e sotto H1
+x <- seq(-4, 8, length.out = 1000)
+h0 <- dnorm(x, mean = 0, sd = 1)
+h1 <- dnorm(x, mean = 2.5, sd = 1)  # Effetto reale
+
+df_errori <- data.frame(
+  x = rep(x, 2),
+  densita = c(h0, h1),
+  ipotesi = rep(c("H0 vera", "H1 vera"), each = length(x))
+)
+
+# Valore critico per alpha = 0.05 (one-tailed per semplicità)
+critico <- qnorm(0.95, 0, 1)
+
+ggplot(df_errori, aes(x = x, y = densita, color = ipotesi, fill = ipotesi)) +
+  geom_line(linewidth = 1.2) +
+  # Errore Tipo I (alpha)
+  geom_area(data = subset(df_errori, ipotesi == "H0 vera" & x >= critico),
+            alpha = 0.4) +
+  # Errore Tipo II (beta)
+  geom_area(data = subset(df_errori, ipotesi == "H1 vera" & x <= critico),
+            alpha = 0.4) +
+  geom_vline(xintercept = critico, linetype = "dashed", color = "black", linewidth = 1) +
+  annotate("text", x = critico + 0.1, y = 0.42, label = "Soglia critica", 
+           hjust = 0, size = 3.5) +
+  annotate("text", x = 2.5, y = 0.08, label = "alpha\n(Tipo I)", 
+           color = "coral", size = 4, fontface = "bold") +
+  annotate("text", x = 0.5, y = 0.15, label = "beta\n(Tipo II)", 
+           color = "steelblue", size = 4, fontface = "bold") +
+  scale_color_manual(values = c("H0 vera" = "coral", "H1 vera" = "steelblue")) +
+  scale_fill_manual(values = c("H0 vera" = "coral", "H1 vera" = "steelblue")) +
+  labs(title = "Errori di Tipo I e Tipo II",
+       subtitle = "Il trade-off inevitabile",
+       x = "Statistica test", y = "Densità", color = "", fill = "") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "bottom")
+```
+
+---
+
+## Il trade-off tra $\alpha$ e $\beta$
+
+Se riduciamo $\alpha$ (diventiamo più conservativi):
+
+- meno falsi positivi (Tipo I),
+- ma più falsi negativi (Tipo II).
+
+. . .
+
+Se aumentiamo $\alpha$ (diventiamo più liberali):
+
+- più falsi positivi (Tipo I),
+- ma meno falsi negativi (Tipo II).
+
+. . .
+
+::: {.callout-note}
+L'unico modo per ridurre **entrambi** gli errori è aumentare la **dimensione campionaria**.
+:::
+
+---
+
+## La potenza statistica
+
+La **potenza** = 1 - $\beta$ = probabilità di rilevare un effetto **quando è presente**.
+
+```{r}
+# Calcoliamo la potenza per diversi n
+library(pwr)
+
+potenze <- sapply(c(20, 50, 100, 200), function(n) {
+  pwr.t.test(n = n, d = 0.5, sig.level = 0.05, type = "two.sample")$power
+})
+
+data.frame(
+  n_per_gruppo = c(20, 50, 100, 200),
+  potenza = round(potenze, 2)
+)
+```
+
+---
+
+## Il problema della bassa potenza in psicologia {background-color="#2c3e50" style="color: white;"}
+
+. . .
+
+Molti studi in psicologia hanno potenza tra **0.30 e 0.50**. Questo significa che, se l'effetto esiste davvero, lo rileveremo solo nel 30-50% dei casi. Nel restante 50-70%, mancheremo un effetto reale.
+
+---
+
+## Il problema della bassa potenza in psicologia {background-color="#2c3e50" style="color: white;"}
+Ma il problema non si ferma qui. Come vedremo nella prossima parte, bassa potenza non significa solo "non trovo l'effetto": significa che quando *lo trovo*, la stima è sistematicamente **esagerata**. È il fenomeno della "maledizione del vincitore" — e spiega perché i risultati pubblicati in psicologia spesso non si replicano.
+
+. . .
+
+::: {.callout-warning}
+Bassa potenza + pubblicazione solo dei risultati significativi = letteratura distorta.
+:::
+
+---
+
+## Riepilogo della Parte 1
+
+1. Il valore-$p$ è $P(\text{dati} \mid \text{H}_0)$, **non** $P(\text{H}_0 \mid \text{dati})$.
+
+2. Le interpretazioni errate sono diffusissime, anche tra esperti.
+
+3. La soglia $\alpha$ = 0.05 è una convenzione arbitraria.
+
+4. Significatività statistica $\neq$ importanza pratica.
+
+5. Gli errori di Tipo I e II sono in trade-off; la potenza è spesso troppo bassa.
+
+---
+
+## Anticipazione
+
+Nella seconda parte:
+
+- Errori di tipo **S** (segno) e tipo **M** (magnitudine).
+- Perché i risultati "significativi" sono spesso **esagerati**.
+- Il legame con la **crisi di replicabilità**.
+- Quiz: sapreste riconoscere le interpretazioni errate?
