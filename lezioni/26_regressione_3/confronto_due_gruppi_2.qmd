@@ -114,10 +114,10 @@ fit <- brm(
 
 La stessa procedura che abbiamo visto nella Lezione 24 per la regressione:
 
-1. Traduce la formula R in codice **Stan**.
-2. Genera i **prior di default** se non specificati.
-3. Esegue il campionamento **MCMC** (4 catene, 2000 iterazioni ciascuna).
-4. Restituisce la **distribuzione a posteriori** dei parametri.
+1. traduce la formula R in codice **Stan**;
+2. genera i **prior di default** se non specificati;
+3. esegue il campionamento **MCMC** (4 catene, 2000 iterazioni ciascuna);
+4. restituisce la **distribuzione a posteriori** dei parametri.
 
 ---
 
@@ -132,8 +132,8 @@ summary(fit)$fixed[, c("Estimate", "Est.Error", "Rhat", "Bulk_ESS")]
 
 **Criteri di convergenza:**
 
-- $\hat{R} \approx 1.00$ → le catene hanno raggiunto la stessa distribuzione
-- ESS > 400 → campione effettivo sufficiente
+- $\hat{R} \approx 1.00$ → le catene hanno raggiunto la stessa distribuzione;
+- ESS > 400 → campione effettivo sufficiente.
 
 ---
 
@@ -226,7 +226,7 @@ ggplot(df_medie, aes(x = valore, fill = gruppo)) +
   geom_density(alpha = 0.6) +
   scale_fill_manual(values = c("coral", "steelblue")) +
   labs(title = "Distribuzioni a posteriori delle medie dei gruppi",
-       x = "Punteggio di ansia", y = "Densità", fill = "Gruppo") +
+       x = "Livello di ansia", y = "Densità", fill = "Gruppo") +
   theme_minimal(base_size = 14) +
   theme(legend.position = "bottom")
 ```

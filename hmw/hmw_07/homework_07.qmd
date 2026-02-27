@@ -1,0 +1,535 @@
+---
+title: "Esercitazione 07"
+subtitle: "Psicometria — Prof. Corrado Caudek"
+author: "Nome Cognome — Matricola"
+date: "Consegna: [data da definire]"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    code-fold: false
+    code-tools: true
+    embed-resources: true
+    theme: cosmo
+    number-sections: false
+  pdf:
+    toc: true
+    number-sections: false
+    colorlinks: true
+---
+
+# Homework
+
+Questo homework copre i contenuti delle **lectures 17, 18, 19, 20** del calendario didattico:  
+- architettura dell'approccio bayesiano (prior → likelihood → posterior),  
+- aggiornamento sequenziale,  
+- distribuzioni coniugate (Beta–Binomiale; Normale–Normale con varianza nota),  
+- sintesi della distribuzione a posteriori (media, mediana, MAP, intervalli credibili).
+
+::: {.callout-tip}
+## Come svolgere l'homework
+Per ogni quesito trovi **codice quasi completo**: devi capire cosa fa, completare gli spazi `___`,
+eseguirlo e **interpretare** i risultati (grafici e numeri).
+:::
+
+# Preparazione
+
+```r
+# Se serve (una sola volta):
+# install.packages("tidyverse")
+
+library(tidyverse)
+```
+
+# Quesito 0 — Metodo della griglia per l’aggiornamento Beta‑Binomiale
+
+Un ricercatore sta studiando l’efficacia di un nuovo trattamento. Sulla base di studi preliminari, ritiene che la proporzione di successi $\theta$ sia ben descritta da un prior della famiglia Beta che corrisponde a **4 successi e 2 insuccessi virtuali** (secondo l’interpretazione $\alpha-1$, $\beta-1$).  
+Pertanto il prior sarà $\theta \sim \text{Beta}(\alpha_0, \beta_0)$ con  
+$$
+\alpha_0 - 1 = 4,\quad \beta_0 - 1 = 2 \quad\Longrightarrow\quad \alpha_0 = 5,\; \beta_0 = 3.
+$$
+
+Successivamente vengono osservati $y = 7$ successi su $n = 10$ pazienti (modello Binomiale).
+
+In questo esercizio si chiede di:
+
+1. **Approssimare la distribuzione a posteriori** utilizzando il metodo della griglia.
+2. **Campionare dalla posteriori** ottenuta sulla griglia e calcolare la media campionaria.
+3. **Risolvere analiticamente** il problema (grazie alla coniugazione Beta‑Binomiale) e confrontare i risultati.
+
+---
+
+### 0a — Costruzione della griglia e calcolo della posteriori
+
+Completa il codice seguente per:
+
+- Definire una griglia di valori $\theta$ (ad esempio 1001 punti tra 0 e 1).
+- Calcolare la densità del prior su ogni punto della griglia usando `dbeta()`.
+- Calcolare la verosimiglianza binomiale per ogni $\theta$ con `dbinom()` (ricorda: $y$ successi su $n$ prove).
+- Ottenere la posteriori non normalizzata come prodotto prior $\times$ verosimiglianza.
+- Normalizzare la posteriori (dividendo per la somma dei valori) in modo che la somma delle probabilità sia 1 (approssimando l’integrale con la somma su griglia).
+
+---
+
+### 0b — Campionamento dalla posteriori e media campionaria
+
+Utilizza la posteriori normalizzata come distribuzione di probabilità discreta sulla griglia. Estrai un campione di grandi dimensioni (es. 10 000 valori di $\theta$) usando la funzione `sample()` con pesi proporzionali a `posterior`. Calcola la media del campione.
+
+---
+
+### 0c — Soluzione analitica
+
+Per il modello Beta‑Binomiale, calcola la posteriori esatta.
+
+---
+
+### 0d — Confronto
+
+Confronta la media ottenuta dal campionamento sulla griglia con la media analitica. Quanto sono vicine?  
+Osserva anche la forma della posteriori: sovrapponi la densità esatta (curva Beta) all’istogramma del campione.
+
+```r
+# Istogramma del campione con sovrapposizione della densità esatta
+ggplot(data.frame(theta = campione), aes(x = theta)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 30, fill = "skyblue", color = "white") +
+  stat_function(fun = dbeta, args = list(shape1 = alpha1, shape2 = beta1), 
+                color = "red", linewidth = 1) +
+  labs(title = "Campione dalla posteriori (griglia) e densità esatta",
+       x = expression(theta), y = "densità") +
+  theme_minimal()
+```
+
+**Domande:**  
+
+- Perché il metodo della griglia fornisce una buona approssimazione?  
+- Cosa succederebbe se la griglia fosse troppo rada?  
+- In che senso la media campionaria si avvicina alla media analitica?
+
+# Quesito 1 — Architettura dell'inferenza bayesiana con lo schema Beta–Binomiale
+
+Una docente vuole stimare la proporzione $\theta$ di studenti che superano un test a risposta multipla.  
+Prima di raccogliere i dati, ritiene che $\theta$ sia verosimilmente vicino a $0.6$ e decide di utilizzare un prior della famiglia **Beta**.  
+Secondo l'interpretazione dei parametri come **dati virtuali** (slide), un prior Beta si può leggere come:
+
+- $\alpha - 1 =$ numero di **successi virtuali** osservati in passato;
+- $\beta - 1 =$ numero di **insuccessi virtuali** osservati in passato.
+
+La docente considera la sua conoscenza pregressa equivalente a un'osservazione precedente su **10 studenti**, di cui **6 avevano superato** il test.  
+Ciò significa che il prior deve incorporare $6$ successi virtuali e $4$ insuccessi virtuali.  
+Pertanto:
+
+$$
+\alpha_0 - 1 = 6,\quad \beta_0 - 1 = 4 \quad\Longrightarrow\quad \alpha_0 = 7,\; \beta_0 = 5.
+$$
+
+La *forza* (o precisione) del prior è data da $\alpha_0 + \beta_0 = 12$, che corrisponde alle $10$ osservazioni virtuali più i due parametri iniziali.
+
+Successivamente si osservano $y = 14$ successi su $n = 20$ tentativi (modello Binomiale).
+
+---
+
+### 1a — Definire prior e dati
+
+Ricava i valori di $\alpha_0$ e $\beta_0$ dalle condizioni sopra e completa il codice:
+
+```r
+alpha0 <- ___
+beta0  <- ___
+
+n <- 20
+y <- 14
+```
+
+---
+
+### 1b — Posterior coniugata
+
+Per il modello Beta–Binomiale, la distribuzione a posteriori è ancora Beta:
+
+$$
+\theta \mid y \sim \text{Beta}(\alpha_1,\beta_1), \qquad
+\alpha_1 = \alpha_0 + y,\; \beta_1 = \beta_0 + (n-y).
+$$
+
+Calcola i nuovi parametri (ricordando che $\alpha_1 - 1$ e $\beta_1 - 1$ saranno i successi e insuccessi virtuali *complessivi*, dopo aver incorporato i dati reali) e completa:
+
+```r
+alpha1 <- ___
+beta1  <- ___
+```
+
+---
+
+### 1c — Visualizzare prior e posterior
+
+Completa gli spazi vuoti nel codice seguente per ottenere il grafico delle due densità:
+
+```r
+library(tidyverse)
+
+grid <- tibble(theta = seq(0, 1, length.out = 1001))
+
+dens <- grid |>
+  mutate(
+    prior = dbeta(theta, shape1 = ___, shape2 = ___),
+    post  = dbeta(theta, shape1 = ___, shape2 = ___)
+  ) |>
+  pivot_longer(c(prior, post), names_to = "dist", values_to = "density")
+
+ggplot(dens, aes(x = theta, y = density, linetype = dist)) +
+  geom_line(linewidth = 1) +
+  labs(
+    title = "Prior vs posterior per la proporzione θ",
+    x = expression(theta),
+    y = "densità"
+  ) +
+  theme_minimal()
+```
+
+**Domanda:** cosa cambia passando da prior a posterior? Dove si concentra la massa di probabilità?
+
+---
+
+### 1d — Sintesi numerica della posteriore
+
+Calcola:
+
+- media a posteriori,
+- intervallo credibile al 95% (quantili 2.5% e 97.5%).
+
+Completa:
+
+```r
+post_mean <- alpha1 / (alpha1 + beta1)
+
+ci95 <- qbeta(c(___, ___), shape1 = alpha1, shape2 = beta1)
+
+post_mean
+ci95
+```
+
+Interpreta i risultati.
+
+**Domanda:** interpreta la media a posteriori e l'intervallo credibile al 95% in parole.
+
+---
+
+## Soluzione (coerente con l'interpretazione dei dati virtuali)
+
+### 1a — Prior
+
+Dalle condizioni: $\alpha_0 - 1 = 6$, $\beta_0 - 1 = 4$  
+$\Rightarrow \alpha_0 = 7$, $\beta_0 = 5$.
+
+```r
+alpha0 <- 7
+beta0  <- 5
+
+n <- 20
+y <- 14
+```
+
+**Verifica:** la media del prior è $\alpha_0/(\alpha_0+\beta_0) = 7/12 \approx 0.583$, leggermente inferiore a $0.6$ ma comunque vicina; la moda sarebbe $(\alpha_0-1)/(\alpha_0+\beta_0-2) = 6/10 = 0.6$, che corrisponde esattamente alla proporzione di successi virtuali. L'interpretazione in termini di dati virtuali rimane coerente: $6$ successi e $4$ insuccessi su $10$ osservazioni passate.
+
+---
+
+### 1b — Posterior
+
+Aggiornamento:
+
+```r
+alpha1 <- alpha0 + y   # 7 + 14 = 21
+beta1  <- beta0 + (n - y)  # 5 + (20-14) = 5 + 6 = 11
+```
+
+La posteriore è $\text{Beta}(21, 11)$.  
+In termini di dati virtuali complessivi: successi virtuali = $\alpha_1 - 1 = 20$, insuccessi virtuali = $\beta_1 - 1 = 10$, totale osservazioni virtuali = $30$ (le $10$ iniziali più le $20$ reali).
+
+---
+
+# Quesito 1 — Architettura dell'inferenza bayesiana con lo schema Beta–Binomiale
+
+Una docente vuole stimare la proporzione $\theta$ di studenti che superano un test a risposta multipla.  
+Prima di raccogliere i dati, ritiene che $\theta$ sia verosimilmente vicino a $0.6$ e decide di utilizzare un prior della famiglia **Beta**.  
+Secondo l'interpretazione dei parametri come **dati virtuali** (slide), un prior Beta si può leggere come:
+
+- $\alpha - 1 =$ numero di **successi virtuali** osservati in passato;
+- $\beta - 1 =$ numero di **insuccessi virtuali** osservati in passato.
+
+La docente considera la sua conoscenza pregressa equivalente a un'osservazione precedente su **10 studenti**, di cui **6 avevano superato** il test.  
+Ciò significa che il prior deve incorporare $6$ successi virtuali e $4$ insuccessi virtuali.  
+Pertanto:
+
+$$
+\alpha_0 - 1 = 6,\quad \beta_0 - 1 = 4 \quad\Longrightarrow\quad \alpha_0 = 7,\; \beta_0 = 5.
+$$
+
+La *forza* (o precisione) del prior è data da $\alpha_0 + \beta_0 = 12$, che corrisponde alle $10$ osservazioni virtuali più i due parametri iniziali.
+
+Successivamente si osservano $y = 14$ successi su $n = 20$ tentativi (modello Binomiale).
+
+---
+
+### 1a — Definire prior e dati
+
+Ricava i valori di $\alpha_0$ e $\beta_0$ dalle condizioni sopra e completa il codice:
+
+```r
+alpha0 <- ___
+beta0  <- ___
+
+n <- 20
+y <- 14
+```
+
+---
+
+### 1b — Posterior coniugata
+
+Per il modello Beta–Binomiale, la distribuzione a posteriori è ancora Beta:
+
+$$
+\theta \mid y \sim \text{Beta}(\alpha_1,\beta_1), \qquad
+\alpha_1 = \alpha_0 + y,\; \beta_1 = \beta_0 + (n-y).
+$$
+
+Calcola i nuovi parametri (ricordando che $\alpha_1 - 1$ e $\beta_1 - 1$ saranno i successi e insuccessi virtuali *complessivi*, dopo aver incorporato i dati reali) e completa:
+
+```r
+alpha1 <- ___
+beta1  <- ___
+```
+
+---
+
+### 1c — Visualizzare prior e posterior
+
+Completa gli spazi vuoti nel codice seguente per ottenere il grafico delle due densità:
+
+```r
+library(tidyverse)
+
+grid <- tibble(theta = seq(0, 1, length.out = 1001))
+
+dens <- grid |>
+  mutate(
+    prior = dbeta(theta, shape1 = ___, shape2 = ___),
+    post  = dbeta(theta, shape1 = ___, shape2 = ___)
+  ) |>
+  pivot_longer(c(prior, post), names_to = "dist", values_to = "density")
+
+ggplot(dens, aes(x = theta, y = density, linetype = dist)) +
+  geom_line(linewidth = 1) +
+  labs(
+    title = "Prior vs posterior per la proporzione θ",
+    x = expression(theta),
+    y = "densità"
+  ) +
+  theme_minimal()
+```
+
+**Domanda:** cosa cambia passando da prior a posterior? Dove si concentra la massa di probabilità?
+
+---
+
+### 1d — Sintesi numerica della posteriore
+
+Calcola:
+
+- media a posteriori,
+- intervallo credibile al 95% (quantili 2.5% e 97.5%).
+
+Completa:
+
+```r
+post_mean <- alpha1 / (alpha1 + beta1)
+
+ci95 <- qbeta(c(___, ___), shape1 = alpha1, shape2 = beta1)
+
+post_mean
+ci95
+```
+
+Interpreta i risultati.
+
+**Domanda:** interpreta la media a posteriori e l'intervallo credibile al 95% in parole.
+
+---
+
+# Quesito 2 — Aggiornamento sequenziale
+
+Gli stessi dati arrivano in due blocchi:
+
+- Blocco A: $y_A = 6$ successi su $n_A = 10$
+- Blocco B: $y_B = 8$ successi su $n_B = 10$
+
+## 2a — Aggiornare con il blocco A
+
+```r
+nA <- 10
+yA <- 6
+
+alphaA <- ___
+betaA  <- ___
+```
+
+## 2b — Usare la posteriore di A come prior per B
+
+```r
+nB <- 10
+yB <- 8
+
+alphaAB <- ___
+betaAB  <- ___
+```
+
+## 2c — Verifica (una sola passata)
+
+Calcola la posteriore usando direttamente $y = y_A + y_B$, $n = n_A + n_B$.
+Poi confronta con (2b) — dovrebbero essere identiche.
+
+```r
+y_tot <- ___
+n_tot <- ___
+
+alpha_one <- ___
+beta_one  <- ___
+
+c(alphaAB = alphaAB, alpha_one = alpha_one)
+c(betaAB  = betaAB,  beta_one  = beta_one)
+```
+
+**Domanda:** perché l'aggiornamento sequenziale produce lo stesso risultato?
+
+# Quesito 3 — Influenza del prior
+
+Manteniamo gli stessi dati complessivi $y=14$, $n=20$, ma confrontiamo due prior:
+
+- Prior debole: Beta(1,1) (uniforme)
+- Prior forte: Beta(60,40) (molto concentrato attorno a 0.6)
+
+## 3a — Calcolare le due posteriori
+
+Completa:
+
+```r
+# prior debole
+a0_w <- 1
+b0_w <- 1
+a1_w <- ___
+b1_w <- ___
+
+# prior forte
+a0_s <- 60
+b0_s <- 40
+a1_s <- ___
+b1_s <- ___
+```
+
+## 3b — Confrontare graficamente le posteriori
+
+Completa:
+
+```r
+grid <- tibble(theta = seq(0, 1, length.out = 1001))
+
+dens2 <- grid |>
+  mutate(
+    post_weak = dbeta(theta, ___, ___),
+    post_strong = dbeta(theta, ___, ___)
+  ) |>
+  pivot_longer(everything(), names_to = "dist", values_to = "value") |>
+  filter(dist != "theta")
+
+ggplot(dens2, aes(x = theta, y = value, linetype = dist)) +
+  geom_line(linewidth = 1) +
+  labs(
+    title = "Posteriori con prior debole vs prior forte",
+    x = expression(theta),
+    y = "densità"
+  ) +
+  theme_minimal()
+```
+
+**Domanda:** quale posteriore è più “tirata” verso 0.6? Perché?
+
+# Quesito 4 — Famiglia coniugata Normale–Normale (varianza nota)
+
+Ora stimiamo la media $\mu$ di un punteggio psicologico (scala 0–100).  
+Assumiamo che la deviazione standard nella popolazione sia nota: $\sigma = 10$.
+
+Prior: $\mu \sim \mathcal{N}(\mu_0,\tau_0^2)$.  
+Dati: $y_i \sim \mathcal{N}(\mu,\sigma^2)$.
+
+Osserviamo $n=25$ soggetti con media campionaria $\bar y = 62$.
+
+## 4a — Impostare prior e dati
+
+```r
+mu0 <- 55
+tau0 <- 8
+
+sigma <- 10
+n <- 25
+ybar <- 62
+```
+
+## 4b — Calcolare media e SD della posteriore
+
+Per Normale–Normale ($\sigma$ nota):
+
+$$
+\tau_1^2 = \left(\frac{1}{\tau_0^2} + \frac{n}{\sigma^2}\right)^{-1},\quad
+\mu_1 = \tau_1^2\left(\frac{\mu_0}{\tau_0^2} + \frac{n\bar y}{\sigma^2}\right).
+$$
+
+Completa:
+
+```r
+tau1_sq <- ___
+mu1 <- ___
+tau1 <- sqrt(tau1_sq)
+
+mu1
+tau1
+```
+
+## 4c — Intervallo credibile al 95%
+
+```r
+ci_mu <- qnorm(c(___, ___), mean = mu1, sd = tau1)
+ci_mu
+```
+
+**Domanda:** interpreta l'intervallo credibile per $\mu$.
+
+# Quesito 5 — Sintesi a posteriori e decisione
+
+Usiamo la posteriore del Quesito 1 (Beta–Binomiale).
+
+## 5a — Probabilità a posteriori che θ superi una soglia
+
+Calcola $P(\theta > 0.65 \mid y)$.
+
+```r
+prob_gt <- 1 - pbeta(___, shape1 = alpha1, shape2 = beta1)
+prob_gt
+```
+
+## 5b — Stima MAP (massimo a posteriori)
+
+Per Beta($\alpha$,$\beta$) con $\alpha>1$ e $\beta>1$,
+il MAP è:
+
+$$
+\hat\theta_{MAP} = \frac{\alpha-1}{\alpha+\beta-2}.
+$$
+
+Completa:
+
+```r
+theta_map <- (alpha1 - ___) / (alpha1 + beta1 - ___)
+theta_map
+```
+
+**Domanda:** confronta media a posteriori e MAP. Quando differiscono di più?

@@ -41,23 +41,23 @@ set.seed(42)
 
 ## Cosa abbiamo costruito finora
 
-Nelle ultime due lezioni abbiamo imparato a fare inferenza bayesiana in due modi:
+Nelle ultime due lezioni abbiamo esplorato due approcci all'inferenza bayesiana:
 
 . . .
 
-**Lezione 17:** calcolo a mano con valori discreti (5 valori di $\theta$, tabelle, prodotti, normalizzazione) e approssimazione a griglia (101 punti).
+**Lezione 17:** abbiamo iniziato con il calcolo esplicito su un insieme discreto di valori di $\theta$ (ad esempio 5 punti), utilizzando tabelle, prodotti e normalizzazione. Abbiamo poi esteso il metodo all'approssimazione su griglia (101 punti), gettando le basi per il lavoro con distribuzioni continue.
 
 . . .
 
-**Lezione 18:** aggiornamento sequenziale — il posterior di oggi diventa il prior di domani. E abbiamo incontrato un'anticipazione: la coppia Beta-Binomiale, dove l'aggiornamento si riduce a sommare conteggi.
+**Lezione 18:** abbiamo introdotto l'aggiornamento sequenziale — il posterior di oggi diventa il prior di domani — e abbiamo anticipato un caso particolare di grande utilità: la coppia Beta-Binomiale. In questo contesto, l'aggiornamento si riduce a una semplice somma di conteggi, suggerendo l'esistenza di una struttura più profonda.
 
 ---
 
-Oggi approfondiamo *perché* quella scorciatoia funziona, e ne studiamo le proprietà. 
+Oggi approfondiamo le ragioni per cui questa scorciatoia funziona e ne analizziamo le proprietà formali.
 
 . . .
 
-Il concetto chiave è la **famiglia coniugata**: una combinazione di prior e likelihood che produce un posterior della stessa forma del prior. Quando ciò si verifica, l'inferenza bayesiana si riduce a una semplice aritmetica.
+Il concetto fondamentale è quello di **famiglia coniugata**: si verifica quando la distribuzione a priori (*prior*) e la funzione di verosimiglianza (*likelihood*) sono tali che la distribuzione a posteriori (*posterior*) appartiene alla stessa famiglia della prior. In questo caso, l'inferenza bayesiana si riduce a un semplice aggiornamento dei parametri della distribuzione, senza bisogno di integrazioni numeriche.
 
 ---
 

@@ -1,0 +1,429 @@
+---
+title: "Homework, Settimana 3"
+subtitle: "Distribuzioni predittive a priori e a posteriori"
+author: ""
+lang: it
+format: 
+  html:
+    code-fold: false
+    toc: true
+    toc-depth: 3
+    number-sections: true
+editor: source
+---
+
+```{r}
+#| output: false
+library(tidyverse)
+set.seed(2026)
+```
+
+## Informazioni generali
+
+**Di cosa tratta questo homework?**
+Questo homework si concentra su due idee fondamentali della statistica bayesiana:
+
+- la **distribuzione predittiva a priori**: cosa ci aspettiamo di osservare *prima* di raccogliere dati;
+- la **distribuzione predittiva a posteriori**: cosa ci aspettiamo di osservare *dopo* aver incorporato l'evidenza empirica.
+
+Entrambe trasformano credenze su un parametro invisibile ($\theta$) in previsioni su dati osservabili, cioè su qualcosa di concreto e misurabile.
+
+**Quando scade?** Domenica alle ore 23:59.
+
+**Materiale di riferimento:** Lezioni 22–23 del corso e il sito companion del libro: <https://ccaudek.github.io/utet-companion/>.
+
+---
+
+## Contesto clinico
+
+Uno psicologo lavora con pazienti affetti da depressione moderata. Il trattamento proposto è un breve ciclo di psicoterapia cognitivo-comportamentale (CBT). Si definisce "successo" il caso in cui, al termine del trattamento, il punteggio BDI-II del paziente scende sotto la soglia clinicamente rilevante.
+
+Chiamiamo $\theta$ la **probabilità di successo** del trattamento, cioè la proporzione di pazienti che migliorano nella popolazione.
+
+> Prima ancora di raccogliere dati, lo psicologo ha delle credenze su $\theta$ basate sulla letteratura: i trattamenti CBT per la depressione lieve-moderata tendono ad avere tassi di successo attorno al 60–70%, ma con incertezza considerevole.
+
+Queste credenze vengono codificate nella distribuzione a priori:
+
+$$\theta \sim \text{Beta}(6, 4)$$
+
+::: {.callout-note}
+**Perché Beta(6, 4)?**
+La distribuzione Beta(6, 4) ha media $6/(6+4) = 0.60$ e deviazione standard circa 0.15. Riflette la credenza che il tasso di successo sia probabilmente attorno al 60%, ma con incertezza sostanziale: valori tra 0.35 e 0.85 sono tutti plausibili.
+:::
+
+---
+
+## Problema 1 — La distribuzione predittiva *a priori*
+
+### Idea di fondo
+
+Prima di visitare il primo paziente, lo psicologo si chiede: *"Se il prossimo mese trattiamo 20 pazienti, quanti potremmo aspettarci che migliorano?"*
+
+Per rispondere, non basta sapere che $\theta$ ha una certa distribuzione: dobbiamo *tradurre* quella distribuzione in una previsione sul numero di successi.
+
+Il ragionamento a due passi è questo:
+
+1. $\theta$ è incerto: potrebbe valere 0.45, oppure 0.60, oppure 0.75, …  
+2. Per *ciascun* possibile valore di $\theta$, il numero di successi su 20 pazienti segue una $\text{Binomiale}(20, \theta)$.  
+3. La distribuzione predittiva a priori è la "media" di tutte queste binomiali, pesata da quanto riteniamo plausibile ciascun valore di $\theta$.
+
+Questo si calcola facilmente via simulazione:
+
+```{r}
+# Parametri
+a_prior <- 6    # parametro alpha del prior
+b_prior <- 4    # parametro beta del prior
+n_nuovi <- 20   # pazienti futuri
+
+n_sim <- 10000  # numero di simulazioni
+
+# PASSO 1: simula 10.000 valori di theta dal prior
+theta_prior <- rbeta(n_sim, a_prior, b_prior)
+
+# PASSO 2: per ogni theta, simula il numero di successi su 20 pazienti
+y_prior_pred <- rbinom(n_sim, size = n_nuovi, prob = theta_prior)
+```
+
+### Quesito 1A — Esplora la distribuzione predittiva a priori {.unnumbered}
+
+**Completa il codice** qui sotto per creare l'istogramma della distribuzione predittiva a priori. Sostituisci i `___` con i valori o le variabili appropriate.
+
+```{r}
+#| eval: false
+
+# Crea un data frame con le previsioni simulate
+df_prior_pred <- data.frame(successi = ___)
+
+ggplot(df_prior_pred, aes(x = successi)) +
+  geom_histogram(binwidth = ___, fill = "steelblue", color = "white", alpha = 0.8) +
+  geom_vline(xintercept = ___(y_prior_pred), 
+             color = "red", linetype = "dashed", linewidth = 1) +
+  labs(
+    title = "Distribuzione predittiva a priori",
+    subtitle = "Numero atteso di successi su 20 pazienti (prima di osservare dati)",
+    x = "Numero di successi",
+    y = "Frequenza nelle simulazioni"
+  ) +
+  theme_minimal()
+```
+
+Aggiungi nella risposta:
+
+- La media della distribuzione predittiva a priori (quanti successi ci aspettiamo in media?).
+- L'intervallo di credibilità al 90% (tra quali valori ricade il 90% delle previsioni?).
+
+```{r}
+# Calcola la media
+media_prior_pred <- mean(y_prior_pred)
+cat("Media predittiva a priori:", round(media_prior_pred, 1), "\n")
+
+# Calcola l'intervallo al 90%
+intervallo_90 <- quantile(y_prior_pred, probs = c(0.05, 0.95))
+cat("Intervallo predittivo al 90%:", intervallo_90, "\n")
+```
+
+### Quesito 1B — Confronta prior e predittiva a priori {.unnumbered}
+
+Il prior Beta(6, 4) descrive le credenze su $\theta$ (un numero tra 0 e 1). La distribuzione predittiva a priori descrive le previsioni su $y$ (un numero intero tra 0 e 20).
+
+**Completa il codice** qui sotto per visualizzare entrambe le distribuzioni una accanto all'altra.
+
+```{r}
+#| eval: false
+
+# Grafico 1: il prior su theta
+df_theta <- data.frame(theta = theta_prior)
+p1 <- ggplot(df_theta, aes(x = theta)) +
+  geom_histogram(binwidth = ___, fill = "coral", color = "white", alpha = 0.8) +
+  geom_vline(xintercept = a_prior / (a_prior + b_prior), 
+             color = "darkred", linetype = "dashed") +
+  labs(title = "Prior su θ", x = "θ (probabilità di successo)", y = "Frequenza") +
+  theme_minimal()
+
+# Grafico 2: la distribuzione predittiva a priori su y
+df_y <- data.frame(successi = y_prior_pred)
+p2 <- ggplot(df_y, aes(x = successi)) +
+  geom_histogram(binwidth = ___, fill = "steelblue", color = "white", alpha = 0.8) +
+  geom_vline(xintercept = mean(y_prior_pred), 
+             color = "navy", linetype = "dashed") +
+  labs(title = "Predittiva a priori su y", x = "Numero di successi su 20", y = "Frequenza") +
+  theme_minimal()
+
+# Metti i due grafici affiancati (richiede il pacchetto patchwork)
+library(patchwork)
+p1 + p2
+```
+
+**Rispondi in 3–4 frasi:**
+
+1. Il prior e la predittiva a priori hanno scale diverse. Quale variabile descrive ciascuno?
+2. Se il prior fosse più "stretto" (es. Beta(20, 13), stessa media ma meno incerto), come cambierebbe la distribuzione predittiva a priori?
+
+### Quesito 1C — Controllo di plausibilità del prior {.unnumbered}
+
+Una funzione importante della distribuzione predittiva a priori è verificare che il prior sia *ragionevole*: le previsioni che genera devono sembrare plausibili *prima* di vedere i dati.
+
+Rispondi alle seguenti domande basandoti sulla distribuzione predittiva a priori calcolata sopra:
+
+```{r}
+#| eval: false
+
+# Probabilità di osservare meno di 5 successi su 20
+prob_meno_5 <- mean(y_prior_pred ___ 5)
+cat("P(y < 5) =", round(prob_meno_5, 3), "\n")
+
+# Probabilità di osservare più di 17 successi su 20
+prob_piu_17 <- mean(y_prior_pred ___ 17)
+cat("P(y > 17) =", round(prob_piu_17, 3), "\n")
+
+# Probabilità dello scenario più probabile: tra 10 e 16 successi
+prob_centrale <- mean(y_prior_pred >= ___ & y_prior_pred <= ___)
+cat("P(10 ≤ y ≤ 16) =", round(prob_centrale, 3), "\n")
+```
+
+**Interpretazione:** guardando queste probabilità, il prior Beta(6, 4) ti sembra ragionevole per un trattamento CBT? Ci sono scenari (es. 0 successi su 20, oppure 20 su 20) che il prior considera quasi impossibili? È giusto che lo siano?
+
+---
+
+## Problema 2 — La distribuzione predittiva *a posteriori*
+
+### Idea di fondo
+
+Lo psicologo tratta i primi 30 pazienti. Di questi, 21 mostrano miglioramento clinicamente significativo.
+
+| Osservazioni | Valore |
+|---|---|
+| Pazienti trattati ($n$) | 30 |
+| Successi ($k$) | 21 |
+| Proporzione osservata | 21/30 = 0.70 |
+
+Con il modello beta-binomiale, l'aggiornamento bayesiano è semplice:
+
+$$\text{posteriore} = \text{Beta}(\alpha + k,\; \beta + n - k) = \text{Beta}(6 + 21,\; 4 + 9) = \text{Beta}(27, 13)$$
+
+```{r}
+# Dati osservati
+n_obs <- 30   # pazienti trattati
+k_obs <- 21   # successi osservati
+
+# Parametri del posteriore
+a_post <- a_prior + k_obs
+b_post <- b_prior + (n_obs - k_obs)
+
+cat("Posteriore: Beta(", a_post, ",", b_post, ")\n")
+cat("Media posteriore:", round(a_post / (a_post + b_post), 3), "\n")
+```
+
+Ora lo psicologo si chiede: *"Se trattiamo altri 20 pazienti, quanti potremmo aspettarci che migliorano?"*
+
+La domanda è la stessa di prima, ma ora abbiamo dati. Il ragionamento a due passi è identico, ma si parte dal **posteriore** invece che dal prior:
+
+```{r}
+# PASSO 1: simula valori di theta dal POSTERIORE
+theta_post <- rbeta(n_sim, a_post, b_post)
+
+# PASSO 2: per ogni theta, simula il numero di successi su 20 nuovi pazienti
+y_post_pred <- rbinom(n_sim, size = n_nuovi, prob = theta_post)
+```
+
+### Quesito 2A — Esplora la distribuzione predittiva a posteriori {.unnumbered}
+
+**Completa il codice** per creare un istogramma della distribuzione predittiva a posteriori. Usa la stessa struttura del Quesito 1A.
+
+```{r}
+#| eval: false
+
+df_post_pred <- data.frame(successi = ___)
+
+ggplot(df_post_pred, aes(x = successi)) +
+  geom_histogram(binwidth = ___, fill = "darkgreen", color = "white", alpha = 0.8) +
+  geom_vline(xintercept = ___(y_post_pred), 
+             color = "darkred", linetype = "dashed", linewidth = 1) +
+  labs(
+    title = "Distribuzione predittiva a posteriori",
+    subtitle = "Numero atteso di successi su 20 nuovi pazienti (dopo aver osservato 21/30)",
+    x = "Numero di successi",
+    y = "Frequenza nelle simulazioni"
+  ) +
+  theme_minimal()
+```
+
+Calcola e riporta:
+
+- La **media** della distribuzione predittiva a posteriori.
+- L'**intervallo predittivo al 90%**.
+
+```{r}
+#| eval: false
+
+media_post_pred  <- ___(y_post_pred)
+intervallo_post  <- quantile(y_post_pred, probs = ___)
+
+cat("Media predittiva a posteriori:", round(media_post_pred, 1), "\n")
+cat("Intervallo predittivo al 90%:", intervallo_post, "\n")
+```
+
+### Quesito 2B — Come i dati hanno cambiato le previsioni {.unnumbered}
+
+**Completa il codice** per sovrapporre le due distribuzioni predittive (a priori e a posteriori) nello stesso grafico, in modo da rendere visibile l'effetto dei dati.
+
+```{r}
+#| eval: false
+
+# Prepara un unico data frame con entrambe le distribuzioni
+df_confronto <- data.frame(
+  successi    = c(y_prior_pred, y_post_pred),
+  distribuzione = c(rep("Predittiva a priori", n_sim),
+                    rep("Predittiva a posteriori", n_sim))
+)
+
+ggplot(df_confronto, aes(x = successi, fill = distribuzione)) +
+  geom_histogram(binwidth = 1, position = "identity", alpha = ___, color = "white") +
+  scale_fill_manual(values = c("Predittiva a priori" = "steelblue",
+                               "Predittiva a posteriori" = "darkgreen")) +
+  labs(
+    title = "Prima e dopo: l'aggiornamento delle previsioni",
+    x = "Numero di successi su 20 pazienti",
+    y = "Frequenza nelle simulazioni",
+    fill = ""
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+```
+
+**Rispondi in 3–4 frasi:**
+
+1. La distribuzione predittiva a posteriori è più stretta o più larga di quella a priori? Perché?
+2. La media è cambiata? In che direzione, e perché ha senso?
+3. Qual è la differenza *concettuale* tra i due grafici? Cosa ci dice ciascuno?
+
+### Quesito 2C — Domande concrete per la clinica {.unnumbered}
+
+Dopo aver osservato i dati, lo psicologo ha alcune domande operative sui prossimi 20 pazienti.
+
+**Completa il codice** per rispondere a ciascuna.
+
+```{r}
+#| eval: false
+
+# Domanda 1: qual è la probabilità che almeno 15 su 20 migliorino?
+prob_almeno_15 <- mean(y_post_pred ___ 15)
+cat("P(y ≥ 15 | dati) =", round(prob_almeno_15, 3), "\n")
+
+# Domanda 2: qual è la probabilità che meno di 10 su 20 migliorino?
+prob_meno_10 <- mean(y_post_pred ___ 10)
+cat("P(y < 10 | dati) =", round(prob_meno_10, 3), "\n")
+
+# Domanda 3: tra quanti e quanti successi ricade il 90% delle previsioni?
+intervallo_90_post <- quantile(y_post_pred, probs = c(___, ___))
+cat("Intervallo predittivo al 90%:", intervallo_90_post, "\n")
+```
+
+**Interpretazione:** lo psicologo deve convincere il responsabile clinico che vale la pena trattare altri 20 pazienti. Scrivi 3–4 frasi che usino i risultati qui sopra per supportare questa richiesta. Come comunicheresti l'incertezza a qualcuno che non conosce la statistica?
+
+### Quesito 2D — Il valore dei dati {.unnumbered}
+
+Confrontiamo due scenari alternativi: cosa sarebbe accaduto se avessimo osservato risultati peggiori o migliori?
+
+**Completa il codice** per simulare la distribuzione predittiva a posteriori in tre scenari:
+
+- **Scenario ottimistico:** 25 successi su 30 (proporzione = 0.83)
+- **Scenario base:** 21 successi su 30 (quello reale)
+- **Scenario pessimistico:** 15 successi su 30 (proporzione = 0.50)
+
+```{r}
+#| eval: false
+
+# Scenario ottimistico
+a_ott <- a_prior + ___  # 25 successi
+b_ott <- b_prior + ___  # 30 - 25 fallimenti
+y_ott <- rbinom(n_sim, size = n_nuovi, prob = rbeta(n_sim, a_ott, b_ott))
+
+# Scenario base (già calcolato sopra come y_post_pred)
+
+# Scenario pessimistico
+a_pes <- a_prior + ___
+b_pes <- b_prior + ___
+y_pes <- rbinom(n_sim, size = n_nuovi, prob = rbeta(n_sim, a_pes, b_pes))
+
+# Visualizzazione dei tre scenari
+df_scenari <- data.frame(
+  successi  = c(y_ott, y_post_pred, y_pes),
+  scenario  = c(rep("Ottimistico (25/30)", n_sim),
+                rep("Base (21/30)", n_sim),
+                rep("Pessimistico (15/30)", n_sim))
+)
+
+ggplot(df_scenari, aes(x = successi, fill = scenario)) +
+  geom_histogram(binwidth = 1, position = "identity", alpha = 0.5, color = "white") +
+  scale_fill_manual(values = c("Ottimistico (25/30)" = "forestgreen",
+                               "Base (21/30)"         = "steelblue",
+                               "Pessimistico (15/30)"  = "tomato")) +
+  labs(
+    title = "Come i dati osservati cambiano le previsioni future",
+    x = "Numero di successi su 20 nuovi pazienti",
+    y = "Frequenza nelle simulazioni",
+    fill = "Scenario"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+```
+
+**Rispondi:**
+
+1. Le tre distribuzioni predittive sono molto diverse tra loro o si sovrappongono quasi completamente? Cosa suggerisce questo riguardo all'importanza dei dati?
+2. Con solo 30 osservazioni, i dati "convincono" molto il modello, o rimane molta incertezza? Come cambierebbe il quadro con 100 pazienti?
+
+---
+
+## Problema 3 — Riflessione concettuale
+
+Rispondi in forma di breve testo (5–8 frasi ciascuno).
+
+### Quesito 3A — Due distribuzioni, due domande {.unnumbered}
+
+La distribuzione predittiva a priori e quella a posteriori rispondono a domande diverse. Descrivi con parole tue la domanda a cui ciascuna risponde, e spiega perché uno psicologo clinico potrebbe trovare utile *entrambe* — non solo quella a posteriori.
+
+*(Suggerimento: pensa alla fase di pianificazione di uno studio, prima di raccogliere dati.)*
+
+### Quesito 3B — Il parametro invisibile e i dati visibili {.unnumbered}
+
+Il parametro $\theta$ (probabilità di successo del trattamento) non è mai direttamente osservabile: possiamo solo stimarlo dai dati. Le distribuzioni predittive, invece, riguardano *y*, cioè il numero di successi in un futuro campione — qualcosa di direttamente osservabile.
+
+Spiega in 5–6 frasi perché questa distinzione è importante nella pratica clinica. Perché è utile avere previsioni su qualcosa di osservabile piuttosto che solo stime di qualcosa di invisibile come $\theta$?
+
+### Quesito 3C — Incertezza parametrica e incertezza predittiva {.unnumbered}
+
+Considera queste due affermazioni:
+
+> **A.** "Dopo aver osservato 21 successi su 30, la nostra stima di θ è circa 0.67."  
+> **B.** "Dopo aver osservato 21 successi su 30, ci aspettiamo tra 11 e 17 successi sui prossimi 20 pazienti (con il 90% di certezza)."
+
+L'affermazione B descrive un intervallo più ampio di quanto potrebbe sembrare necessario, dato che conosciamo abbastanza bene θ.
+
+Spiega perché l'intervallo predittivo (B) è inevitabilmente più ampio dell'intervallo di credibilità per θ (A). Quali sono le *due* fonti di incertezza che si combinano nella distribuzione predittiva a posteriori?
+
+---
+
+## Criteri di valutazione
+
+| Componente | Peso |
+|---|---|
+| Codice correttamente completato | 40% |
+| Visualizzazioni (chiarezza, leggibilità) | 20% |
+| Interpretazioni e risposte in prosa | 30% |
+| Riflessioni concettuali (Problema 3) | 10% |
+
+---
+
+## Note pratiche
+
+**Pacchetti necessari:** `tidyverse`, `patchwork`.
+
+**Sul codice scaffolded:** i `___` indicano dove devi inserire valori, variabili o operatori. Non modificare il resto del codice a meno che tu non voglia migliorarlo.
+
+**Set seed:** il documento usa `set.seed(2026)` all'inizio. Mantienilo per garantire la riproducibilità.
+
+**Se hai difficoltà:** prova prima a ragionare a parole su cosa dovrebbe fare il codice, poi traduci il ragionamento in R. Le lezioni 22–23 e il sito companion contengono tutti gli esempi necessari.
+
+Buon lavoro!

@@ -1,0 +1,406 @@
+---
+title: "Esercitazione 06"
+subtitle: "Psicometria — Prof. Corrado Caudek"
+author: "Nome Cognome — Matricola"
+date: "Consegna: [data da definire]"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    code-fold: false
+    code-tools: true
+    embed-resources: true
+    theme: cosmo
+    number-sections: true
+  pdf:
+    toc: true
+    number-sections: false
+    colorlinks: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5
+)
+```
+
+# Introduzione
+
+Questa esercitazione copre gli argomenti delle Lezioni 14, 15 e 16: l'inferenza
+frequentista. Si tratta di un'esercitazione unica, ma fondamentale. L'obiettivo
+non è solo imparare a *fare* un test di ipotesi, ma soprattutto *capire cosa si
+sta facendo*, *interpretare correttamente i risultati* e, cosa più importante
+di tutte, *comprendere i limiti epistemologici di questo approccio*. Nelle
+lezioni successive, questi limiti motiveranno il passaggio all'inferenza
+bayesiana.
+
+## Obiettivi di apprendimento
+
+Alla fine di questa esercitazione saprai:
+
+1. Calcolare a mano la statistica test $t$ per un campione e per due campioni
+   indipendenti.
+2. Usare R per eseguire i medesimi test e ottenere il valore-$p$.
+3. Costruire e interpretare correttamente un intervallo di fiducia.
+4. Distinguere chiaramente $P(\text{dati} \mid H_0)$ da
+   $P(H_0 \mid \text{dati})$ — la differenza epistemologica centrale.
+5. Descrivere gli errori di I e II tipo e le conseguenze di una decisione
+   dicotomica.
+6. Articolare i principali limiti dell'approccio frequentista all'inferenza.
+
+## Materiale di riferimento
+
+Tutto il materiale teorico è disponibile su:
+[https://ccaudek.github.io/utet-frequentista/](https://ccaudek.github.io/utet-frequentista/)
+
+## Come svolgere questa esercitazione
+
+Per ogni problema:
+
+- **Prima fase — a mano:** calcola la statistica test, i gradi di libertà e
+  l'intervallo di fiducia usando carta e penna (o un foglio di calcolo). Mostra
+  tutti i passaggi.
+- **Seconda fase — con R:** verifica i risultati usando R. Riporta il codice e
+  l'output.
+- **Terza fase — interpretazione:** rispondi alle domande di riflessione in
+  prosa, con parole tue. Questa è la parte più importante.
+
+**Tempo stimato:** 3–4 ore.
+
+
+# Problema 1 — Test su una media (singolo campione)
+
+## Contesto psicologico
+
+Una psicologa clinica vuole verificare se un nuovo programma di mindfulness
+migliora la qualità del sonno nei pazienti con insonnia lieve. Nella
+popolazione generale, il punteggio medio al Pittsburgh Sleep Quality Index
+(PSQI) per persone con insonnia lieve è $\mu_0 = 10$ (punteggi più alti
+indicano qualità del sonno peggiore). Dopo 8 settimane di programma, la
+psicologa misura i punteggi PSQI di 12 pazienti:
+
+```{r}
+psqi <- c(8.2, 9.1, 7.5, 10.3, 6.8, 8.7, 9.5, 7.2, 8.0, 9.8, 7.9, 8.4)
+```
+
+## Parte A — Calcolo a mano
+
+Usando le formule dell'inferenza frequentista, calcola:
+
+1. La media campionaria $\bar{x}$ e la deviazione standard campionaria $s$.
+2. L'errore standard della media: $SE = s / \sqrt{n}$.
+3. La statistica test: $t = (\bar{x} - \mu_0) / SE$.
+4. I gradi di libertà.
+5. L'intervallo di fiducia al 95% per $\mu$:
+   $\bar{x} \pm t_{\alpha/2, \, n-1} \cdot SE$.
+
+*Suggerimento:* per il valore critico $t_{0.025, \, 11}$, puoi usare
+`qt(0.975, df = 11)` in R oppure la tavola della distribuzione $t$.
+
+## Parte B — Verifica con R
+
+Usa la funzione `t.test()` per eseguire il test. Confronta i risultati con
+quelli ottenuti a mano.
+
+```{r eval=FALSE}
+t.test(psqi, mu = 10, alternative = "two.sided")
+```
+
+## Parte C — Domande di riflessione
+
+Rispondi alle seguenti domande **in prosa** (non con elenchi puntati):
+
+**C1.** Il valore-$p$ che hai ottenuto è la probabilità di cosa, esattamente?
+Scrivi una frase che ne dia la definizione corretta e una che rappresenti
+l'errore di interpretazione più comune.
+
+**C2.** Sulla base di questo test, puoi affermare che "il programma di
+mindfulness funziona con probabilità del 95%"? Perché sì o perché no?
+
+**C3.** Se il valore-$p$ fosse risultato 0.06 anziché quello ottenuto, cosa
+cambierebbe nella tua conclusione? Rifletti sulla ragionevolezza di una
+decisione che cambia radicalmente a seconda che $p$ sia 0.049 o 0.051.
+
+
+# Problema 2 — Errori di I e II tipo
+
+## Contesto psicologico
+
+Un ricercatore sta progettando uno studio per testare se un intervento
+cognitivo-comportamentale riduce i livelli di ansia di stato (misurata con lo
+STAI) rispetto a un valore di riferimento. Fissa $\alpha = 0.05$.
+
+## Domande
+
+**2.1.** Spiega, con un esempio concreto legato a questo studio, cosa
+significherebbe commettere un errore di Tipo I. Quali sarebbero le
+conseguenze pratiche nella clinica?
+
+**2.2.** Spiega, con un esempio concreto, cosa significherebbe commettere un
+errore di Tipo II. In che situazione clinica questo errore sarebbe
+particolarmente grave?
+
+**2.3.** Un collega legge il risultato $p = 0.03$ e conclude: "Allora c'è solo
+il 3% di probabilità che il trattamento non funzioni." Questa interpretazione
+è corretta? Spiega qual è l'errore logico (noto come *fallacia della
+probabilità trasposta*).
+
+**2.4.** Il ricercatore vuole una potenza dell'80%. Se l'effetto atteso è
+$d = 0.5$ (Cohen's $d$ medio), usa R per calcolare la numerosità campionaria
+necessaria per un test $t$ su un campione:
+
+```{r eval=FALSE}
+power.t.test(
+  delta = 0.5,
+  sd = 1,
+  sig.level = 0.05,
+  power = 0.80,
+  type = "one.sample",
+  alternative = "two.sided"
+)
+```
+
+Commenta brevemente il risultato: il campione di 12 pazienti del Problema 1
+sarebbe adeguato per rilevare un effetto di questa entità?
+
+
+# Problema 3 — Test sulla differenza tra due medie indipendenti
+
+## Contesto psicologico
+
+Uno studio pilota esamina se la terapia cognitivo-comportamentale (CBT) è più
+efficace di un gruppo di controllo in lista d'attesa nel ridurre i sintomi
+depressivi, misurati con il Beck Depression Inventory-II (BDI-II). I punteggi
+post-trattamento sono:
+
+```{r}
+cbt <- c(12, 15, 9, 14, 11, 13, 10, 16, 8, 12)
+controllo <- c(18, 22, 19, 25, 20, 17, 23, 21, 24, 19)
+```
+
+## Parte A — Calcolo a mano
+
+Calcola:
+
+1. Le medie e le deviazioni standard dei due gruppi ($\bar{x}_1$, $s_1$,
+   $\bar{x}_2$, $s_2$).
+2. La varianza combinata (*pooled variance*):
+   $$s_p^2 = \frac{(n_1 - 1) s_1^2 + (n_2 - 1) s_2^2}{n_1 + n_2 - 2}$$
+3. L'errore standard della differenza tra le medie:
+   $$SE_{\bar{x}_1 - \bar{x}_2} = s_p \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}$$
+4. La statistica test:
+   $$t = \frac{\bar{x}_1 - \bar{x}_2}{SE_{\bar{x}_1 - \bar{x}_2}}$$
+5. I gradi di libertà: $df = n_1 + n_2 - 2$.
+6. L'intervallo di fiducia al 95% per la differenza $\mu_1 - \mu_2$.
+
+## Parte B — Verifica con R
+
+```{r eval=FALSE}
+t.test(cbt, controllo, var.equal = TRUE)
+```
+
+Esegui anche la versione di Welch (senza assumere varianze uguali) e confronta:
+
+```{r eval=FALSE}
+t.test(cbt, controllo, var.equal = FALSE)
+```
+
+## Parte C — Calcola l'effect size
+
+Calcola il $d$ di Cohen sia a mano sia con R:
+
+$$d = \frac{\bar{x}_1 - \bar{x}_2}{s_p}$$
+
+```{r eval=FALSE}
+# Dopo aver calcolato sp (deviazione standard pooled):
+d <- (mean(cbt) - mean(controllo)) / sp
+d
+```
+
+## Parte D — Domande di riflessione
+
+**D1.** Il test ti dice che la differenza è "statisticamente significativa."
+Questo significa automaticamente che la CBT è clinicamente utile? Quale
+informazione aggiuntiva fornisce il $d$ di Cohen che il valore-$p$ da solo
+non fornisce?
+
+**D2.** L'intervallo di fiducia al 95% ha un'interpretazione diversa da quello
+che la maggior parte delle persone pensa. Scrivi:
+
+- *L'interpretazione corretta:* cosa significa che la procedura ha un livello
+  di fiducia del 95%.
+- *L'interpretazione errata (ma comune):* cosa molti credono che significhi
+  (e perché è sbagliato).
+
+**D3.** Immagina di ripetere questo studio 100 volte con campioni diversi. In
+quanti di questi studi, approssimativamente, l'intervallo di fiducia al 95%
+conterrà il vero valore di $\mu_1 - \mu_2$? E per il singolo studio che hai
+appena condotto, puoi dire "c'è il 95% di probabilità che il vero parametro
+stia nel mio intervallo"?
+
+
+# Problema 4 — $P(\text{dati} \mid H)$ vs. $P(H \mid \text{dati})$
+
+Questo è il cuore epistemologico dell'esercitazione. Non ci sono calcoli da
+fare: solo ragionamento.
+
+## 4.1 — La domanda del ricercatore e la risposta del frequentismo
+
+Un ricercatore vuole sapere: *"Quanto è probabile che il mio trattamento
+funzioni, dati i risultati che ho osservato?"* In altre parole, vuole conoscere:
+
+$$P(H_1 \mid \text{dati})$$
+
+L'approccio frequentista, invece, calcola:
+
+$$P(\text{dati} \mid H_0)$$
+
+ovvero: quanto sarebbero *sorprendenti* questi dati se $H_0$ fosse vera.
+
+**Domanda:** Spiega con un esempio tratto dalla vita quotidiana perché queste
+due probabilità non sono la stessa cosa. Puoi usare l'analogia seguente (o
+inventarne una tua): se una persona porta un ombrello, qual è la probabilità
+che piova? E se piove, qual è la probabilità che una persona porti un
+ombrello? Sono la stessa cosa?
+
+## 4.2 — Formalizzazione con il teorema di Bayes
+
+Scrivi la relazione formale che lega le due probabilità:
+
+$$P(H \mid \text{dati}) = \frac{P(\text{dati} \mid H) \cdot P(H)}{P(\text{dati})}$$
+
+**Domanda:** Perché l'approccio frequentista non può calcolare
+$P(H \mid \text{dati})$? Cosa gli manca? (Suggerimento: pensa alla
+distribuzione *a priori* $P(H)$.)
+
+## 4.3 — Conseguenze pratiche
+
+Considera questi due scenari:
+
+- **Scenario A:** Uno studio ben condotto trova $p = 0.04$ per un farmaco che
+  ha un forte razionale teorico e risultati preliminari promettenti.
+- **Scenario B:** Uno studio con lo stesso $p = 0.04$ testa se l'oroscopo
+  predice il successo accademico.
+
+**Domanda:** Il valore-$p$ è identico nei due scenari. Tuttavia, la nostra
+fiducia nel risultato dovrebbe essere la stessa? Spiega perché il framework
+frequentista tratta questi due casi in modo identico, mentre l'intuizione
+scientifica (e l'approccio bayesiano) li distingue. Cosa manca al valore-$p$?
+
+
+# Problema 5 — Limiti della decisione dicotomica
+
+## 5.1 — L'arbitrarietà della soglia
+
+Considera i seguenti risultati ottenuti in tre studi indipendenti che testano
+la stessa ipotesi:
+
+| Studio | $n$ | $t$ | $p$ | Decisione ($\alpha = 0.05$) |
+|--------|-----|------|-----|-----------------------------|
+| A | 30 | 2.05 | 0.049 | Rifiuto $H_0$ |
+| B | 30 | 2.02 | 0.053 | Non rifiuto $H_0$ |
+| C | 300 | 2.05 | 0.041 | Rifiuto $H_0$ |
+
+**Domanda 5.1a:** Gli studi A e B hanno statistiche test quasi identiche.
+Eppure, uno "trova un effetto" e l'altro no. Ha senso che una differenza di
+0.004 nel valore-$p$ produca conclusioni opposte? Discuti.
+
+**Domanda 5.1b:** Gli studi A e C hanno la stessa statistica $t$, ma
+campioni di dimensioni molto diverse. Quale dei due fornisce evidenza più forte
+per un effetto reale nella popolazione? Perché? (Suggerimento: pensa all'effect
+size.)
+
+## 5.2 — Il valore-$p$ non è una misura dell'evidenza
+
+Un errore frequente è pensare che un $p$ piccolo significhi "forte evidenza
+contro $H_0$."
+
+**Domanda:** Un grande campione ($n = 10000$) può produrre un $p$ molto piccolo
+anche per un effetto trascurabile. Un piccolo campione ($n = 10$) può produrre
+un $p$ grande anche per un effetto sostanziale. Spiega perché il valore-$p$
+mescola la dimensione dell'effetto con la dimensione del campione, e perché
+questo è problematico per la pratica clinica.
+
+## 5.3 — Cosa non possiamo dire
+
+Per ciascuna delle seguenti affermazioni, indica se è corretta o scorretta
+**e spiega perché:**
+
+a) "Il valore-$p$ è la probabilità che $H_0$ sia vera."
+
+b) "Se $p < 0.05$, l'effetto osservato è importante dal punto di vista
+   clinico."
+
+c) "Se $p > 0.05$, allora non c'è nessun effetto."
+
+d) "Il complemento a 1 del valore-$p$ (cioè $1 - p$) è la probabilità che
+   il trattamento funzioni."
+
+e) "L'intervallo di fiducia al 95% contiene il vero parametro con probabilità
+   0.95."
+
+
+# Problema 6 — Esercizio integrativo con R
+
+## Contesto
+
+I dati seguenti provengono da un ipotetico studio sulla memoria di lavoro. Due
+gruppi di studenti universitari (ognuno con $n = 15$) vengono testati con un
+compito di *n-back*: il gruppo sperimentale ha dormito 8 ore, il gruppo di
+controllo solo 4 ore. La variabile dipendente è il numero di risposte corrette
+(su 50 trial).
+
+```{r}
+set.seed(2026)
+sonno_8h <- round(rnorm(15, mean = 38, sd = 5))
+sonno_4h <- round(rnorm(15, mean = 34, sd = 6))
+```
+
+## Istruzioni
+
+Esegui con R le seguenti analisi e rispondi alle domande.
+
+**6.1** Calcola le statistiche descrittive per entrambi i gruppi (media, sd,
+mediana).
+
+**6.2** Esegui il test $t$ per campioni indipendenti (versione di Welch) e
+riporta:
+
+- Il valore della statistica $t$
+- I gradi di libertà
+- Il valore-$p$
+- L'intervallo di fiducia al 95% per la differenza tra le medie
+
+**6.3** Calcola il $d$ di Cohen.
+
+**6.4** Crea un grafico (ad esempio con `boxplot()` o con `ggplot2`) che
+visualizzi la distribuzione dei punteggi nei due gruppi.
+
+**6.5** Scrivi un breve paragrafo di report dei risultati, come faresti
+nella sezione "Risultati" di un articolo scientifico. Includi: la statistica
+test, i gradi di libertà, il valore-$p$, l'intervallo di fiducia e l'effect
+size. Poi aggiungi una frase che riconosca esplicitamente cosa il test $t$
+**non** ti permette di concludere.
+
+
+# Riflessione conclusiva
+
+Dopo aver completato tutti gli esercizi, scrivi un paragrafo (150–200 parole)
+in cui rispondi alla seguente domanda:
+
+> **Se il framework frequentista non può dirti la probabilità che un'ipotesi
+> sia vera, e se la decisione significativo/non significativo è arbitraria e
+> dipende dalla dimensione del campione, perché viene ancora usato? E cosa
+> potrebbe offrire un approccio alternativo?**
+
+Non serve che tu conosca già l'inferenza bayesiana in dettaglio. Basta che
+rifletta su cosa vorresti che uno strumento statistico fosse in grado di fare,
+sulla base di ciò che hai imparato in questa esercitazione.
+
+Questa riflessione prepara il terreno per la parte del corso dedicata
+all'inferenza bayesiana — dove finalmente potremo parlare di $P(H \mid \text{dati})$.

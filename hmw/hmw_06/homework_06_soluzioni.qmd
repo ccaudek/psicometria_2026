@@ -1,0 +1,561 @@
+---
+title: "Esercitazione: Inferenza Frequentista — Soluzioni"
+subtitle: "Psicometria — Prof. Corrado Caudek"
+date: ""
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    code-fold: false
+    code-tools: true
+    embed-resources: true
+    theme: cosmo
+    number-sections: false
+  pdf:
+    toc: true
+    number-sections: true
+    colorlinks: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5
+)
+```
+
+# Problema 1 — Test su una media
+
+## Parte A — Calcolo a mano
+
+```{r}
+psqi <- c(8.2, 9.1, 7.5, 10.3, 6.8, 8.7, 9.5, 7.2, 8.0, 9.8, 7.9, 8.4)
+mu_0 <- 10
+n <- length(psqi)
+```
+
+**Passo 1.** Media campionaria e deviazione standard campionaria:
+
+$$\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i$$
+
+```{r}
+x_bar <- mean(psqi)
+s <- sd(psqi)
+cat("Media campionaria:", round(x_bar, 4), "\n")
+cat("Deviazione standard campionaria:", round(s, 4), "\n")
+```
+
+**Passo 2.** Errore standard della media:
+
+$$SE = \frac{s}{\sqrt{n}}$$
+
+```{r}
+se <- s / sqrt(n)
+cat("Errore standard:", round(se, 4), "\n")
+```
+
+**Passo 3.** Statistica test:
+
+$$t = \frac{\bar{x} - \mu_0}{SE}$$
+
+```{r}
+t_stat <- (x_bar - mu_0) / se
+cat("Statistica t:", round(t_stat, 4), "\n")
+```
+
+**Passo 4.** Gradi di libertà: $df = n - 1 = 12 - 1 = 11$.
+
+**Passo 5.** Intervallo di fiducia al 95%:
+
+```{r}
+t_crit <- qt(0.975, df = n - 1)
+ci_lower <- x_bar - t_crit * se
+ci_upper <- x_bar + t_crit * se
+cat("Valore critico t(0.025, 11):", round(t_crit, 4), "\n")
+cat("Intervallo di fiducia al 95%: [", round(ci_lower, 4), ",",
+    round(ci_upper, 4), "]\n")
+```
+
+**Passo 6.** Valore-$p$ (bilaterale):
+
+```{r}
+p_value <- 2 * pt(t_stat, df = n - 1)
+# pt() restituisce P(T <= t), e poiché t è negativo, pt dà la coda sinistra
+# Per un test bilaterale, moltiplichiamo per 2
+cat("Valore-p:", round(p_value, 6), "\n")
+```
+
+## Parte B — Verifica con R
+
+```{r}
+t.test(psqi, mu = 10, alternative = "two.sided")
+```
+
+I risultati della funzione `t.test()` devono coincidere con quelli calcolati a
+mano. In particolare, la statistica $t$, i gradi di libertà, il valore-$p$ e
+l'intervallo di fiducia devono essere identici (a meno di arrotondamenti).
+
+## Parte C — Risposte alle domande di riflessione
+
+**C1.** Il valore-$p$ è la probabilità di osservare una statistica test uguale
+o più estrema di quella osservata, *assumendo che l'ipotesi nulla sia vera*.
+In formule: $p = P(|T| \geq |t_{oss}| \mid H_0)$.
+
+Questa è una probabilità *condizionata ai dati sotto $H_0$*. **Non** è la
+probabilità che $H_0$ sia vera. L'errore di interpretazione più comune è
+dire: "Il valore-$p$ è la probabilità che il risultato sia dovuto al caso" o,
+peggio ancora, "la probabilità che l'ipotesi nulla sia vera è $p$." Queste
+affermazioni confondono $P(\text{dati} \mid H_0)$ con $P(H_0 \mid \text{dati})$.
+
+**C2.** No, non è possibile affermare che "il programma funziona con
+probabilità del 95%." L'inferenza frequentista non assegna probabilità alle
+ipotesi. Il 95% si riferisce alla *procedura* di costruzione dell'intervallo
+di fiducia (se ripetessimo lo studio infinite volte, il 95% degli intervalli
+costruiti conterrebbe il vero parametro), non a questo specifico risultato.
+Il test ci dice che i dati sarebbero sorprendenti sotto $H_0$, ma non ci dice
+quanto sia probabile che il trattamento funzioni.
+
+**C3.** Con $p = 0.06$, la conclusione formale cambierebbe: non rifiuteremmo
+$H_0$ al livello $\alpha = 0.05$. Tuttavia, la differenza tra $p = 0.049$ e
+$p = 0.051$ è irrilevante dal punto di vista sostanziale: i dati sono
+pressoché identici. Questo esempio illustra l'arbitrarietà della soglia
+$\alpha = 0.05$ e il problema di una decisione rigidamente dicotomica. La
+pratica di trattare $p = 0.049$ come "significativo" e $p = 0.051$ come "non
+significativo" non riflette una reale differenza nell'evidenza empirica.
+
+
+# Problema 2 — Errori di I e II tipo
+
+**2.1. Errore di Tipo I.** Un errore di Tipo I si verifica quando si rifiuta
+$H_0$ quando in realtà è vera. In questo studio, significherebbe concludere che
+l'intervento cognitivo-comportamentale riduce l'ansia quando in realtà non ha
+alcun effetto. La conseguenza clinica sarebbe l'adozione di un intervento
+inefficace, con spreco di risorse e, potenzialmente, mancato ricorso a
+trattamenti effettivamente utili.
+
+**2.2. Errore di Tipo II.** Un errore di Tipo II si verifica quando *non* si
+rifiuta $H_0$ quando in realtà è falsa. In questo studio, significherebbe
+concludere che l'intervento non funziona quando in realtà riduce l'ansia. Questo
+errore sarebbe particolarmente grave in un contesto in cui non esistono
+alternative terapeutiche validiate: un trattamento efficace verrebbe scartato.
+
+**2.3.** L'interpretazione del collega è scorretta. Affermare "c'è il 3% di
+probabilità che il trattamento non funzioni" significa attribuire una probabilità
+all'ipotesi $H_0$, ovvero calcolare $P(H_0 \mid \text{dati})$. Ma il
+valore-$p$ è $P(\text{dati} \mid H_0)$: la probabilità dei dati osservati
+*nell'ipotesi che $H_0$ sia vera*. Scambiare le due è la **fallacia della
+probabilità trasposta** (o *fallacia del prosecutor*). È come dire: "La
+probabilità di essere bagnati dato che piove è alta, quindi la probabilità che
+piova dato che sono bagnato è ugualmente alta" — ignorando che ci si può bagnare
+anche per altre ragioni.
+
+**2.4.** Calcolo della numerosità campionaria:
+
+```{r}
+power.t.test(
+  delta = 0.5,
+  sd = 1,
+  sig.level = 0.05,
+  power = 0.80,
+  type = "one.sample",
+  alternative = "two.sided"
+)
+```
+
+Il risultato indica che servono circa 34 partecipanti per avere una potenza
+dell'80% nel rilevare un effetto di dimensione media ($d = 0.5$). Il campione
+di 12 pazienti del Problema 1 è quindi insufficiente: con $n = 12$, la potenza
+sarebbe molto più bassa dell'80%, aumentando sensibilmente il rischio di un
+errore di Tipo II. Questo è un problema diffuso nella ricerca psicologica,
+dove molti studi vengono condotti con campioni troppo piccoli per rilevare
+effetti realistici.
+
+
+# Problema 3 — Test sulla differenza tra due medie
+
+## Parte A — Calcolo a mano
+
+```{r}
+cbt <- c(12, 15, 9, 14, 11, 13, 10, 16, 8, 12)
+controllo <- c(18, 22, 19, 25, 20, 17, 23, 21, 24, 19)
+
+n1 <- length(cbt)
+n2 <- length(controllo)
+x1_bar <- mean(cbt)
+x2_bar <- mean(controllo)
+s1 <- sd(cbt)
+s2 <- sd(controllo)
+
+cat("Gruppo CBT: media =", round(x1_bar, 2), ", sd =", round(s1, 2), "\n")
+cat("Gruppo Controllo: media =", round(x2_bar, 2), ", sd =", round(s2, 2), "\n")
+```
+
+**Varianza combinata (pooled):**
+
+```{r}
+sp2 <- ((n1 - 1) * s1^2 + (n2 - 1) * s2^2) / (n1 + n2 - 2)
+sp <- sqrt(sp2)
+cat("Deviazione standard pooled:", round(sp, 4), "\n")
+```
+
+**Errore standard della differenza:**
+
+```{r}
+se_diff <- sp * sqrt(1/n1 + 1/n2)
+cat("Errore standard della differenza:", round(se_diff, 4), "\n")
+```
+
+**Statistica test:**
+
+```{r}
+t_stat <- (x1_bar - x2_bar) / se_diff
+cat("Statistica t:", round(t_stat, 4), "\n")
+```
+
+**Gradi di libertà:**
+
+```{r}
+df <- n1 + n2 - 2
+cat("Gradi di libertà:", df, "\n")
+```
+
+**Valore-$p$:**
+
+```{r}
+p_val <- 2 * pt(t_stat, df = df) # t è negativo, pt dà coda sinistra
+cat("Valore-p (bilaterale):", format(p_val, scientific = TRUE), "\n")
+```
+
+**Intervallo di fiducia al 95%:**
+
+```{r}
+t_crit <- qt(0.975, df = df)
+diff_means <- x1_bar - x2_bar
+ci_low <- diff_means - t_crit * se_diff
+ci_up <- diff_means + t_crit * se_diff
+cat("Differenza tra le medie:", round(diff_means, 2), "\n")
+cat("IC al 95%: [", round(ci_low, 2), ",", round(ci_up, 2), "]\n")
+```
+
+## Parte B — Verifica con R
+
+```{r}
+# Test t con varianze uguali (pooled)
+t.test(cbt, controllo, var.equal = TRUE)
+```
+
+```{r}
+# Test di Welch (varianze non necessariamente uguali)
+t.test(cbt, controllo, var.equal = FALSE)
+```
+
+In questo caso i risultati dei due test sono molto simili perché le varianze
+dei due gruppi non sono troppo diverse. In pratica, il test di Welch è
+preferibile perché non assume l'uguaglianza delle varianze.
+
+## Parte C — Effect size
+
+```{r}
+d <- (x1_bar - x2_bar) / sp
+cat("Cohen's d:", round(d, 4), "\n")
+cat("Valore assoluto:", round(abs(d), 4), "\n")
+```
+
+Secondo le convenzioni di Cohen, un $|d| > 0.8$ indica un effetto grande.
+In questo caso l'effetto è molto grande, il che suggerisce una differenza
+sostanziale tra i due gruppi.
+
+## Parte D — Risposte alle domande di riflessione
+
+**D1.** La significatività statistica indica che la differenza osservata è
+improbabile sotto $H_0$, ma non dice nulla sulla rilevanza clinica. Un effetto
+statisticamente significativo può essere clinicamente irrilevante (con campioni
+grandi, anche differenze minuscole diventano "significative"). Il $d$ di Cohen
+fornisce un'informazione complementare: quantifica la *grandezza* dell'effetto
+in unità di deviazione standard, indipendentemente dalla dimensione del
+campione. In questo caso, l'effect size grande suggerisce una differenza
+clinicamente rilevante, ma il valore-$p$ da solo non avrebbe potuto dircelo.
+
+**D2.**
+
+*Interpretazione corretta:* "Se ripetessimo lo studio molte volte e
+calcolassimo ogni volta l'intervallo di fiducia al 95%, il 95% di questi
+intervalli conterrebbe il vero valore del parametro." È una proprietà della
+*procedura*, non del singolo intervallo.
+
+*Interpretazione errata (ma comune):* "C'è una probabilità del 95% che il vero
+parametro si trovi all'interno di questo specifico intervallo." Questa
+interpretazione è scorretta perché, nel framework frequentista, il parametro è
+una costante fissa (non una variabile casuale): o è dentro l'intervallo, o non
+lo è. Non ha senso assegnargli una probabilità. Solo nell'approccio bayesiano
+(con gli intervalli di credibilità) possiamo fare affermazioni del tipo "c'è
+una probabilità del 95% che il parametro sia in questo intervallo."
+
+**D3.** Approssimativamente, 95 studi su 100 produrranno un intervallo che
+contiene il vero parametro. Ma per il *singolo* studio che ho condotto, non
+posso dire "c'è il 95% di probabilità che il vero parametro sia nel mio
+intervallo." Il parametro è fisso: il mio intervallo o lo contiene (e non lo
+so), o non lo contiene. Il "95%" descrive la frequenza di successo a lungo
+termine della procedura, non l'incertezza su questo specifico risultato.
+Questa è una delle limitazioni più controintuitive dell'approccio frequentista.
+
+
+# Problema 4 — $P(\text{dati} \mid H)$ vs. $P(H \mid \text{dati})$
+
+## 4.1
+
+Un esempio dalla vita quotidiana: consideriamo la probabilità di portare
+l'ombrello e la pioggia.
+
+$P(\text{ombrello} \mid \text{pioggia})$ è alta: quando piove, quasi tutti
+portano l'ombrello (diciamo 90%).
+
+$P(\text{pioggia} \mid \text{ombrello})$ dipende dal contesto: in una città
+soleggiata, molte persone portano l'ombrello per il sole; in Inghilterra, chi
+porta l'ombrello probabilmente lo fa per la pioggia. Le due probabilità sono
+diverse.
+
+Allo stesso modo, $P(\text{dati} \mid H_0)$ (il valore-$p$) non è la stessa
+cosa di $P(H_0 \mid \text{dati})$ (la probabilità che $H_0$ sia vera dato
+ciò che ho osservato). Il ricercatore vuole conoscere la seconda, ma
+l'approccio frequentista calcola solo la prima.
+
+## 4.2
+
+La relazione formale è data dal teorema di Bayes:
+
+$$P(H \mid \text{dati}) = \frac{P(\text{dati} \mid H) \cdot P(H)}{P(\text{dati})}$$
+
+L'approccio frequentista non può calcolare $P(H \mid \text{dati})$ perché non
+ammette una distribuzione di probabilità *a priori* sui parametri o sulle
+ipotesi: $P(H)$. Nel framework frequentista, il parametro è una costante fissa
+(seppure sconosciuta), non una variabile casuale. Non essendoci una $P(H)$,
+il teorema di Bayes non può essere applicato e la "probabilità inversa"
+$P(H \mid \text{dati})$ rimane inaccessibile.
+
+## 4.3
+
+Nonostante il valore-$p$ sia identico ($p = 0.04$) nei due scenari, la
+nostra fiducia nel risultato non dovrebbe essere la stessa. Per il farmaco
+con razionale teorico e dati preliminari promettenti (Scenario A), la
+*plausibilità a priori* è alta: abbiamo buone ragioni per credere che il
+trattamento possa funzionare *prima* ancora di vedere i dati. Per l'oroscopo
+(Scenario B), la plausibilità a priori è estremamente bassa: secoli di
+indagine scientifica non hanno trovato alcun meccanismo che colleghi la
+posizione degli astri al successo accademico.
+
+Il framework frequentista tratta i due casi in modo identico perché il
+valore-$p$ dipende *solo* dai dati e dal modello sotto $H_0$: non incorpora
+alcuna informazione sulla plausibilità dell'ipotesi. L'approccio bayesiano,
+invece, attraverso la distribuzione *a priori* $P(H)$, può formalmente
+integrare questa informazione: a parità di verosimiglianza, un'ipotesi con
+alta plausibilità a priori avrà una probabilità a posteriori più alta di
+un'ipotesi implausibile. Questo è esattamente ciò che manca al valore-$p$:
+non tiene conto del contesto scientifico in cui i dati vengono raccolti.
+
+
+# Problema 5 — Limiti della decisione dicotomica
+
+## 5.1a
+
+La differenza tra $p = 0.049$ (Studio A) e $p = 0.053$ (Studio B) è minima
+— corrisponde a una fluttuazione triviale nei dati. Eppure, il sistema
+dicotomico impone conclusioni opposte: lo Studio A "trova un effetto" e lo
+Studio B no. Questo dimostra che la soglia $\alpha = 0.05$ è una convenzione
+arbitraria, non una proprietà dei dati. Come ha scritto Rosnow e Rosenthal,
+"Dio ama lo 0.06 quasi quanto lo 0.05." La scienza non dovrebbe cambiare
+le proprie conclusioni sulla base di differenze irrilevanti nel quarto decimale.
+
+## 5.1b
+
+Lo Studio C ha la stessa statistica $t = 2.05$ dello Studio A, ma un campione
+10 volte più grande ($n = 300$ vs. $n = 30$). Poiché la statistica $t$ è
+definita come $t = d \cdot \sqrt{n/2}$ (approssimativamente), a parità di $t$,
+un campione più grande implica un effect size più piccolo. Nello Studio A,
+l'effetto è più grande ma stimato con meno precisione; nello Studio C, l'effetto
+è piccolo ma stimato con grande precisione. Dal punto di vista dell'evidenza
+per un effetto *sostanziale*, lo Studio A potrebbe essere più informativo —
+ma il valore-$p$ da solo non permette di distinguere i due casi.
+
+```{r}
+# Stima approssimativa dell'effect size (d) per i due studi
+# Per un test a due campioni con n per gruppo:
+# t ≈ d * sqrt(n/2), quindi d ≈ t * sqrt(2/n)
+d_A <- 2.05 * sqrt(2 / 15) # n=30 → 15 per gruppo
+d_C <- 2.05 * sqrt(2 / 150) # n=300 → 150 per gruppo
+cat("Effect size approssimativo Studio A:", round(d_A, 3), "\n")
+cat("Effect size approssimativo Studio C:", round(d_C, 3), "\n")
+```
+
+## 5.2
+
+Il valore-$p$ è una funzione congiunta della dimensione dell'effetto e della
+dimensione del campione. Con $n = 10000$, anche una differenza di 0.1 punti su
+una scala che va da 0 a 100 può risultare "significativa" ($p < 0.05$), pur
+essendo completamente irrilevante dal punto di vista clinico. Viceversa, con
+$n = 10$, un effetto clinicamente importante ($d = 0.6$) potrebbe non
+raggiungere la significatività statistica per mancanza di potenza. Il
+valore-$p$ mescola queste due informazioni in un unico numero, rendendo
+impossibile distinguere un effetto grande in un campione piccolo da un effetto
+piccolo in un campione grande. Per la pratica clinica, la dimensione dell'effetto
+e l'intervallo di fiducia sono informazioni molto più utili del solo valore-$p$.
+
+## 5.3
+
+**(a) "Il valore-$p$ è la probabilità che $H_0$ sia vera."**
+
+**Scorretta.** Il valore-$p$ è $P(\text{dati} \mid H_0)$, non
+$P(H_0 \mid \text{dati})$. Il valore-$p$ ci dice quanto sarebbero sorprendenti
+i dati *se* $H_0$ fosse vera, non quanto sia probabile che $H_0$ sia vera.
+L'approccio frequentista non assegna probabilità alle ipotesi.
+
+**(b) "Se $p < 0.05$, l'effetto osservato è importante dal punto di vista
+clinico."**
+
+**Scorretta.** La significatività statistica riguarda la compatibilità dei dati
+con $H_0$; non dice nulla sulla rilevanza clinica o pratica. Un effetto può
+essere statisticamente significativo ma clinicamente irrilevante (specialmente
+con campioni grandi). Per valutare l'importanza clinica servono l'effect size
+e il giudizio del professionista.
+
+**(c) "Se $p > 0.05$, allora non c'è nessun effetto."**
+
+**Scorretta.** Un $p$ grande non dimostra l'assenza di un effetto — dimostra
+solo che i dati non sono sufficienti per rifiutare $H_0$ al livello scelto.
+"Assenza di evidenza non è evidenza di assenza." L'effetto potrebbe esistere ma
+il campione potrebbe essere troppo piccolo per rilevarlo (errore di Tipo II).
+
+**(d) "Il complemento a 1 del valore-$p$ (cioè $1 - p$) è la probabilità che
+il trattamento funzioni."**
+
+**Scorretta.** $1 - p$ non ha un'interpretazione inferenziale utile. Non è
+$P(H_1 \mid \text{dati})$. Per calcolare la probabilità che un'ipotesi sia vera
+dato i dati, servirebbe il teorema di Bayes e una distribuzione a priori.
+
+**(e) "L'intervallo di fiducia al 95% contiene il vero parametro con
+probabilità 0.95."**
+
+**Scorretta (nel framework frequentista).** Il vero parametro è una costante
+fissa: o è dentro l'intervallo, oppure non lo è. Il "95%" si riferisce alla
+frequenza con cui la *procedura* produce intervalli che contengono il vero
+parametro, non alla probabilità che *questo specifico* intervallo lo contenga.
+Questa interpretazione probabilistica è possibile solo nel framework bayesiano,
+dove il parametro è trattato come una variabile casuale.
+
+
+# Problema 6 — Esercizio integrativo con R
+
+```{r}
+set.seed(2026)
+sonno_8h <- round(rnorm(15, mean = 38, sd = 5))
+sonno_4h <- round(rnorm(15, mean = 34, sd = 6))
+```
+
+## 6.1 — Statistiche descrittive
+
+```{r}
+cat("=== Gruppo 8 ore di sonno ===\n")
+cat("Media:", round(mean(sonno_8h), 2), "\n")
+cat("SD:", round(sd(sonno_8h), 2), "\n")
+cat("Mediana:", median(sonno_8h), "\n\n")
+
+cat("=== Gruppo 4 ore di sonno ===\n")
+cat("Media:", round(mean(sonno_4h), 2), "\n")
+cat("SD:", round(sd(sonno_4h), 2), "\n")
+cat("Mediana:", median(sonno_4h), "\n")
+```
+
+## 6.2 — Test $t$ di Welch
+
+```{r}
+risultato <- t.test(sonno_8h, sonno_4h, var.equal = FALSE)
+risultato
+```
+
+## 6.3 — Cohen's $d$
+
+```{r}
+n1 <- length(sonno_8h)
+n2 <- length(sonno_4h)
+sp <- sqrt(((n1 - 1) * sd(sonno_8h)^2 + (n2 - 1) * sd(sonno_4h)^2) /
+             (n1 + n2 - 2))
+d <- (mean(sonno_8h) - mean(sonno_4h)) / sp
+cat("Cohen's d:", round(d, 3), "\n")
+```
+
+## 6.4 — Grafico
+
+```{r}
+dati <- data.frame(
+  punteggio = c(sonno_8h, sonno_4h),
+  gruppo = rep(c("8 ore", "4 ore"), each = 15)
+)
+
+boxplot(punteggio ~ gruppo, data = dati,
+        main = "Prestazione n-back per gruppo di sonno",
+        ylab = "Risposte corrette (su 50)",
+        xlab = "Ore di sonno",
+        col = c("lightblue", "lightyellow"),
+        border = c("steelblue", "darkgoldenrod"))
+
+# Aggiungiamo i punti individuali
+stripchart(punteggio ~ gruppo, data = dati,
+           vertical = TRUE, method = "jitter",
+           pch = 19, col = "grey40", cex = 0.8,
+           add = TRUE)
+```
+
+## 6.5 — Esempio di report dei risultati
+
+Questo è un esempio di come riportare i risultati nella sezione "Risultati" di
+un articolo. Si noti che il testo deve essere adattato ai valori effettivamente
+ottenuti dal `set.seed(2026)`:
+
+> È stato condotto un test $t$ di Welch per campioni indipendenti per
+> confrontare le prestazioni al compito n-back tra il gruppo che ha dormito 8
+> ore e il gruppo che ha dormito 4 ore. I risultati hanno mostrato [una
+> differenza significativa / una differenza non significativa] tra i due gruppi,
+> $t$(`r round(risultato$parameter, 1)`) = `r round(risultato$statistic, 2)`,
+> $p$ = `r round(risultato$p.value, 4)`. L'intervallo di fiducia al 95% per la
+> differenza tra le medie è
+> [`r round(risultato$conf.int[1], 2)`, `r round(risultato$conf.int[2], 2)`].
+> La dimensione dell'effetto, misurata con il $d$ di Cohen, è stata di
+> `r round(d, 2)`, indicando un effetto [piccolo/medio/grande].
+>
+> **Nota sui limiti dell'analisi:** Questo test permette di valutare quanto i
+> dati osservati sarebbero sorprendenti se non esistesse alcuna differenza tra
+> i gruppi nella popolazione ($H_0$). Tuttavia, non ci consente di calcolare
+> direttamente la probabilità che la privazione del sonno influenzi la memoria
+> di lavoro, né di quantificare il grado di evidenza a favore di ciascuna
+> ipotesi.
+
+
+# Riflessione conclusiva — Elementi per la risposta
+
+Una risposta adeguata dovrebbe toccare i seguenti punti:
+
+Il framework frequentista continua a essere usato per diverse ragioni: è ben
+consolidato, standardizzato, facile da automatizzare e non richiede la
+specificazione di informazioni a priori (che possono essere viste come una
+fonte di soggettività). Tuttavia, questa esercitazione ha evidenziato limiti
+importanti.
+
+Il frequentismo risponde a una domanda diversa da quella che il ricercatore
+pone. Il ricercatore vuole sapere $P(H \mid \text{dati})$; il frequentismo
+calcola $P(\text{dati} \mid H_0)$. La decisione significativo/non significativo
+è artificiale: dipende da una soglia arbitraria e dalla dimensione del
+campione, mescolando informazione sulla grandezza dell'effetto con la
+precisione della stima. Non è possibile, nel framework frequentista, dire
+"c'è l'80% di probabilità che il trattamento funzioni" o "il parametro è
+compreso in questo intervallo con probabilità del 95%."
+
+Un approccio alternativo dovrebbe poter fare esattamente questo: quantificare
+direttamente la plausibilità delle ipotesi alla luce dei dati, incorporare
+ciò che già sappiamo (informazione a priori), e fornire una distribuzione
+completa di incertezza sul parametro anziché una decisione binaria. L'inferenza
+bayesiana, che sarà l'oggetto della parte successiva del corso, offre
+esattamente questi strumenti.

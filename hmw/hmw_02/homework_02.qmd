@@ -1,0 +1,395 @@
+---
+title: "HOMEWORK 02"
+subtitle: "PSICOMETRIA 2025-2026"
+author: "Corrado Caudek"
+lang: it
+format: 
+  html:
+    code-fold: false
+    toc: true
+    toc-depth: 3
+    number-sections: false
+editor: source
+date: today
+---
+
+# Homework
+
+**Che cos'è questo homework?** Nel primo homework hai imparato a fare calcoli
+a mano e a replicarli con R base. Ora passiamo al livello successivo: 
+esplorare un dataset realistico, creare grafici e iniziare a cercare 
+*pattern* nei dati. Non ti preoccupare: anche stavolta ti guidiamo passo 
+dopo passo.
+
+**Quando scade?** L'homework scade **DOMENICA 15 MARZO 2026** alle ore 23:59.
+
+**Dove consegno?** Carica il tuo homework al link su Moodle. Nomina il file:
+`COGNOME_NOME_HW1.html` (o `.pdf`). Non consegnare file Word.
+
+**Materiale propedeutico.** Assicurati di aver letto il sito companion 
+[Analisi esplorativa dei dati](https://ccaudek.github.io/utet-eda/).
+
+::: {.callout-tip}
+## Il segreto di questo homework
+Ogni quesito ti fornisce il **codice quasi completo**: devi capirlo, 
+completare le parti mancanti (indicate con `___`), eseguirlo e poi 
+**interpretare** il risultato. La parte più importante non è il codice: 
+è la tua capacità di leggere un grafico e dire cosa mostra.
+:::
+
+
+# Il contesto: sonno, ansia e voti
+
+Il sonno è un fattore cruciale per il benessere psicologico degli studenti.
+Supponiamo di avere raccolto i dati di 100 studenti del primo anno durante la 
+sessione d'esame. Per ciascuno studente abbiamo misurato:
+
+| Variabile | Descrizione | Scala |
+|-----------|-------------|-------|
+| `ore_sonno` | Ore di sonno la notte prima dell'esame | 0–12 |
+| `ansia` | Ansia autovalutata prima dell'esame | 1–10 |
+| `voto_esame` | Voto ottenuto | 18–31 (31 = 30L) |
+| `caffe` | Caffè bevuti la mattina dell'esame | 0–6 |
+| `sesso` | Sesso biologico | M / F |
+
+I dati sono nel file **dati_sonno_ansia.csv** su Moodle.
+
+
+# Preparazione: caricare gli strumenti
+
+Prima di iniziare, devi caricare un "pacchetto" di funzioni chiamato 
+`tidyverse`. Contiene strumenti per leggere dati, manipolarli e creare 
+grafici. È come aprire una cassetta degli attrezzi.
+
+```r
+# Se non lo hai mai installato, esegui prima (una sola volta):
+# install.packages("tidyverse")
+
+library(tidyverse)
+```
+
+::: {.callout-note}
+## Cosa succede se non funziona?
+Se ottieni un errore, probabilmente `tidyverse` non è installato. Esegui 
+`install.packages("tidyverse")` nella console di R (ci vogliono 1–2 minuti),
+poi riprova `library(tidyverse)`.
+:::
+
+
+# Quesito 1: Importare e conoscere i dati
+
+## 1a — Importare il file
+
+Metti il file `dati_sonno_ansia.csv` nella stessa cartella del tuo file `.qmd`, 
+poi esegui:
+
+```r
+dati <- read.csv("dati_sonno_ansia.csv")
+```
+
+## 1b — Primo sguardo
+
+Esegui questi comandi e **commenta brevemente** cosa ti mostrano:
+
+```r
+# Quanti studenti e quante variabili?
+dim(dati)
+
+# Le prime 6 righe
+head(dati)
+
+# Struttura: nome, tipo e primi valori di ogni variabile
+str(dati)
+```
+
+**Domanda:** Quanti studenti ci sono? Quante variabili? Quali sono numeriche
+e quale è categoriale?
+
+## 1c — Statistiche descrittive
+
+Nell'HW1 hai calcolato media e SD a mano. Ora applichiamo le stesse idee a 
+un dataset più grande.
+
+```r
+summary(dati)
+```
+
+**Domanda:** Qual è la media delle ore di sonno? E il livello mediano di 
+ansia? *(Scrivi i numeri che leggi dall'output.)*
+
+## 1d — Contare maschi e femmine
+
+```r
+table(dati$sesso)
+```
+
+**Domanda:** Quanti studenti maschi e quante studentesse ci sono?
+
+
+# Quesito 2: Come si distribuisce l'ansia?
+
+Nell'HW1 hai imparato a fare istogrammi con `hist()`. Ora usiamo `ggplot2`, 
+che produce grafici più eleganti. La sintassi è diversa da `hist()`, ma 
+l'idea è la stessa.
+
+## Mini-guida a ggplot2 (3 minuti di lettura)
+
+Un grafico ggplot si costruisce **a strati** con il `+`:
+
+```r
+ggplot(dati, aes(x = variabile)) +   # 1. dati + quale variabile
+  geom_istogramma/punti/...() +       # 2. che tipo di grafico
+  labs(title = "...", x = "...", y = "...")  # 3. etichette
+```
+
+- `aes()` sta per *aesthetics*: dice a ggplot **quali variabili** usare.
+- `geom_*()` dice **che forma** dare ai dati (barre, punti, linee...).
+- `labs()` aggiunge titolo e etichette agli assi.
+
+## 2a — Istogramma dell'ansia
+
+Completa il codice (sostituisci `___`):
+
+```r
+ggplot(dati, aes(x = ___)) +
+  geom_histogram(binwidth = 1, fill = "steelblue", color = "white") +
+  labs(
+    title = "Distribuzione dei livelli di ansia",
+    x = "Livello di ansia (1–10)",
+    y = "Frequenza"
+  )
+```
+
+*(Suggerimento: cosa devi mettere al posto di `___`? Il nome della variabile
+che vuoi rappresentare.)*
+
+## 2b — Interpretazione
+
+Guarda il grafico e rispondi in 2–3 frasi:
+
+1. La distribuzione è simmetrica o asimmetrica?
+2. Dove si concentra la maggior parte degli studenti (bassa ansia, media, alta)?
+3. Ci sono valori estremi?
+
+
+# Quesito 3: Sonno e ansia sono legati?
+
+Nell'HW1 hai fatto uno scatterplot con `plot()`. Ora facciamo lo stesso con 
+ggplot2.
+
+## 3a — Scatterplot
+
+Completa il codice:
+
+```r
+ggplot(dati, aes(x = ___, y = ___)) +
+  geom_point(alpha = 0.6, color = "steelblue") +
+  labs(
+    title = "Relazione tra sonno e ansia",
+    x = "Ore di sonno",
+    y = "Livello di ansia"
+  )
+```
+
+*(Suggerimento: l'asse x è `ore_sonno`, l'asse y è `ansia`.)*
+
+## 3b — Aggiungere una linea di tendenza
+
+Possiamo aggiungere una linea retta che riassume la tendenza generale. Basta 
+aggiungere un nuovo strato:
+
+```r
+ggplot(dati, aes(x = ore_sonno, y = ansia)) +
+  geom_point(alpha = 0.6, color = "steelblue") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(
+    title = "Relazione tra sonno e ansia",
+    x = "Ore di sonno",
+    y = "Livello di ansia"
+  )
+```
+
+## 3c — Interpretazione
+
+Guarda il grafico e rispondi:
+
+1. La linea di tendenza sale o scende? (cioè: la relazione è positiva o negativa?)
+2. In parole semplici: gli studenti che dormono di più tendono a essere 
+   più o meno ansiosi?
+3. Ti aspettavi questo risultato? Perché?
+
+## 3d — La correlazione (un numero che riassume la relazione)
+
+Nell'HW1 hai visto che la SD riassume "quanto sono dispersi i dati". 
+La **correlazione** riassume "quanto due variabili si muovono insieme":
+
+- $r$ vicino a $+1$: quando una sale, anche l'altra sale (relazione positiva forte);
+- $r$ vicino a $-1$: quando una sale, l'altra scende (relazione negativa forte);
+- $r$ vicino a $0$: nessuna relazione lineare.
+
+```r
+cor(dati$ore_sonno, dati$ansia)
+```
+
+**Domanda:** Qual è il valore di $r$? La relazione è debole, moderata o forte?
+
+::: {.callout-note}
+## Attenzione!
+Correlazione non vuol dire causazione. Anche se $r$ è forte, non possiamo 
+dire che "dormire poco *causa* ansia". Potrebbe essere il contrario (l'ansia 
+impedisce di dormire) o ci potrebbe essere un terzo fattore che influenza 
+entrambi.
+:::
+
+
+# Quesito 4: Differenze tra maschi e femmine
+
+## 4a — Statistiche per gruppo
+
+Usiamo una funzione che calcola media e SD separatamente per maschi e femmine.
+Completa il codice:
+
+```r
+# Per i maschi
+cat("=== Maschi ===\n")
+maschi <- dati$ansia[dati$sesso == "M"]
+cat("Media ansia:", round(mean(maschi), 2), "\n")
+cat("SD ansia:   ", round(sd(maschi), 2), "\n")
+cat("N:          ", length(maschi), "\n\n")
+
+# Per le femmine
+cat("=== Femmine ===\n")
+femmine <- dati$ansia[dati$sesso == "___"]
+cat("Media ansia:", round(mean(femmine), 2), "\n")
+cat("SD ansia:   ", round(sd(___), 2), "\n")
+cat("N:          ", length(femmine), "\n")
+```
+
+*(Suggerimento: completa con "F" e con il nome del vettore che hai creato.)*
+
+## 4b — Boxplot: confrontare visivamente
+
+Il **boxplot** è un grafico che mostra mediana, quartili e valori estremi.
+È perfetto per confrontare gruppi.
+
+```r
+ggplot(dati, aes(x = sesso, y = ansia, fill = sesso)) +
+  geom_boxplot(alpha = 0.7) +
+  geom_jitter(width = 0.2, alpha = 0.3, size = 1) +
+  labs(
+    title = "Ansia per sesso",
+    x = "Sesso",
+    y = "Livello di ansia (1–10)"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+::: {.callout-note}
+## Come si legge un boxplot?
+- La **linea nel mezzo** della scatola è la mediana.
+- I **bordi** della scatola sono $Q_1$ e $Q_3$ (l'IQR che hai calcolato nell'HW1!).
+- I **baffi** si estendono fino ai valori più lontani che non sono outlier.
+- I **punti sparsi** (`geom_jitter`) mostrano i dati individuali.
+:::
+
+## 4c — Interpretazione
+
+1. Quale gruppo ha la mediana dell'ansia più alta?
+2. Le due distribuzioni si sovrappongono molto o poco?
+3. Sulla base di questi dati, diresti che la differenza tra maschi e femmine 
+   è grande o piccola? *(2–3 frasi.)*
+
+
+# Quesito 5: Cosa predice i voti?
+
+## 5a — Ansia e voto
+
+Crea uno scatterplot (come nel Quesito 3) con `ansia` sull'asse x e 
+`voto_esame` sull'asse y. Aggiungi la linea di tendenza.
+
+```r
+ggplot(dati, aes(x = ___, y = ___)) +
+  geom_point(alpha = 0.6, color = "coral") +
+  geom_smooth(method = "lm", se = FALSE, color = "darkred") +
+  labs(
+    title = "Ansia e voto d'esame",
+    x = "Livello di ansia",
+    y = "Voto"
+  )
+```
+
+## 5b — Sonno e voto
+
+Ripeti con `ore_sonno` sull'asse x e `voto_esame` sull'asse y:
+
+```r
+ggplot(dati, aes(x = ___, y = ___)) +
+  geom_point(alpha = 0.6, color = "seagreen") +
+  geom_smooth(method = "lm", se = FALSE, color = "darkgreen") +
+  labs(
+    title = "Sonno e voto d'esame",
+    x = "Ore di sonno",
+    y = "Voto"
+  )
+```
+
+## 5c — Le correlazioni
+
+```r
+cat("Correlazione ansia-voto: ", round(cor(dati$ansia, dati$voto_esame), 3), "\n")
+cat("Correlazione sonno-voto: ", round(cor(dati$ore_sonno, dati$voto_esame), 3), "\n")
+```
+
+## 5d — Interpretazione
+
+Guarda entrambi i grafici e le correlazioni, poi rispondi:
+
+1. Gli studenti più ansiosi tendono a prendere voti più alti o più bassi?
+2. Gli studenti che dormono di più tendono a prendere voti più alti o più bassi?
+3. Quale delle due variabili (ansia o sonno) ha una relazione più forte 
+   con il voto? Come lo capisci dal valore di $r$?
+
+
+# Quesito 6: Cosa abbiamo imparato?
+
+## 6a — Sintesi
+
+Scrivi un breve testo (circa **100 parole**, non di più) che riassuma cosa 
+hai trovato nei dati. Immagina di spiegarlo a un compagno che non ha fatto 
+l'esercizio. Tocca almeno questi punti:
+
+- Com'è la relazione tra sonno e ansia?
+- Com'è la relazione tra ansia/sonno e voto?
+- C'è differenza tra maschi e femmine?
+
+## 6b — Una domanda che rimane aperta
+
+Sulla base di quello che hai osservato, formula **una domanda** a cui questa 
+analisi *non* può rispondere. Per esempio:
+
+- Possiamo dire che dormire poco *causa* più ansia, o potrebbe essere il contrario?
+- Ci sono studenti che vanno bene nonostante dormano poco — perché?
+- Se facessimo un intervento per migliorare il sonno, i voti migliorerebbero?
+
+Non c'è una risposta giusta: l'importante è mostrare che ci hai pensato.
+
+
+# Criteri di valutazione
+
+| Livello | Cosa significa |
+|---------|----------------|
+| **Sufficiente** | I codici sono presenti (anche con qualche errore), i grafici compaiono, le interpretazioni sono abbozzate. |
+| **Buono** | Codice funzionante, grafici corretti, interpretazioni chiare e ragionate. |
+| **Ottimo** | Tutto quanto sopra, più riflessioni che vanno oltre il minimo richiesto. |
+
+::: {.callout-tip}
+## Se ti blocchi...
+1. Rileggi la parte corrispondente del sito 
+   [Analisi esplorativa dei dati](https://ccaudek.github.io/utet-eda/).
+2. Prova a eseguire il codice riga per riga (non tutto insieme).
+3. Chiedi aiuto a un compagno o all'intelligenza artificiale.
+4. Scrivi nel tuo elaborato **dove** ti sei bloccato e **cosa** hai provato.
+:::
+
+Buon lavoro!

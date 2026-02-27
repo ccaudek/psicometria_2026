@@ -1,0 +1,348 @@
+---
+title: "SOLUZIONI — Homework Bayes (Lectures 17–20)"
+subtitle: "PSICOMETRIA 2025–2026"
+author: 
+  - name: "Prof. Corrado Caudek"
+    affiliation: "Università degli Studi di Firenze — Dipartimento NEUROFARBA, Sezione di Psicologia"
+    email: "corrado.caudek@unifi.it"
+course: "PSI0028 — Psicometria"
+date: today
+date-format: "DD MMMM YYYY"
+lang: it
+format: 
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    number-sections: false
+    code-fold: false
+    fig-align: center
+    df-print: kable
+    embed-resources: true
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# Preparazione
+
+```{r}
+suppressPackageStartupMessages({
+  library(tidyverse)
+})
+```
+
+## Soluzione 
+
+
+# Quesito 0 — Metodo della griglia per l’aggiornamento Beta‑Binomiale
+
+
+
+### 0a — Costruzione della griglia e calcolo della posteriori
+
+```{r}
+# Parametri del prior e dati
+alpha0 <- 5
+beta0  <- 3
+n <- 10
+y <- 7
+
+# Griglia
+grid <- tibble(theta = seq(0, 1, length.out = 1001))
+
+# Calcolo prior e verosimiglianza
+grid <- grid |>
+  mutate(
+    prior = dbeta(theta, shape1 = alpha0, shape2 = beta0),
+    likelihood = dbinom(x = y, size = n, prob = theta),
+    posterior_unnorm = prior * likelihood,
+    posterior = posterior_unnorm / sum(posterior_unnorm)  # normalizzazione
+  )
+```
+
+Il codice produce una griglia e calcola la posteriori normalizzata. Notare che la normalizzazione è approssimata perché si usa la somma invece dell’integrale, ma con griglia abbastanza fitta l’errore è trascurabile.
+
+---
+
+### 0b — Campionamento dalla posteriori e media campionaria
+
+```{r}
+set.seed(123)  # per riproducibilità
+campione <- sample(grid$theta, size = 10000, replace = TRUE, prob = grid$posterior)
+media_camp <- mean(campione)
+media_camp
+```
+
+Eseguendo il campionamento (con `set.seed(123)` per riproducibilità) si ottiene, ad esempio, una media campionaria di circa **0.668**. Il valore esatto può variare leggermente per via della casualità.
+
+---
+
+### 0c — Soluzione analitica
+
+Per il modello Beta‑Binomiale, la posteriori esatta è $\text{Beta}(\alpha_1, \beta_1)$ con  
+
+$$
+\alpha_1 = \alpha_0 + y,\qquad \beta_1 = \beta_0 + (n - y).
+$$
+
+Calcola $\alpha_1$ e $\beta_1$, poi la media analitica $\alpha_1/(\alpha_1+\beta_1)$.
+
+```{r}
+alpha1 <- alpha0 + y
+beta1  <- beta0 + (n - y)
+media_analitica <- alpha1 / (alpha1 + beta1)
+media_analitica
+```
+
+---
+
+### 0d — Confronto
+
+```{r}
+# Istogramma del campione con sovrapposizione della densità esatta
+ggplot(data.frame(theta = campione), aes(x = theta)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 30, fill = "skyblue", color = "white") +
+  stat_function(fun = dbeta, args = list(shape1 = alpha1, shape2 = beta1), 
+                color = "red", linewidth = 1) +
+  labs(title = "Campione dalla posteriori (griglia) e densità esatta",
+       x = expression(theta), y = "densità") +
+  theme_minimal()
+```
+
+La media analitica è $0.6667$, mentre la media campionaria dalla griglia sarà prossima a questo valore (ad esempio 0.6665). La piccola differenza è dovuta all’approssimazione discreta e alla casualità del campione. L’istogramma del campione segue fedelmente la curva Beta(12,6), confermando che il metodo della griglia funziona bene.
+
+**Risposte alle domande:**  
+
+- Il metodo della griglia approssima la distribuzione continua con una distribuzione discreta su punti equispaziati; con un numero sufficiente di punti l’approssimazione è eccellente.  
+- Se la griglia fosse troppo rada, si perderebbe dettaglio e la media campionaria potrebbe discostarsi sensibilmente.  
+- La media campionaria converge alla media della distribuzione discreta sulla griglia, che a sua volta approssima la media analitica; aumentando il numero di punti e la dimensione del campione l’accordo diventa perfetto.
+
+
+### 1a — Prior
+
+Dalle condizioni: $\alpha_0 - 1 = 6$, $\beta_0 - 1 = 4$  
+$\Rightarrow \alpha_0 = 7$, $\beta_0 = 5$.
+
+```{r}
+alpha0 <- 7
+beta0  <- 5
+
+n <- 20
+y <- 14
+```
+
+**Verifica:** la media del prior è $\alpha_0/(\alpha_0+\beta_0) = 7/12 \approx 0.583$, leggermente inferiore a $0.6$ ma comunque vicina; la moda sarebbe $(\alpha_0-1)/(\alpha_0+\beta_0-2) = 6/10 = 0.6$, che corrisponde esattamente alla proporzione di successi virtuali. L'interpretazione in termini di dati virtuali rimane coerente: $6$ successi e $4$ insuccessi su $10$ osservazioni passate.
+
+---
+
+### 1b — Posterior
+
+Aggiornamento:
+
+```{r}
+alpha1 <- alpha0 + y   # 7 + 14 = 21
+beta1  <- beta0 + (n - y)  # 5 + (20-14) = 5 + 6 = 11
+```
+
+La posteriore è $\text{Beta}(21, 11)$.  
+In termini di dati virtuali complessivi: successi virtuali = $\alpha_1 - 1 = 20$, insuccessi virtuali = $\beta_1 - 1 = 10$, totale osservazioni virtuali = $30$ (le $10$ iniziali più le $20$ reali).
+
+---
+
+### 1c — Grafico
+
+Codice completato:
+
+```{r}
+library(tidyverse)
+
+grid <- tibble(theta = seq(0, 1, length.out = 1001))
+
+dens <- grid |>
+  mutate(
+    prior = dbeta(theta, shape1 = alpha0, shape2 = beta0),
+    post  = dbeta(theta, shape1 = alpha1, shape2 = beta1)
+  ) |>
+  pivot_longer(c(prior, post), names_to = "dist", values_to = "density")
+
+ggplot(dens, aes(x = theta, y = density, linetype = dist)) +
+  geom_line(linewidth = 1) +
+  labs(
+    title = "Prior vs posterior per la proporzione θ",
+    x = expression(theta),
+    y = "densità"
+  ) +
+  theme_minimal()
+```
+
+**Interpretazione:**  
+Il prior (linea tratteggiata) è centrato intorno a $0.58$‑$0.60$ con una dispersione moderata (forza $12$). La posterior (linea continua) si sposta verso destra (valori più alti) perché i dati mostrano $14/20 = 0.7$ di successi, e diventa più concentrata (incertezza ridotta) poiché abbiamo aggiunto $20$ osservazioni reali alle $10$ virtuali iniziali. La massa di probabilità si concentra ora attorno a valori prossimi a $0.65$‑$0.67$.
+
+---
+
+### 1d — Sintesi numerica
+
+```{r}
+post_mean <- alpha1 / (alpha1 + beta1)   # 21/32 = 0.65625
+
+ci95 <- qbeta(c(0.025, 0.975), shape1 = alpha1, shape2 = beta1)
+# circa 0.483 e 0.808 (valori esatti: 0.4827, 0.8083)
+
+post_mean
+ci95
+```
+
+**Interpretazione:**  
+- La **media a posteriori** è $0.656$. È la nostra stima puntuale di $\theta$ dopo aver combinato le $10$ osservazioni virtuali (con $6$ successi) con i $20$ dati reali ($14$ successi).  
+- L’**intervallo credibile al 95%** è $(0.483,\; 0.808)$. Possiamo affermare con probabilità $0.95$ che il vero valore di $\theta$ cade in questo intervallo, alla luce del modello e dei dati osservati. L’intervallo è ancora piuttosto ampio perché $30$ osservazioni complessive (virtuali + reali) non sono sufficienti per una stima estremamente precisa, ma la riduzione di incertezza rispetto al prior è evidente.
+
+# Quesito 2 — Aggiornamento sequenziale
+
+## 2a — Aggiornare con il blocco A
+
+```{r}
+nA <- 10
+yA <- 6
+
+alphaA <- alpha0 + yA
+betaA  <- beta0 + (nA - yA)
+
+c(alphaA = alphaA, betaA = betaA)
+```
+
+Dopo il blocco A, la posteriore è Beta(12,8).
+
+## 2b — Usare la posteriore di A come prior per B
+
+```{r}
+nB <- 10
+yB <- 8
+
+alphaAB <- alphaA + yB
+betaAB  <- betaA + (nB - yB)
+
+c(alphaAB = alphaAB, betaAB = betaAB)
+```
+
+Otteniamo Beta(20,10), la stessa posteriore del Quesito 1 (con tutti i dati).
+
+## 2c — Verifica (un solo step)
+
+```{r}
+y_tot <- yA + yB
+n_tot <- nA + nB
+
+alpha_one <- alpha0 + y_tot
+beta_one  <- beta0 + (n_tot - y_tot)
+
+c(alphaAB = alphaAB, alpha_one = alpha_one)
+c(betaAB  = betaAB,  beta_one  = beta_one)
+```
+
+**Perché coincide?** Perché, in un modello coniugato, l'informazione dei dati entra nella posteriore solo tramite i conteggi cumulativi (successi e insuccessi). Sommare prima o dopo porta allo stesso $(y, n-y)$.
+
+# Quesito 3 — Influenza del prior
+
+## 3a — Calcolare le due posteriori
+
+```{r}
+# prior debole
+a0_w <- 1
+b0_w <- 1
+a1_w <- a0_w + y
+b1_w <- b0_w + (n - y)
+
+# prior forte
+a0_s <- 60
+b0_s <- 40
+a1_s <- a0_s + y
+b1_s <- b0_s + (n - y)
+
+c(weak = a1_w/(a1_w + b1_w), strong = a1_s/(a1_s + b1_s))
+```
+
+## 3b — Confrontare graficamente le posteriori
+
+```{r}
+grid <- tibble(theta = seq(0, 1, length.out = 1001))
+
+dens2 <- grid |>
+  mutate(
+    post_weak   = dbeta(theta, a1_w, b1_w),
+    post_strong = dbeta(theta, a1_s, b1_s)
+  ) |>
+  pivot_longer(
+    cols = c(post_weak, post_strong),
+    names_to = "dist",
+    values_to = "value"
+  )
+
+ggplot(dens2, aes(x = theta, y = value, linetype = dist)) +
+  geom_line(linewidth = 1) +
+  labs(
+    title = "Posteriori con prior debole vs prior forte",
+    x = expression(theta),
+    y = "densità"
+  ) +
+  theme_minimal()
+```
+
+**Interpretazione:** con prior forte (molto informativo, equivalente a 100 pseudo-osservazioni), la posteriore resta più “tirata” verso 0.6 e cambia meno in risposta ai dati. Con prior debole (1,1), i dati dominano e la posteriore è più vicina a 0.70.
+
+# Quesito 4 — Famiglia coniugata Normale–Normale (varianza nota)
+
+## 4a — Impostare prior e dati
+
+```{r}
+mu0 <- 55
+tau0 <- 8
+
+sigma <- 10
+n <- 25
+ybar <- 62
+```
+
+## 4b — Calcolare media e SD della posteriore
+
+```{r}
+tau1_sq <- 1 / (1/tau0^2 + n/sigma^2)
+mu1 <- tau1_sq * (mu0/tau0^2 + n*ybar/sigma^2)
+tau1 <- sqrt(tau1_sq)
+
+mu1
+tau1
+```
+
+**Interpretazione:** $\mu_1$ è una media pesata tra $\mu_0$ e $\bar y$, con pesi determinati dalle precisioni (inverse varianze). Se il campione è grande o $\sigma$ è piccola, i dati pesano di più.
+
+## 4c — Intervallo credibile al 95%
+
+```{r}
+ci_mu <- qnorm(c(0.025, 0.975), mean = mu1, sd = tau1)
+ci_mu
+```
+
+**Interpretazione:** con probabilità 0.95 (a posteriori), $\mu$ cade in questo intervallo, dato il modello e le assunzioni (prior + varianza nota).
+
+# Quesito 5 — Sintesi a posteriori e decisione
+
+## 5a — Probabilità a posteriori che θ superi una soglia
+
+```{r}
+prob_gt <- 1 - pbeta(0.65, shape1 = alpha1, shape2 = beta1)
+prob_gt
+```
+
+Questa è la probabilità a posteriori che la proporzione reale di successi superi 0.65.
+
+## 5b — Stima MAP (massimo a posteriori)
+
+```{r}
+theta_map <- (alpha1 - 1) / (alpha1 + beta1 - 2)
+theta_map
+```
+
+**Confronto media vs MAP:** con Beta abbastanza simmetrica e concentrata, i due valori sono vicini. Divergono di più quando la posteriore è molto asimmetrica (pochi dati, o prior molto sbilanciato), perché la media risente maggiormente delle code.
+

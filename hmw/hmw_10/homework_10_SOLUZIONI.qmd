@@ -1,0 +1,399 @@
+---
+title: "Homework 10 — SOLUZIONI"
+subtitle: "Inferenza bayesiana su una media e sul confronto tra due medie"
+author: "Corrado Caudek"
+date: today
+date-format: "DD MMMM YYYY"
+lang: it
+format:
+  html:
+    code-fold: false
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+execute:
+  echo: true
+  warning: false
+  message: false
+  cache: true
+editor: source
+---
+
+```{r}
+#| output: false
+library(tidyverse)
+library(brms)
+library(bayesplot)
+library(posterior)
+set.seed(2026)
+
+# Ricostruzione dei dataset
+n1 <- 45
+burnout_post  <- round(rnorm(n1, mean = 22, sd = 7), 1)
+
+n_tratt <- 40; n_ctrl <- 40
+burnout_tratt <- round(rnorm(n_tratt, mean = 21, sd = 6.5), 1)
+burnout_ctrl  <- round(rnorm(n_ctrl,  mean = 27, sd = 7.0), 1)
+
+dati_due_gruppi <- tibble(
+  burnout = c(burnout_tratt, burnout_ctrl),
+  gruppo  = c(rep("Mindfulness", n_tratt), rep("Controllo", n_ctrl))
+)
+```
+
+---
+
+# Problema 1 — Inferenza bayesiana su una media
+
+## Quesito 1A — Esplorazione preliminare {.unnumbered}
+
+```{r}
+cat("n =", length(burnout_post), "\n")
+cat("Media osservata:", round(mean(burnout_post), 2), "\n")
+cat("SD osservata:   ", round(sd(burnout_post), 2), "\n")
+cat("Valore normativo: 27\n")
+cat("Differenza dalla norma:", round(mean(burnout_post) - 27, 2), "\n")
+```
+
+```{r}
+data.frame(x = burnout_post) |>
+  ggplot(aes(x = x)) +
+  geom_histogram(binwidth = 2, fill = "steelblue", color = "white", alpha = 0.8) +
+  geom_vline(xintercept = 27, color = "red", linetype = "dashed", linewidth = 1.2) +
+  geom_vline(xintercept = mean(burnout_post), color = "navy",
+             linetype = "solid", linewidth = 1.2) +
+  annotate("text", x = 28.5, y = 8, label = "Norma (27)", color = "red", hjust = 0) +
+  annotate("text", x = mean(burnout_post) - 2, y = 8,
+           label = paste0("Media osservata (", round(mean(burnout_post), 1), ")"),
+           color = "navy", hjust = 1) +
+  labs(
+    title = "Distribuzione del burnout post-mindfulness",
+    x = "Punteggio di esaurimento emotivo (MBI)",
+    y = "Frequenza"
+  ) +
+  theme_minimal()
+```
+
+La media osservata è circa `r round(mean(burnout_post), 1)`, notevolmente al di sotto del valore normativo di 27. La distribuzione è approssimativamente simmetrica, senza outlier evidenti.
+
+---
+
+## Quesito 1B — Approccio frequentista (riferimento) {.unnumbered}
+
+```{r}
+risultato_t <- t.test(burnout_post, mu = 27, alternative = "less")
+print(risultato_t)
+```
+
+**Interpretazione:** il test-$t$ afferma che, *se il vero $\mu$ fosse uguale a 27*, la probabilità di osservare una media campionaria così bassa (o più bassa) sarebbe circa $p = $ `r round(risultato_t$p.value, 4)`. Non afferma che la probabilità che il trattamento sia efficace sia $1 - p$. Il valore-$p$ risponde alla domanda "quanto sono compatibili questi dati con l'ipotesi nulla?" — non alla domanda "quanto è probabile che il trattamento funzioni?", che è invece la domanda scientificamente rilevante.
+
+---
+
+## Quesito 1C — Il modello bayesiano per una media {.unnumbered}
+
+I `___` da completare:
+
+- Prior intercetta: `normal(27, 10)` — centrato sul valore normativo, sd = 10 copre un range ampio.
+- Formula: `y ~ 1`.
+- Dati: `data.frame(y = burnout_post)`.
+
+```{r}
+prior_media <- c(
+  prior(normal(27, 10), class = Intercept),
+  prior(normal(0, 10),  class = sigma, lb = 0)
+)
+
+mod_media <- brm(
+  formula = y ~ 1,
+  data    = data.frame(y = burnout_post),
+  family  = gaussian(),
+  prior   = prior_media,
+  iter    = 4000,
+  warmup  = 2000,
+  chains  = 4,
+  seed    = 2026,
+  refresh = 0,
+  backend = "cmdstanr"
+)
+
+summary(mod_media)
+```
+
+**Lettura:** l'intercetta (= $\mu$ stimato) ha media posteriore circa `r round(fixef(mod_media)["Intercept", "Estimate"], 1)`. L'`Rhat` vicino a 1 e l'`ESS` elevato indicano buona convergenza.
+
+---
+
+## Quesito 1D — Interpretare la distribuzione a posteriori di μ {.unnumbered}
+
+Il `___` da completare era `b_Intercept` (nome interno di brms per il parametro intercetta).
+
+```{r}
+campioni_mu <- as_draws_df(mod_media) |> pull(b_Intercept)
+
+data.frame(mu = campioni_mu) |>
+  ggplot(aes(x = mu)) +
+  geom_histogram(binwidth = 0.3, fill = "steelblue", color = "white", alpha = 0.8) +
+  geom_vline(xintercept = 27, color = "red", linetype = "dashed", linewidth = 1) +
+  geom_vline(xintercept = mean(campioni_mu), color = "navy", linewidth = 1) +
+  labs(
+    title = "Distribuzione a posteriori di μ",
+    subtitle = "Linea rossa = valore normativo (27); linea blu = media posteriore",
+    x = "μ (media della popolazione)",
+    y = "Frequenza"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+prob_sotto_norma <- mean(campioni_mu < 27)
+prob_rilevante   <- mean(campioni_mu < 22)
+ic95_mu          <- quantile(campioni_mu, probs = c(0.025, 0.975))
+
+cat("P(μ < 27 | dati) =", round(prob_sotto_norma, 3), "\n")
+cat("P(μ < 22 | dati) =", round(prob_rilevante, 3), "\n")
+cat("IC 95% per μ:    [", round(ic95_mu[1], 2), ",", round(ic95_mu[2], 2), "]\n")
+```
+
+**Interpretazione:** $P(\mu < 27 \mid \text{dati}) = $ `r round(prob_sotto_norma, 3)`. Questa è una probabilità *diretta* sul parametro: dato ciò che abbiamo osservato, c'è una probabilità del `r round(prob_sotto_norma * 100, 1)`% che la vera media di burnout nella popolazione di insegnanti che frequentano il programma mindfulness sia inferiore al valore normativo. Questa è esattamente la domanda che il ricercatore si pone.
+
+Il valore-$p$ del test frequentista risponde invece a una domanda diversa: "Se μ fosse esattamente 27, quanto sarebbero rari questi dati?" — una domanda meno diretta e spesso fuorviante. La risposta bayesiana è epistemologicamente più vicina all'obiettivo della ricerca.
+
+---
+
+# Problema 2 — Confronto bayesiano tra due medie
+
+## Quesito 2A — Esplorazione del confronto {.unnumbered}
+
+```{r}
+ggplot(dati_due_gruppi, aes(x = gruppo, y = burnout, fill = gruppo)) +
+  geom_boxplot(alpha = 0.4, outlier.shape = NA) +
+  geom_jitter(width = 0.15, alpha = 0.5) +
+  scale_fill_manual(values = c("Mindfulness" = "steelblue", "Controllo" = "tomato")) +
+  labs(
+    title = "Burnout nel gruppo mindfulness vs. controllo",
+    x = "",
+    y = "Punteggio di esaurimento emotivo (MBI)",
+    fill = ""
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+```
+
+```{r}
+dati_due_gruppi |>
+  group_by(gruppo) |>
+  summarise(
+    n     = n(),
+    media = round(mean(burnout), 2),
+    sd    = round(sd(burnout), 2)
+  )
+```
+
+---
+
+## Quesito 2B — Approccio frequentista (riferimento) {.unnumbered}
+
+```{r}
+t.test(burnout ~ gruppo, data = dati_due_gruppi, var.equal = FALSE)
+```
+
+**Risposta:** no, il test frequentista non risponde alla domanda "qual è la probabilità che il trattamento sia efficace?". Risponde alla domanda: "Se non ci fosse alcuna differenza tra i gruppi nella popolazione, quanto sarebbe raro osservare una differenza campionaria così grande?" — una domanda logicamente diversa. Il valore-$p$ è la probabilità dei *dati* data l'ipotesi nulla, non la probabilità dell'ipotesi.
+
+---
+
+## Quesito 2C — Il modello bayesiano per due medie {.unnumbered}
+
+I `___` erano:
+
+- Prior intercetta: `normal(27, 10)` — media del gruppo controllo (baseline).
+- Prior coefficiente: `normal(0, 10)` — differenza attesa; usiamo un prior centrato su zero (incerto sul segno), ma potremmo usare `normal(-5, 5)` se aspettiamo una riduzione.
+- Formula: `burnout ~ gruppo`.
+
+```{r}
+# "Controllo" è la baseline (primo in ordine alfabetico)
+levels(factor(dati_due_gruppi$gruppo))
+```
+
+```{r}
+prior_due_medie <- c(
+  prior(normal(27, 10), class = Intercept),
+  prior(normal(0, 10),  class = b),
+  prior(normal(0, 10),  class = sigma, lb = 0)
+)
+
+mod_due_medie <- brm(
+  formula = burnout ~ gruppo,
+  data    = dati_due_gruppi,
+  family  = gaussian(),
+  prior   = prior_due_medie,
+  iter    = 4000,
+  warmup  = 2000,
+  chains  = 4,
+  seed    = 2026,
+  refresh = 0,
+  backend = "cmdstanr"
+)
+
+summary(mod_due_medie)
+```
+
+**Lettura:** il coefficiente `b_gruppoMindfulness` stima $\mu_{\text{Mindfulness}} - \mu_{\text{Controllo}}$. Un valore negativo indica che il gruppo mindfulness ha burnout più basso. L'intercetta stima la media del gruppo controllo.
+
+---
+
+## Quesito 2D — La distribuzione a posteriori della differenza {.unnumbered}
+
+Il `___` era `b_gruppoMindfulness`.
+
+```{r}
+campioni_diff <- as_draws_df(mod_due_medie) |> pull(b_gruppoMindfulness)
+
+data.frame(diff = campioni_diff) |>
+  ggplot(aes(x = diff)) +
+  geom_histogram(binwidth = 0.4, fill = "steelblue", color = "white", alpha = 0.8) +
+  geom_vline(xintercept = 0, color = "red", linetype = "dashed", linewidth = 1) +
+  geom_vline(xintercept = mean(campioni_diff), color = "navy", linewidth = 1) +
+  labs(
+    title = "Distribuzione a posteriori della differenza tra le medie",
+    subtitle = "μ_mindfulness − μ_controllo; negativo = mindfulness riduce il burnout",
+    x = "Differenza (Mindfulness − Controllo)",
+    y = "Frequenza"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+prob_efficace   <- mean(campioni_diff < 0)
+prob_rilevante  <- mean(campioni_diff < -4)
+ic95_diff       <- quantile(campioni_diff, probs = c(0.025, 0.975))
+
+cat("P(diff < 0 | dati)  =", round(prob_efficace, 3), "\n")
+cat("P(diff < -4 | dati) =", round(prob_rilevante, 3), "\n")
+cat("IC 95% per diff: [", round(ic95_diff[1], 2), ",", round(ic95_diff[2], 2), "]\n")
+```
+
+**Interpretazione:** la distribuzione a posteriori della differenza è quasi interamente negativa ($P(\Delta < 0 \mid \text{dati}) = $ `r round(prob_efficace, 3)`), indicando forte evidenza che il programma mindfulness riduca il burnout. La probabilità di una riduzione di almeno 4 punti è `r round(prob_rilevante, 3)`. L'intervallo di credibilità al 95% è [`r round(ic95_diff[1], 1)`, `r round(ic95_diff[2], 1)`]: non include lo zero, coerentemente con la conclusione di un effetto positivo.
+
+---
+
+# Problema 3 — Grandezza dell'effetto e rilevanza pratica
+
+## Quesito 3A — Il Cohen's d bayesiano {.unnumbered}
+
+I `___` erano `b_gruppoMindfulness` (differenza) e la divisione per `sigma`.
+
+```{r}
+campioni_post  <- as_draws_df(mod_due_medie)
+campioni_diff  <- campioni_post |> pull(b_gruppoMindfulness)
+campioni_sigma <- campioni_post |> pull(sigma)
+campioni_d     <- campioni_diff / campioni_sigma
+
+data.frame(d = campioni_d) |>
+  ggplot(aes(x = d)) +
+  geom_histogram(binwidth = 0.05, fill = "coral", color = "white", alpha = 0.8) +
+  geom_vline(xintercept = 0, color = "red", linetype = "dashed") +
+  geom_vline(xintercept = c(-0.2, -0.5, -0.8), color = "gray50", linetype = "dotted") +
+  annotate("text", x = -0.2, y = Inf, label = "piccolo", vjust = 2,
+           color = "gray50", size = 3) +
+  annotate("text", x = -0.5, y = Inf, label = "medio",   vjust = 2,
+           color = "gray50", size = 3) +
+  annotate("text", x = -0.8, y = Inf, label = "grande",  vjust = 2,
+           color = "gray50", size = 3) +
+  labs(
+    title = "Distribuzione a posteriori di Cohen's d",
+    x = "Cohen's d", y = "Frequenza"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+prob_medio_o_piu <- mean(campioni_d < -0.5)
+cat("P(d < -0.5 | dati) =", round(prob_medio_o_piu, 3), "\n")
+cat("Media di d:          ", round(mean(campioni_d), 3), "\n")
+cat("IC 95% di d:        [", round(quantile(campioni_d, 0.025), 3),
+    ",", round(quantile(campioni_d, 0.975), 3), "]\n")
+```
+
+**Interpretazione:** la media posteriore di $d$ è circa `r round(mean(campioni_d), 2)`. La probabilità che l'effetto sia "medio o più grande" (|$d$| ≥ 0.5) è `r round(prob_medio_o_piu * 100, 1)`%. La distribuzione a posteriori di $d$ permette di rispondere non solo "l'effetto c'è?" ma anche "quanto è grande, con quale probabilità?", che è una domanda molto più utile per decisioni cliniche e di policy.
+
+---
+
+## Quesito 3B — ROPE: la regione di equivalenza pratica {.unnumbered}
+
+I `___` erano `rope_min <- -2` e `rope_max <- 2`.
+
+```{r}
+rope_min <- -2
+rope_max <-  2
+
+prop_in_rope <- mean(campioni_diff >= rope_min & campioni_diff <= rope_max)
+cat("Proporzione nel ROPE:", round(prop_in_rope, 3), "\n")
+
+data.frame(diff = campioni_diff) |>
+  mutate(in_rope = diff >= rope_min & diff <= rope_max) |>
+  ggplot(aes(x = diff, fill = in_rope)) +
+  geom_histogram(binwidth = 0.4, color = "white", alpha = 0.8) +
+  scale_fill_manual(values = c("TRUE" = "gold", "FALSE" = "steelblue"),
+                    labels = c("TRUE" = "Nel ROPE", "FALSE" = "Fuori dal ROPE")) +
+  geom_vline(xintercept = c(rope_min, rope_max),
+             color = "darkorange", linetype = "dashed", linewidth = 1) +
+  labs(
+    title = "Distribuzione a posteriori della differenza con ROPE",
+    subtitle = "ROPE = [−2, +2]",
+    x = "Differenza (Mindfulness − Controllo)",
+    y = "Frequenza",
+    fill = ""
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+```
+
+**Interpretazione:** solo circa `r round(prop_in_rope * 100, 1)`% della distribuzione a posteriori cade nel ROPE. La maggior parte della probabilità è su valori più negativi di −2 punti, indicando che l'effetto è *praticamente rilevante*: supera la soglia di rilevanza clinica che avevamo stabilito. Il ROPE ci permette di andare oltre la semplice verifica "l'effetto c'è?" per rispondere "l'effetto è abbastanza grande da importare?".
+
+---
+
+# Problema 4 — Riflessione epistemologica
+
+## Quesito 4A — Due definizioni di probabilità, due domande diverse {.unnumbered}
+
+Il valore-$p$ ($p = 0.012$) risponde alla domanda: "Se il vero $\mu$ fosse esattamente 27, quale proporzione di esperimenti identici al nostro produrrebbe una media campionaria così bassa o più bassa?" È una probabilità sui *dati*, condizionata a una specifica ipotesi sul parametro. $P(\mu < 27 \mid \text{dati}) = 0.94$, invece, è una probabilità diretta sul *parametro*, condizionata ai dati osservati: dice esattamente quanto è credibile, alla luce dei dati, che il vero $\mu$ sia inferiore a 27.
+
+Il ricercatore tende a interpretare il valore-$p$ come se fosse la seconda quantità per un motivo psicologico ovvio: vuole sapere "il mio trattamento funziona?" e il valore-$p$ sembra rispondere a questa domanda, ma non lo fa. L'errore è confondere la probabilità dei dati data un'ipotesi ($P(\text{dati} \mid H_0)$) con la probabilità dell'ipotesi dati i dati ($P(\mu < 27 \mid \text{dati})$) — una confusione nota come *fallacia del transposto*.
+
+## Quesito 4B — Il prior come comunicazione di conoscenza preesistente {.unnumbered}
+
+Il prior `Normal(27, 10)` è epistemologicamente sensato perché incorpora una conoscenza reale: il valore normativo della popolazione di insegnanti è noto dalla letteratura ed è uguale a 27. Prima di vedere i dati dello studio, è ragionevole aspettarsi che anche gli insegnanti nel gruppo trattamento avessero livelli di burnout vicini alla norma *prima* del trattamento. Il prior esprime questa conoscenza, evitando di trattare la situazione come se non sapessimo nulla.
+
+Con `Normal(0, 100)`, il prior sarebbe completamente non informativo: diremmo di aspettarci qualsiasi valore tra −200 e +200 con probabilità quasi uniforme — il che è assurdo per una scala 0–30. Un prior non informativo non è "neutro": è una dichiarazione di ignoranza totale che spesso è falsa, e che può produrre distribuzioni a posteriori più instabili con campioni piccoli.
+
+Un prior informativo è legittimo quando l'evidenza preesistente è robusta, replicata e non distorta. Va sempre documentato e giustificato esplicitamente, e si dovrebbe sempre fare un'*analisi di sensibilità*: ripetere l'analisi con prior alternativi per verificare che le conclusioni non dipendano criticamente dalla scelta del prior.
+
+## Quesito 4C — Significatività statistica vs. rilevanza pratica {.unnumbered}
+
+La "significatività statistica" è determinata dalla dimensione del campione tanto quanto dall'entità dell'effetto: con $n = 10.000$, anche una differenza di 0.1 punti su 100 può risultare "statisticamente significativa" ($p < 0.001$). Il ROPE bypassa questo problema richiedendo che l'effetto *superi una soglia di rilevanza*, indipendentemente dalla precisione della stima.
+
+Esempio concreto: immagina uno studio con 5.000 partecipanti che confronta due metodi di insegnamento della matematica. La differenza media nel punteggio finale è di 0.3 punti su 100. Il test frequentista potrebbe dare $p = 0.001$ — "altamente significativo". Ma una differenza di 0.3 punti ha alcuna rilevanza pratica per un insegnante che deve scegliere tra i due metodi? Probabilmente no. Il ROPE, con soglia ±2 punti, classificherebbe correttamente questo effetto come "praticamente equivalente a zero", nonostante la significatività statistica.
+
+Nella ricerca psicologica applicata (diagnosi clinica, progettazione di interventi, politiche di salute mentale), la distinzione è cruciale: prendere decisioni basate su "effetti significativi" ma praticamente irrilevanti sprechi risorse e può portare a conclusioni fuorvianti sulle strategie da adottare.
+
+---
+
+# Nota didattica
+
+**Valori numerici attesi** (con `set.seed(2026)`):
+
+- Media `burnout_post`: circa 21–23 (intorno a 22, con variabilità da campionamento).
+- $P(\mu < 27 \mid \text{dati})$: tipicamente > 0.90.
+- Differenza media tra gruppi: circa −5/−7 punti (Mindfulness − Controllo).
+- $P(\Delta < 0 \mid \text{dati})$: tipicamente > 0.98.
+- Cohen's d medio: circa −0.7/−0.9 (effetto medio-grande).
+- Proporzione nel ROPE: tipicamente < 5%.
+
+**Punti critici:**
+
+- 1B e 2B: la distinzione tra $P(\text{dati} \mid H_0)$ e $P(H \mid \text{dati})$ — errore sistematico che molti studenti fanno.
+- 1D e 2D: la capacità di leggere e interpretare $P(\theta < \text{soglia} \mid \text{dati})$ come probabilità dirette.
+- 3B: capire il ROPE non come un test binario ma come uno strumento per valutare la rilevanza pratica in modo continuo e probabilistico.
+- 4A: la fallacia del transposto — punto centrale dell'epistemologia frequentista vs. bayesiana.
+- 4C: saper collegare la distinzione statistica/pratica a un esempio concreto nella propria area disciplinare.

@@ -1,0 +1,439 @@
+---
+title: "SOLUZIONI HOMEWORK 05"
+subtitle: "Variabili casuali e verosimiglianza"
+author: 
+  - name: "Prof. Corrado Caudek"
+    affiliation: "Università degli Studi di Firenze — Dipartimento NEUROFARBA, Sezione di Psicologia"
+    email: "corrado.caudek@unifi.it"
+course: "PSI0028 — Psicometria"
+date: today
+date-format: "DD MMMM YYYY"
+lang: it
+abstract: |
+  Soluzioni complete del quinto homework di Psicometria. L'homework introduce 
+  le proprietà fondamentali delle variabili casuali (valore atteso, varianza, 
+  distribuzione congiunta) e la funzione di verosimiglianza come strumento 
+  per "ascoltare i dati" e stimare parametri. L'esercizio finale dimostra 
+  visivamente come prior × verosimiglianza = posterior, preparando il 
+  terreno per l'inferenza bayesiana completa.
+format: 
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    number-sections: false
+    code-fold: false
+    fig-align: center
+    df-print: kable
+    embed-resources: true
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# Variabili casuali: soluzioni
+
+## 0a — Soluzione
+
+1. Classificazione:
+
+* **A** è una **variabile casuale**: $X$ rappresenta il punteggio che *potrebbe* uscire quando scegliamo un individuo a caso e somministriamo il test.
+* **B** è una **osservazione**: “Marco ha 3” è un valore concreto misurato.
+* **C** sono **osservazioni** (un campione): $x_1,\ldots,x_{30}$ sono i 30 valori misurati nel campione.
+* **D** riguarda la **distribuzione della variabile casuale**: $P(X=2)=0.40$ è una proprietà del modello per $X$ (non è un dato singolo).
+
+2. Perché serve distinguere?
+   In psicologia spesso vogliamo generalizzare dal campione alla popolazione. La variabile casuale $X$ descrive il processo generativo (come “si producono” i punteggi nella popolazione), mentre i dati $x_i$ sono una realizzazione concreta di quel processo. Con i dati stimiamo quantità del modello (es. media, varianza, parametri) e valutiamo se il modello è plausibile.
+
+---
+
+## 0b — Soluzione
+
+1. Frequenze osservate nei 20 dati:
+
+Contiamo quante volte compare ciascun valore:
+
+* 0 compare **2** volte
+* 1 compare **4** volte
+* 2 compare **9** volte
+* 3 compare **3** volte
+* 4 compare **2** volte
+
+Tabella:
+
+|   Valore  |  0  |  1  |  2  |  3  |  4  |
+| :-------: | :-: | :-: | :-: | :-: | :-: |
+| Frequenza |  2  |  4  |  9  |  3  |  2  |
+
+2. Frequenze relative (divido per 20):
+
+|     Valore     |   0  |   1  |   2  |   3  |   4  |
+| :------------: | :--: | :--: | :--: | :--: | :--: |
+| Freq. relativa | 0.10 | 0.20 | 0.45 | 0.15 | 0.10 |
+
+3. Confronto col modello:
+
+Modello: (0.10, 0.20, 0.40, 0.20, 0.10)
+Osservato: (0.10, 0.20, 0.45, 0.15, 0.10)
+
+Sono abbastanza vicine: in particolare 0,1,4 coincidono; 2 è un po’ più alto (0.45 vs 0.40) e 3 un po’ più basso (0.15 vs 0.20).
+
+4. Perché non coincidono perfettamente?
+   Perché un campione finito è soggetto a variabilità casuale: anche se il modello fosse vero, ripetendo il campionamento otterremmo conteggi leggermente diversi. Con campioni più grandi, le frequenze relative tendono ad avvicinarsi alle probabilità del modello (legge dei grandi numeri).
+
+---
+
+## 0c — Soluzione
+
+No: quasi certamente il campione simulato **non** avrà frequenze relative identiche al modello, perché stiamo osservando una realizzazione casuale di $X$. Se aumenti `size` da 20 a 2000, le frequenze relative di `prop.table(table(campione))` diventeranno molto più vicine a (0.10, 0.20, 0.40, 0.20, 0.10), perché con più osservazioni la variabilità campionaria diminuisce.
+
+---
+
+
+# Valore atteso: cosa ci aspettiamo
+
+## 1a — Valore atteso di una variabile discreta (ragionamento)
+
+1. Verifica: $0.05 + 0.15 + 0.40 + 0.30 + 0.10 = 1.00$ ✓
+
+2. Valore atteso:
+$$E(X) = 0 \times 0.05 + 1 \times 0.15 + 2 \times 0.40 + 3 \times 0.30 + 4 \times 0.10$$
+$$= 0 + 0.15 + 0.80 + 0.90 + 0.40 = 2.25$$
+
+3. Il valore 2.25 **non è** uno dei valori possibili (il test dà solo punteggi 
+   interi 0, 1, 2, 3, 4). Il valore atteso è una **media ponderata**: indica 
+   il "baricentro" della distribuzione, non un valore che necessariamente si 
+   osserva. È come dire "la famiglia italiana media ha 1.3 figli" — nessuna 
+   famiglia ha 1.3 figli, ma è una sintesi utile.
+
+
+## 1b — Verifica in R
+
+```{r}
+valori <- 0:4
+prob <- c(0.05, 0.15, 0.40, 0.30, 0.10)
+
+cat("Somma delle probabilità:", sum(prob), "\n")
+
+EX <- sum(valori * prob)
+cat("E(X) =", EX, "\n")
+```
+
+
+## 1c — Simulazione
+
+```{r}
+set.seed(42)
+
+campione <- sample(valori, size = 10000, replace = TRUE, prob = prob)
+
+cat("Media campionaria:", mean(campione), "\n")
+cat("Valore atteso:    ", EX, "\n")
+
+medie_cum <- cumsum(campione) / 1:length(campione)
+plot(medie_cum, type = "l", col = "steelblue", lwd = 1.5,
+     xlab = "Numero di estrazioni", ylab = "Media cumulativa",
+     main = "La media campionaria converge a E(X)")
+abline(h = EX, col = "red", lty = 2)
+```
+
+La media campionaria ($\approx 2.25$) è molto vicina a $E(X) = 2.25$. Il 
+grafico mostra la stessa convergenza vista nell'HW3: all'inizio le oscillazioni 
+sono ampie, poi la media cumulativa si stabilizza intorno al valore atteso. 
+Questa è la **legge dei grandi numeri** applicata al valore atteso.
+
+
+# Varianza: quanto varia
+
+## 2a — Varianza di una variabile discreta (ragionamento)
+
+Con $E(X) = 2.25$:
+
+| $x$ | $P(X=x)$ | $x - E(X)$ | $(x - E(X))^2$ | $(x-E(X))^2 \cdot P(X=x)$ |
+|:---:|:---------:|:----------:|:---------------:|:--------------------------:|
+|  0  |   0.05    |   −2.25    |     5.0625      |         0.2531             |
+|  1  |   0.15    |   −1.25    |     1.5625      |         0.2344             |
+|  2  |   0.40    |   −0.25    |     0.0625      |         0.0250             |
+|  3  |   0.30    |    0.75    |     0.5625      |         0.1688             |
+|  4  |   0.10    |    1.75    |     3.0625      |         0.3063             |
+| **Somma** | | | | **Var(X) = 0.9875** |
+
+$$\text{SD}(X) = \sqrt{0.9875} \approx 0.994$$
+
+La deviazione standard ci dice che, in media, i punteggi del test si discostano dal 
+valore atteso di circa 1 punto.
+
+
+## 2b — Verifica in R
+
+```{r}
+VarX <- sum((valori - EX)^2 * prob)
+cat("Var(X) =", VarX, "\n")
+cat("SD(X)  =", sqrt(VarX), "\n")
+
+cat("Varianza campionaria:", var(campione), "\n")
+cat("SD campionaria:      ", sd(campione), "\n")
+```
+
+I valori campionari sono molto vicini a quelli teorici. Le piccole differenze 
+sono dovute alla variabilità della simulazione (e al fatto che `var()` in R 
+usa il denominatore $n-1$, la varianza campionaria corretta).
+
+
+# Proprietà del valore atteso e della varianza
+
+## 3a — Trasformazione lineare (ragionamento)
+
+Con $Z = \frac{X - E(X)}{SD(X)}$, cioè $Z = aX + b$ con $a = 1/\text{SD}$ 
+e $b = -E(X)/\text{SD}$:
+
+1. $E(Z) = aE(X) + b = \frac{E(X)}{\text{SD}} - \frac{E(X)}{\text{SD}} = 0$.
+
+2. $\text{Var}(Z) = a^2 \text{Var}(X) = \frac{1}{\text{Var}(X)} \times \text{Var}(X) = 1$.
+
+3. $Z$ ha media 0 e varianza 1: è una variabile **standardizzata**. Questo 
+   è esattamente lo z-score! La standardizzazione rende confrontabili 
+   variabili misurate su scale diverse.
+
+
+## 3b — Verifica in R
+
+```{r}
+Z <- (campione - EX) / sqrt(VarX)
+cat("Media di Z:    ", round(mean(Z), 4), "\n")
+cat("Varianza di Z: ", round(var(Z), 4), "\n")
+```
+
+I valori sono molto vicini a 0 e 1 rispettivamente, confermando le proprietà 
+teoriche della standardizzazione.
+
+
+# Distribuzione congiunta e indipendenza
+
+## 4a — Distribuzione congiunta (ragionamento)
+
+1. **Distribuzioni marginali:**
+
+   $P(X=0) = 0.15 + 0.35 = 0.50$, $P(X=1) = 0.30 + 0.20 = 0.50$
+
+   $P(Y=0) = 0.15 + 0.30 = 0.45$, $P(Y=1) = 0.35 + 0.20 = 0.55$
+
+2. $P(X=1 \mid Y=0) = \frac{P(X=1, Y=0)}{P(Y=0)} = \frac{0.30}{0.45} = 0.667$
+
+   Tra chi dorme poco ($Y=0$), il 66.7% ha alta ansia.
+
+3. Se indipendenti: $P(X=1) \cdot P(Y=0) = 0.50 \times 0.45 = 0.225$.
+   Ma $P(X=1, Y=0) = 0.30 \neq 0.225$. Quindi **non sono indipendenti**.
+
+4. $P(X=1, Y=0) > P(X=1) \cdot P(Y=0)$ significa che alta ansia e poco 
+   sonno tendono a presentarsi insieme più del previsto. C'è un'associazione 
+   positiva tra ansia alta e sonno scarso — coerente con la letteratura 
+   clinica (l'ansia disturba il sonno, e il poco sonno aumenta l'ansia).
+
+
+## 4b — Simulazione della distribuzione congiunta
+
+```{r}
+set.seed(2026)
+n <- 10000
+
+probs <- c(0.15, 0.35, 0.30, 0.20)
+indici <- sample(1:4, n, replace = TRUE, prob = probs)
+X <- ifelse(indici %in% c(3, 4), 1, 0)
+Y <- ifelse(indici %in% c(2, 4), 1, 0)
+
+cat("P(X=1) simulata:           ", mean(X == 1), "\n")
+cat("P(Y=0) simulata:           ", mean(Y == 0), "\n")
+cat("P(X=1, Y=0) simulata:      ", mean(X == 1 & Y == 0), "\n")
+cat("P(X=1 | Y=0) simulata:     ", mean(X[Y == 0] == 1), "\n")
+cat("P(X=1) * P(Y=0) simulata:  ", mean(X == 1) * mean(Y == 0), "\n")
+```
+
+$P(X=1, Y=0) \approx 0.30$ è diverso da $P(X=1) \times P(Y=0) \approx 0.225$. 
+La simulazione conferma che le due variabili non sono indipendenti.
+
+
+# La funzione di verosimiglianza
+
+## 5a — Verosimiglianza per una moneta (ragionamento)
+
+Con $k = 7$ teste, $n = 10$ lanci, $\binom{10}{7} = 120$:
+
+1. $L(0.50) = 120 \times 0.50^{10} = 120 \times 0.000977 = 0.1172$
+2. $L(0.70) = 120 \times 0.70^7 \times 0.30^3 = 120 \times 0.0824 \times 0.027 = 0.2668$
+3. $L(0.90) = 120 \times 0.90^7 \times 0.10^3 = 120 \times 0.4783 \times 0.001 = 0.0574$
+
+Verifica in R:
+
+```{r}
+cat("L(0.50) =", dbinom(7, 10, 0.50), "\n")
+cat("L(0.70) =", dbinom(7, 10, 0.70), "\n")
+cat("L(0.90) =", dbinom(7, 10, 0.90), "\n")
+```
+
+$\theta = 0.70$ massimizza la verosimiglianza tra i tre candidati. Questo 
+ha senso intuitivamente: se abbiamo osservato il 70% di teste, il valore 
+$\theta = 0.70$ è quello che rende questi dati più probabili.
+
+
+## 5b — Visualizzare la verosimiglianza in R
+
+```{r}
+theta <- seq(0, 1, length.out = 300)
+lik <- dbinom(7, size = 10, prob = theta)
+
+plot(theta, lik, type = "l", col = "steelblue", lwd = 2,
+     xlab = expression(theta),
+     ylab = expression(L(theta)),
+     main = "Verosimiglianza: 7 teste su 10 lanci")
+
+theta_max <- theta[which.max(lik)]
+abline(v = theta_max, col = "red", lty = 2)
+text(theta_max + 0.05, max(lik) * 0.9, 
+     paste("MLE =", round(theta_max, 2)), col = "red")
+```
+
+Il massimo della verosimiglianza è a $\hat{\theta} = 0.70$, che coincide 
+con la proporzione osservata $7/10$. Questo è un risultato generale per la 
+Binomiale: la stima di massima verosimiglianza è sempre $\hat{\theta} = k/n$.
+
+La funzione di verosimiglianza ci dice non solo *quale* valore è più 
+plausibile, ma anche **quanto** più plausibile rispetto agli altri: valori 
+lontani da 0.70 hanno verosimiglianza molto più bassa.
+
+
+## 5c — Come cambiano i dati, cambia la verosimiglianza
+
+```{r}
+par(mfrow = c(1, 3))
+
+dati <- list(c(2, 10), c(7, 10), c(70, 100))
+titoli <- c("2 teste su 10", "7 teste su 10", "70 teste su 100")
+
+for (i in 1:3) {
+  k <- dati[[i]][1]
+  n <- dati[[i]][2]
+  theta <- seq(0, 1, length.out = 300)
+  lik <- dbinom(k, size = n, prob = theta)
+  
+  plot(theta, lik, type = "l", col = "steelblue", lwd = 2,
+       xlab = expression(theta), ylab = expression(L(theta)),
+       main = titoli[i])
+  abline(v = k/n, col = "red", lty = 2)
+}
+
+par(mfrow = c(1, 1))
+```
+
+1. Sì, in tutti e tre i casi il MLE è $k/n$ (rispettivamente 0.20, 0.70, 0.70).
+
+2. Il terzo grafico (70/100) ha una curva **molto più stretta** del secondo 
+   (7/10), nonostante entrambi abbiano $\hat{\theta} = 0.70$. Con 100 
+   osservazioni, i valori lontani da 0.70 sono molto meno plausibili rispetto 
+   a quando abbiamo solo 10 osservazioni.
+
+3. Una verosimiglianza più stretta indica **maggiore certezza** sulla stima. 
+   Più dati raccogliamo ($n$ grande), più la verosimiglianza si concentra 
+   intorno al MLE, e più siamo sicuri del valore del parametro. Questa è 
+   l'essenza dell'informazione statistica: **più dati = meno incertezza**.
+
+
+## 5d — La log-verosimiglianza
+
+```{r}
+theta <- seq(0.01, 0.99, length.out = 300)
+
+loglik_10 <- dbinom(7, 10, theta, log = TRUE)
+loglik_100 <- dbinom(70, 100, theta, log = TRUE)
+
+plot(theta, loglik_10, type = "l", col = "steelblue", lwd = 2,
+     xlab = expression(theta), ylab = expression(ell(theta)),
+     main = "Log-verosimiglianza", ylim = c(-15, 0))
+lines(theta, loglik_100, col = "coral", lwd = 2)
+legend("bottomleft",
+       legend = c("7/10 lanci", "70/100 lanci"),
+       col = c("steelblue", "coral"), lwd = 2)
+abline(v = 0.70, col = "red", lty = 2)
+```
+
+Entrambe le curve hanno il massimo a $\theta = 0.70$, ma la curva rossa 
+(70/100) è molto più "appuntita" vicino al massimo. La curvatura della 
+log-verosimiglianza al massimo è una misura dell'**informazione di Fisher**: 
+più è "appuntita", più i dati sono informativi sul valore del parametro. 
+Con 100 osservazioni, i dati parlano con molta più autorità di quanto non 
+facciano con sole 10 osservazioni.
+
+La log-verosimiglianza è preferita alla verosimiglianza per ragioni 
+pratiche: con molti dati, la verosimiglianza diventa un numero 
+estremamente piccolo (è un prodotto di probabilità), mentre la 
+log-verosimiglianza rimane numericamente stabile.
+
+
+# Dalla verosimiglianza all'inferenza bayesiana (anteprima)
+
+## Esercizio 6 — Prior × Verosimiglianza = Posterior
+
+```{r}
+theta <- seq(0, 1, length.out = 300)
+
+prior <- dbeta(theta, 2, 2)
+lik <- dbinom(7, 10, theta)
+post_esatta <- dbeta(theta, 9, 5)
+
+plot(theta, prior / max(prior), type = "l", col = "gray50", lwd = 2, lty = 2,
+     xlab = expression(theta), ylab = "Densità (scalata)",
+     main = "L'inferenza bayesiana in un grafico", ylim = c(0, 1.2))
+lines(theta, lik / max(lik), col = "coral", lwd = 2, lty = 3)
+lines(theta, post_esatta / max(post_esatta), col = "steelblue", lwd = 2)
+legend("topleft",
+       legend = c("Prior: Beta(2,2)", 
+                  "Verosimiglianza: 7/10", 
+                  "Posterior: Beta(9,5)"),
+       col = c("gray50", "coral", "steelblue"), 
+       lty = c(2, 3, 1), lwd = 2)
+```
+
+1. **Sì**, la posterior (blu) sta "in mezzo" tra la prior (grigia, centrata 
+   su 0.50) e la verosimiglianza (rossa, centrata su 0.70). La media della 
+   posterior è $9/(9+5) = 0.643$, che è un compromesso tra la prior (0.50) 
+   e i dati (0.70).
+
+2. Con una prior più informativa come $\text{Beta}(20, 20)$ (molto concentrata 
+   su 0.50), la posterior sarebbe **più vicina alla prior** e si sposterebbe 
+   meno verso i dati. Una prior forte "resiste" di più all'evidenza dei dati.
+
+3. Con più dati (70/100), la verosimiglianza diventa molto più stretta e 
+   dominante, e la posterior sarebbe **quasi interamente guidata dai dati**, 
+   indipendentemente dalla prior. Questo è un risultato fondamentale: con 
+   campioni sufficientemente grandi, i dati "parlano da soli" e la scelta 
+   della prior diventa irrilevante.
+
+Questa è l'essenza dell'aggiornamento bayesiano:
+$$\text{Credenze aggiornate} = \text{Credenze iniziali} \times \text{Evidenza dei dati}$$
+
+Con pochi dati, le credenze iniziali contano molto. Con molti dati, 
+l'evidenza prevale. Nelle prossime lezioni formalizzeremo questo processo 
+e lo applicheremo a problemi reali di psicologia.
+
+
+# Note finali
+
+In questo homework hai imparato a:
+
+- **Calcolare** valore atteso e varianza di variabili casuali discrete, sia 
+  a mano che con simulazioni.
+- **Applicare** le proprietà della trasformazione lineare (standardizzazione).
+- **Analizzare** distribuzioni congiunte, marginali e condizionate.
+- **Verificare** l'indipendenza confrontando $P(A,B)$ con $P(A) \cdot P(B)$.
+- **Costruire e interpretare** la funzione di verosimiglianza.
+- **Comprendere** che il MLE massimizza la plausibilità dei dati.
+- **Visualizzare** come la verosimiglianza si restringe con più dati 
+  (più informazione = meno incertezza).
+- **Vedere in azione** il principio bayesiano: 
+  posterior $\propto$ prior $\times$ verosimiglianza.
+
+Ora hai tutti gli ingredienti per l'inferenza bayesiana: le distribuzioni 
+a priori (Beta nell'HW4), la verosimiglianza (questo homework) e il teorema 
+di Bayes (HW3). Nelle prossime lezioni li combineremo in un quadro unico 
+e potente per analizzare dati psicologici.

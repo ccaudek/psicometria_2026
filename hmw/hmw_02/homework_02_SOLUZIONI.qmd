@@ -1,0 +1,384 @@
+---
+title: "SOLUZIONI HOMEWORK 02"
+subtitle: "Esplorare un dataset psicologico con R e ggplot2"
+author: 
+  - name: "Prof. Corrado Caudek"
+    affiliation: "Università degli Studi di Firenze — Dipartimento NEUROFARBA, Sezione di Psicologia"
+    email: "corrado.caudek@unifi.it"
+course: "PSI0028 — Psicometria"
+date: today
+date-format: "DD MMMM YYYY"
+lang: it
+abstract: |
+  Soluzioni complete del secondo homework di Psicometria. L'analisi esplorativa 
+  del dataset sonno-ansia-performance rivela un'associazione negativa tra ore 
+  di sonno e ansia (r ≈ −0.65), una relazione positiva tra sonno e voto d'esame
+  (r ≈ +0.55), e differenze modeste tra maschi e femmine nell'ansia pre-esame.
+  L'homework introduce ggplot2 e la correlazione come strumenti per descrivere 
+  pattern nei dati, preparando il terreno per l'inferenza bayesiana.
+format: 
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    number-sections: false
+    code-fold: false
+    fig-align: center
+    df-print: kable
+    embed-resources: true
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+
+# Preparazione: caricare gli strumenti
+
+```{r}
+suppressPackageStartupMessages({
+  library(tidyverse)
+})
+```
+
+
+# Quesito 1: Importare e conoscere i dati
+
+## 1a — Importare il file
+
+```{r}
+dati <- rio::import("dati_sonno_ansia.csv")
+```
+
+Il file viene caricato in un oggetto chiamato `dati`, che è un *data frame*: 
+una tabella dove ogni riga è uno studente e ogni colonna è una variabile.
+
+
+## 1b — Primo sguardo
+
+```{r}
+dim(dati)
+```
+
+Il dataset ha **100 righe** (studenti) e **5 colonne** (variabili).
+
+```{r}
+head(dati)
+```
+
+Le prime 6 righe ci mostrano il "formato" dei dati: numeri per ore_sonno, 
+ansia, voto_esame e caffe; lettere (M/F) per sesso.
+
+```{r}
+str(dati)
+```
+
+**Risposta:** Il dataset contiene 100 studenti e 5 variabili. Quattro sono 
+numeriche (`ore_sonno`, `ansia`, `voto_esame`, `caffe`) e una è categoriale 
+(`sesso`, con valori M e F).
+
+
+## 1c — Statistiche descrittive
+
+```{r}
+summary(dati)
+```
+
+**Risposta:** La media delle ore di sonno è circa 6.8 ore. Il livello mediano 
+di ansia è circa 5 (su una scala 1–10), il che indica un livello moderato. 
+I voti vanno da 18 a circa 30, con una media intorno a 24.
+
+Notiamo che la media del sonno è leggermente sotto le 7–9 ore raccomandate 
+per i giovani adulti: molti studenti universitari dormono meno del necessario, 
+specialmente prima degli esami.
+
+
+## 1d — Contare maschi e femmine
+
+```{r}
+table(dati$sesso)
+```
+
+**Risposta:** Il campione è composto da circa 60 femmine e 40 maschi (60%–40%).
+
+
+# Quesito 2: Come si distribuisce l'ansia?
+
+## 2a — Istogramma dell'ansia
+
+Lo spazio vuoto (`___`) andava completato con `ansia`:
+
+```{r}
+ggplot(dati, aes(x = ansia)) +
+  geom_histogram(binwidth = 1, fill = "steelblue", color = "white") +
+  labs(
+    title = "Distribuzione dei livelli di ansia",
+    x = "Livello di ansia (1–10)",
+    y = "Frequenza"
+  ) +
+  theme_minimal()
+```
+
+Scomponiamo il codice:
+
+- `ggplot(dati, aes(x = ansia))`: dice "prendi il dataset `dati` e metti 
+  `ansia` sull'asse x".
+- `geom_histogram(binwidth = 1, ...)`: disegna barre di ampiezza 1.
+- `labs(...)`: aggiunge il titolo e le etichette degli assi.
+
+
+## 2b — Interpretazione
+
+La distribuzione dell'ansia è **approssimativamente simmetrica**, con la 
+maggior parte degli studenti che riporta livelli di ansia **moderati** 
+(tra 4 e 7). Pochi studenti si trovano agli estremi (ansia molto bassa o 
+molto alta). Questo suggerisce che l'ansia pre-esame è un'esperienza comune
+ma con notevole variabilità individuale: alcuni studenti la gestiscono bene, 
+altri la vivono con più intensità.
+
+
+# Quesito 3: Sonno e ansia sono legati?
+
+## 3a — Scatterplot
+
+Gli spazi andavano completati con `ore_sonno` e `ansia`:
+
+```{r}
+ggplot(dati, aes(x = ore_sonno, y = ansia)) +
+  geom_point(alpha = 0.6, color = "steelblue") +
+  labs(
+    title = "Relazione tra sonno e ansia",
+    x = "Ore di sonno",
+    y = "Livello di ansia"
+  ) +
+  theme_minimal()
+```
+
+L'opzione `alpha = 0.6` rende i punti leggermente trasparenti, il che aiuta 
+a vedere quando più punti si sovrappongono.
+
+
+## 3b — Aggiungere una linea di tendenza
+
+```{r}
+ggplot(dati, aes(x = ore_sonno, y = ansia)) +
+  geom_point(alpha = 0.6, color = "steelblue") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(
+    title = "Relazione tra sonno e ansia",
+    x = "Ore di sonno",
+    y = "Livello di ansia"
+  ) +
+  theme_minimal()
+```
+
+`geom_smooth(method = "lm")` aggiunge una retta che riassume la tendenza 
+generale dei punti. "lm" sta per *linear model* (modello lineare). 
+Lo studieremo in dettaglio più avanti nel corso.
+
+
+## 3c — Interpretazione
+
+1. La linea **scende**: la relazione è **negativa**.
+2. In parole semplici: gli studenti che dormono di più tendono a essere 
+   **meno ansiosi**.
+3. Questo risultato è coerente con la letteratura psicologica: il sonno gioca 
+   un ruolo importante nella regolazione emotiva. Chi dorme poco tende ad 
+   avere una reattività emotiva più elevata.
+
+Attenzione, però: non possiamo dire che "dormire poco *causa* ansia". 
+Potrebbe anche essere che gli studenti ansiosi facciano più fatica ad 
+addormentarsi (causalità inversa), o che un terzo fattore (es. il carico 
+di studio) influenzi sia il sonno che l'ansia.
+
+
+## 3d — La correlazione
+
+```{r}
+cor(dati$ore_sonno, dati$ansia)
+```
+
+**Risposta:** La correlazione è circa $r \approx -0.65$. Il segno negativo 
+conferma la relazione inversa (più sonno → meno ansia). Il valore assoluto 
+(0.65) indica una relazione **moderatamente forte**: non perfetta, ma 
+chiaramente visibile.
+
+Come riferimento: nelle scienze del comportamento, una correlazione di 0.10 
+è considerata debole, 0.30 moderata, e 0.50 o superiore è forte. Il nostro 
+valore di 0.65 è nel range "forte".
+
+
+# Quesito 4: Differenze tra maschi e femmine
+
+## 4a — Statistiche per gruppo
+
+Gli spazi andavano completati con `"F"` e `femmine`:
+
+```{r}
+cat("=== Maschi ===\n")
+maschi <- dati$ansia[dati$sesso == "M"]
+cat("Media ansia:", round(mean(maschi), 2), "\n")
+cat("SD ansia:   ", round(sd(maschi), 2), "\n")
+cat("N:          ", length(maschi), "\n\n")
+
+cat("=== Femmine ===\n")
+femmine <- dati$ansia[dati$sesso == "F"]
+cat("Media ansia:", round(mean(femmine), 2), "\n")
+cat("SD ansia:   ", round(sd(femmine), 2), "\n")
+cat("N:          ", length(femmine), "\n")
+```
+
+Spieghiamo il codice `dati$ansia[dati$sesso == "M"]`:
+
+- `dati$ansia` estrae la colonna `ansia` (un vettore di 100 numeri).
+- `dati$sesso == "M"` crea un vettore di `TRUE`/`FALSE` (TRUE dove il sesso è M).
+- Le parentesi quadre `[...]` selezionano solo gli elementi dove la condizione
+  è TRUE.
+
+Il risultato è un vettore con i punteggi di ansia dei soli studenti maschi.
+
+
+## 4b — Boxplot
+
+```{r}
+ggplot(dati, aes(x = sesso, y = ansia, fill = sesso)) +
+  geom_boxplot(alpha = 0.7) +
+  geom_jitter(width = 0.2, alpha = 0.3, size = 1) +
+  labs(
+    title = "Ansia per sesso",
+    x = "Sesso",
+    y = "Livello di ansia (1–10)"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+Ricordiamo come leggere un boxplot:
+
+- La **linea nel mezzo** della scatola è la mediana.
+- I **bordi** della scatola sono $Q_1$ e $Q_3$: il 50% centrale dei dati sta 
+  dentro la scatola.
+- I **baffi** si estendono fino ai valori più lontani non considerati outlier.
+- I **puntini sparsi** (aggiunti con `geom_jitter`) mostrano i singoli dati.
+
+
+## 4c — Interpretazione
+
+1. Le studentesse hanno la mediana dell'ansia **lievemente più alta** rispetto 
+   ai maschi.
+2. Le due distribuzioni si **sovrappongono molto**: ci sono maschi con ansia 
+   alta e femmine con ansia bassa.
+3. La differenza tra i gruppi è **piccola** (circa 0.5 punti su una scala 
+   1–10). Questo significa che il sesso spiega solo una piccola parte della 
+   variabilità dell'ansia: la variabilità *dentro* ciascun gruppo è molto 
+   maggiore della differenza *tra* i gruppi. Il sesso è solo uno dei tanti 
+   fattori che influenzano l'ansia pre-esame.
+
+
+# Quesito 5: Cosa predice i voti?
+
+## 5a — Ansia e voto
+
+```{r}
+ggplot(dati, aes(x = ansia, y = voto_esame)) +
+  geom_point(alpha = 0.6, color = "coral") +
+  geom_smooth(method = "lm", se = FALSE, color = "darkred") +
+  labs(
+    title = "Ansia e voto d'esame",
+    x = "Livello di ansia",
+    y = "Voto"
+  ) +
+  theme_minimal()
+```
+
+
+## 5b — Sonno e voto
+
+```{r}
+ggplot(dati, aes(x = ore_sonno, y = voto_esame)) +
+  geom_point(alpha = 0.6, color = "seagreen") +
+  geom_smooth(method = "lm", se = FALSE, color = "darkgreen") +
+  labs(
+    title = "Sonno e voto d'esame",
+    x = "Ore di sonno",
+    y = "Voto"
+  ) +
+  theme_minimal()
+```
+
+
+## 5c — Le correlazioni
+
+```{r}
+cat("Correlazione ansia-voto: ", round(cor(dati$ansia, dati$voto_esame), 3), "\n")
+cat("Correlazione sonno-voto: ", round(cor(dati$ore_sonno, dati$voto_esame), 3), "\n")
+```
+
+
+## 5d — Interpretazione
+
+1. Gli studenti più ansiosi tendono a prendere **voti più bassi** (la linea 
+   scende, la correlazione è negativa).
+2. Gli studenti che dormono di più tendono a prendere **voti più alti** (la 
+   linea sale, la correlazione è positiva).
+3. Confrontando i valori assoluti delle correlazioni, la relazione 
+   **sonno → voto** appare più forte di quella **ansia → voto** (il valore 
+   di $|r|$ è maggiore). Questo suggerisce che il sonno potrebbe essere un 
+   fattore più rilevante dell'ansia per la performance accademica — oppure 
+   che il sonno ha un effetto sia diretto (funzioni cognitive) sia indiretto 
+   (attraverso la riduzione dell'ansia).
+
+Emerge un quadro coerente: dormire poco si associa a più ansia *e* a voti 
+più bassi. Ma attenzione: potrebbe esserci un fattore nascosto (es. lo stress 
+per un esame difficile) che causa contemporaneamente meno sonno, più ansia e 
+voti più bassi. Solo con metodi più avanzati (che vedremo più avanti nel corso) 
+potremo provare a districare queste relazioni.
+
+
+# Quesito 6: Cosa abbiamo imparato?
+
+## 6a — Sintesi
+
+*Risposta di esempio:*
+
+L'analisi esplorativa rivela tre pattern principali. Primo: esiste una 
+relazione negativa moderatamente forte tra sonno e ansia ($r \approx -0.65$) —
+gli studenti che dormono di più riportano meno ansia. Secondo: sia il sonno 
+(positivamente) che l'ansia (negativamente) si associano ai voti d'esame, con 
+il sonno che mostra la relazione più marcata. Terzo: le differenze di ansia 
+tra maschi e femmine sono piccole e largamente sovrapposte. Nel complesso, i 
+dati suggeriscono che il sonno è un fattore importante per il benessere 
+accademico, ma la natura osservazionale dello studio non consente conclusioni 
+causali.
+
+
+## 6b — Una domanda che rimane aperta
+
+*Risposta di esempio:*
+
+Se facessimo un intervento per migliorare l'igiene del sonno degli studenti 
+(es. un programma di educazione al sonno), i voti migliorerebbero davvero? 
+Il nostro dataset mostra solo un'*associazione*: chi dorme di più va meglio. 
+Ma non possiamo sapere se è il sonno a causare voti migliori, o se gli 
+studenti meno stressati riescono sia a dormire meglio sia a studiare meglio. 
+Per rispondere servirebbe un esperimento controllato, oppure metodi statistici 
+che permettano di "isolare" l'effetto del sonno — strumenti che esploreremo 
+nel prosieguo del corso.
+
+
+# Note finali
+
+In questo homework hai imparato a:
+
+- **Importare** un dataset e conoscerne la struttura con `dim()`, `head()`, 
+  `str()`, `summary()`.
+- **Creare grafici** con `ggplot2`: istogrammi (`geom_histogram`), scatterplot 
+  (`geom_point`), linee di tendenza (`geom_smooth`), boxplot (`geom_boxplot`).
+- **Calcolare e interpretare** la correlazione con `cor()`.
+- **Leggere un grafico** e descrivere in parole cosa mostra.
+- **Distinguere** tra associazione e causazione.
+
+Queste sono le competenze fondamentali della *data exploration* — il primo 
+passo di qualsiasi analisi statistica. Nel prossimo homework inizieremo a 
+ragionare in termini probabilistici, gettando le basi per l'inferenza 
+bayesiana.

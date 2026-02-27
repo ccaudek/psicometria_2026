@@ -1,0 +1,390 @@
+---
+title: "SOLUZIONI HOMEWORK 03"
+subtitle: "Probabilità di base, simulazioni e teorema di Bayes"
+author: 
+  - name: "Prof. Corrado Caudek"
+    affiliation: "Università degli Studi di Firenze — Dipartimento NEUROFARBA, Sezione di Psicologia"
+    email: "corrado.caudek@unifi.it"
+course: "PSI0028 — Psicometria"
+date: today
+date-format: "DD MMMM YYYY"
+lang: it
+abstract: |
+  Soluzioni complete del terzo homework di Psicometria. L'homework introduce 
+  la probabilità attraverso simulazioni in R: dalla legge dei grandi numeri 
+  alla probabilità condizionata, fino al teorema di Bayes applicato allo 
+  screening clinico. I risultati mostrano che la confusione tra P(+|D) e P(D|+) 
+  è un errore comune ma pericoloso, e che la prevalenza ha un impatto enorme 
+  sul valore predittivo di un test.
+format: 
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    number-sections: false
+    code-fold: false
+    fig-align: center
+    df-print: kable
+    embed-resources: true
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+
+# La probabilità come frequenza a lungo termine
+
+## 1a — Il lancio di un dado (ragionamento)
+
+1. Lo spazio campionario è $\Omega = \{1, 2, 3, 4, 5, 6\}$.
+2. $P(4) = 1/6 \approx 0.167$.
+3. "Numero pari" = $\{2, 4, 6\}$, quindi $P(\text{pari}) = 3/6 = 1/2$.
+4. "Maggiore di 4" = $\{5, 6\}$, quindi $P(>4) = 2/6 = 1/3$.
+
+Questi calcoli si basano sull'assunzione di **equiprobabilità**: dato che il 
+dado è equilibrato, ogni faccia ha la stessa probabilità $1/6$. La probabilità 
+di un evento è quindi il rapporto tra il numero di esiti favorevoli e il 
+numero totale di esiti possibili.
+
+
+## 1b — Simulare 10.000 lanci di dado in R
+
+```{r}
+set.seed(42)
+n_lanci <- 10000
+risultati <- sample(1:6, size = n_lanci, replace = TRUE)
+
+n_quattro <- sum(risultati == 4)
+cat("Frequenza relativa del 4:", n_quattro / n_lanci, "\n")
+cat("Probabilità teorica:     ", 1/6, "\n")
+```
+
+La frequenza relativa ($\approx 0.167$) è molto vicina alla probabilità 
+teorica ($1/6 \approx 0.1667$), ma non esattamente uguale. Questo è normale: 
+con un numero finito di lanci c'è sempre una piccola **fluttuazione casuale**. 
+La legge dei grandi numeri garantisce che, aumentando il numero di lanci, la 
+frequenza relativa converge alla probabilità teorica.
+
+
+## 1c — La legge dei grandi numeri, visivamente
+
+Lo spazio vuoto andava completato con `4` (il numero di cui stiamo calcolando 
+la frequenza):
+
+```{r}
+set.seed(42)
+lanci <- sample(1:6, size = 10000, replace = TRUE)
+
+freq_cum <- cumsum(lanci == 4) / 1:length(lanci)
+
+plot(freq_cum, type = "l", col = "steelblue", lwd = 1.5,
+     xlab = "Numero di lanci",
+     ylab = "Frequenza relativa del 4",
+     main = "Legge dei grandi numeri")
+abline(h = 1/6, col = "red", lty = 2)
+legend("topright", legend = c("Frequenza osservata", "P(4) = 1/6"),
+       col = c("steelblue", "red"), lty = c(1, 2))
+```
+
+**Interpretazione:** All'inizio (pochi lanci) la frequenza relativa oscilla 
+molto — può essere ben sopra o ben sotto $1/6$. Man mano che il numero di 
+lanci cresce, le oscillazioni si smorzano e la linea blu si stabilizza intorno 
+al valore teorico $1/6 \approx 0.167$ (linea rossa tratteggiata). Questa è 
+la **legge dei grandi numeri** in azione: la frequenza relativa converge alla 
+probabilità vera.
+
+
+# Eventi, intersezione e unione
+
+## 2a — Due eventi e le loro combinazioni (ragionamento)
+
+$A = \{2, 4, 6\}$ (pari), $B = \{4, 5, 6\}$ (maggiore di 3).
+
+1. $P(A) = 3/6 = 0.50$, $P(B) = 3/6 = 0.50$.
+
+2. $A \cap B = \{4, 6\}$ (numeri che sono sia pari sia maggiori di 3), 
+   quindi $P(A \cap B) = 2/6 \approx 0.333$.
+
+3. $A \cup B = \{2, 4, 5, 6\}$ (numeri che sono pari *o* maggiori di 3 *o* 
+   entrambi), quindi $P(A \cup B) = 4/6 \approx 0.667$.
+
+4. Verifica: $P(A) + P(B) - P(A \cap B) = 0.50 + 0.50 - 0.333 = 0.667 = P(A \cup B)$. ✓
+
+La formula dell'unione sottrae $P(A \cap B)$ perché gli esiti nell'intersezione 
+vengono contati due volte (una volta in $P(A)$ e una in $P(B)$).
+
+
+## 2b — Verifica con simulazione
+
+```{r}
+set.seed(123)
+n <- 100000
+lanci <- sample(1:6, size = n, replace = TRUE)
+
+A <- lanci %% 2 == 0
+B <- lanci > 3
+AeB <- A & B
+AoB <- A | B
+
+cat("P(A) simulata:       ", mean(A), "\n")
+cat("P(B) simulata:       ", mean(B), "\n")
+cat("P(A ∩ B) simulata:   ", mean(AeB), "\n")
+cat("P(A ∪ B) simulata:   ", mean(AoB), "\n")
+```
+
+I valori simulati sono molto vicini a quelli calcolati a mano: circa 0.50, 
+0.50, 0.33 e 0.67 rispettivamente. Le piccole differenze sono dovute alla 
+variabilità casuale della simulazione.
+
+
+# Probabilità condizionata: aggiornare le credenze
+
+## 3a — Un esempio clinico (ragionamento)
+
+1. $P(A) = 0.30$, $P(S) = 0.20$, $P(A \cap S) = 0.12$.
+
+2. $P(S \mid A) = \frac{P(A \cap S)}{P(A)} = \frac{0.12}{0.30} = 0.40$
+
+   Se sappiamo che un paziente ha un disturbo d'ansia, la probabilità che abbia 
+   anche un disturbo del sonno è del **40%**.
+
+3. $P(A \mid S) = \frac{P(A \cap S)}{P(S)} = \frac{0.12}{0.20} = 0.60$
+
+   Se sappiamo che un paziente ha un disturbo del sonno, la probabilità che 
+   abbia anche un disturbo d'ansia è del **60%**.
+
+4. $P(S \mid A) \neq P(A \mid S)$ ($0.40 \neq 0.60$). Le due probabilità 
+   condizionate sono diverse perché "condizionare" su eventi diversi restringe 
+   lo spazio campionario in modi diversi. Quando condizioniamo su $A$ (ansia), 
+   ci restringiamo al 30% della popolazione; quando condizioniamo su $S$ (sonno), 
+   ci restringiamo al 20%. Il gruppo di partenza è diverso, quindi le 
+   proporzioni risultanti sono diverse.
+
+   Questa distinzione è cruciale in clinica: "la probabilità di avere problemi 
+   di sonno *dato che* si ha ansia" è una domanda diversa da "la probabilità 
+   di avere ansia *dato che* si hanno problemi di sonno".
+
+
+## 3b — Simulazione della clinica
+
+```{r}
+set.seed(2026)
+n <- 10000
+
+ansia <- rbinom(n, 1, prob = 0.30)
+
+sonno <- ifelse(ansia == 1,
+                rbinom(sum(ansia == 1), 1, prob = 0.40),
+                rbinom(sum(ansia == 0), 1, prob = 0.08/0.70))
+
+cat("P(A) simulata:     ", mean(ansia), "\n")
+cat("P(S) simulata:     ", mean(sonno), "\n")
+cat("P(A ∩ S) simulata: ", mean(ansia == 1 & sonno == 1), "\n")
+cat("P(S|A) simulata:   ", mean(sonno[ansia == 1]), "\n")
+cat("P(A|S) simulata:   ", mean(ansia[sonno == 1]), "\n")
+```
+
+I valori simulati sono coerenti con i calcoli a mano: $P(S|A) \approx 0.40$ 
+e $P(A|S) \approx 0.60$. La seconda probabilità condizionata è più grande: 
+tra i pazienti con disturbi del sonno, è più probabile trovare ansia (60%) 
+di quanto tra i pazienti con ansia sia probabile trovare disturbi del sonno 
+(40%).
+
+Notiamo come il codice costruisce la relazione: la probabilità di sonno 
+dipende da se il paziente ha ansia o no. Questo è il concetto di 
+**condizionamento** tradotto in codice R.
+
+
+# Il teorema di Bayes: il cuore del ragionamento
+
+## 4a — Screening per la depressione (ragionamento guidato)
+
+*Passo 1:* Su 1000 studenti, $1000 \times 0.15 = 150$ sono depressi, 
+$1000 \times 0.85 = 850$ non sono depressi.
+
+*Passo 2:* Dei 150 depressi, il test è positivo per $150 \times 0.90 = 135$.
+
+*Passo 3:* Il tasso di falsi positivi è $P(+|\neg D) = 1 - 0.85 = 0.15$. 
+Dei 850 non depressi, il test è positivo per $850 \times 0.15 = 127.5$ 
+(arrotondiamo a 128).
+
+*Passo 4:* In totale, i positivi sono $135 + 128 = 263$ (circa).
+
+*Passo 5:* $P(D|+) = 135 / 263 \approx 0.514$.
+
+La tabella completa:
+
+|                 | Depressi ($D$) | Non depressi ($\neg D$) | Totale |
+|:---------------:|:--------------:|:-----------------------:|:------:|
+| Test + (positivo) |    135       |        127.5            |  262.5 |
+| Test − (negativo) |     15       |        722.5            |  737.5 |
+| **Totale**        |    150       |         850             |  1000  |
+
+Quindi circa il 51% degli studenti che risultano positivi è davvero depresso.
+Questo significa che **quasi la metà dei positivi è un falso allarme**.
+
+
+## 4b — Con la formula di Bayes
+
+$$P(D|+) = \frac{P(+|D) \cdot P(D)}{P(+|D) \cdot P(D) + P(+|\neg D) \cdot P(\neg D)}$$
+
+```{r}
+sensibilita <- 0.90
+falsi_pos <- 0.15    # 1 - specificità
+prevalenza <- 0.15
+
+numeratore <- sensibilita * prevalenza
+denominatore <- sensibilita * prevalenza + falsi_pos * (1 - prevalenza)
+
+p_D_dato_pos <- numeratore / denominatore
+cat("P(D|+) =", round(p_D_dato_pos, 4), "\n")
+```
+
+Il risultato con la formula ($\approx 0.514$) coincide con il metodo delle 
+frequenze naturali.
+
+
+## 4c — Simulazione dello screening
+
+Gli spazi andavano completati con `0.90` (sensibilità) e `0.15` (tasso di 
+falsi positivi):
+
+```{r}
+set.seed(2026)
+n <- 100000
+
+depresso <- rbinom(n, 1, prob = 0.15)
+
+test_pos <- ifelse(depresso == 1,
+                   rbinom(sum(depresso == 1), 1, prob = 0.90),
+                   rbinom(sum(depresso == 0), 1, prob = 0.15))
+
+cat("P(D|+) simulata:", mean(depresso[test_pos == 1]), "\n")
+```
+
+Il risultato simulato è vicino a 0.51, confermando sia il calcolo a mano 
+che la formula.
+
+**Perché $P(D|+)$ è così lontano dal 90%?** Anche se il test è abbastanza 
+buono (rileva il 90% dei depressi e classifica correttamente l'85% dei sani), 
+nella popolazione il numero di **non depressi** è molto maggiore del numero 
+di depressi (850 contro 150 su 1000). Quindi, anche una piccola percentuale 
+di falsi positivi (15% di 850 = 128) produce un numero assoluto di falsi 
+allarmi comparabile al numero di veri positivi (135). Questo effetto è noto 
+come **paradosso del tasso base** ed è una delle trappole cognitive più 
+insidiose in ambito clinico.
+
+
+## 4d — Come cambia con la prevalenza?
+
+```{r}
+bayes_ppv <- function(prev, sens = 0.90, spec = 0.85) {
+  fp <- 1 - spec
+  (sens * prev) / (sens * prev + fp * (1 - prev))
+}
+
+prevalenze <- c(0.01, 0.15, 0.50)
+ppv <- sapply(prevalenze, bayes_ppv)
+
+risultati <- data.frame(
+  `Prevalenza P(D)` = prevalenze,
+  `P(D|+)` = round(ppv, 4)
+)
+knitr::kable(risultati)
+```
+
+| Prevalenza $P(D)$ | $P(D\mid +)$ |
+|:------------------:|:-------------:|
+|       0.01         |    0.057      |
+|       0.15         |    0.514      |
+|       0.50         |    0.857      |
+
+Quando la prevalenza è molto bassa (1%), il valore predittivo positivo è 
+solo del 5.7%: quasi tutti i positivi sono falsi allarmi! Quando la prevalenza 
+sale al 50%, il valore predittivo raggiunge l'85.7%.
+
+Questo ha implicazioni pratiche enormi: uno screening di massa in una 
+popolazione a basso rischio produce moltissimi falsi positivi, causando ansia 
+inutile e costi per esami di approfondimento. Per questo motivo, molti 
+screening clinici sono raccomandati solo per popolazioni a rischio elevato, 
+dove la prevalenza è più alta.
+
+
+# Indipendenza: quando sapere non cambia nulla
+
+## 5a — Indipendenza (ragionamento)
+
+1. Se ansia e sonno fossero indipendenti: 
+   $P(A \cap S) = P(A) \cdot P(S) = 0.30 \times 0.20 = 0.06$.
+
+2. Ma sappiamo che $P(A \cap S) = 0.12$, che è **il doppio** di 0.06. Quindi 
+   i due disturbi **non sono indipendenti**.
+
+3. Il fatto che $P(A \cap S) = 0.12 > 0.06 = P(A) \cdot P(S)$ ci dice che 
+   i due disturbi tendono a **co-occorrere** più di quanto ci aspetteremmo per 
+   caso. C'è un'**associazione positiva**: avere un disturbo rende più 
+   probabile avere anche l'altro. Questo è coerente con la letteratura 
+   clinica, che mostra un forte legame tra ansia e problemi di sonno.
+
+
+## 5b — Verifica con i dadi
+
+```{r}
+set.seed(42)
+n <- 100000
+dado1 <- sample(1:6, n, replace = TRUE)
+dado2 <- sample(1:6, n, replace = TRUE)
+
+p_sei_1 <- mean(dado1 == 6)
+p_sei_1_dato_sei_2 <- mean(dado1[dado2 == 6] == 6)
+
+cat("P(dado1 = 6):            ", round(p_sei_1, 4), "\n")
+cat("P(dado1 = 6 | dado2 = 6):", round(p_sei_1_dato_sei_2, 4), "\n")
+cat("Sono (circa) uguali?     ", 
+    abs(p_sei_1 - p_sei_1_dato_sei_2) < 0.01, "\n")
+```
+
+Sapere che il secondo dado ha dato 6 **non cambia** la probabilità che il 
+primo dia 6 (entrambe sono circa $1/6 \approx 0.167$). Questo conferma 
+l'indipendenza: i due lanci non si influenzano a vicenda. L'informazione 
+sul secondo dado non è "informativa" riguardo al primo.
+
+
+# Conclusione: perché tutto questo è importante
+
+## Esercizio 6 — Riflessione
+
+*Risposta di esempio:*
+
+Quando un clinico riceve un risultato positivo al test, la domanda che 
+gli interessa è $P(D|+)$: "dato che il test è positivo, qual è la probabilità 
+che il paziente sia davvero depresso?" Questa è la probabilità che guida la 
+decisione clinica successiva (ulteriori accertamenti, inizio terapia, ecc.).
+
+La sensibilità $P(+|D)$ — cioè la probabilità che il test sia positivo *se* 
+il paziente è depresso — è una caratteristica *del test*, non *del paziente*. 
+Confondere le due è l'errore noto come **fallacia del tasso base** o 
+**fallacia dell'accusatore**: scambiare $P(\text{evidenza}|\text{ipotesi})$ 
+con $P(\text{ipotesi}|\text{evidenza})$. Il teorema di Bayes è lo strumento 
+che ci permette di passare correttamente dall'una all'altra, e il prossimo 
+passo del corso sarà usarlo sistematicamente per l'inferenza statistica.
+
+
+# Note finali
+
+In questo homework hai imparato a:
+
+- **Simulare esperimenti casuali** in R con `sample()` e `rbinom()`.
+- **Verificare** la legge dei grandi numeri visivamente.
+- **Calcolare** probabilità di intersezione, unione e probabilità condizionate.
+- **Applicare il teorema di Bayes** sia con il metodo delle frequenze naturali 
+  sia con la formula.
+- **Riconoscere** il paradosso del tasso base e le sue implicazioni cliniche.
+- **Verificare** l'indipendenza confrontando $P(A)$ con $P(A|B)$.
+
+Questi concetti — in particolare la probabilità condizionata e il teorema di 
+Bayes — sono i mattoni fondamentali dell'inferenza bayesiana che svilupperemo 
+nel prosieguo del corso. Nel prossimo homework ci concentreremo sulle 
+**distribuzioni di probabilità**: gli strumenti matematici che descrivono 
+l'incertezza in modo preciso e quantitativo.

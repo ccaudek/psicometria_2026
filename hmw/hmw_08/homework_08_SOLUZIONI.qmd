@@ -1,0 +1,408 @@
+---
+title: "Homework, Settimana 3 — SOLUZIONI"
+subtitle: "Distribuzioni predittive a priori e a posteriori"
+author: "Corrado Caudek"
+date: today
+date-format: "DD MMMM YYYY"
+lang: it
+format: 
+  html:
+    code-fold: false
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+execute:
+  echo: true
+  warning: false
+  message: false
+editor: source
+---
+
+```{r}
+#| output: false
+library(tidyverse)
+library(patchwork)
+set.seed(2026)
+
+# Parametri globali condivisi tra tutti i quesiti
+a_prior  <- 6
+b_prior  <- 4
+n_nuovi  <- 20
+n_sim    <- 10000
+
+# Distribuzione predittiva a priori (usata in Problema 1)
+theta_prior  <- rbeta(n_sim, a_prior, b_prior)
+y_prior_pred <- rbinom(n_sim, size = n_nuovi, prob = theta_prior)
+
+# Dati osservati e posteriore (usati in Problema 2)
+n_obs    <- 30
+k_obs    <- 21
+a_post   <- a_prior + k_obs
+b_post   <- b_prior + (n_obs - k_obs)
+theta_post   <- rbeta(n_sim, a_post, b_post)
+y_post_pred  <- rbinom(n_sim, size = n_nuovi, prob = theta_post)
+```
+
+---
+
+# Problema 1 — La distribuzione predittiva *a priori*
+
+## Quesito 1A — Esplora la distribuzione predittiva a priori {.unnumbered}
+
+### Codice completo {.unnumbered}
+
+I tre `___` da completare erano:
+
+- `data.frame(successi = y_prior_pred)` — la variabile da visualizzare;
+- `binwidth = 1` — un intero per step, adatto a dati discreti;
+- `mean(y_prior_pred)` — la media come riferimento verticale.
+
+```{r}
+df_prior_pred <- data.frame(successi = y_prior_pred)
+
+ggplot(df_prior_pred, aes(x = successi)) +
+  geom_histogram(binwidth = 1, fill = "steelblue", color = "white", alpha = 0.8) +
+  geom_vline(xintercept = mean(y_prior_pred),
+             color = "red", linetype = "dashed", linewidth = 1) +
+  labs(
+    title = "Distribuzione predittiva a priori",
+    subtitle = "Numero atteso di successi su 20 pazienti (prima di osservare dati)",
+    x = "Numero di successi",
+    y = "Frequenza nelle simulazioni"
+  ) +
+  theme_minimal()
+```
+
+### Media e intervallo predittivo al 90% {.unnumbered}
+
+```{r}
+media_prior_pred <- mean(y_prior_pred)
+cat("Media predittiva a priori:", round(media_prior_pred, 1), "\n")
+
+intervallo_90 <- quantile(y_prior_pred, probs = c(0.05, 0.95))
+cat("Intervallo predittivo al 90%:", intervallo_90, "\n")
+```
+
+**Interpretazione.** La distribuzione predittiva a priori ha media circa `r round(mean(y_prior_pred), 1)` successi su 20. Questo è coerente con la media del prior Beta(6, 4): $6/(6+4) = 0.60$, e $0.60 \times 20 = 12$.
+
+L'intervallo al 90% si estende da `r as.integer(quantile(y_prior_pred, 0.05))` a `r as.integer(quantile(y_prior_pred, 0.95))` successi: un range ampio, che rispecchia l'incertezza considerevole codificata nel prior. *Prima* di osservare dati, i risultati possibili variano notevolmente.
+
+---
+
+## Quesito 1B — Confronta prior e predittiva a priori {.unnumbered}
+
+### Codice completo {.unnumbered}
+
+I `___` erano i valori di `binwidth`: `0.02` per $\theta$ (variabile continua in [0,1]) e `1` per $y$ (variabile discreta in [0,20]).
+
+```{r}
+# Grafico 1: il prior su theta
+df_theta <- data.frame(theta = theta_prior)
+p1 <- ggplot(df_theta, aes(x = theta)) +
+  geom_histogram(binwidth = 0.02, fill = "coral", color = "white", alpha = 0.8) +
+  geom_vline(xintercept = a_prior / (a_prior + b_prior),
+             color = "darkred", linetype = "dashed") +
+  labs(title = "Prior su θ", x = "θ (probabilità di successo)", y = "Frequenza") +
+  theme_minimal()
+
+# Grafico 2: la distribuzione predittiva a priori su y
+df_y <- data.frame(successi = y_prior_pred)
+p2 <- ggplot(df_y, aes(x = successi)) +
+  geom_histogram(binwidth = 1, fill = "steelblue", color = "white", alpha = 0.8) +
+  geom_vline(xintercept = mean(y_prior_pred),
+             color = "navy", linetype = "dashed") +
+  labs(title = "Predittiva a priori su y", x = "Numero di successi su 20", y = "Frequenza") +
+  theme_minimal()
+
+p1 + p2
+```
+
+### Risposte alle domande {.unnumbered}
+
+**1. Quale variabile descrive ciascun grafico?**
+
+Il prior (grafico a sinistra) descrive $\theta$, il parametro latente: la probabilità di successo del trattamento, che non è mai direttamente osservabile. La scala è continua tra 0 e 1. La distribuzione predittiva a priori (grafico a destra) descrive $y$, il numero di successi in un campione futuro di 20 pazienti: una quantità discreta, concreta, che sarà direttamente osservabile. Il passaggio dal prior alla predittiva è il passaggio dal mondo dei parametri al mondo dei dati.
+
+**2. Come cambierebbe la predittiva a priori con un prior più stretto?**
+
+Un prior più stretto come Beta(20, 13) ha la stessa media (0.60) ma esprime molta meno incertezza su $\theta$: quasi tutti i campioni di $\theta$ cadrebbero vicino a 0.60. Di conseguenza, la distribuzione predittiva a priori sarebbe anch'essa più concentrata attorno a 12 successi, con code molto meno pronunciate. Il range plausibile si ridurrebbe visibilmente. Questo mostra come la forma del prior si "propaghi" nelle previsioni sui dati.
+
+---
+
+## Quesito 1C — Controllo di plausibilità del prior {.unnumbered}
+
+### Codice completo {.unnumbered}
+
+I `___` erano gli operatori di confronto: `< 5`, `> 17`, e i valori degli estremi `10` e `16`.
+
+```{r}
+# Probabilità di osservare meno di 5 successi su 20
+prob_meno_5 <- mean(y_prior_pred < 5)
+cat("P(y < 5) =", round(prob_meno_5, 3), "\n")
+
+# Probabilità di osservare più di 17 successi su 20
+prob_piu_17 <- mean(y_prior_pred > 17)
+cat("P(y > 17) =", round(prob_piu_17, 3), "\n")
+
+# Probabilità dello scenario più probabile: tra 10 e 16 successi
+prob_centrale <- mean(y_prior_pred >= 10 & y_prior_pred <= 16)
+cat("P(10 ≤ y ≤ 16) =", round(prob_centrale, 3), "\n")
+```
+
+### Interpretazione {.unnumbered}
+
+Il prior Beta(6, 4) appare ragionevole per un trattamento CBT. La probabilità di osservare meno di 5 successi su 20 è solo circa `r round(mean(y_prior_pred < 5)*100, 1)`%, un esito che il prior considera quasi impossibile: coerente con l'evidenza in letteratura che i trattamenti CBT raramente falliscono in modo così clamoroso. Analogamente, più di 17 successi su 20 (≥85%) è improbabile (`r round(mean(y_prior_pred > 17)*100, 1)`%), ma non impossibile. Lo scenario centrale (10–16 successi, cioè 50–80% di successo) concentra circa `r round(mean(y_prior_pred >= 10 & y_prior_pred <= 16)*100, 1)`% della probabilità predittiva, il che è coerente con le aspettative cliniche. Il prior non "forza" alcun risultato estremo pur orientandosi verso il 60% di successo.
+
+---
+
+# Problema 2 — La distribuzione predittiva *a posteriori*
+
+## Quesito 2A — Esplora la distribuzione predittiva a posteriori {.unnumbered}
+
+### Codice completo {.unnumbered}
+
+La struttura è identica al Quesito 1A: si sostituisce `y_prior_pred` con `y_post_pred`, e si aggiusta il colore.
+
+```{r}
+df_post_pred <- data.frame(successi = y_post_pred)
+
+ggplot(df_post_pred, aes(x = successi)) +
+  geom_histogram(binwidth = 1, fill = "darkgreen", color = "white", alpha = 0.8) +
+  geom_vline(xintercept = mean(y_post_pred),
+             color = "darkred", linetype = "dashed", linewidth = 1) +
+  labs(
+    title = "Distribuzione predittiva a posteriori",
+    subtitle = "Numero atteso di successi su 20 nuovi pazienti (dopo aver osservato 21/30)",
+    x = "Numero di successi",
+    y = "Frequenza nelle simulazioni"
+  ) +
+  theme_minimal()
+```
+
+### Media e intervallo predittivo {.unnumbered}
+
+```{r}
+media_post_pred <- mean(y_post_pred)
+intervallo_post <- quantile(y_post_pred, probs = c(0.05, 0.95))
+
+cat("Media predittiva a posteriori:", round(media_post_pred, 1), "\n")
+cat("Intervallo predittivo al 90%:", intervallo_post, "\n")
+```
+
+**Confronto rapido con la predittiva a priori:**
+
+```{r}
+cat("=== Confronto predittive ===\n")
+cat("A priori  — media:", round(mean(y_prior_pred), 1),
+    "| IC 90%:", quantile(y_prior_pred, 0.05), "–", quantile(y_prior_pred, 0.95), "\n")
+cat("A posteriori — media:", round(mean(y_post_pred), 1),
+    "| IC 90%:", quantile(y_post_pred, 0.05), "–", quantile(y_post_pred, 0.95), "\n")
+```
+
+Dopo aver osservato 21 successi su 30, la media predittiva sale da `r round(mean(y_prior_pred), 1)` a `r round(mean(y_post_pred), 1)` successi su 20. I dati hanno aggiornato le aspettative verso l'alto, e la distribuzione è diventata leggermente più concentrata.
+
+---
+
+## Quesito 2B — Come i dati hanno cambiato le previsioni {.unnumbered}
+
+### Codice completo {.unnumbered}
+
+Il `___` era il valore di `alpha` per la trasparenza: `0.5` è una buona scelta per rendere visibili entrambe le distribuzioni sovrapposte.
+
+```{r}
+df_confronto <- data.frame(
+  successi      = c(y_prior_pred, y_post_pred),
+  distribuzione = c(rep("Predittiva a priori", n_sim),
+                    rep("Predittiva a posteriori", n_sim))
+)
+
+ggplot(df_confronto, aes(x = successi, fill = distribuzione)) +
+  geom_histogram(binwidth = 1, position = "identity", alpha = 0.5, color = "white") +
+  scale_fill_manual(values = c("Predittiva a priori"    = "steelblue",
+                               "Predittiva a posteriori" = "darkgreen")) +
+  geom_vline(xintercept = mean(y_prior_pred), color = "steelblue",
+             linetype = "dashed", linewidth = 0.8) +
+  geom_vline(xintercept = mean(y_post_pred), color = "darkgreen",
+             linetype = "dashed", linewidth = 0.8) +
+  labs(
+    title = "Prima e dopo: l'aggiornamento delle previsioni",
+    x = "Numero di successi su 20 pazienti",
+    y = "Frequenza nelle simulazioni",
+    fill = ""
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+```
+
+### Risposte alle domande {.unnumbered}
+
+**1. La distribuzione a posteriori è più stretta o più larga?**
+
+La distribuzione predittiva a posteriori è leggermente più stretta di quella a priori. I dati hanno ridotto l'incertezza su $\theta$: dopo 30 osservazioni, sappiamo di più su quanto vale la probabilità di successo, e questa riduzione dell'incertezza parametrica si propaga nelle previsioni. Tuttavia, la differenza non è enorme: rimane sempre una variabilità irriducibile legata al fatto che i risultati futuri dei pazienti sono intrinsecamente incerti.
+
+**2. La media è cambiata?**
+
+Sì, la media è aumentata da circa `r round(mean(y_prior_pred), 1)` a `r round(mean(y_post_pred), 1)` successi. Ha senso: abbiamo osservato una proporzione di successo (21/30 = 0.70) superiore alla media del prior (0.60). Il posteriore è un compromesso tra prior e dati, spostato nella direzione dell'evidenza empirica.
+
+**3. Differenza concettuale tra i due grafici.**
+
+La distribuzione predittiva a priori risponde alla domanda: "Cosa potremmo aspettarci *prima* di raccogliere qualsiasi dato, basandoci solo sulle conoscenze pregresse?". Quella a posteriori risponde: "Cosa dobbiamo aspettarci *ora*, dopo aver osservato 21 successi su 30?". Il secondo grafico è più informativo del primo perché incorpora l'evidenza empirica. Il confronto visivo rende evidente quanto e in quale direzione i dati abbiano aggiornato le nostre previsioni.
+
+---
+
+## Quesito 2C — Domande concrete per la clinica {.unnumbered}
+
+### Codice completo {.unnumbered}
+
+I `___` erano: `>= 15`, `< 10`, e `c(0.05, 0.95)`.
+
+```{r}
+# Domanda 1: probabilità che almeno 15 su 20 migliorino
+prob_almeno_15 <- mean(y_post_pred >= 15)
+cat("P(y ≥ 15 | dati) =", round(prob_almeno_15, 3), "\n")
+
+# Domanda 2: probabilità che meno di 10 su 20 migliorino
+prob_meno_10 <- mean(y_post_pred < 10)
+cat("P(y < 10 | dati) =", round(prob_meno_10, 3), "\n")
+
+# Domanda 3: intervallo predittivo al 90%
+intervallo_90_post <- quantile(y_post_pred, probs = c(0.05, 0.95))
+cat("Intervallo predittivo al 90%:", intervallo_90_post, "\n")
+```
+
+### Interpretazione per il responsabile clinico {.unnumbered}
+
+Sulla base dei risultati osservati con i primi 30 pazienti, le previsioni per i prossimi 20 sono incoraggianti. Ci aspettiamo in media circa `r round(mean(y_post_pred))` pazienti su 20 che mostreranno un miglioramento clinicamente significativo. C'è una probabilità del `r round(mean(y_post_pred >= 15)*100, 0)`% che almeno 15 dei 20 pazienti migliorino — un risultato molto positivo — mentre la probabilità di uno scenario sfavorevole, con meno di 10 successi, è di soli `r round(mean(y_post_pred < 10)*100, 0)`%. In nove casi su dieci, il numero di miglioramenti ricadrà tra `r as.integer(quantile(y_post_pred, 0.05))` e `r as.integer(quantile(y_post_pred, 0.95))` pazienti. Questi numeri non garantiscono il successo, ma mostrano che l'incertezza si muove all'interno di un range clinicamente accettabile.
+
+---
+
+## Quesito 2D — Il valore dei dati {.unnumbered}
+
+### Codice completo {.unnumbered}
+
+Per lo scenario ottimistico (25 successi): `a_ott = a_prior + 25`, `b_ott = b_prior + 5`.  
+Per lo scenario pessimistico (15 successi): `a_pes = a_prior + 15`, `b_pes = b_prior + 15`.
+
+```{r}
+# Scenario ottimistico: 25 successi su 30
+a_ott <- a_prior + 25
+b_ott <- b_prior + 5    # 30 - 25 = 5 fallimenti
+y_ott <- rbinom(n_sim, size = n_nuovi, prob = rbeta(n_sim, a_ott, b_ott))
+
+# Scenario pessimistico: 15 successi su 30
+a_pes <- a_prior + 15
+b_pes <- b_prior + 15   # 30 - 15 = 15 fallimenti
+y_pes <- rbinom(n_sim, size = n_nuovi, prob = rbeta(n_sim, a_pes, b_pes))
+
+# Visualizzazione dei tre scenari
+df_scenari <- data.frame(
+  successi = c(y_ott, y_post_pred, y_pes),
+  scenario = c(rep("Ottimistico (25/30)", n_sim),
+               rep("Base (21/30)",        n_sim),
+               rep("Pessimistico (15/30)", n_sim))
+)
+
+ggplot(df_scenari, aes(x = successi, fill = scenario)) +
+  geom_histogram(binwidth = 1, position = "identity", alpha = 0.5, color = "white") +
+  scale_fill_manual(values = c("Ottimistico (25/30)"  = "forestgreen",
+                               "Base (21/30)"          = "steelblue",
+                               "Pessimistico (15/30)"  = "tomato")) +
+  geom_vline(xintercept = mean(y_ott),       color = "forestgreen", linetype = "dashed") +
+  geom_vline(xintercept = mean(y_post_pred), color = "steelblue",   linetype = "dashed") +
+  geom_vline(xintercept = mean(y_pes),       color = "tomato",      linetype = "dashed") +
+  labs(
+    title = "Come i dati osservati cambiano le previsioni future",
+    x = "Numero di successi su 20 nuovi pazienti",
+    y = "Frequenza nelle simulazioni",
+    fill = "Scenario"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+```
+
+```{r}
+# Riepilogo numerico dei tre scenari
+cat("Scenario ottimistico (25/30)  — media:", round(mean(y_ott), 1),
+    "| IC 90%:", quantile(y_ott, 0.05), "–", quantile(y_ott, 0.95), "\n")
+cat("Scenario base (21/30)         — media:", round(mean(y_post_pred), 1),
+    "| IC 90%:", quantile(y_post_pred, 0.05), "–", quantile(y_post_pred, 0.95), "\n")
+cat("Scenario pessimistico (15/30) — media:", round(mean(y_pes), 1),
+    "| IC 90%:", quantile(y_pes, 0.05), "–", quantile(y_pes, 0.95), "\n")
+```
+
+### Risposte alle domande {.unnumbered}
+
+**1. Le tre distribuzioni si sovrappongono molto o poco?**
+
+Le tre distribuzioni sono chiaramente distinte, con medie che si spostano visibilmente a seconda dei dati osservati. Lo scenario ottimistico produce previsioni concentrate attorno a `r round(mean(y_ott), 1)` successi, quello pessimistico attorno a `r round(mean(y_pes), 1)`. Tuttavia, le code delle distribuzioni si sovrappongono parzialmente, a indicare che anche con 30 osservazioni rimane una certa incertezza. I dati contano: diversi risultati osservati portano a previsioni future genuinamente diverse.
+
+**2. Con 30 osservazioni, i dati "convincono" molto il modello?**
+
+Con 30 osservazioni il modello è già abbastanza informato, ma le distribuzioni predittive restano piuttosto ampie (range di circa 8–10 unità per l'intervallo al 90%). Con 100 pazienti trattati il posteriore sarebbe molto più concentrato attorno al vero $\theta$, e le distribuzioni predittive si "stringerebbero" attorno alla media, riducendo la sovrapposizione tra scenari diversi. Questo mostra come l'incertezza predittiva diminuisca progressivamente con l'accumulo di evidenza.
+
+---
+
+# Problema 3 — Riflessione concettuale
+
+## Quesito 3A — Due distribuzioni, due domande {.unnumbered}
+
+La distribuzione predittiva a priori risponde alla domanda: *"Cosa potremmo ragionevolmente osservare, prima ancora di raccogliere dati, date le nostre conoscenze pregresse?"* È utile nella fase di pianificazione della ricerca: permette di verificare che il prior scelto sia sensato, generando previsioni concrete che il ricercatore può confrontare con la propria esperienza clinica. Se la distribuzione predittiva a priori producesse, per esempio, una probabilità non trascurabile di 0 o 20 successi su 20, ciò segnalerebbe un prior mal calibrato.
+
+La distribuzione predittiva a posteriori risponde alla domanda: *"Cosa dobbiamo aspettarci, data l'evidenza raccolta?"* È lo strumento per fare previsioni operative sui pazienti futuri, tenendo conto di ciò che abbiamo imparato.
+
+Un clinico trova entrambe utili: la prima per assicurarsi di partire da assunzioni ragionevoli (e comunicarle trasparentemente), la seconda per prendere decisioni informate durante o dopo lo studio.
+
+---
+
+## Quesito 3B — Il parametro invisibile e i dati visibili {.unnumbered}
+
+Il parametro $\theta$ è una quantità astratta: rappresenta la "vera" probabilità di successo del trattamento nella popolazione, qualcosa che non potremo mai misurare direttamente ma solo stimare. Dire che "θ è circa 0.67" è un'affermazione su una costruzione teorica. Nella pratica clinica e amministrativa, invece, le decisioni si prendono su basi concrete: quanti pazienti si prevede che miglioreranno il prossimo mese? Quanti posti letto saranno necessari? La distribuzione predittiva traduce stime astratte su $\theta$ in previsioni su quantità osservabili e comunicabili.
+
+Questo ha anche un vantaggio epistemico: le previsioni su dati futuri sono *verificabili*. Se il modello dice che con il 90% di probabilità osserveremo tra 13 e 18 successi, e poi osserviamo 7, questo è un segnale diretto che il modello — o il prior — è inadeguato. La traduzione dal parametro ai dati rende i modelli bayesiani falsificabili in senso pratico.
+
+---
+
+## Quesito 3C — Incertezza parametrica e incertezza predittiva {.unnumbered}
+
+L'intervallo predittivo per $y$ è necessariamente più ampio dell'intervallo di credibilità per $\theta$ (riscalato) perché nella distribuzione predittiva a posteriori si sommano **due fonti di incertezza distinte**:
+
+1. **Incertezza parametrica:** non sappiamo esattamente quanto vale $\theta$. Anche dopo aver osservato 21 successi su 30, la distribuzione a posteriori Beta(27, 13) ha una deviazione standard di circa `r round(sqrt(a_post * b_post / ((a_post + b_post)^2 * (a_post + b_post + 1))), 3)`. Questa incertezza si propaga nelle previsioni.
+
+2. **Incertezza stocastica (o campionaria):** *anche se conoscessimo con certezza assoluta il valore di $\theta$*, i risultati di 20 pazienti futuri sarebbero comunque variabili. Ogni paziente è un evento Bernoulliano con esito aleatorio. Con $\theta = 0.67$ e $n = 20$, la deviazione standard del numero di successi è $\sqrt{20 \times 0.67 \times 0.33} \approx 2.1$ — pura variabilità campionaria.
+
+```{r}
+# Illustrazione numerica delle due fonti di incertezza
+
+# Incertezza parametrica: SD del posteriore su theta
+sd_theta_post <- sqrt(a_post * b_post / ((a_post + b_post)^2 * (a_post + b_post + 1)))
+cat("SD del posteriore su θ:", round(sd_theta_post, 4), "\n")
+
+# Incertezza stocastica: SD della binomiale con theta fisso alla media posteriore
+theta_media <- a_post / (a_post + b_post)
+sd_binom <- sqrt(n_nuovi * theta_media * (1 - theta_media))
+cat("SD stocastica (binomiale con θ fisso):", round(sd_binom, 2), "successi\n")
+
+# Incertezza predittiva totale: SD della distribuzione predittiva a posteriori
+sd_pred <- sd(y_post_pred)
+cat("SD della predittiva a posteriori:", round(sd_pred, 2), "successi\n")
+```
+
+La distribuzione predittiva a posteriori combina entrambe le fonti: campiona prima un valore di $\theta$ dal posteriore (incertezza parametrica), poi simula il numero di successi da una Binomiale con quel $\theta$ (incertezza stocastica). La varianza totale predittiva è — in modo approssimato — la somma delle due varianze. Ecco perché l'intervallo predittivo è più ampio: anche se "sappiamo quasi tutto" su $\theta$, i dati futuri rimarranno sempre intrinsecamente variabili.
+
+---
+
+# Nota didattica
+
+Le risposte in prosa ai quesiti interpretativi sono proposte a titolo esemplificativo. Gli studenti possono esprimere gli stessi concetti con formulazioni diverse, purché i punti chiave siano presenti:
+
+- **1A:** media ≈ 12, intervallo ampio (~6–18).
+- **1B:** prior su θ (continuo, invisibile) vs. predittiva su y (discreto, osservabile); prior più stretto → predittiva più stretta.
+- **1C:** prior ragionevole, scenari estremi rari ma non impossibili.
+- **2A:** media ≈ 13–14, intervallo più stretto del 1A.
+- **2B:** predittiva a posteriori più concentrata e spostata verso valori più alti rispetto a quella a priori.
+- **2C:** probabilità operative calcolate correttamente e interpretate in linguaggio accessibile.
+- **2D:** tre distribuzioni distinte ma con code sovrapposte; 30 osservazioni informano ma non eliminano l'incertezza.
+- **3A:** prior predittiva = pianificazione; posteriore predittiva = decisione informata dall'evidenza.
+- **3B:** θ invisibile vs. y verificabile; previsioni su y sono comunicabili e falsificabili.
+- **3C:** due fonti: incertezza parametrica (su θ) + incertezza stocastica (variabilità intrinseca dei dati futuri).

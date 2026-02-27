@@ -1,0 +1,410 @@
+---
+title: "HOMEWORK 04"
+subtitle: "PSICOMETRIA 2025-2026"
+author: "Corrado Caudek"
+lang: it
+format: 
+  html:
+    code-fold: false
+    toc: true
+    toc-depth: 3
+    number-sections: false
+editor: source
+date: today
+---
+
+# Homework
+
+**Che cos'è questo homework?** Nell'HW3 hai imparato a ragionare con le 
+probabilità e a usare il teorema di Bayes. Ora facciamo il passo successivo: 
+le **distribuzioni di probabilità**. Una distribuzione è un "modello" che 
+descrive come si distribuisce l'incertezza — quali valori sono più probabili, 
+quali meno, e con quale forma.
+
+In psicologia usiamo continuamente distribuzioni: la Binomiale per contare 
+"successi" (quanti pazienti migliorano?), la Normale per variabili continue 
+(punteggi QI, tempi di reazione), la Beta per modellare credenze 
+probabilistiche. Questo homework ti guida a **capirle dall'interno**, 
+giocandoci in R.
+
+**Quando scade?** L'homework scade **DOMENICA 19 APRILE 2026** alle ore 23:59.
+
+**Dove consegno?** Carica il tuo homework al link su Moodle. Nomina il file:
+`COGNOME_NOME_HW4.html` (o `.pdf`).
+
+**Materiale propedeutico.** Assicurati di aver letto i capitoli sulle 
+distribuzioni nel sito companion
+[La probabilità](https://ccaudek.github.io/utet-prob/).
+
+::: {.callout-tip}
+## Il filo conduttore
+Ogni distribuzione che incontrerai ha una storia: nasce da una situazione 
+concreta. La Bernoulli da una prova sì/no, la Binomiale dal conteggio di 
+successi, la Normale dalla somma di tante piccole influenze. Se capisci la 
+storia, la formula diventa naturale.
+:::
+
+
+# La distribuzione Bernoulli e Binomiale
+
+## Esercizio 1a — Bernoulli: la distribuzione più semplice (ragionamento)
+
+Una variabile casuale $X$ segue una distribuzione di Bernoulli se può assumere 
+solo due valori: 1 ("successo") o 0 ("insuccesso"), con probabilità $\theta$ 
+e $1-\theta$ rispettivamente.
+
+Un terapeuta stima che un particolare intervento ha il 70% di probabilità 
+di portare a un miglioramento clinicamente significativo ($\theta = 0.70$).
+
+1. Se $X = 1$ indica miglioramento e $X = 0$ indica non-miglioramento, 
+   qual è $P(X = 1)$? E $P(X = 0)$?
+2. Calcola il **valore atteso**: $E(X) = 1 \cdot \theta + 0 \cdot (1-\theta) = ?$
+3. Calcola la **varianza**: $\text{Var}(X) = \theta(1-\theta) = ?$
+
+*(Non servono formule complicate: basta sostituire $\theta = 0.70$.)*
+
+
+## Esercizio 1b — Dalla Bernoulli alla Binomiale (ragionamento)
+
+Se ripetiamo la prova Bernoulli $n$ volte in modo indipendente e contiamo il 
+numero totale di successi, otteniamo una distribuzione **Binomiale**.
+
+$$Y \sim \text{Binomiale}(n, \theta)$$
+
+La probabilità di ottenere esattamente $k$ successi su $n$ prove è:
+
+$$P(Y = k) = \binom{n}{k} \theta^k (1-\theta)^{n-k}$$
+
+Il terapeuta tratta 10 pazienti ($n = 10$, $\theta = 0.70$).
+
+1. Qual è il **numero atteso** di miglioramenti? $E(Y) = n\theta = ?$
+2. Qual è la **deviazione standard** del numero di miglioramenti? 
+   $\text{SD}(Y) = \sqrt{n\theta(1-\theta)} = ?$
+3. Intuitivamente: ti aspetti che tutti e 10 migliorino? Che nessuno migliori? 
+   O qualcosa nel mezzo?
+
+
+## Esercizio 1c — Visualizzare la Binomiale in R
+
+Completa il codice per disegnare la distribuzione:
+
+```r
+n <- 10
+theta <- 0.70
+
+# Calcola P(Y = k) per k = 0, 1, ..., 10
+k_valori <- 0:n
+probabilita <- dbinom(k_valori, size = ___, prob = ___)
+
+# Grafico a barre
+barplot(probabilita, names.arg = k_valori,
+        col = "steelblue", border = "white",
+        xlab = "Numero di miglioramenti (k)",
+        ylab = "P(Y = k)",
+        main = "Distribuzione Binomiale (n = 10, θ = 0.70)")
+```
+
+*(Suggerimento: `dbinom()` calcola la probabilità di ciascun valore. 
+Metti `n` e `theta` al posto degli `___`.)*
+
+**Domanda:** Dove si concentra la massa della distribuzione? Il grafico è 
+simmetrico? Se $\theta$ fosse 0.50, cosa cambierebbe?
+
+
+## Esercizio 1d — Simulare e contare
+
+```r
+set.seed(42)
+n_simulazioni <- 10000
+successi <- rbinom(n_simulazioni, size = 10, prob = 0.70)
+
+# Confronta
+cat("Media teorica:  ", 10 * 0.70, "\n")
+cat("Media simulata: ", mean(successi), "\n")
+cat("SD teorica:     ", sqrt(10 * 0.70 * 0.30), "\n")
+cat("SD simulata:    ", sd(successi), "\n")
+
+# Istogramma delle simulazioni
+hist(successi, breaks = seq(-0.5, 10.5, 1), 
+     freq = FALSE, col = "lightblue", border = "white",
+     xlab = "Numero di miglioramenti",
+     main = "10.000 simulazioni: Binomiale(10, 0.70)")
+```
+
+**Domanda:** L'istogramma assomiglia al grafico a barre dell'Esercizio 1c?
+
+
+# La distribuzione di Poisson
+
+## Esercizio 2a — Contare eventi rari (ragionamento)
+
+La distribuzione di Poisson si usa per contare **quante volte** un evento 
+(raro) si verifica in un intervallo di tempo o spazio. Il parametro $\lambda$ 
+è il numero medio di eventi.
+
+In un centro di ascolto psicologico universitario si ricevono in media 
+$\lambda = 3$ chiamate di crisi al giorno.
+
+1. Qual è il valore atteso delle chiamate? $E(Y) = \lambda = ?$
+2. Qual è la deviazione standard? $\text{SD}(Y) = \sqrt{\lambda} = ?$
+3. Intuitivamente: è più probabile ricevere 3 chiamate o 10 chiamate in un 
+   giorno?
+
+
+## Esercizio 2b — Calcoli con la Poisson
+
+La formula è: $P(Y = k) = \frac{\lambda^k e^{-\lambda}}{k!}$
+
+Calcola *a mano* (o con la calcolatrice):
+
+1. $P(Y = 0)$ = probabilità di zero chiamate in un giorno
+2. $P(Y = 3)$ = probabilità di esattamente 3 chiamate
+
+*(Suggerimento: $e^{-3} \approx 0.0498$, $3! = 6$.)*
+
+Poi verifica in R:
+
+```r
+cat("P(Y = 0):", dpois(0, lambda = 3), "\n")
+cat("P(Y = 3):", dpois(3, lambda = 3), "\n")
+```
+
+
+## Esercizio 2c — Visualizzare e confrontare
+
+```r
+par(mfrow = c(1, 3))  # tre grafici affiancati
+
+for (lam in c(1, 3, 10)) {
+  k <- 0:20
+  p <- dpois(k, lambda = lam)
+  barplot(p, names.arg = k, col = "coral", border = "white",
+          main = paste("Poisson(λ =", lam, ")"),
+          xlab = "k", ylab = "P(Y = k)")
+}
+
+par(mfrow = c(1, 1))  # ripristina
+```
+
+**Domanda:** Come cambia la forma della distribuzione al crescere di 
+$\lambda$? Per $\lambda = 10$ assomiglia a qualcosa che hai già visto?
+
+
+# La distribuzione Normale
+
+## Esercizio 3a — La "campana" (ragionamento)
+
+La distribuzione Normale (o Gaussiana) è la distribuzione più importante 
+in statistica. Ha due parametri: la media $\mu$ (dove è centrata) e la 
+deviazione standard $\sigma$ (quanto è larga).
+
+$$X \sim \text{Normale}(\mu, \sigma)$$
+
+I punteggi del QI nella popolazione seguono (per convenzione) una distribuzione 
+$\text{Normale}(100, 15)$.
+
+1. Qual è il valore più probabile?
+2. Circa il 68% dei punteggi cade nell'intervallo $[\mu - \sigma, \mu + \sigma]$. 
+   Qual è questo intervallo per il QI?
+3. Circa il 95% dei punteggi cade nell'intervallo $[\mu - 2\sigma, \mu + 2\sigma]$. 
+   Qual è questo intervallo?
+4. Un QI di 145 è a quante deviazioni standard dalla media? 
+   (Calcola: $(145 - 100) / 15 = ?$) Questo numero si chiama **z-score**.
+
+
+## Esercizio 3b — Calcolare probabilità con la Normale in R
+
+In R, `pnorm()` calcola la probabilità cumulativa (l'area sotto la curva 
+a sinistra di un certo valore).
+
+```r
+# Qual è la probabilità che un QI sia minore di 85?
+pnorm(85, mean = 100, sd = 15)
+
+# Qual è la probabilità che un QI sia maggiore di 130?
+1 - pnorm(130, mean = 100, sd = 15)
+
+# Qual è la probabilità che un QI sia tra 85 e 115?
+pnorm(115, mean = 100, sd = 15) - pnorm(85, mean = 100, sd = 15)
+```
+
+Esegui il codice e rispondi:
+
+1. Che percentuale della popolazione ha un QI sotto 85?
+2. Che percentuale ha un QI sopra 130?
+3. Che percentuale ha un QI tra 85 e 115?
+
+
+## Esercizio 3c — Visualizzare la Normale
+
+```r
+x <- seq(40, 160, length.out = 300)
+y <- dnorm(x, mean = 100, sd = 15)
+
+plot(x, y, type = "l", col = "steelblue", lwd = 2,
+     xlab = "QI", ylab = "Densità",
+     main = "Distribuzione Normale del QI: N(100, 15)")
+
+# Colora l'area tra 85 e 115
+x_fill <- seq(85, 115, length.out = 100)
+y_fill <- dnorm(x_fill, mean = 100, sd = 15)
+polygon(c(85, x_fill, 115), c(0, y_fill, 0), 
+        col = rgb(0.3, 0.5, 0.8, 0.3), border = NA)
+text(100, 0.01, "≈ 68%", cex = 1.2)
+```
+
+::: {.callout-note}
+## Densità, non probabilità!
+L'asse y mostra la **densità**, non la probabilità. Per le distribuzioni 
+continue, la probabilità è data dall'**area** sotto la curva, non dall'altezza. 
+La probabilità che $X$ assuma un valore *esatto* (es. QI = 100.000...) è 
+sempre zero — ha senso solo parlare di intervalli.
+:::
+
+
+## Esercizio 3d — Il parametro $\sigma$ cambia la forma
+
+Disegna tre Normali con la stessa media ma diversa SD:
+
+```r
+x <- seq(40, 160, length.out = 300)
+
+plot(x, dnorm(x, 100, 10), type = "l", col = "red", lwd = 2,
+     xlab = "Valore", ylab = "Densità", ylim = c(0, 0.05),
+     main = "Effetto di σ sulla distribuzione Normale")
+lines(x, dnorm(x, 100, 15), col = "steelblue", lwd = 2)
+lines(x, dnorm(x, 100, 25), col = "seagreen", lwd = 2)
+legend("topright", 
+       legend = c("σ = 10", "σ = 15", "σ = 25"),
+       col = c("red", "steelblue", "seagreen"), lwd = 2)
+```
+
+**Domanda:** Quando $\sigma$ è piccola, la curva è stretta o larga? 
+Cosa significa questo in termini di **incertezza**?
+
+
+# La distribuzione Beta: modellare credenze
+
+## Esercizio 4a — La Beta come distribuzione di probabilità (ragionamento)
+
+La distribuzione Beta è definita sull'intervallo $[0, 1]$ ed è perfetta per 
+modellare l'incertezza su una **proporzione** o una **probabilità**.
+
+Ha due parametri: $\alpha$ e $\beta$. La media della Beta è 
+$\frac{\alpha}{\alpha + \beta}$.
+
+Immagina di essere un ricercatore che vuole stimare la probabilità $\theta$ 
+che un intervento psicologico sia efficace. Prima di raccogliere dati, puoi 
+esprimere le tue credenze a priori con una distribuzione Beta.
+
+1. Se non hai idea se l'intervento funzioni, potresti usare $\text{Beta}(1, 1)$. 
+   Qual è la media? $(1/(1+1) = ?)$ Che forma pensi abbia questa distribuzione?
+2. Se pensi che l'intervento probabilmente funzioni (diciamo con probabilità 
+   circa 0.70), potresti usare $\text{Beta}(7, 3)$. Qual è la media? 
+   $(7/(7+3) = ?)$
+3. Se sei molto sicuro che funzioni (circa 0.90), potresti usare 
+   $\text{Beta}(90, 10)$. Qual è la media? E sarà più larga o più stretta 
+   delle precedenti?
+
+
+## Esercizio 4b — Visualizzare diverse Beta
+
+```r
+x <- seq(0, 1, length.out = 300)
+
+plot(x, dbeta(x, 1, 1), type = "l", col = "gray40", lwd = 2,
+     xlab = "θ (probabilità di efficacia)",
+     ylab = "Densità",
+     ylim = c(0, 10),
+     main = "Distribuzioni Beta con diverse credenze a priori")
+lines(x, dbeta(x, 7, 3), col = "steelblue", lwd = 2)
+lines(x, dbeta(x, 90, 10), col = "coral", lwd = 2)
+legend("topleft",
+       legend = c("Beta(1,1) — nessuna idea",
+                  "Beta(7,3) — probabilmente funziona",
+                  "Beta(90,10) — quasi certo che funzioni"),
+       col = c("gray40", "steelblue", "coral"), lwd = 2)
+```
+
+**Domanda:** Quale distribuzione esprime più incertezza? Quale esprime più 
+certezza? Come lo capisci dal grafico?
+
+
+## Esercizio 4c — La Beta come prior bayesiano (anteprima!)
+
+Questo esercizio è un'**anteprima** di quello che faremo nella parte 
+bayesiana del corso. Non preoccuparti se non capisci tutto: è un assaggio.
+
+Supponi di avere una credenza a priori $\text{Beta}(2, 2)$ (pensi che 
+$\theta \approx 0.50$, con molta incertezza). Poi osservi 8 successi su 10 
+prove. La distribuzione a posteriori è $\text{Beta}(2 + 8, 2 + 2) = \text{Beta}(10, 4)$.
+
+```r
+x <- seq(0, 1, length.out = 300)
+
+plot(x, dbeta(x, 2, 2), type = "l", col = "gray50", lwd = 2, lty = 2,
+     xlab = "θ", ylab = "Densità", ylim = c(0, 4),
+     main = "Aggiornamento bayesiano: da prior a posterior")
+lines(x, dbeta(x, 10, 4), col = "steelblue", lwd = 2)
+legend("topleft",
+       legend = c("Prior: Beta(2, 2)", "Posterior: Beta(10, 4)"),
+       col = c("gray50", "steelblue"), lty = c(2, 1), lwd = 2)
+abline(v = 8/10, col = "red", lty = 3)
+text(0.85, 3.5, "dati: 8/10", col = "red", cex = 0.9)
+```
+
+**Domanda:** La distribuzione a posteriori (blu) si è spostata verso i dati 
+(8/10 = 0.80) rispetto alla prior (grigia, centrata su 0.50). Perché? 
+Scrivi 2–3 frasi in parole tue.
+
+
+# Riepilogo: un confronto visivo
+
+## Esercizio 5 — Tutte insieme
+
+```r
+par(mfrow = c(2, 2))
+
+# Binomiale
+barplot(dbinom(0:20, 20, 0.3), names.arg = 0:20,
+        col = "steelblue", border = "white",
+        main = "Binomiale(20, 0.3)", xlab = "k", ylab = "P(Y = k)")
+
+# Poisson
+barplot(dpois(0:15, 5), names.arg = 0:15,
+        col = "coral", border = "white",
+        main = "Poisson(5)", xlab = "k", ylab = "P(Y = k)")
+
+# Normale
+curve(dnorm(x, 0, 1), from = -4, to = 4, col = "seagreen", lwd = 2,
+      main = "Normale(0, 1)", xlab = "x", ylab = "Densità")
+
+# Beta
+curve(dbeta(x, 5, 2), from = 0, to = 1, col = "purple", lwd = 2,
+      main = "Beta(5, 2)", xlab = "θ", ylab = "Densità")
+
+par(mfrow = c(1, 1))
+```
+
+Per ciascuna delle 4 distribuzioni, scrivi **una frase** che dica: "Questa 
+distribuzione si usa quando..." (il contesto, non la formula!).
+
+
+# Criteri di valutazione
+
+| Livello | Cosa significa |
+|---------|----------------|
+| **Sufficiente** | I calcoli a mano sono presenti; i grafici compaiono (anche se con errori minori); le interpretazioni sono abbozzate. |
+| **Buono** | Calcoli corretti, codice funzionante, interpretazioni chiare. |
+| **Ottimo** | Tutto quanto sopra, più riflessioni approfondite (es. l'esercizio 4c sulla Beta come prior). |
+
+::: {.callout-tip}
+## Se ti blocchi...
+1. Rileggi il sito companion [La probabilità](https://ccaudek.github.io/utet-prob/).
+2. Ricorda: `dbinom`, `dpois`, `dnorm`, `dbeta` calcolano la densità/probabilità; 
+   `rbinom`, `rpois`, `rnorm`, `rbeta` simulano valori casuali.
+3. Ogni distribuzione ha una "storia": Binomiale = contare successi, 
+   Poisson = contare eventi rari, Normale = variabili continue, Beta = probabilità.
+:::
+
+Buon lavoro!

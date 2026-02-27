@@ -148,10 +148,10 @@ La domanda è:
 . . .
 
 * I dati sono gli stessi, ma cambiano:
-  * criteri di esclusione dei valori anomali
-  * trasformazioni delle variabili
-  * specificazioni del modello statistico
-  * metodi di stima
+  * criteri di esclusione dei valori anomali,
+  * trasformazioni delle variabili,
+  * specificazioni del modello statistico,
+  * metodi di stima.
 
 ---
 
@@ -201,7 +201,7 @@ Il problema del "garden of forking paths" si intreccia con l'uso dei valori-$p$:
 ::: {.fragment}
 * se provo **diverse specificazioni** fino a ottenere *p < .05*, 
 * sto di fatto **p-hacking** — anche se non intenzionalmente,
-* perché sto selezionando il sentiero che porta al risultato "significativo".
+* perché sto selezionando il "sentiero" che porta al risultato "significativo".
 :::
 
 ::: {.fragment}
@@ -299,6 +299,65 @@ Il progetto più emblematico della crisi:
 
 ---
 
+```{r}
+#| echo: false
+
+# Carica le librerie necessarie
+library(ggplot2)
+library(MASS)  # per mvrnorm
+
+# Imposta il seed per riproducibilità
+set.seed(1234)
+
+# Numero di osservazioni
+n <- 100
+
+# ---- Scatterplot con correlazione r = 1 ----
+# Genera x e y perfettamente correlati (y = x + eventuale costante)
+x1 <- rnorm(n, mean = 10, sd = 2)
+y1 <- x1  # correlazione esatta 1
+# Oppure, per aggiungere una leggera variazione di scala: y1 <- 2 * x1 + 1 (comunque r=1)
+
+df1 <- data.frame(originale = x1, replicato = y1)
+
+p1 <- ggplot(df1, aes(x = originale, y = replicato)) +
+  geom_point(color = "steelblue", size = 2, alpha = 0.7) +
+  geom_smooth(method = "lm", se = FALSE, color = "darkred", linetype = "dashed") +
+  labs(title = "Correlazione r = 1",
+       x = "Effetto originale",
+       y = "Effetto replicato") +
+  theme_minimal()
+
+# ---- Scatterplot con correlazione r = 0.5 ----
+# Genera dati da una normale bivariata con correlazione 0.5
+mu <- c(10, 10)                # medie
+sigma <- matrix(c(4, 2,        # varianza x = 4, covarianza = rho * sd(x)*sd(y) = 0.5*2*2 = 2
+                  2, 4), nrow = 2)  # varianza y = 4
+dati <- mvrnorm(n, mu = mu, Sigma = sigma)
+colnames(dati) <- c("originale", "replicato")
+df2 <- as.data.frame(dati)
+
+p2 <- ggplot(df2, aes(x = originale, y = replicato)) +
+  geom_point(color = "darkgreen", size = 2, alpha = 0.7) +
+  geom_smooth(method = "lm", se = FALSE, color = "darkred", linetype = "dashed") +
+  labs(title = "Correlazione r = 0.5",
+       x = "Effetto originale",
+       y = "Effetto replicato") +
+  theme_minimal()
+
+# Visualizza i due grafici affiancati (opzionale)
+# Installa gridExtra se necessario: install.packages("gridExtra")
+library(gridExtra)
+grid.arrange(p1, p2, ncol = 2)
+
+# In alternativa, salva ciascun grafico separatamente:
+# ggsave("scatter_r1.png", p1, width = 5, height = 4)
+# ggsave("scatter_r05.png", p2, width = 5, height = 4)
+```
+
+
+---
+
 ### Cosa significa questo?
 
 Non significa che "la psicologia non funziona".
@@ -359,23 +418,23 @@ Attraverso tutti questi progetti emerge un pattern coerente:
 
 ## Una crisi che va oltre la psicologia
 
-Baker (2016) — sondaggio su ~1500 scienziati di diverse discipline:
+[Baker (2016)](https://www.nature.com/articles/533452a) — sondaggio su ~1500 scienziati di diverse discipline:
 
 . . .
 
-* **~90%** ritiene che esista un problema di riproducibilità nella propria disciplina
+* **~90%** ritiene che esista un problema di riproducibilità nella propria disciplina;
 
 . . .
 
-* **>50%** lo considera un problema **grave**
+* **>50%** lo considera un problema **grave**;
 
 . . .
 
-* **>70%** ha tentato e fallito di replicare uno studio altrui
+* **>70%** ha tentato e fallito di replicare uno studio altrui;
 
 . . .
 
-* **>50%** ha fallito di replicare **i propri studi**
+* **>50%** ha fallito di replicare **i propri studi**.
 
 ---
 
@@ -400,7 +459,7 @@ Questo riconoscimento è un **segno di maturità** scientifica, non di debolezza
 
 ## 2005: Il saggio di Ioannidis
 
-John Ioannidis pubblica "*Why Most Published Research Findings Are False*".
+John Ioannidis pubblica ["*Why Most Published Research Findings Are False*"](https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020124).
 
 . . .
 
@@ -408,7 +467,7 @@ La tesi: con
 
 * **campioni piccoli**,
 * **flessibilità analitica**,
-* **uso distorto del valore$p$**,
+* **uso distorto del valore-$p$**,
 * **incentivi alla novità**,
 
 diventa **strutturalmente probabile** pubblicare falsi positivi.
@@ -444,20 +503,20 @@ Consideriamo uno studio con:
 
 ---
 
-La **probabilità positiva predittiva** (che un risultato "significativo" sia vero) è:
+La **probabilità predittiva positiva** (la probabilità che un risultato "significativo" sia vero) è:
 
 $$\text{PPV} = \frac{(1-\beta) \times R}{(1-\beta) \times R + \alpha}$$
 dove $R$ è il PPR e β è il tasso di falsi negativi.
 
 . . .
 
-In questo scenario: **PPV ≈ 0.14** — cioè l'86% dei risultati "significativi" sono falsi!
+In questo scenario: **PPV ≈ 0.14** — cioè l'86% dei risultati "significativi" sono falsi.
 
 ---
 
 ### L'impatto del paper
 
-Il paper di Ioannidis è stato **estremamente influente**:
+Il paper di Ioannidis è stato [**estremamente influente**](https://www.scopus.com/pages/publications/33846563409?origin=resultslist):
 
 ::: {.fragment}
 * ha dimostrato matematicamente perché la letteratura è distorta;
@@ -479,7 +538,7 @@ Il 2011 è stato l'**annus horribilis** della psicologia — l'anno in cui la cr
 
 ### Caso 1: Daryl Bem e la precognizione
 
-Bem pubblica su JPSP (rivista top) 9 studi che "dimostrano" la **precognizione**:
+Bem pubblica su JPSP (rivista top) 9 studi che "dimostrano" la [**precognizione**](https://www.apa.org/pubs/journals/features/psp-a0021524.pdf):
 
 ::: {.fragment}
 * gli studenti indovinano la posizione futura di immagini erotiche meglio del caso;
@@ -492,7 +551,7 @@ Bem pubblica su JPSP (rivista top) 9 studi che "dimostrano" la **precognizione**
 :::
 
 ::: {.fragment}
-**Implicazione**: se con i metodi standard posso "dimostrare" un fenomeno impossibile, c'è qualcosa di profondamente sbagliato nei metodi.
+**Implicazione**: se con i metodi standard posso "dimostrare" un fenomeno impossibile, <mark>c'è qualcosa di profondamente sbagliato nei metodi</mark>.
 :::
 
 ---
@@ -568,10 +627,10 @@ Sempre nel 2011, Simmons et al. pubblicano "*False-Positive Psychology*":
 Con pratiche **comunissime** ma problematiche:
 
 ::: {.fragment}
-1. Raccogliere dati in modo **sequenziale** e fermarsi quando p < .05.
-2. Misurare **diverse variabili dipendenti** e riportare quella che "funziona".
-3. Includere/escludere **covariate** a seconda del risultato.
-4. Decidere le **esclusioni** dopo aver visto i dati.
+1. raccogliere dati in modo **sequenziale** e fermarsi quando $p$ < .05;
+2. misurare **diverse variabili dipendenti** e riportare quella che "funziona";
+3. includere/escludere **covariate** a seconda del risultato;
+4. decidere le **esclusioni** dopo aver visto i dati.
 :::
 
 ::: {.fragment}
@@ -596,20 +655,20 @@ I ricercatori non sono "evil" — sono esseri umani che:
 
 ## 2012: John et al. — quanto sono diffuse le QRP?
 
-John et al. (2012) conducono un **sondaggio anonimo** su ricercatori di psicologia:
+[John et al. (2012)](https://journals.sagepub.com/doi/full/10.1177/0956797611430953?casa_token=unWnxj1iuUIAAAAA%3ALdJrEKNOcZwkEtfel7OROVVfpTN9oslwhOZklxd3Hxt9ByMNx92mmAIO62DQUZw5Ha42UazHt6tu) conducono un **sondaggio anonimo** su ricercatori di psicologia:
 
 ::: {.fragment}
 **Risultati scioccanti**:
 
-* **>50%** ammette di aver fatto **almeno una** QRP.
-* **35%** ha riportato solo gli studi che "hanno funzionato".
-* **22%** ha fermato la raccolta dati dopo aver ottenuto $p$ < .05.
+* **>50%** ammette di aver fatto uso di **almeno una** QRP;
+* **35%** ha riportato solo gli studi che "hanno funzionato";
+* **22%** ha concluso la raccolta dati dopo aver ottenuto $p$ < .05;
 * **63%** ha deciso di escludere dati dopo aver visto il loro impatto sui risultati.
 :::
 
 ---
 
-Le QRP non sono **eccezioni** — sono la **norma**.
+Le QRP non sono **eccezioni** — <mark>sono la **norma**</mark>.
 
 # Le cause profonde {background-color="#2c3e50" style="color: white;"}
 
@@ -648,7 +707,7 @@ Questo crea una pressione enorme sui ricercatori:
 :::
 
 ::: {.fragment}
-Questa pressione incentiva — anche inconsciamente — l'uso di QRP per "aiutare" i dati a diventare "significativi".
+[Questa pressione](https://royalsocietypublishing.org/rsos/article/3/9/160384/56494) incentiva — anche inconsciamente — l'uso di QRP per "aiutare" i dati a diventare "significativi".
 :::
 
 ---
@@ -667,24 +726,33 @@ Sono soggetti a:
 
 ---
 
-### Il problema del "story-telling"
+### Il problema dello *“story-telling”* scientifico
 
-Gli articoli scientifici raccontano una **storia lineare**:
+Gli articoli scientifici tendono a presentare la ricerca come una **narrazione lineare e coerente**:
 
 ::: {.fragment}
-> "Ipotizzavamo che X causasse Y. Abbiamo testato questa ipotesi. I dati la confermano."
+
+> "Abbiamo formulato l’ipotesi che $X$ influenzi $Y$.
+> Abbiamo progettato uno studio per testarla.
+> I risultati confermano l’ipotesi."
 :::
 
-::: {.fragment}
-Ma la **realtà** della ricerca è molto più **messy**:
+---
 
-* ipotesi multiple esplorate;
-* analisi diverse provate;
-* risultati inaspettati interpretati *post hoc*.
-:::
+Tuttavia, la **pratica reale della ricerca** è molto più complessa e meno lineare:
+
+* si esplorano ipotesi alternative o concorrenti;
+* si sperimentano diverse strategie analitiche;
+* si riformulano modelli alla luce dei dati;
+* si interpretano *a posteriori* risultati inattesi.
+
+---
+
+La narrazione finale, ordinata e coerente, tende a **semplificare retrospettivamente** questo processo,
+attenuando l’incertezza, le deviazioni e le revisioni che hanno caratterizzato il percorso reale.
 
 ::: {.fragment}
-La narrazione lineare **nasconde** questa complessità — e crea l'illusione di un'evidenza più forte di quella reale.
+Il rischio è quello di produrre un’**illusione di inevitabilità** e di solidità inferenziale maggiore di quella che è effettivamente giustificata dai dati.
 :::
 
 ---
@@ -702,14 +770,14 @@ Rosenthal (1979) ha coniato questo termine:
 :::
 
 ::: {.fragment}
-Se solo gli studi con $p$ < .05 vengono pubblicati, la letteratura diventa una **selezione distorta** — non rappresenta la realtà dei fenomeni.
+Se solo gli studi con $p$ < .05 vengono pubblicati, la letteratura diventa una **selezione distorta** — ovvero, non rappresenta la realtà dei fenomeni.
 :::
 
 ---
 
 ### I numeri
 
-Franco et al. (2014) hanno analizzato studi **pre-registrati** nel *Time-sharing Experiments for the Social Sciences* (una piattaforma finanziata dalla NSF che permetteva ai ricercatori di condurre esperimenti su campioni della popolazione con pre-registrazione obbligatoria):
+[Franco et al. (2014)](https://www.science.org/doi/abs/10.1126/science.1255484) hanno analizzato studi **pre-registrati** nel *Time-sharing Experiments for the Social Sciences* (una piattaforma finanziata dalla NSF che permetteva ai ricercatori di condurre esperimenti su campioni della popolazione con pre-registrazione obbligatoria):
 
 ::: {.fragment}
 * studi con **risultati forti** → 60% probabilità di essere pubblicati;
@@ -728,7 +796,7 @@ Il bias di pubblicazione è **reale** e **sostanziale**.
 Se la letteratura pubblicata contiene principalmente **falsi positivi** e **effetti sovrastimati**:
 
 ::: {.fragment}
-* le **meta-analisi** — che dovrebbero sintetizzare l'evidenza — diventano **sintesi di artefatti**;
+* <mark>le **meta-analisi**</mark> — che dovrebbero sintetizzare l'evidenza — <mark>diventano **sintesi di artefatti**</mark>;
 * gli **effect size** medi sono **sovrastimati**;
 * le **raccomandazioni pratiche** basate su meta-analisi sono **distorte**.
 :::
@@ -754,7 +822,7 @@ Cohen (1962) raccomandava potenza ≥ 80%.
 ::: {.fragment}
 **Realtà in psicologia**:
 
-* potenza mediana in psicologia: **~35-50%** (Bakker et al., 2012; Smaldino & McElreath, 2016).
+* potenza mediana in psicologia: **~35-50%** (Bakker et al., 2012; [Smaldino & McElreath, 2016](https://royalsocietypublishing.org/rsos/article/3/9/160384/56494)).
 * cioè: anche se l'effetto esiste, abbiamo meno del 50% di probabilità di rilevarlo.
 :::
 
@@ -762,42 +830,62 @@ Cohen (1962) raccomandava potenza ≥ 80%.
 
 ### Il "winner's curse"
 
-Quando la potenza è bassa e viene pubblicato un risultato significativo, succede qualcosa di paradossale:
+Quando uno studio ha **bassa potenza statistica** ma produce un risultato significativo, emerge un paradosso:
 
 ::: {.fragment}
-> L'effetto osservato è quasi sicuramente una **sovrastima** dell'effetto reale.
+> <mark>l'effetto osservato è quasi sicuramente una **sovrastima** dell'effetto reale</mark>.
 :::
 
 ---
 
-### Perché?
+### Perché accade?
 
-* Con bassa potenza, solo gli studi in cui **il caso** ha prodotto un effetto grande diventano significativi;
-* solo questi sono pubblicati;
-* gli altri (con effetti più piccoli o nulli) rimangono nel cassetto.
+Con potenza bassa:
+
+* solo gli studi in cui la **variabilità campionaria** amplifica casualmente l’effetto riescono a superare la soglia di significatività;
+* gli studi in cui l’effetto stimato è più vicino al valore reale (o più piccolo) non risultano significativi;
+* questi ultimi hanno minori probabilità di essere pubblicati.
+
+---
+
+Il risultato è una selezione sistematica degli studi con **stime gonfiate**.
+
+. . .
+
+Non vengono pubblicati gli studi “tipici”, ma quelli “fortunati”.
+
+---
+
+### Un esempio simulato
+
+Immaginiamo che:
+
+* l’effetto vero sia **Cohen’s $d = 0.5$** (effetto medio);
+* conduciamo uno studio con **N = 20 per gruppo** (potenza ≈ 30%);
+* ripetiamo lo studio 100 volte.
+
+---
+
+### Cosa succede?
+
+* Solo circa **30 studi** produrranno $p < .05$.
+* Questi studi non avranno $d ≈ 0.5$, ma tipicamente **$d ≈ 0.8–1.0$**.
+* Gli altri 70 studi, più vicini al valore reale, non verranno pubblicati.
+* La letteratura risultante suggerirà un effetto **grande**, quando in realtà è **medio**.
+
+---
+
+### Implicazione
+
+Il *winner’s curse* non è un errore statistico, ma una conseguenza strutturale della co-presenza di:
+
+* bassa potenza,
+* soglia di significatività,
+* bias di pubblicazione.
 
 ::: {.fragment}
-Risultato: la letteratura contiene sistematicamente **stime inflazionate** degli effetti.
+La letteratura scientifica tende così a contenere effetti sistematicamente **inflazionati**, soprattutto nei primi studi su un fenomeno.
 :::
-
----
-
-### Simulazione del "winner's curse"
-
-Immaginiamo:
-
-* effetto vero: Cohen's $d$ = 0.5 (medio);
-* studio con N = 20 per gruppo (potenza ~30%);
-* replichiamo lo studio 100 volte.
-
----
-
-### Risultati
-
-* ~30 studi otterranno $p$ < .05.
-* Questi 30 studi avranno dimensioni dell'effetto medie **d ≈ 0.8-1.0**.
-* Solo questi vengono pubblicati.
-* La letteratura suggerisce un effetto grande quando è medio.
 
 ---
 

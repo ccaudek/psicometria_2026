@@ -1,0 +1,321 @@
+---
+title: "Homework 09 — SOLUZIONI"
+subtitle: "Regressione lineare: dall'approccio frequentista a quello bayesiano"
+author: "Corrado Caudek"
+date: today
+date-format: "DD MMMM YYYY"
+lang: it
+format:
+  html:
+    code-fold: false
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+execute:
+  echo: true
+  warning: false
+  message: false
+  cache: true
+editor: source
+---
+
+```{r}
+#| output: false
+library(tidyverse)
+library(brms)
+library(bayesplot)
+library(posterior)
+set.seed(2026)
+
+# Ricostruzione del dataset
+n <- 120
+ansia    <- round(rnorm(n, mean = 50, sd = 15))
+ansia    <- pmax(5, pmin(95, ansia))
+punteggio <- round(28 - 0.18 * ansia + rnorm(n, 0, 3.5))
+punteggio <- pmax(0, pmin(30, punteggio))
+dati <- tibble(ansia = ansia, punteggio = punteggio)
+```
+
+---
+
+# Problema 1 — Esplorazione e regressione frequentista
+
+## Quesito 1A — Analisi esplorativa {.unnumbered}
+
+### Codice completo {.unnumbered}
+
+I `___` erano: `ansia` (x), `punteggio` (y) e `"lm"` come metodo per `geom_smooth`.
+
+```{r}
+ggplot(dati, aes(x = ansia, y = punteggio)) +
+  geom_point(alpha = 0.5, color = "steelblue") +
+  geom_smooth(method = "lm", se = TRUE, color = "darkred") +
+  labs(
+    title = "Relazione tra ansia da test e prestazione all'esame",
+    x = "Ansia da test (0–100)",
+    y = "Punteggio esame (0–30)"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+dati |>
+  summarise(
+    media_ansia  = mean(ansia),
+    sd_ansia     = sd(ansia),
+    media_punt   = mean(punteggio),
+    sd_punt      = sd(punteggio),
+    correlazione = cor(ansia, punteggio)
+  )
+```
+
+### Interpretazione {.unnumbered}
+
+Il grafico mostra una relazione negativa moderata e sostanzialmente lineare: all'aumentare dell'ansia, il punteggio tende a diminuire. La correlazione è attorno a `r round(cor(dati$ansia, dati$punteggio), 2)`, il che indica un'associazione negativa di entità moderata. Ci aspettiamo quindi un coefficiente $\hat{\beta}$ negativo, probabilmente nell'ordine di −0.15/−0.20 per unità di ansia.
+
+---
+
+## Quesito 1B — Il modello con `lm()` {.unnumbered}
+
+```{r}
+mod_freq <- lm(punteggio ~ ansia, data = dati)
+summary(mod_freq)
+```
+
+```{r}
+confint(mod_freq, level = 0.95)
+```
+
+**Lettura dell'output:** il coefficiente $\hat{\beta}$ per `ansia` è circa `r round(coef(mod_freq)["ansia"], 4)`. Il suo errore standard è circa `r round(summary(mod_freq)$coefficients["ansia", "Std. Error"], 4)`. Il valore-$p$ è ampiamente inferiore a 0.001, e l'intervallo di fiducia al 95% non contiene lo zero.
+
+---
+
+## Quesito 1C — Interpretare i risultati frequentisti {.unnumbered}
+
+**Domanda 1.** Il test-$t$ sulla pendenza testa l'ipotesi nulla $H_0: \beta = 0$, cioè che non ci sia alcuna relazione lineare tra ansia e punteggio nella popolazione. "Rifiutare" $H_0$ significa affermare che, *se il vero $\beta$ fosse zero*, osservare un valore campionario così estremo sarebbe molto improbabile (probabilità = valore-$p$). Non è però un'affermazione diretta su quanto è probabile che $\beta \neq 0$.
+
+**Domanda 2.** L'intervallo di fiducia al 95% è spesso frainteso: *non* significa che c'è una probabilità del 95% che il vero $\beta$ cada in quell'intervallo. Il "vero" $\beta$ è un valore fisso (ignoto) — non è una variabile casuale. Significa invece che, se ripetessimo l'esperimento infinite volte, il 95% degli intervalli così costruiti conterrebbe il vero parametro. L'intervallo di credibilità bayesiano invece *può* essere interpretato come "con probabilità del 95% il parametro è in questo intervallo", perché nella logica bayesiana i parametri hanno distribuzioni di probabilità.
+
+**Domanda 3.** L'$R^2$ misura la proporzione di varianza nella variabile dipendente spiegata dal modello. I suoi limiti principali sono: (1) aumenta monotonicamente aggiungendo predittori, anche inutili; (2) non dice nulla sulla rilevanza pratica dell'effetto; (3) non misura il "fit" assoluto — un $R^2 = 0.20$ non è né buono né cattivo senza un punto di riferimento teorico.
+
+---
+
+# Problema 2 — Il modello bayesiano con `brm()`
+
+## Quesito 2A — Specificare e controllare i prior {.unnumbered}
+
+```{r}
+#| output: false
+get_prior(punteggio ~ ansia, data = dati, family = gaussian())
+```
+
+```{r}
+prior_regressione <- c(
+  prior(normal(20, 10), class = Intercept),
+  prior(normal(0, 0.3), class = b),
+  prior(normal(0, 5),   class = sigma, lb = 0)
+)
+```
+
+**Ragionamento sui prior:**
+
+- **Intercetta** Normal(20, 10): quando l'ansia è zero, il punteggio atteso è probabilmente tra 0 e 30. Una media di 20 con sd 10 è debolmente informativa e comprende l'intero range plausibile.
+- **Pendenza** Normal(0, 0.3): ci aspettiamo un effetto piccolo, probabilmente negativo, ma non conosciamo il segno a priori. Con sd = 0.3, valori tra −0.6 e +0.6 coprono il 95% della probabilità a priori — ragionevole per effetti di psicologia sperimentale.
+- **Sigma** Normal(0, 5) con lb = 0: l'errore residuo deve essere positivo; il prior dice che probabilmente è inferiore a 10 punti, il che è compatibile con la scala 0–30.
+
+---
+
+## Quesito 2B — Stimare il modello {.unnumbered}
+
+```{r}
+#| results: hide
+mod_bayes <- brm(
+  formula = punteggio ~ ansia,
+  data    = dati,
+  family  = gaussian(),
+  prior   = prior_regressione,
+  iter    = 4000,
+  warmup  = 2000,
+  chains  = 4,
+  seed    = 2026,
+  refresh = 0,
+  backend = "cmdstanr"
+)
+```
+
+```{r}
+summary(mod_bayes)
+```
+
+---
+
+## Quesito 2C — Diagnostica delle catene MCMC {.unnumbered}
+
+```{r}
+plot(mod_bayes, variable = c("b_Intercept", "b_ansia", "sigma"))
+```
+
+**Interpretazione:** le tracce mostrano le quattro catene sovrapposte che si mescolano bene — sembrano rumore casuale senza trend sistematici né "inceppamenti". Questo è il segnale visivo di buona convergenza. Numericamente, i valori `Rhat` nell'output di `summary()` dovrebbero essere tutti ≤ 1.01, e i valori `Bulk_ESS` superiori a 400, il che conferma la convergenza e l'efficienza del campionamento.
+
+---
+
+# Problema 3 — Confronto tra i due approcci
+
+## Quesito 3A — Le stime a confronto {.unnumbered}
+
+```{r}
+# Modello frequentista
+beta_freq <- coef(mod_freq)["ansia"]
+ic_freq   <- confint(mod_freq)["ansia", ]
+
+# Modello bayesiano
+beta_bayes <- fixef(mod_bayes)["ansia", "Estimate"]
+ic_bayes   <- fixef(mod_bayes)["ansia", c("Q2.5", "Q97.5")]
+
+tibble(
+  Approccio    = c("Frequentista (lm)", "Bayesiano (brm)"),
+  Stima_beta   = c(round(beta_freq, 4), round(beta_bayes, 4)),
+  IC_inferiore = c(round(ic_freq[1], 4), round(ic_bayes[1], 4)),
+  IC_superiore = c(round(ic_freq[2], 4), round(ic_bayes[2], 4))
+)
+```
+
+**Interpretazione:** le stime sono quasi identiche. Con 120 osservazioni e prior debolmente informativi, i dati "dominano" il prior, e il posteriore converge verso la stima di massima verosimiglianza. I due approcci tendono a divergere di più quando: (1) il campione è piccolo (il prior pesa di più); (2) si usano prior informativi; (3) l'effetto è vicino a zero e il prior è centrato su zero (effetto di regolarizzazione).
+
+---
+
+## Quesito 3B — La distribuzione a posteriori di β {.unnumbered}
+
+Il `___` era `b_ansia` (il nome interno di brms per il coefficiente dell'ansia).
+
+```{r}
+campioni_beta <- as_draws_df(mod_bayes) |> pull(b_ansia)
+
+data.frame(beta = campioni_beta) |>
+  ggplot(aes(x = beta)) +
+  geom_histogram(binwidth = 0.005, fill = "steelblue", color = "white", alpha = 0.8) +
+  geom_vline(xintercept = 0,
+             color = "red", linetype = "dashed", linewidth = 1) +
+  geom_vline(xintercept = mean(campioni_beta),
+             color = "navy", linetype = "solid", linewidth = 1) +
+  labs(
+    title = "Distribuzione a posteriori del coefficiente di regressione β",
+    subtitle = "La linea rossa indica β = 0; la linea blu indica la media posteriore",
+    x = "β (effetto dell'ansia sul punteggio)",
+    y = "Frequenza"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+prob_beta_neg       <- mean(campioni_beta < 0)
+prob_beta_rilevante <- mean(campioni_beta < -0.1)
+
+cat("P(β < 0 | dati) =", round(prob_beta_neg, 3), "\n")
+cat("P(β < -0.1 | dati) =", round(prob_beta_rilevante, 3), "\n")
+```
+
+**Interpretazione:** La distribuzione a posteriori è molto più informativa di una singola stima con errore standard, perché consente domande dirette di probabilità: "Quanto è probabile che l'effetto sia negativo?" (`r round(prob_beta_neg * 100, 1)`%) oppure "Quanto è probabile che l'effetto sia praticamente rilevante (< −0.1)?" (`r round(prob_beta_rilevante * 100, 1)`%). Queste sono le domande scientificamente rilevanti, e l'approccio frequentista non può rispondervi direttamente.
+
+---
+
+## Quesito 3C — Confronto epistemologico {.unnumbered}
+
+**Domanda 1.** L'intervallo di fiducia frequentista non afferma nulla sulla probabilità del parametro: il parametro è fisso (anche se ignoto) e l'intervallo è la variabile casuale. L'affermazione corretta è: "Se ripetessi l'esperimento molte volte, il 95% degli intervalli così costruiti coprirebbe il vero parametro." L'intervallo di credibilità bayesiano risponde invece *direttamente* alla domanda "con quale probabilità il parametro è in questo intervallo?" — perché nel framework bayesiano i parametri hanno distribuzioni di probabilità.
+
+**Domanda 2.** L'approccio bayesiano sostituisce il concetto di "significatività statistica" con probabilità dirette sulla distribuzione a posteriori: "$P(\beta < 0 \mid \text{dati}) = 0.99$" è un'affermazione molto più informativa di "$p < 0.001$". Si può anche valutare la probabilità che l'effetto superi una soglia di rilevanza pratica (ROPE — Region of Practical Equivalence), chiedendo per esempio $P(\beta < -0.1 \mid \text{dati})$.
+
+**Domanda 3.** La distinzione epistemologica è importante perché incide su come si comunica l'incertezza, si prendono decisioni e si cumulano risultati. Un ricercatore che ragiona in termini bayesiani può aggiornare esplicitamente le proprie credenze alla luce di nuovi dati (accumulare evidenza nel tempo), specificare ciò che sapeva prima dell'esperimento, e fare previsioni direttamente verificabili. Il framework frequentista non offre questi strumenti in modo naturale.
+
+---
+
+# Problema 4 — Previsioni e incertezza
+
+## Quesito 4A — Previsione puntuale vs. distribuzione predittiva {.unnumbered}
+
+```{r}
+nuovi_studenti <- tibble(
+  ansia   = c(20, 50, 80),
+  profilo = c("Ansia bassa", "Ansia media", "Ansia elevata")
+)
+
+previsioni <- posterior_predict(mod_bayes, newdata = nuovi_studenti)
+
+previsioni_df <- as.data.frame(previsioni)
+colnames(previsioni_df) <- nuovi_studenti$profilo
+
+previsioni_long <- previsioni_df |>
+  pivot_longer(everything(), names_to = "Profilo", values_to = "punteggio")
+
+ggplot(previsioni_long, aes(x = punteggio, fill = Profilo)) +
+  geom_histogram(binwidth = 1, position = "identity", alpha = 0.5, color = "white") +
+  scale_fill_manual(values = c("Ansia bassa"   = "forestgreen",
+                               "Ansia media"   = "steelblue",
+                               "Ansia elevata" = "tomato")) +
+  labs(
+    title = "Distribuzioni predittive per tre profili di studenti",
+    x = "Punteggio previsto all'esame",
+    y = "Frequenza",
+    fill = "Profilo"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+```
+
+**Interpretazione:** le tre distribuzioni sono chiaramente spostate le une rispetto alle altre, con quella per "Ansia elevata" concentrata su punteggi più bassi. Tuttavia, le code si sovrappongono: un singolo studente con ansia elevata potrebbe comunque ottenere un buon punteggio. Questo è il contributo della variabilità individuale ($\sigma$): l'ansia spiega parte della varianza, ma non tutta.
+
+---
+
+## Quesito 4B — Intervalli predittivi {.unnumbered}
+
+```{r}
+previsioni_df |>
+  pivot_longer(everything(), names_to = "Profilo", values_to = "punteggio") |>
+  group_by(Profilo) |>
+  summarise(
+    media = round(mean(punteggio), 1),
+    p05   = round(quantile(punteggio, 0.05), 1),
+    p95   = round(quantile(punteggio, 0.95), 1)
+  )
+```
+
+**Comunicazione al docente:** basandosi sui dati di 120 studenti, il modello indica che studenti con bassa ansia da test ottengono in media circa `r round(mean(previsioni_df[["Ansia bassa"]]), 1)` punti su 30, mentre studenti con alta ansia ottengono in media circa `r round(mean(previsioni_df[["Ansia elevata"]]), 1)` punti — una differenza di circa 5 punti. Nel 90% dei casi, uno studente con ansia elevata si colloca tra `r round(quantile(previsioni_df[["Ansia elevata"]], 0.05), 0)` e `r round(quantile(previsioni_df[["Ansia elevata"]], 0.95), 0)` punti. Questo suggerisce che l'ansia ha un effetto statisticamente chiaro e praticamente rilevante sulla prestazione, ma che la variabilità individuale rimane alta: il punteggio di un singolo studente non può essere previsto con alta precisione conoscendo solo il suo livello di ansia.
+
+---
+
+# Problema 5 — Riflessione concettuale
+
+## Quesito 5A — Il modello come rappresentazione dell'incertezza {.unnumbered}
+
+In ambito bayesiano, la stima di regressione non è un "valore vero da scoprire" ma una quantità su cui aggiorniamo credenze probabilistiche. La distribuzione a posteriori di $\beta$ dice esattamente quanto è credibile ogni valore del parametro, dati i dati e le nostre conoscenze pregresse. Questo cambia radicalmente il modo di interpretare i risultati: invece di chiedersi "questo effetto è zero o no?" (test di ipotesi), ci si chiede "qual è la distribuzione di probabilità degli effetti plausibili?" — una domanda molto più ricca. La distribuzione a posteriori permette inoltre di calcolare probabilità per qualsiasi soglia di interesse (non solo zero), di comunicare l'incertezza in modo diretto e probabilistico, e di usare i risultati come prior per studi futuri.
+
+## Quesito 5B — Il ruolo del prior {.unnumbered}
+
+Con forte evidenza preesistente che $\beta \approx -0.20$, sarebbe legittimo usare un prior informativo come `Normal(-0.20, 0.05)`. I vantaggi sono: stime più stabili con campioni piccoli, esplicita incorporazione della conoscenza accumulata, riduzione dell'incertezza rispetto ai soli dati correnti. I rischi principali sono: se l'evidenza preesistente è sbagliata (o proveniva da studi con distorsioni), il prior informativo può "inquinare" il posteriore e portare a conclusioni errate. È fondamentale documentare e giustificare ogni prior informativo, e fare analisi di sensibilità — cioè verificare come cambiano le conclusioni variando il prior.
+
+## Quesito 5C — Quando i due approcci divergono {.unnumbered}
+
+I due approcci producono risultati più diversi in almeno tre situazioni: (1) **Campioni piccoli**: con $n = 10$ o 20, il prior pesa molto di più dei dati, e un prior debolmente informativo centrato su zero tende a "restringere" le stime verso zero rispetto all'MLE. (2) **Prior informativi**: se si usano prior fortemente informativi basati su letteratura precedente, il posteriore differirà dall'MLE in proporzione a quanto il prior e i dati correnti "disaccordano". (3) **Effetti vicini a zero**: quando i dati sono compatibili sia con $\beta = 0$ che con $\beta \neq 0$, un prior bayesiano centrato su zero (che ha senso come prior debolmente informativo) tende a "shrinkare" la stima verso zero più di quanto farebbe l'MLE. Questo è spesso desiderabile — è un effetto di regolarizzazione — ma produce stime sistematicamente diverse da `lm()`.
+
+---
+
+# Nota didattica
+
+**Valori numerici attesi** (con `set.seed(2026)`):
+
+- Correlazione tra ansia e punteggio: circa −0.55 / −0.60.
+- $\hat{\beta}$ (lm): circa −0.175 / −0.185.
+- IC 95% (lm): circa [−0.25, −0.11].
+- $\hat{\beta}$ posteriore (brm): praticamente identico, data la debolezza del prior.
+- $P(\beta < 0 \mid \text{dati})$: > 99%.
+- $P(\beta < -0.1 \mid \text{dati})$: > 95%.
+
+**Rhat** dovrebbe essere ≤ 1.01 per tutti i parametri. Se non lo è, aumentare `iter` e `warmup`.
+
+**Punti critici nelle risposte:**
+
+- 1C: distinguere tra IC frequentista e IC bayesiano — errore molto comune tra studenti.
+- 3B: la capacità di calcolare $P(\beta < \text{soglia})$ come alternativa al valore-$p$.
+- 3C: la differenza logica tra i due framework, non solo procedurale.
+- 5A: la nozione di distribuzione a posteriori come oggetto epistemicamente ricco.

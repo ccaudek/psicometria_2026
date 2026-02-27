@@ -1,0 +1,492 @@
+---
+title: "HOMEWORK 05"
+subtitle: "PSICOMETRIA 2025-2026"
+author: "Corrado Caudek"
+lang: it
+format: 
+  html:
+    code-fold: false
+    toc: true
+    toc-depth: 3
+    number-sections: false
+editor: source
+date: today
+---
+
+# Homework
+
+**Che cos'è questo homework?** Gli HW3 e HW4 hanno introdotto la probabilità e 
+le distribuzioni. Ora mettiamo insieme i pezzi: le **variabili casuali** 
+(con le loro proprietà fondamentali: valore atteso, varianza, covarianza) e 
+la **funzione di verosimiglianza** — lo strumento che ci permette di "ascoltare 
+i dati" e capire quali valori dei parametri sono più compatibili con quello 
+che abbiamo osservato.
+
+Questo è l'ultimo homework prima dell'inferenza bayesiana vera e propria. 
+Dopo questo, avrai a disposizione tutti gli elementi necessari per creare la distribuzione a posteriori: i prior (HW4), la verosimiglianza (questo compito) e il teorema di Bayes (HW3).
+
+**Quando scade?** L'homework scade **MARTEDÌ 28 APRILE 2026** alle ore 23:59.
+
+**Dove consegno?** Carica il tuo homework al link su Moodle. Nomina il file:
+`COGNOME_NOME_HW5.html` (o `.pdf`).
+
+**Materiale propedeutico.** Assicurati di aver letto i capitoli su variabili 
+casuali e verosimiglianza nel sito companion
+[La probabilità](https://ccaudek.github.io/utet-prob/).
+
+::: {.callout-tip}
+## Il filo rosso di questo homework
+Il valore atteso e la varianza descrivono **cosa ci aspettiamo** da una 
+variabile casuale. La verosimiglianza capovolge la prospettiva: dato quello 
+che **abbiamo osservato**, quali parametri sono più plausibili? Questa 
+inversione di prospettiva è la chiave dell'inferenza statistica.
+:::
+
+# Variabili casuali: dal modello ai dati osservati
+
+## Esercizio 0a — Variabile casuale vs osservazione (concetti)
+
+In statistica, una **variabile casuale** (random variable) è un oggetto matematico che rappresenta un processo aleatorio (es. “il punteggio che *potrei* osservare se somministrassi il test a una persona scelta a caso”).
+Una **osservazione** (dato) è un valore concreto misurato (es. “questa persona ha ottenuto il valore 3”).
+
+Considera questa situazione:
+
+Uno psicologo somministra un test di ansia a studenti selezionati a caso da una popolazione. Il test produce un punteggio intero da 0 a 4.
+
+1. Indica quale delle seguenti è una **variabile casuale** e quale è una **osservazione**:
+
+   A. “$X$ = punteggio al test di un individuo scelto a caso.”  
+   B. “Lo studente Marco ha punteggio 3.”  
+   C. “$x_1, x_2, \ldots, x_{30}$ = punteggi osservati dei 30 studenti del campione.”  
+   D. “$P(X=2)=0.40$ è la probabilità che un individuo scelto a caso ottenga 2.”  
+
+2. Spiega in 2–4 frasi perché in psicologia è utile distinguere tra:
+
+   * la variabile casuale $X$ (il “modello”)  
+   * le osservazioni $x_i$ (i “dati”)  
+
+*(Suggerimento: con $X$ facciamo previsioni e calcoli teorici; con $x_i$ stimiamo parametri e verifichiamo ipotesi.)*
+
+---
+
+## Esercizio 0b — Distribuzione di una variabile casuale e frequenze osservate
+
+Una variabile casuale discreta $X$ (punteggio test) può assumere valori:
+
+$$X \in {0,1,2,3,4}$$
+
+e lo psicologo propone questo **modello** (distribuzione):
+
+|    $x$   |   0  |   1  |   2  |   3  |   4  |
+| :------: | :--: | :--: | :--: | :--: | :--: |
+| $P(X=x)$ | 0.10 | 0.20 | 0.40 | 0.20 | 0.10 |
+
+Ora somministra il test a $n=20$ persone e ottiene i seguenti **dati osservati**:
+
+$$3,\ 2,\ 2,\ 1,\ 0,\ 2,\ 4,\ 2,\ 1,\ 3,\ 2,\ 2,\ 1,\ 2,\ 3,\ 2,\ 0,\ 1,\ 2,\ 4$$
+
+1. Costruisci una tabella con le **frequenze osservate** per ciascun valore $0,1,2,3,4$.  
+2. Calcola le **frequenze relative** osservate (frequenza / 20).  
+3. Confronta (a occhio) le frequenze relative con le probabilità del modello. Sono “vicine”?  
+4. In 2–3 frasi: perché non ci aspettiamo che coincidano *perfettamente* anche se il modello fosse vero?  
+
+---
+
+## Esercizio 0c — Simulazione in R: dati come realizzazioni di una variabile casuale
+
+Usa R per simulare un campione di dimensione 20 dalla distribuzione del modello dell’Esercizio 0b.
+
+```r
+set.seed(123)
+
+valori <- 0:4
+prob <- c(0.10, 0.20, 0.40, 0.20, 0.10)
+
+campione <- sample(valori, size = 20, replace = TRUE, prob = prob)
+campione
+
+# Frequenze e frequenze relative
+tab <- table(campione)
+tab
+prop.table(tab)
+```
+
+**Domanda:** Il tuo campione simulato ha esattamente le stesse frequenze relative del modello? Se no, perché? Che cosa succede se aumenti `size` da 20 a 2000?
+
+---
+
+# Valore atteso: cosa ci aspettiamo
+
+## Esercizio 1a — Valore atteso di una variabile discreta (ragionamento)
+
+Uno psicologo ha sviluppato un breve test di screening con punteggi possibili 
+$X \in \{0, 1, 2, 3, 4\}$ e la seguente distribuzione di probabilità:
+
+| $x$  |   0   |   1   |   2   |   3   |   4   |
+|:----:|:-----:|:-----:|:-----:|:-----:|:-----:|
+|$P(X=x)$| 0.05 | 0.15 | 0.40 | 0.30 | 0.10 |
+
+1. Verifica che la distribuzione sia valida: $\sum P(X=x) = ?$ 
+   (deve fare 1).
+2. Calcola il valore atteso a mano:
+   $$E(X) = \sum_{x=0}^{4} x \cdot P(X=x) = 0 \cdot 0.05 + 1 \cdot 0.15 + \ldots = ?$$
+3. Il valore atteso è uno dei valori possibili? (No — ed è perfettamente 
+   normale! $E(X)$ è una media ponderata, non per forza un valore osservabile.)
+
+
+## Esercizio 1b — Verifica in R
+
+```r
+valori <- 0:4
+prob <- c(0.05, 0.15, 0.40, 0.30, 0.10)
+
+# Verifica che sia una distribuzione valida
+cat("Somma delle probabilità:", sum(prob), "\n")
+
+# Valore atteso
+EX <- sum(valori * prob)
+cat("E(X) =", EX, "\n")
+```
+
+
+## Esercizio 1c — Simulazione: la media campionaria converge a $E(X)$
+
+```r
+set.seed(42)
+
+# Simula 10.000 estrazioni dalla distribuzione
+campione <- sample(valori, size = 10000, replace = TRUE, prob = prob)
+
+# Media campionaria
+cat("Media campionaria:", mean(campione), "\n")
+cat("Valore atteso:    ", EX, "\n")
+
+# Visualizza la convergenza
+medie_cum <- cumsum(campione) / 1:length(campione)
+plot(medie_cum, type = "l", col = "steelblue", lwd = 1.5,
+     xlab = "Numero di estrazioni", ylab = "Media cumulativa",
+     main = "La media campionaria converge a E(X)")
+abline(h = EX, col = "red", lty = 2)
+```
+
+**Domanda:** La media campionaria è vicina a $E(X)$? Il grafico mostra la 
+stessa convergenza che abbiamo visto nell'HW3 con la legge dei grandi numeri?
+
+
+# Varianza: quanto varia
+
+## Esercizio 2a — Varianza di una variabile discreta (ragionamento)
+
+La varianza misura quanto i valori di $X$ si disperdono intorno al valore 
+atteso:
+
+$$\text{Var}(X) = E\left[(X - E(X))^2\right] = \sum_{x} (x - E(X))^2 \cdot P(X=x)$$
+
+Usando i dati dell'Esercizio 1 e il valore $E(X)$ che hai calcolato, compila 
+la tabella:
+
+| $x$ | $P(X=x)$ | $x - E(X)$ | $(x - E(X))^2$ | $(x-E(X))^2 \cdot P(X=x)$ |
+|:---:|:---------:|:----------:|:---------------:|:--------------------------:|
+|  0  |   0.05    |            |                 |                            |
+|  1  |   0.15    |            |                 |                            |
+|  2  |   0.40    |            |                 |                            |
+|  3  |   0.30    |            |                 |                            |
+|  4  |   0.10    |            |                 |                            |
+| **Somma** | | | | $\text{Var}(X) = ?$ |
+
+Poi calcola la deviazione standard: $\text{SD}(X) = \sqrt{\text{Var}(X)}$.
+
+
+## Esercizio 2b — Verifica in R
+
+```r
+# Varianza dalla definizione
+VarX <- sum((valori - EX)^2 * prob)
+cat("Var(X) =", VarX, "\n")
+cat("SD(X)  =", sqrt(VarX), "\n")
+
+# Verifica con la simulazione dell'Es. 1c
+cat("Varianza campionaria:", var(campione), "\n")
+cat("SD campionaria:      ", sd(campione), "\n")
+```
+
+
+# Proprietà del valore atteso e della varianza
+
+## Esercizio 3a — Trasformazione lineare (ragionamento)
+
+Se trasformiamo una variabile casuale con $Y = aX + b$, allora:
+
+- $E(Y) = aE(X) + b$
+- $\text{Var}(Y) = a^2 \text{Var}(X)$
+
+Supponiamo che il test dell'Esercizio 1 venga convertito in un punteggio 
+standardizzato: $Z = \frac{X - E(X)}{\text{SD}(X)}$.
+
+1. Calcola $E(Z)$ usando la proprietà del valore atteso. *(Suggerimento: 
+   $Z = (1/\text{SD}) \cdot X - E(X)/\text{SD}$, quindi $a = 1/\text{SD}$ 
+   e $b = -E(X)/\text{SD}$.)*
+2. Calcola $\text{Var}(Z)$.
+3. Riconosci qualcosa? *(Suggerimento: una variabile con media 0 e varianza 1 
+   è detta "standardizzata" — è lo z-score che hai visto nell'HW4!)*
+
+
+## Esercizio 3b — Verifica in R
+
+```r
+Z <- (campione - EX) / sqrt(VarX)
+cat("Media di Z:    ", round(mean(Z), 4), "\n")
+cat("Varianza di Z: ", round(var(Z), 4), "\n")
+```
+
+**Domanda:** I valori sono vicini a 0 e 1? Perché?
+
+
+# Distribuzione congiunta e indipendenza
+
+## Esercizio 4a — Distribuzione congiunta (ragionamento)
+
+Due variabili casuali $X$ (ansia: 0 = bassa, 1 = alta) e $Y$ (sonno: 0 = 
+poco, 1 = abbastanza) hanno la seguente distribuzione congiunta:
+
+|          | $Y = 0$ | $Y = 1$ |
+|:--------:|:-------:|:-------:|
+| $X = 0$  |  0.15   |  0.35   |
+| $X = 1$  |  0.30   |  0.20   |
+
+1. Calcola le **distribuzioni marginali** $P(X)$ e $P(Y)$ sommando le righe 
+   e le colonne.
+2. Calcola $P(X = 1 \mid Y = 0)$ usando la formula della probabilità 
+   condizionata.
+3. Verifica se $X$ e $Y$ sono indipendenti: $P(X=1, Y=0)$ è uguale a 
+   $P(X=1) \cdot P(Y=0)$?
+4. Cosa ci dice il risultato sulla relazione tra ansia e sonno?
+
+
+## Esercizio 4b — Simulazione della distribuzione congiunta
+
+```r
+set.seed(2026)
+n <- 10000
+
+# Probabilità congiunte
+probs <- c(0.15, 0.35, 0.30, 0.20)  # (0,0), (0,1), (1,0), (1,1)
+
+# Genera coppie
+indici <- sample(1:4, n, replace = TRUE, prob = probs)
+X <- ifelse(indici %in% c(3, 4), 1, 0)  # X = 1 se indice è 3 o 4
+Y <- ifelse(indici %in% c(2, 4), 1, 0)  # Y = 1 se indice è 2 o 4
+
+# Marginali
+cat("P(X=1) simulata:           ", mean(X == 1), "\n")
+cat("P(Y=0) simulata:           ", mean(Y == 0), "\n")
+
+# Congiunta
+cat("P(X=1, Y=0) simulata:      ", mean(X == 1 & Y == 0), "\n")
+
+# Condizionata
+cat("P(X=1 | Y=0) simulata:     ", mean(X[Y == 0] == 1), "\n")
+
+# Test indipendenza
+cat("P(X=1) * P(Y=0) simulata:  ", mean(X == 1) * mean(Y == 0), "\n")
+```
+
+**Domanda:** $P(X=1, Y=0)$ è uguale a $P(X=1) \cdot P(Y=0)$? Cosa 
+conclude la simulazione sull'indipendenza?
+
+
+# La funzione di verosimiglianza
+
+Finora abbiamo ragionato così: "dato un modello (distribuzione + parametri), 
+qual è la probabilità dei dati?" La **verosimiglianza** capovolge la 
+domanda: "dati i dati, quali valori del parametro sono più plausibili?"
+
+## Esercizio 5a — Verosimiglianza per una moneta (ragionamento)
+
+Lanci una moneta 10 volte e ottieni 7 teste e 3 croci. Vuoi stimare la 
+probabilità di testa $\theta$.
+
+La verosimiglianza è la probabilità dei dati osservati in funzione di $\theta$:
+
+$$L(\theta) = P(\text{7 teste su 10} \mid \theta) = \binom{10}{7} \theta^7 (1-\theta)^3$$
+
+Nota: $\binom{10}{7} = 120$ è una costante che non dipende da $\theta$.
+
+Calcola $L(\theta)$ per tre valori:
+
+1. $L(0.50) = 120 \times 0.50^7 \times 0.50^3 = ?$
+2. $L(0.70) = 120 \times 0.70^7 \times 0.30^3 = ?$
+3. $L(0.90) = 120 \times 0.90^7 \times 0.10^3 = ?$
+
+Quale dei tre valori massimizza la verosimiglianza?
+
+
+## Esercizio 5b — Visualizzare la verosimiglianza in R
+
+```r
+theta <- seq(0, 1, length.out = 300)
+lik <- dbinom(7, size = 10, prob = theta)
+
+plot(theta, lik, type = "l", col = "steelblue", lwd = 2,
+     xlab = expression(theta),
+     ylab = expression(L(theta)),
+     main = "Verosimiglianza: 7 teste su 10 lanci")
+
+# Segna il massimo
+theta_max <- theta[which.max(lik)]
+abline(v = theta_max, col = "red", lty = 2)
+text(theta_max + 0.05, max(lik) * 0.9, 
+     paste("MLE =", round(theta_max, 2)), col = "red")
+```
+
+**Domanda:** Dove si trova il massimo della verosimiglianza? Coincide con 
+$7/10 = 0.70$ (la proporzione osservata di teste)? Questo valore si chiama 
+**stima di massima verosimiglianza** (MLE, *Maximum Likelihood Estimate*).
+
+
+## Esercizio 5c — Come cambiano i dati, cambia la verosimiglianza
+
+Confronta la verosimiglianza per tre diversi set di dati:
+
+```r
+par(mfrow = c(1, 3))
+
+dati <- list(c(2, 10), c(7, 10), c(70, 100))
+titoli <- c("2 teste su 10", "7 teste su 10", "70 teste su 100")
+
+for (i in 1:3) {
+  k <- dati[[i]][1]
+  n <- dati[[i]][2]
+  theta <- seq(0, 1, length.out = 300)
+  lik <- dbinom(k, size = n, prob = theta)
+  
+  plot(theta, lik, type = "l", col = "steelblue", lwd = 2,
+       xlab = expression(theta), ylab = expression(L(theta)),
+       main = titoli[i])
+  abline(v = k/n, col = "red", lty = 2)
+}
+
+par(mfrow = c(1, 1))
+```
+
+**Domanda:** Rispondi a queste tre domande:
+
+1. In tutti e tre i casi, il MLE è $k/n$?
+2. Confronta il secondo e il terzo grafico: entrambi hanno 
+   $\hat{\theta} = 0.70$, ma la curva è diversa. Quale è più "stretta"? 
+   Perché?
+3. Una verosimiglianza più stretta indica più o meno **certezza** sulla 
+   stima? Come si collega al concetto di numerosità campionaria?
+
+
+## Esercizio 5d — La log-verosimiglianza
+
+In pratica si lavora con il **logaritmo** della verosimiglianza, che è più 
+comodo numericamente (trasforma prodotti in somme):
+
+$$\ell(\theta) = \log L(\theta) = \log\binom{n}{k} + k\log\theta + (n-k)\log(1-\theta)$$
+
+```r
+theta <- seq(0.01, 0.99, length.out = 300)
+
+loglik_10 <- dbinom(7, 10, theta, log = TRUE)
+loglik_100 <- dbinom(70, 100, theta, log = TRUE)
+
+plot(theta, loglik_10, type = "l", col = "steelblue", lwd = 2,
+     xlab = expression(theta), ylab = expression(ell(theta)),
+     main = "Log-verosimiglianza", ylim = c(-15, 0))
+lines(theta, loglik_100, col = "coral", lwd = 2)
+legend("bottomleft",
+       legend = c("7/10 lanci", "70/100 lanci"),
+       col = c("steelblue", "coral"), lwd = 2)
+abline(v = 0.70, col = "red", lty = 2)
+```
+
+**Domanda:** Entrambe le curve hanno il massimo nello stesso punto ($\theta = 0.70$). 
+Ma la curva rossa (70/100) è più "appuntita" vicino al massimo. Cosa 
+significa in termini di informazione?
+
+
+# Dalla verosimiglianza all'inferenza bayesiana (anteprima)
+
+## Esercizio 6 — Prior × Verosimiglianza = Posterior
+
+Nell'HW4 hai visto la distribuzione Beta come prior. Ora la combiniamo con 
+la verosimiglianza:
+
+$$\underbrace{P(\theta \mid \text{dati})}_{\text{posterior}} \propto 
+  \underbrace{P(\text{dati} \mid \theta)}_{\text{verosimiglianza}} \times 
+  \underbrace{P(\theta)}_{\text{prior}}$$
+
+```r
+theta <- seq(0, 1, length.out = 300)
+
+# Prior: Beta(2, 2) — incerta, centrata su 0.5
+prior <- dbeta(theta, 2, 2)
+
+# Verosimiglianza: 7 teste su 10
+lik <- dbinom(7, 10, theta)
+
+# Posterior (non normalizzata): prior × verosimiglianza
+post_non_norm <- prior * lik
+
+# Normalizzazione approssimativa (per farla diventare una densità)
+post <- post_non_norm / (sum(post_non_norm) * diff(theta[1:2]))
+
+# Posterior esatta: Beta(2+7, 2+3) = Beta(9, 5)
+post_esatta <- dbeta(theta, 9, 5)
+
+# Grafico
+plot(theta, prior / max(prior), type = "l", col = "gray50", lwd = 2, lty = 2,
+     xlab = expression(theta), ylab = "Densità (scalata)",
+     main = "L'inferenza bayesiana in un grafico", ylim = c(0, 1.2))
+lines(theta, lik / max(lik), col = "coral", lwd = 2, lty = 3)
+lines(theta, post_esatta / max(post_esatta), col = "steelblue", lwd = 2)
+legend("topleft",
+       legend = c("Prior: Beta(2,2)", 
+                  "Verosimiglianza: 7/10", 
+                  "Posterior: Beta(9,5)"),
+       col = c("gray50", "coral", "steelblue"), 
+       lty = c(2, 3, 1), lwd = 2)
+```
+
+**Domanda (riflessione):** Guarda il grafico e rispondi in 3–5 frasi:
+
+1. La posterior (blu) sta "in mezzo" tra la prior (grigia) e la 
+   verosimiglianza (rossa)?
+2. Se avessimo usato una prior più informativa (es. $\text{Beta}(20, 20)$, 
+   molto concentrata su 0.50), la posterior sarebbe più vicina ai dati o 
+   alla prior?
+3. Se avessimo più dati (es. 70 teste su 100 invece di 7 su 10), la 
+   posterior sarebbe più influenzata dalla prior o dai dati?
+
+::: {.callout-note}
+## Anticipo del prossimo blocco
+Questo esercizio è un'anteprima dell'inferenza bayesiana che svilupperemo 
+in dettaglio nelle prossime lezioni. La logica è: le nostre credenze 
+iniziali (prior) vengono aggiornate dai dati (attraverso la verosimiglianza) 
+per produrre credenze aggiornate (posterior). Più dati raccogliamo, più la 
+posterior è guidata dai dati e meno dalla prior.
+:::
+
+
+# Criteri di valutazione
+
+| Livello | Cosa significa |
+|---------|----------------|
+| **Sufficiente** | I calcoli a mano sono presenti; i grafici compaiono; le interpretazioni sono abbozzate. |
+| **Buono** | Calcoli a mano corretti, codice funzionante, interpretazioni chiare della verosimiglianza e dei suoi cambiamenti. |
+| **Ottimo** | Tutto quanto sopra, più riflessioni approfondite sull'Esercizio 6 (prior × verosimiglianza = posterior). |
+
+::: {.callout-tip}
+## Se ti blocchi...
+1. Rileggi il sito companion [La probabilità](https://ccaudek.github.io/utet-prob/).
+2. La verosimiglianza NON è una probabilità di $\theta$ — è la probabilità 
+   dei dati calcolata per diversi valori di $\theta$. Leggila come: "se 
+   $\theta$ fosse 0.70, quanto sarebbero probabili i dati che ho osservato?"
+3. Il MLE è il valore di $\theta$ che rende i dati osservati *il più 
+   probabili possibile*.
+4. Scrivi **dove** ti sei bloccato e **cosa** hai provato!
+:::
+
+Buon lavoro!

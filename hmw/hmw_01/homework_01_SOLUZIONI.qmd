@@ -1,0 +1,452 @@
+---
+title: "SOLUZIONI HOMEWORK 01"
+subtitle: "Dai calcoli a mano a R — primi passi nella data science"
+author: 
+  - name: "Prof. Corrado Caudek"
+    affiliation: "Università degli Studi di Firenze — Dipartimento NEUROFARBA, Sezione di Psicologia"
+    email: "corrado.caudek@unifi.it"
+course: "PSI0028 — Psicometria"
+date: today
+date-format: "DD MMMM YYYY"
+lang: it
+abstract: |
+  Soluzioni complete del primo homework di Psicometria. L'homework guida gli 
+  studenti dal calcolo a mano alla replica in R, coprendo sommatorie, media, 
+  varianza, deviazione standard, scarto medio assoluto, quantili, istogrammi di
+  densità, importazione di dati e scatterplot. Ogni esercizio è risolto prima
+  con carta e penna, poi con codice R commentato.
+format: 
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    number-sections: false
+    code-fold: false
+    fig-align: center
+    df-print: kable
+    embed-resources: true
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+
+# Sommatorie: a mano e poi con R
+
+## Esercizio 1a — Sommatoria a mano
+
+I cinque valori sono: $x_1 = 3, \; x_2 = 7, \; x_3 = 5, \; x_4 = 8, \; x_5 = 2$.
+
+$$
+\sum_{i=1}^{5} x_i = 3 + 7 + 5 + 8 + 2 = 25
+$$
+
+
+## Esercizio 1b — Sommatoria in R
+
+```{r}
+x <- c(3, 7, 5, 8, 2)
+sum(x)
+```
+
+Il risultato coincide con il calcolo a mano: **25**.
+
+
+## Esercizio 1c — Media aritmetica a mano e in R
+
+**A mano:**
+
+$$
+\bar{x} = \frac{1}{5}(3 + 7 + 5 + 8 + 2) = \frac{25}{5} = 5.0
+$$
+
+**In R:**
+
+```{r}
+# Con la funzione dedicata
+mean(x)
+
+# Dalla definizione
+sum(x) / length(x)
+```
+
+Entrambi restituiscono **5**.
+
+
+# Aritmetica vettorializzata
+
+## Esercizio 2a — Scarti dalla media, a mano
+
+La media è $\bar{x} = 5$. Calcoliamo gli scarti:
+
+| $i$ | $x_i$ | $\bar{x}$ | $d_i = x_i - \bar{x}$ |
+|:---:|:------:|:----------:|:----------------------:|
+|  1  |   3    |     5      |          −2            |
+|  2  |   7    |     5      |          +2            |
+|  3  |   5    |     5      |           0            |
+|  4  |   8    |     5      |          +3            |
+|  5  |   2    |     5      |          −3            |
+
+$$
+\sum_{i=1}^{5} d_i = (-2) + 2 + 0 + 3 + (-3) = 0
+$$
+
+La somma degli scarti dalla media è **sempre zero**: è una proprietà fondamentale della media aritmetica. Rappresenta il fatto che la media è il "baricentro" dei dati: gli scarti positivi e negativi si compensano esattamente.
+
+
+## Esercizio 2b — Scarti dalla media in R
+
+```{r}
+d <- x - mean(x)
+d
+```
+
+```{r}
+# Verifica: la somma è (approssimativamente) zero
+sum(d)
+```
+
+Otteniamo esattamente gli stessi valori della tabella: $-2, 2, 0, 3, -3$. E la somma è 0.
+
+Il punto chiave: l'istruzione `x - mean(x)` sottrae la media **a ogni elemento** del vettore, tutto in una volta. Questo è ciò che si intende per *aritmetica vettorializzata*: non dobbiamo scrivere un ciclo per calcolare ogni scarto separatamente.
+
+
+## Esercizio 2c — Scarti al quadrato, a mano e in R
+
+| $i$ | $x_i$ | $d_i$ | $d_i^2$ |
+|:---:|:------:|:-----:|:-------:|
+|  1  |   3    |  −2   |    4    |
+|  2  |   7    |  +2   |    4    |
+|  3  |   5    |   0   |    0    |
+|  4  |   8    |  +3   |    9    |
+|  5  |   2    |  −3   |    9    |
+| **Somma** | | | **26** |
+
+```{r}
+d^2
+sum(d^2)
+```
+
+Anche qui: `d^2` eleva al quadrato **ogni elemento** del vettore. La somma dei quadrati degli scarti è $\sum d_i^2 = 26$.
+
+
+# La varianza e la deviazione standard
+
+## Esercizio 3a — Varianza a mano
+
+$$
+s^2 = \frac{\sum_{i=1}^{n}(x_i - \bar{x})^2}{n-1} = \frac{26}{5-1} = \frac{26}{4} = 6.5
+$$
+
+
+## Esercizio 3b — Varianza in R, dalla definizione
+
+```{r}
+n <- length(x)
+varianza <- sum((x - mean(x))^2) / (n - 1)
+varianza
+```
+
+```{r}
+# Confronto con la funzione built-in
+var(x)
+```
+
+I risultati coincidono: $s^2 = 6.5$.
+
+Nota: si divide per $n - 1$ (e non per $n$) perché la varianza campionaria usa i cosiddetti *gradi di libertà*: avendo già stimato la media dal campione, rimangono $n - 1$ informazioni indipendenti.
+
+
+## Esercizio 3c — Deviazione standard
+
+**A mano:**
+
+$$
+s = \sqrt{6.5} \approx 2.55
+$$
+
+**In R:**
+
+```{r}
+sqrt(varianza)
+sd(x)
+```
+
+La deviazione standard è circa **2.55**. Si esprime nella stessa unità di misura dei dati originali (punti del quiz, nel nostro caso).
+
+
+## Esercizio 3d — Capire la SD attraverso lo scarto medio assoluto
+
+**A mano:**
+
+Gli scarti in valore assoluto sono: $|d_1| = 2, \; |d_2| = 2, \; |d_3| = 0, \; |d_4| = 3, \; |d_5| = 3$.
+
+$$
+\text{SMA} = \frac{1}{5}(2 + 2 + 0 + 3 + 3) = \frac{10}{5} = 2.0
+$$
+
+**In R:**
+
+```{r}
+sma <- mean(abs(x - mean(x)))
+sma
+```
+
+**Confronto SD vs SMA:**
+
+```{r}
+cat("Scarto medio assoluto (SMA):", sma, "\n")
+cat("Deviazione standard (SD):   ", sd(x), "\n")
+```
+
+La SD ($\approx 2.55$) è più grande dello SMA ($= 2.0$). Perché? Perché la SD eleva gli scarti al quadrato prima di fare la media: questo **penalizza di più gli scarti grandi**. Uno scarto di 3 contribuisce come $3^2 = 9$ alla varianza, mentre nello SMA contribuisce solo come 3. La SD è quindi più "sensibile" ai valori lontani dalla media.
+
+Lo SMA è più intuitivo: "in media, i valori si discostano dalla media di 2 punti".
+
+**MAD robusta (opzionale):**
+
+```{r}
+# MAD = mediana degli scarti assoluti dalla mediana (× costante)
+mad(x)
+
+# Senza la costante di normalizzazione:
+median(abs(x - median(x)))
+```
+
+La MAD robusta usa la mediana anziché la media, ed è meno influenzata da valori estremi. R moltiplica il risultato per una costante ($\approx 1.4826$) per renderla comparabile con la SD nel caso di distribuzioni normali.
+
+
+# Quantili: capirli a mano
+
+## Esercizio 4a — Ordinare e trovare la mediana
+
+```{r}
+sort(x)
+```
+
+I valori ordinati sono: **2, 3, 5, 7, 8**.
+
+La mediana è il valore centrale (il 3° di 5): **mediana = 5**.
+
+```{r}
+median(x)
+```
+
+
+## Esercizio 4b — Quartili a mano
+
+Con 5 valori ordinati: 2, 3, **5**, 7, 8:
+
+- La **metà inferiore** è: 2, 3. Il valore "a metà" è circa $(2+3)/2 = 2.5$, che è una buona approssimazione di $Q_1$.
+- La **metà superiore** è: 7, 8. Il valore "a metà" è circa $(7+8)/2 = 7.5$, che è una buona approssimazione di $Q_3$.
+
+```{r}
+quantile(x)
+```
+
+R fornisce valori leggermente diversi perché usa un algoritmo di interpolazione, ma l'idea è la stessa. Con pochi dati i quartili sono approssimazioni; con campioni più grandi diventano più precisi.
+
+
+## Esercizio 4c — Range interquartile
+
+**A mano:** $\text{IQR} \approx 7.5 - 2.5 = 5.0$.
+
+```{r}
+IQR(x)
+```
+
+L'IQR rappresenta l'ampiezza dell'intervallo che contiene il **50% centrale** dei dati.
+
+
+# L'istogramma: costruirlo a mano, poi con R
+
+I 20 valori delle ore di studio:
+
+$$4, 6, 7, 3, 8, 5, 6, 9, 2, 7, 5, 6, 8, 4, 6, 7, 5, 3, 6, 8$$
+
+## Esercizio 5a — Tabella di frequenza a mano
+
+```{r}
+ore <- c(4, 6, 7, 3, 8, 5, 6, 9, 2, 7, 5, 6, 8, 4, 6, 7, 5, 3, 6, 8)
+table(ore)
+```
+
+| Ore di studio | Frequenza ($f_i$) | Frequenza relativa ($f_i / 20$) |
+|:-------------:|:-----------------:|:-------------------------------:|
+|       2       |         1         |             0.05                |
+|       3       |         2         |             0.10                |
+|       4       |         2         |             0.10                |
+|       5       |         3         |             0.15                |
+|       6       |         5         |             0.25                |
+|       7       |         3         |             0.15                |
+|       8       |         3         |             0.15                |
+|       9       |         1         |             0.05                |
+| **Totale**    |       **20**      |           **1.00**              |
+
+Si nota che il valore modale è **6** (compare 5 volte su 20).
+
+
+## Esercizio 5b — Densità delle barre
+
+Raggruppiamo in 3 classi:
+
+**Classe [2, 4):** valori 2, 3, 3 → $f = 3$, frequenza relativa $= 3/20 = 0.15$, ampiezza $= 2$.
+
+$$\text{densità} = \frac{0.15}{2} = 0.075$$
+
+**Classe [4, 7):** valori 4, 4, 5, 5, 5, 6, 6, 6, 6, 6 → $f = 10$, frequenza relativa $= 10/20 = 0.50$, ampiezza $= 3$.
+
+$$\text{densità} = \frac{0.50}{3} \approx 0.167$$
+
+**Classe [7, 10):** valori 7, 7, 7, 8, 8, 8, 9 → $f = 7$, frequenza relativa $= 7/20 = 0.35$, ampiezza $= 3$.
+
+$$\text{densità} = \frac{0.35}{3} \approx 0.117$$
+
+**Verifica che l'area totale sia 1:**
+
+$$
+(2 \times 0.075) + (3 \times 0.167) + (3 \times 0.117) = 0.15 + 0.50 + 0.35 = 1.00 \; \checkmark
+$$
+
+L'istogramma a mano avrà 3 rettangoli:
+
+- [2, 4): alto 0.075
+- [4, 7): alto 0.167
+- [7, 10): alto 0.117
+
+
+## Esercizio 5c — Istogramma in R
+
+```{r}
+hist(ore, 
+     breaks = c(2, 4, 7, 10), 
+     freq = FALSE,
+     col = "steelblue",
+     main = "Ore di studio — istogramma di densità",
+     xlab = "Ore di studio",
+     ylab = "Densità")
+```
+
+Il grafico corrisponde ai calcoli fatti a mano. La barra centrale è la più alta (più dati cadono tra 4 e 7 ore), e le aree delle tre barre sommano a 1.
+
+L'opzione `freq = FALSE` è fondamentale: dice a R di disegnare la **densità** (area = proporzione) anziché la frequenza grezza. Questo è l'istogramma "corretto" quando le classi hanno ampiezza diversa: l'altezza non è il conteggio, ma il conteggio diviso per l'ampiezza della classe.
+
+
+# Lavorare con dati "veri" in R
+
+Per questa sezione usiamo un piccolo dataset simulato. In condizioni normali 
+il file verrebbe caricato da Moodle; qui lo generiamo per completezza delle 
+soluzioni.
+
+```{r}
+# --- Generazione del dataset (non richiesta agli studenti) ---
+set.seed(2026)
+n <- 30
+ore_sonno <- round(rnorm(n, mean = 7, sd = 1.2), 1)
+ore_sonno <- pmax(4, pmin(10, ore_sonno))  # limita tra 4 e 10
+stress <- round(10 - 0.8 * ore_sonno + rnorm(n, 0, 1.2), 1)
+stress <- pmax(1, pmin(10, stress))
+benessere <- round(15 + 3.5 * ore_sonno - 1.5 * stress + rnorm(n, 0, 3), 1)
+benessere <- pmax(10, pmin(50, benessere))
+
+dati <- data.frame(
+  id = 1:n,
+  ore_sonno = ore_sonno,
+  stress = stress,
+  benessere = benessere
+)
+
+# Salviamo il file (per gli studenti sarà su Moodle)
+write.csv(dati, "dati_benessere.csv", row.names = FALSE)
+```
+
+
+## Esercizio 6a — Importare i dati
+
+```{r}
+dati <- read.csv("dati_benessere.csv")
+```
+
+```{r}
+dim(dati)
+```
+
+Il dataset ha **`r nrow(dati)` righe** (studenti) e **`r ncol(dati)` colonne** (variabili).
+
+```{r}
+head(dati)
+```
+
+
+## Esercizio 6b — Estrarre una variabile
+
+```{r}
+sonno <- dati$ore_sonno
+sonno
+```
+
+L'operatore `$` estrae una singola colonna dal data frame, restituendo un vettore. Possiamo fare lo stesso per le altre variabili:
+
+```{r}
+stress <- dati$stress
+benessere <- dati$benessere
+```
+
+
+## Esercizio 6c — Statistiche descrittive
+
+```{r}
+cat("=== Ore di sonno ===\n")
+cat("Media:    ", mean(sonno), "\n")
+cat("Mediana:  ", median(sonno), "\n")
+cat("SD:       ", round(sd(sonno), 2), "\n")
+cat("Min:      ", min(sonno), "\n")
+cat("Max:      ", max(sonno), "\n")
+cat("IQR:      ", IQR(sonno), "\n")
+```
+
+```{r}
+# Riepilogo di tutte le variabili
+summary(dati)
+```
+
+La funzione `summary()` fornisce in un colpo solo le statistiche principali (minimo, 1° quartile, mediana, media, 3° quartile, massimo) per tutte le variabili numeriche del dataset.
+
+
+## Esercizio 6d — Uno scatterplot
+
+```{r}
+#| fig-height: 5
+plot(dati$ore_sonno, dati$benessere,
+     xlab = "Ore di sonno",
+     ylab = "Benessere psicologico",
+     main = "Relazione tra sonno e benessere",
+     pch = 19, col = "steelblue")
+```
+
+**Interpretazione:** il grafico suggerisce una relazione **positiva** tra ore di sonno e benessere psicologico: gli studenti che dormono di più tendono a riportare punteggi di benessere più elevati. La relazione non è perfetta (c'è dispersione attorno alla tendenza), ma la direzione è chiara.
+
+Questo tipo di relazione è coerente con la letteratura psicologica: il sonno è un fattore protettivo per il benessere. Naturalmente, da uno scatterplot non possiamo concludere che il sonno *causi* benessere — potrebbe esserci una terza variabile (come lo stress) che influenza entrambi. Approfondiremo queste questioni nelle prossime lezioni.
+
+
+# Conclusione
+
+## Esercizio 7 — Riflessione
+
+*Risposta di esempio (una tra le molte possibili):*
+
+Fare i calcoli a mano prima di usare R mi ha aiutato a capire cosa succede "sotto il cofano". Quando scrivo `var(x)` in R, ora so che il programma sta calcolando gli scarti dalla media, li eleva al quadrato, li somma e divide per $n-1$ — non è più una scatola nera. In particolare, calcolare la tabella degli scarti a mano mi ha fatto capire perché la somma degli scarti è sempre zero, e perché si usano i quadrati nella varianza. La differenza principale è che R è molto più veloce quando i dati sono tanti: con 5 valori posso fare tutto a mano, ma con 1000 non è praticabile. R diventa quindi uno strumento che estende le mie capacità, non le sostituisce.
+
+
+# Note finali
+
+Questo primo homework ha introdotto i concetti fondamentali della statistica descrittiva attraverso un approccio "mani in pasta": calcolo a mano, poi replica in R. I concetti chiave che abbiamo toccato sono:
+
+- **Sommatorie**: la notazione $\sum$ è semplicemente un modo compatto per scrivere "somma tutti i valori".
+- **Media, varianza, SD**: misure che catturano il "centro" e la "dispersione" di una distribuzione.
+- **Aritmetica vettorializzata**: la caratteristica di R che rende il calcolo su interi vettori semplice e veloce.
+- **Istogramma di densità**: un modo per visualizzare la distribuzione dei dati dove l'area (non l'altezza!) rappresenta le proporzioni.
+- **Importazione e esplorazione**: i primi passi per lavorare con dati reali.
+
+Nel prossimo homework applicheremo queste competenze a un dataset più ricco, esplorando relazioni tra variabili e costruendo le basi per il ragionamento statistico.

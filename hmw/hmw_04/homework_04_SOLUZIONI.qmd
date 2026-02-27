@@ -1,0 +1,381 @@
+---
+title: "SOLUZIONI HOMEWORK 04"
+subtitle: "Distribuzioni discrete e continue"
+author: 
+  - name: "Prof. Corrado Caudek"
+    affiliation: "Università degli Studi di Firenze — Dipartimento NEUROFARBA, Sezione di Psicologia"
+    email: "corrado.caudek@unifi.it"
+course: "PSI0028 — Psicometria"
+date: today
+date-format: "DD MMMM YYYY"
+lang: it
+abstract: |
+  Soluzioni complete del quarto homework di Psicometria. L'homework introduce 
+  le principali distribuzioni di probabilità usate in psicologia: Bernoulli 
+  e Binomiale per contare successi, Poisson per eventi rari, Normale per 
+  variabili continue, e Beta per modellare credenze su proporzioni. 
+  L'esercizio finale anticipa l'aggiornamento bayesiano come passaggio 
+  naturale da prior a posterior.
+format: 
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    number-sections: false
+    code-fold: false
+    fig-align: center
+    df-print: kable
+    embed-resources: true
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+
+# La distribuzione Bernoulli e Binomiale
+
+## 1a — Bernoulli (ragionamento)
+
+Con $\theta = 0.70$:
+
+1. $P(X = 1) = \theta = 0.70$, $P(X = 0) = 1 - \theta = 0.30$.
+2. $E(X) = \theta = 0.70$. Il valore atteso di una Bernoulli è semplicemente 
+   la probabilità di successo.
+3. $\text{Var}(X) = \theta(1-\theta) = 0.70 \times 0.30 = 0.21$.
+
+Notiamo che la varianza della Bernoulli è massima quando $\theta = 0.50$ 
+(massima incertezza: successo e insuccesso sono equiprobabili) e diminuisce 
+man mano che $\theta$ si avvicina a 0 o a 1.
+
+
+## 1b — Dalla Bernoulli alla Binomiale (ragionamento)
+
+Con $n = 10$ e $\theta = 0.70$:
+
+1. $E(Y) = n\theta = 10 \times 0.70 = 7$ miglioramenti attesi.
+2. $\text{SD}(Y) = \sqrt{n\theta(1-\theta)} = \sqrt{10 \times 0.70 \times 0.30} 
+   = \sqrt{2.1} \approx 1.45$.
+3. Ci aspettiamo *circa* 7 miglioramenti, con una deviazione standard di 
+   circa 1.5. Quindi valori tra 5 e 9 sono "normali", mentre 0 o 10 sarebbero 
+   molto sorprendenti. Non tutti miglioreranno, ma la maggior parte sì.
+
+
+## 1c — Visualizzare la Binomiale in R
+
+Gli spazi andavano completati con `n` e `theta`:
+
+```{r}
+n <- 10
+theta <- 0.70
+
+k_valori <- 0:n
+probabilita <- dbinom(k_valori, size = n, prob = theta)
+
+barplot(probabilita, names.arg = k_valori,
+        col = "steelblue", border = "white",
+        xlab = "Numero di miglioramenti (k)",
+        ylab = "P(Y = k)",
+        main = "Distribuzione Binomiale (n = 10, θ = 0.70)")
+```
+
+La massa della distribuzione si concentra intorno a 7 (il valore atteso). 
+La distribuzione è **leggermente asimmetrica** (sbilanciata a sinistra), 
+perché $\theta = 0.70 > 0.50$. Se $\theta$ fosse 0.50, la distribuzione 
+sarebbe **perfettamente simmetrica** intorno a 5.
+
+
+## 1d — Simulare e contare
+
+```{r}
+set.seed(42)
+n_simulazioni <- 10000
+successi <- rbinom(n_simulazioni, size = 10, prob = 0.70)
+
+cat("Media teorica:  ", 10 * 0.70, "\n")
+cat("Media simulata: ", mean(successi), "\n")
+cat("SD teorica:     ", round(sqrt(10 * 0.70 * 0.30), 4), "\n")
+cat("SD simulata:    ", round(sd(successi), 4), "\n")
+
+hist(successi, breaks = seq(-0.5, 10.5, 1), 
+     freq = FALSE, col = "lightblue", border = "white",
+     xlab = "Numero di miglioramenti",
+     main = "10.000 simulazioni: Binomiale(10, 0.70)")
+```
+
+L'istogramma delle simulazioni è molto simile al grafico a barre teorico: 
+media e deviazione standard simulate corrispondono quasi esattamente ai 
+valori teorici. Questo conferma che `rbinom()` genera effettivamente campioni 
+dalla distribuzione Binomiale.
+
+
+# La distribuzione di Poisson
+
+## 2a — Contare eventi rari (ragionamento)
+
+Con $\lambda = 3$:
+
+1. $E(Y) = \lambda = 3$ chiamate al giorno.
+2. $\text{SD}(Y) = \sqrt{\lambda} = \sqrt{3} \approx 1.73$.
+3. 3 chiamate è il valore più "tipico" (vicino alla media). 10 chiamate 
+   sarebbe molto insolito: è a più di 4 deviazioni standard dalla media!
+
+
+## 2b — Calcoli con la Poisson
+
+1. $P(Y = 0) = \frac{3^0 e^{-3}}{0!} = 1 \cdot 0.0498 / 1 = 0.0498$
+
+2. $P(Y = 3) = \frac{3^3 e^{-3}}{3!} = \frac{27 \times 0.0498}{6} = \frac{1.344}{6} = 0.224$
+
+Verifica in R:
+
+```{r}
+cat("P(Y = 0):", dpois(0, lambda = 3), "\n")
+cat("P(Y = 3):", dpois(3, lambda = 3), "\n")
+```
+
+I valori calcolati a mano corrispondono (con le approssimazioni dovute 
+all'arrotondamento di $e^{-3}$).
+
+
+## 2c — Visualizzare e confrontare
+
+```{r}
+par(mfrow = c(1, 3))
+
+for (lam in c(1, 3, 10)) {
+  k <- 0:20
+  p <- dpois(k, lambda = lam)
+  barplot(p, names.arg = k, col = "coral", border = "white",
+          main = paste("Poisson(λ =", lam, ")"),
+          xlab = "k", ylab = "P(Y = k)")
+}
+
+par(mfrow = c(1, 1))
+```
+
+Al crescere di $\lambda$:
+
+- La distribuzione si **sposta a destra** (la media aumenta).
+- La distribuzione diventa **più simmetrica** e **più larga**.
+- Per $\lambda = 10$, la forma assomiglia a una **campana** (distribuzione 
+  Normale). Questo non è un caso: per $\lambda$ grande, la Poisson è ben 
+  approssimata da una Normale con $\mu = \lambda$ e $\sigma = \sqrt{\lambda}$.
+
+
+# La distribuzione Normale
+
+## 3a — La "campana" (ragionamento)
+
+Con QI $\sim \text{Normale}(100, 15)$:
+
+1. Il valore più probabile (la moda, che nella Normale coincide con la media) 
+   è **100**.
+2. Intervallo al 68%: $[100 - 15, 100 + 15] = [85, 115]$.
+3. Intervallo al 95%: $[100 - 30, 100 + 30] = [70, 130]$.
+4. Z-score di un QI di 145: $(145 - 100)/15 = 45/15 = 3.0$. Un QI di 145 
+   è a **3 deviazioni standard** sopra la media — un valore estremamente raro 
+   (solo circa lo 0.13% della popolazione).
+
+
+## 3b — Calcolare probabilità con la Normale in R
+
+```{r}
+# P(QI < 85)
+p_sotto_85 <- pnorm(85, mean = 100, sd = 15)
+cat("P(QI < 85):         ", round(p_sotto_85, 4), "\n")
+
+# P(QI > 130)
+p_sopra_130 <- 1 - pnorm(130, mean = 100, sd = 15)
+cat("P(QI > 130):        ", round(p_sopra_130, 4), "\n")
+
+# P(85 < QI < 115)
+p_tra_85_115 <- pnorm(115, mean = 100, sd = 15) - pnorm(85, mean = 100, sd = 15)
+cat("P(85 < QI < 115):   ", round(p_tra_85_115, 4), "\n")
+```
+
+1. Circa il **15.9%** della popolazione ha un QI sotto 85.
+2. Circa il **2.3%** ha un QI sopra 130.
+3. Circa il **68.3%** ha un QI tra 85 e 115 — questa è la famosa "regola 
+   del 68%".
+
+
+## 3c — Visualizzare la Normale
+
+```{r}
+x <- seq(40, 160, length.out = 300)
+y <- dnorm(x, mean = 100, sd = 15)
+
+plot(x, y, type = "l", col = "steelblue", lwd = 2,
+     xlab = "QI", ylab = "Densità",
+     main = "Distribuzione Normale del QI: N(100, 15)")
+
+x_fill <- seq(85, 115, length.out = 100)
+y_fill <- dnorm(x_fill, mean = 100, sd = 15)
+polygon(c(85, x_fill, 115), c(0, y_fill, 0), 
+        col = rgb(0.3, 0.5, 0.8, 0.3), border = NA)
+text(100, 0.01, "≈ 68%", cex = 1.2)
+```
+
+La regione colorata (da 85 a 115, cioè $\pm 1\sigma$) contiene circa il 68% 
+dell'area totale. L'area totale sotto l'intera curva è sempre 1 (100%), per 
+definizione di densità di probabilità.
+
+
+## 3d — Il parametro $\sigma$ cambia la forma
+
+```{r}
+x <- seq(40, 160, length.out = 300)
+
+plot(x, dnorm(x, 100, 10), type = "l", col = "red", lwd = 2,
+     xlab = "Valore", ylab = "Densità", ylim = c(0, 0.05),
+     main = "Effetto di σ sulla distribuzione Normale")
+lines(x, dnorm(x, 100, 15), col = "steelblue", lwd = 2)
+lines(x, dnorm(x, 100, 25), col = "seagreen", lwd = 2)
+legend("topright", 
+       legend = c("σ = 10", "σ = 15", "σ = 25"),
+       col = c("red", "steelblue", "seagreen"), lwd = 2)
+```
+
+Quando $\sigma$ è piccola, la curva è **stretta e alta** (concentrata intorno 
+alla media). Quando $\sigma$ è grande, la curva è **larga e bassa** (i valori 
+sono più dispersi). In termini di incertezza: una $\sigma$ piccola significa 
+**poca incertezza** (i valori sono prevedibili), una $\sigma$ grande significa 
+**molta incertezza** (i valori possono variare molto).
+
+Nota: l'area sotto la curva è sempre 1, indipendentemente da $\sigma$. Per 
+questo, quando la curva si allarga, deve anche abbassarsi (altrimenti l'area 
+sarebbe maggiore).
+
+
+# La distribuzione Beta: modellare credenze
+
+## 4a — La Beta come distribuzione di probabilità (ragionamento)
+
+1. $\text{Beta}(1, 1)$: media $= 1/(1+1) = 0.50$. Questa è una distribuzione 
+   **uniforme** su $[0, 1]$: tutti i valori di $\theta$ sono ugualmente 
+   probabili. Esprime massima ignoranza.
+
+2. $\text{Beta}(7, 3)$: media $= 7/(7+3) = 0.70$. Centrata su 0.70, con 
+   una certa dispersione.
+
+3. $\text{Beta}(90, 10)$: media $= 90/(90+10) = 0.90$. Sarà **molto più 
+   stretta** delle precedenti perché $\alpha + \beta = 100$ è grande: più 
+   la somma dei parametri è grande, più la distribuzione è concentrata 
+   (esprime più certezza).
+
+
+## 4b — Visualizzare diverse Beta
+
+```{r}
+x <- seq(0, 1, length.out = 300)
+
+plot(x, dbeta(x, 1, 1), type = "l", col = "gray40", lwd = 2,
+     xlab = "θ (probabilità di efficacia)",
+     ylab = "Densità",
+     ylim = c(0, 10),
+     main = "Distribuzioni Beta con diverse credenze a priori")
+lines(x, dbeta(x, 7, 3), col = "steelblue", lwd = 2)
+lines(x, dbeta(x, 90, 10), col = "coral", lwd = 2)
+legend("topleft",
+       legend = c("Beta(1,1) — nessuna idea",
+                  "Beta(7,3) — probabilmente funziona",
+                  "Beta(90,10) — quasi certo che funzioni"),
+       col = c("gray40", "steelblue", "coral"), lwd = 2)
+```
+
+- La $\text{Beta}(1,1)$ (grigia) è piatta: **massima incertezza**, tutti i 
+  valori di $\theta$ sono ugualmente plausibili.
+- La $\text{Beta}(7,3)$ (blu) è una gobba intorno a 0.70: **incertezza 
+  moderata**, ma centrata su valori medio-alti.
+- La $\text{Beta}(90,10)$ (rossa) è un picco stretto intorno a 0.90: 
+  **poca incertezza**, siamo abbastanza sicuri.
+
+La "larghezza" della distribuzione indica quanta incertezza abbiamo. 
+Più stretta = più sicuri, più larga = più incerti.
+
+
+## 4c — La Beta come prior bayesiano (anteprima!)
+
+```{r}
+x <- seq(0, 1, length.out = 300)
+
+plot(x, dbeta(x, 2, 2), type = "l", col = "gray50", lwd = 2, lty = 2,
+     xlab = "θ", ylab = "Densità", ylim = c(0, 4),
+     main = "Aggiornamento bayesiano: da prior a posterior")
+lines(x, dbeta(x, 10, 4), col = "steelblue", lwd = 2)
+legend("topleft",
+       legend = c("Prior: Beta(2, 2)", "Posterior: Beta(10, 4)"),
+       col = c("gray50", "steelblue"), lty = c(2, 1), lwd = 2)
+abline(v = 8/10, col = "red", lty = 3)
+text(0.85, 3.5, "dati: 8/10", col = "red", cex = 0.9)
+```
+
+La distribuzione a posteriori (blu) si è spostata verso i dati perché 
+l'**aggiornamento bayesiano** è un compromesso tra le credenze a priori e 
+l'evidenza dei dati. La prior $\text{Beta}(2, 2)$ era centrata su 0.50 
+(incerta), ma i dati (8 successi su 10) suggeriscono che $\theta$ è alto. 
+La posterior $\text{Beta}(10, 4)$ media $= 10/14 \approx 0.71$ è un punto 
+intermedio: si è spostata verso 0.80 (il dato) rispetto a 0.50 (la prior), 
+ma non completamente — la prior "tira" ancora un po' verso il centro.
+
+Questo è il cuore dell'inferenza bayesiana: le nostre credenze vengono 
+**aggiornate** alla luce dei dati, in modo proporzionale alla forza delle 
+evidenze e alla forza delle credenze a priori.
+
+
+# Riepilogo: un confronto visivo
+
+## Esercizio 5 — Tutte insieme
+
+```{r}
+par(mfrow = c(2, 2))
+
+barplot(dbinom(0:20, 20, 0.3), names.arg = 0:20,
+        col = "steelblue", border = "white",
+        main = "Binomiale(20, 0.3)", xlab = "k", ylab = "P(Y = k)")
+
+barplot(dpois(0:15, 5), names.arg = 0:15,
+        col = "coral", border = "white",
+        main = "Poisson(5)", xlab = "k", ylab = "P(Y = k)")
+
+curve(dnorm(x, 0, 1), from = -4, to = 4, col = "seagreen", lwd = 2,
+      main = "Normale(0, 1)", xlab = "x", ylab = "Densità")
+
+curve(dbeta(x, 5, 2), from = 0, to = 1, col = "purple", lwd = 2,
+      main = "Beta(5, 2)", xlab = "θ", ylab = "Densità")
+
+par(mfrow = c(1, 1))
+```
+
+*Risposte di esempio:*
+
+- **Binomiale**: Si usa quando contiamo il numero di "successi" in un numero 
+  fisso di prove indipendenti (es. quanti pazienti su 20 migliorano).
+- **Poisson**: Si usa quando contiamo quante volte un evento (tipicamente raro) 
+  si verifica in un intervallo di tempo o spazio (es. chiamate di crisi al 
+  giorno, errori per pagina).
+- **Normale**: Si usa per variabili continue che risultano dalla somma di 
+  molte piccole influenze (es. punteggi QI, altezze, tempi di reazione medi).
+- **Beta**: Si usa per modellare l'incertezza su una proporzione o una 
+  probabilità, e nel contesto bayesiano è la distribuzione a priori naturale 
+  per parametri binomiali (es. la nostra credenza sulla probabilità di 
+  efficacia di un intervento).
+
+
+# Note finali
+
+In questo homework hai imparato a:
+
+- **Distinguere** distribuzioni discrete (Bernoulli, Binomiale, Poisson) e 
+  continue (Normale, Beta).
+- **Calcolare** valore atteso e deviazione standard per ciascuna distribuzione.
+- **Usare le funzioni R** `dbinom`, `dpois`, `dnorm`, `dbeta` per calcolare 
+  densità e `pbinom`, `ppois`, `pnorm`, `pbeta` per le probabilità cumulative.
+- **Interpretare** graficamente il ruolo dei parametri.
+- **Riconoscere** la distribuzione Beta come strumento per esprimere credenze 
+  a priori — un concetto che sarà centrale nell'inferenza bayesiana.
+
+Il prossimo homework si concentrerà su **variabili casuali** (valore atteso, 
+varianza, covarianza) e sulla **funzione di verosimiglianza** — lo strumento 
+che ci dice "cosa dicono i dati sul parametro".

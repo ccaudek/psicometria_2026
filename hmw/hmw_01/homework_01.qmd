@@ -1,0 +1,374 @@
+---
+title: "HOMEWORK 01"
+subtitle: "PSICOMETRIA 2025-2026"
+author: "Corrado Caudek"
+lang: it
+format: 
+  html:
+    code-fold: false
+    toc: true
+    toc-depth: 3
+    number-sections: false
+editor: source
+date: today
+---
+
+# Homework
+
+**Che cos'è questo homework?** È il tuo primo contatto con il ragionamento
+quantitativo e con R. L'idea è semplice: ogni calcolo lo fai **prima a mano**
+(o con la calcolatrice), poi lo replichi in R. Così vedi che R non fa niente 
+di "magico" — esegue esattamente le stesse operazioni che faresti tu, ma più
+velocemente.
+
+**Quando scade?** L'homework scade **DOMENICA 8 MARZO 2026** alle ore 23:59. 
+Puoi lavorare in gruppo per discutere le idee, ma devi consegnare un elaborato 
+individuale.
+
+**Dove consegno?** Carica il tuo homework al link fornito su Moodle. Nomina il
+file: `COGNOME_NOME_HW0.html` (o `.pdf`). Non consegnare file Word.
+
+**Materiale propedeutico.** Prima di iniziare, assicurati di aver letto i
+primi capitoli di [Analisi esplorativa dei dati](https://ccaudek.github.io/utet-eda/).
+Se non hai ancora installato R e RStudio, segui le istruzioni nella Lezione 1.
+
+::: {.callout-tip}
+## Non spaventarti!
+In questo homework non devi sapere già programmare. Ti guidiamo passo dopo passo.
+Se qualcosa non funziona, scrivi quello che hai provato e dove ti sei bloccato:
+è un modo perfettamente valido di rispondere!
+:::
+
+# Sommatorie: a mano e poi con R
+
+Consideriamo i seguenti cinque valori, che rappresentano i punteggi di 
+5 studenti a un breve quiz (scala 0–10):
+
+$$x_1 = 3, \quad x_2 = 7, \quad x_3 = 5, \quad x_4 = 8, \quad x_5 = 2$$
+
+## Esercizio 1a — Sommatoria a mano
+
+Calcola a mano (o con la calcolatrice) il valore della sommatoria:
+
+$$\sum_{i=1}^{5} x_i = \; ?$$
+
+Scrivi tutti i passaggi.
+
+## Esercizio 1b — Sommatoria in R
+
+Crea in R un vettore `x` con i cinque valori, poi usa la funzione `sum()` per
+verificare il risultato che hai ottenuto a mano.
+
+```r
+# Completa:
+x <- c(___, ___, ___, ___, ___)
+sum(x)
+```
+
+## Esercizio 1c — Media aritmetica a mano e in R
+
+La media aritmetica è definita come:
+
+$$\bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i$$
+
+1. Calcola $\bar{x}$ a mano usando i cinque valori.
+2. Verifica in R con la funzione `mean()`.
+3. Verifica anche calcolandola "dalla definizione": `sum(x) / length(x)`.
+
+# Aritmetica vettorializzata
+
+Una delle caratteristiche più utili di R è che le operazioni si applicano 
+automaticamente a **tutti gli elementi** di un vettore, senza bisogno di 
+ripeterle una per una. Si chiama *aritmetica vettorializzata*.
+
+## Esercizio 2a — Scarti dalla media, a mano
+
+Per ciascun valore $x_i$, calcola lo **scarto dalla media** $d_i = x_i - \bar{x}$. 
+Compila la tabella:
+
+| $i$ | $x_i$ | $\bar{x}$ | $d_i = x_i - \bar{x}$ |
+|:---:|:------:|:----------:|:----------------------:|
+|  1  |   3    |            |                        |
+|  2  |   7    |            |                        |
+|  3  |   5    |            |                        |
+|  4  |   8    |            |                        |
+|  5  |   2    |            |                        |
+
+Poi verifica: qual è la somma di tutti gli scarti $\sum d_i$? (Dovrebbe essere
+un numero molto speciale — quale?)
+
+## Esercizio 2b — Scarti dalla media in R (una sola riga!)
+
+In R puoi calcolare tutti gli scarti con **una sola istruzione**:
+
+```r
+d <- x - mean(x)
+d
+```
+
+Eseguilo e confronta con la tabella che hai compilato a mano. Poi verifica 
+che `sum(d)` dia (approssimativamente) zero.
+
+## Esercizio 2c — Scarti al quadrato, a mano e in R
+
+Completa la tabella aggiungendo $d_i^2$:
+
+| $i$ | $x_i$ | $d_i$ | $d_i^2$ |
+|:---:|:------:|:-----:|:-------:|
+|  1  |   3    |       |         |
+|  2  |   7    |       |         |
+|  3  |   5    |       |         |
+|  4  |   8    |       |         |
+|  5  |   2    |       |         |
+| **Somma** | | | $\sum d_i^2 = \;?$ |
+
+In R: `d^2` eleva al quadrato **ogni elemento** del vettore. Verifica con 
+`sum(d^2)`.
+
+
+# La varianza e la deviazione standard
+
+## Esercizio 3a — Varianza a mano
+
+La varianza (campionaria) è definita come:
+
+$$s^2 = \frac{1}{n-1}\sum_{i=1}^{n}(x_i - \bar{x})^2$$
+
+Usando il valore di $\sum d_i^2$ che hai calcolato nell'esercizio precedente
+e $n = 5$, calcola $s^2$ a mano.
+
+## Esercizio 3b — Varianza in R, dalla definizione
+
+Scrivi la formula in R passo per passo:
+
+```r
+# Completa:
+n <- length(x)
+varianza <- sum((x - mean(x))^2) / (n - ___)
+varianza
+```
+
+Poi confronta con la funzione built-in: `var(x)`. Coincidono?
+
+## Esercizio 3c — Deviazione standard
+
+La deviazione standard è la radice quadrata della varianza: $s = \sqrt{s^2}$.
+
+1. Calcolala a mano.
+2. In R: `sqrt(varianza)` oppure direttamente `sd(x)`.
+
+## Esercizio 3d — Capire la SD attraverso lo scarto medio assoluto
+
+La deviazione standard non è sempre facile da interpretare intuitivamente.
+Un'alternativa più intuitiva è lo **scarto medio assoluto** (in inglese 
+*Mean Absolute Deviation*, MAD semplificato):
+
+$$\text{SMA} = \frac{1}{n}\sum_{i=1}^{n} |x_i - \bar{x}|$$
+
+Si legge così: "In media, di quanto si discosta ogni osservazione dalla media?"
+
+1. Calcola l'SMA a mano per i nostri 5 valori. *(Suggerimento: prendi i valori
+   assoluti degli scarti $d_i$ che hai già calcolato.)*
+2. In R: `mean(abs(x - mean(x)))`.
+3. Confronta SMA e SD. La SD è più grande — perché? *(Suggerimento: l'elevamento
+   al quadrato "penalizza" gli scarti grandi più di quelli piccoli.)*
+
+::: {.callout-note}
+## Per chi vuole approfondire: la MAD robusta
+Esiste anche la **MAD robusta** (*Median Absolute Deviation*), definita come:
+$\text{MAD} = \text{mediana}(|x_i - \text{mediana}(x)|)$. In R: `mad(x)`.
+A differenza della SD, è resistente ai valori estremi (outlier).
+Prova a calcolarla e confrontala con la SD.
+:::
+
+
+# Quantili: capirli a mano
+
+## Esercizio 4a — Ordinare e trovare la mediana
+
+Prendi i 5 valori dell'Esercizio 1 e **ordinali** dal più piccolo al più grande.
+
+1. Qual è la mediana (il valore che divide a metà la distribuzione)?
+2. In R: `sort(x)` e poi `median(x)`.
+
+## Esercizio 4b — Quartili a mano
+
+Con 5 valori ordinati, stima approssimativamente:
+
+- $Q_1$ (25° percentile): il valore sotto il quale cade circa il 25% dei dati.
+- $Q_3$ (75° percentile): il valore sotto il quale cade circa il 75% dei dati.
+
+*(Non preoccuparti se il calcolo esatto è un po' ambiguo con solo 5 valori 
+— ci sono diversi metodi. L'importante è l'idea.)*
+
+In R: `quantile(x)`. Confronta i risultati.
+
+## Esercizio 4c — Range interquartile
+
+Il range interquartile è: $\text{IQR} = Q_3 - Q_1$.
+
+Calcolalo a mano e verifica con `IQR(x)` in R.
+
+
+# L'istogramma: costruirlo a mano, poi con R
+
+Consideriamo ora un dataset leggermente più grande. Supponiamo che 20 studenti
+abbiano riportato il **numero di ore di studio** nella settimana prima di un esame:
+
+$$4, 6, 7, 3, 8, 5, 6, 9, 2, 7, 5, 6, 8, 4, 6, 7, 5, 3, 6, 8$$
+
+## Esercizio 5a — Tabella di frequenza a mano
+
+Conta quante volte compare ciascun valore e completa la tabella:
+
+| Ore di studio | Frequenza ($f_i$) | Frequenza relativa ($f_i / n$) |
+|:-------------:|:------------------:|:------------------------------:|
+|       2       |                    |                                |
+|       3       |                    |                                |
+|       4       |                    |                                |
+|       5       |                    |                                |
+|       6       |                    |                                |
+|       7       |                    |                                |
+|       8       |                    |                                |
+|       9       |                    |                                |
+| **Totale**    |       20           |              1.00              |
+
+## Esercizio 5b — Densità delle barre
+
+Quando si raggruppano i dati in **classi** (o *bin*), l'altezza delle barre
+di un istogramma di densità è:
+
+$$\text{densità} = \frac{\text{frequenza relativa}}{\text{ampiezza della classe}}$$
+
+Raggruppa i dati in 3 classi: [2, 4), [4, 7), [7, 10). Per ciascuna classe:
+
+1. Conta quanti valori cadono nella classe.
+2. Calcola la frequenza relativa.
+3. Calcola la densità (l'ampiezza è: 2, 3, 3 rispettivamente).
+4. Disegna a mano l'istogramma (rettangoli con base = ampiezza e altezza = densità).
+
+::: {.callout-tip}
+## Proprietà fondamentale
+L'area totale dell'istogramma di densità è sempre 1.
+Verifica: la somma delle aree dei tuoi 3 rettangoli fa 1?
+:::
+
+## Esercizio 5c — Istogramma in R
+
+```r
+ore <- c(4, 6, 7, 3, 8, 5, 6, 9, 2, 7, 5, 6, 8, 4, 6, 7, 5, 3, 6, 8)
+
+# Istogramma con le stesse classi usate a mano
+hist(ore, 
+     breaks = c(2, 4, 7, 10), 
+     freq = FALSE,          # <-- densità, non frequenza!
+     col = "steelblue",
+     main = "Ore di studio — istogramma di densità",
+     xlab = "Ore di studio",
+     ylab = "Densità")
+```
+
+Confronta il grafico R con quello disegnato a mano. Coincidono?
+
+
+# Lavorare con dati "veri" in R
+
+Ora passiamo a un piccolo dataset reale. Il file `dati_benessere.csv` 
+(disponibile su Moodle) contiene dati di 30 studenti universitari con le 
+seguenti variabili:
+
+- **id**: codice identificativo;
+- **ore_sonno**: ore di sonno per notte (valore medio nell'ultima settimana);
+- **stress**: livello di stress percepito (scala 1–10);
+- **benessere**: punteggio a un questionario di benessere psicologico (scala 10–50).
+
+## Esercizio 6a — Importare i dati
+
+Importa il file in R. Se il file è nella stessa cartella del tuo `.qmd`:
+
+```r
+dati <- read.csv("dati_benessere.csv")
+```
+
+Oppure, se preferisci:
+
+```r
+dati <- rio::import("dati_benessere.csv")
+```
+
+Poi rispondi: quante righe e quante colonne ha il dataset? (In R: `dim(dati)` 
+oppure `nrow(dati)` e `ncol(dati)`).
+
+## Esercizio 6b — Estrarre una variabile
+
+Per estrarre la variabile `ore_sonno` dal dataset, usa l'operatore `$`:
+
+```r
+sonno <- dati$ore_sonno
+sonno
+```
+
+Fai lo stesso per `stress` e `benessere`.
+
+## Esercizio 6c — Statistiche descrittive
+
+Per la variabile `ore_sonno`, calcola e riporta:
+
+1. Media (`mean()`),
+2. Mediana (`median()`),
+3. Deviazione standard (`sd()`),
+4. Minimo e massimo (`min()`, `max()`),
+5. Range interquartile (`IQR()`).
+
+Poi usa la funzione `summary(dati)` per ottenere un riepilogo di **tutte** 
+le variabili in un colpo solo.
+
+## Esercizio 6d — Uno scatterplot
+
+Crea un diagramma a dispersione (*scatterplot*) per visualizzare la relazione 
+tra `ore_sonno` (asse x) e `benessere` (asse y):
+
+```r
+plot(dati$ore_sonno, dati$benessere,
+     xlab = "Ore di sonno",
+     ylab = "Benessere psicologico",
+     main = "Relazione tra sonno e benessere",
+     pch = 19, col = "steelblue")
+```
+
+Cosa osservi? La relazione sembra positiva, negativa o assente? 
+Scrivi una breve interpretazione (2–3 frasi).
+
+
+# Conclusione
+
+## Esercizio 7 — Riflessione (breve)
+
+In circa 100 parole, rispondi a questa domanda:
+
+> Qual è la differenza tra calcolare qualcosa "a mano" e farlo con R? 
+> Ti ha aiutato fare prima il calcolo a mano per capire cosa fa R?
+
+Non c'è una risposta giusta o sbagliata — è una riflessione personale.
+
+
+# Criteri di valutazione
+
+L'homework è valutato su una scala **Sufficiente / Buono / Ottimo**:
+
+- **Sufficiente**: i calcoli a mano sono presenti e ragionevolmente corretti; 
+  il codice R è presente anche se con qualche errore; le interpretazioni sono 
+  abbozzate.
+- **Buono**: calcoli a mano corretti, codice R funzionante, interpretazioni 
+  chiare.
+- **Ottimo**: tutto quanto sopra, più gli esercizi opzionali e riflessioni 
+  che mostrano comprensione profonda.
+
+::: {.callout-tip}
+## Suggerimento pratico
+Non partire dall'ultimo esercizio! Vai in ordine. Ogni esercizio prepara il 
+successivo. Se ti blocchi, scrivi **dove** ti sei bloccato e **cosa** hai 
+provato: è un modo del tutto legittimo di rispondere.
+:::
+
+Buon lavoro e buon divertimento!

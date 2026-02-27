@@ -1,0 +1,396 @@
+---
+title: "HOMEWORK 03"
+subtitle: "PSICOMETRIA 2025-2026"
+author: "Corrado Caudek"
+lang: it
+format: 
+  html:
+    code-fold: false
+    toc: true
+    toc-depth: 3
+    number-sections: false
+editor: source
+date: today
+---
+
+# Homework
+
+**Che cos'è questo homework?** Nei primi due homework hai imparato a fare 
+calcoli in R e a esplorare dataset. Ora entriamo nel cuore del ragionamento 
+statistico: la **probabilità**. L'idea di fondo è semplice — la probabilità 
+è il linguaggio che usiamo per parlare dell'incertezza. In psicologia ne 
+abbiamo bisogno continuamente: quanto è probabile che un test dia un falso 
+positivo? Quanto è credibile un'ipotesi alla luce dei dati?
+
+Non preoccuparti se la probabilità ti sembra astratta: la affronteremo con 
+**esempi concreti** e **simulazioni in R**. Vedrai che simulare un esperimento 
+casuale al computer è il modo più efficace per capire cosa significano davvero 
+i concetti probabilistici.
+
+**Quando scade?** L'homework scade **MERCOLEDÌ 15 APRILE 2026** alle ore 23:59.
+
+**Dove consegno?** Carica il tuo homework al link su Moodle. Nomina il file:
+`COGNOME_NOME_HW3.html` (o `.pdf`).
+
+**Materiale propedeutico.** Assicurati di aver letto i capitoli sulla 
+probabilità nel sito companion
+[La probabilità](https://ccaudek.github.io/utet-prob/).
+
+::: {.callout-tip}
+## Filosofia di questo homework
+Ogni esercizio segue lo stesso schema: (1) ragiona sul problema senza 
+computer, (2) verifica con una simulazione in R. Questo doppio passaggio è 
+fondamentale: la simulazione non sostituisce il ragionamento — lo conferma 
+e lo rende tangibile.
+:::
+
+
+# La probabilità come frequenza a lungo termine
+
+Iniziamo con l'idea più intuitiva: se ripeti un esperimento molte volte, la 
+**frequenza relativa** di un evento si avvicina alla sua probabilità.
+
+## Esercizio 1a — Il lancio di un dado (ragionamento)
+
+Un dado equilibrato a 6 facce viene lanciato una volta. Rispondi a queste 
+domande *senza usare R*:
+
+1. Qual è lo spazio campionario $\Omega$ (cioè l'insieme di tutti i possibili 
+   risultati)?
+2. Qual è la probabilità di ottenere un 4?
+3. Qual è la probabilità di ottenere un numero pari?
+4. Qual è la probabilità di ottenere un numero maggiore di 4?
+
+*(Suggerimento: per un dado equilibrato, tutti gli esiti hanno la stessa 
+probabilità. Conta quanti esiti soddisfano la condizione e dividi per il 
+totale.)*
+
+
+## Esercizio 1b — Simulare 10.000 lanci di dado in R
+
+Ora verifichiamo con R. La funzione `sample()` simula estrazioni casuali:
+
+```r
+set.seed(42)  # rende la simulazione riproducibile
+n_lanci <- 10000
+risultati <- sample(1:6, size = n_lanci, replace = TRUE)
+
+# Quante volte è uscito il 4?
+n_quattro <- sum(risultati == 4)
+cat("Frequenza relativa del 4:", n_quattro / n_lanci, "\n")
+cat("Probabilità teorica:     ", 1/6, "\n")
+```
+
+Esegui il codice e confronta la frequenza relativa con la probabilità teorica. 
+Sono uguali? Sono vicine? Perché?
+
+
+## Esercizio 1c — La legge dei grandi numeri, visivamente
+
+Cosa succede alla frequenza relativa man mano che aumentiamo il numero di 
+lanci? Completa e esegui il codice:
+
+```r
+set.seed(42)
+lanci <- sample(1:6, size = 10000, replace = TRUE)
+
+# Calcola la frequenza relativa cumulativa del "4"
+freq_cum <- cumsum(lanci == ___) / 1:length(lanci)
+
+plot(freq_cum, type = "l", col = "steelblue", lwd = 1.5,
+     xlab = "Numero di lanci",
+     ylab = "Frequenza relativa del 4",
+     main = "Legge dei grandi numeri")
+abline(h = 1/6, col = "red", lty = 2)
+legend("topright", legend = c("Frequenza osservata", "P(4) = 1/6"),
+       col = c("steelblue", "red"), lty = c(1, 2))
+```
+
+*(Suggerimento: al posto di `___` metti il numero di cui stai calcolando la 
+frequenza.)*
+
+**Domanda:** Cosa osservi nel grafico? La linea blu si stabilizza? Intorno a 
+quale valore? Scrivi 2–3 frasi.
+
+
+# Eventi, intersezione e unione
+
+## Esercizio 2a — Due eventi e le loro combinazioni (ragionamento)
+
+Lanciamo un dado equilibrato. Definiamo due eventi:
+
+- $A$ = "esce un numero pari" = $\{2, 4, 6\}$
+- $B$ = "esce un numero maggiore di 3" = $\{4, 5, 6\}$
+
+Calcola *a mano*:
+
+1. $P(A)$ e $P(B)$
+2. $A \cap B$ (l'intersezione: gli esiti che appartengono sia ad $A$ che a $B$) 
+   e $P(A \cap B)$
+3. $A \cup B$ (l'unione: gli esiti che appartengono ad $A$ *o* a $B$ o a 
+   entrambi) e $P(A \cup B)$
+4. Verifica la formula dell'unione: 
+   $P(A \cup B) = P(A) + P(B) - P(A \cap B)$
+
+
+## Esercizio 2b — Verifica con simulazione
+
+```r
+set.seed(123)
+n <- 100000
+lanci <- sample(1:6, size = n, replace = TRUE)
+
+A <- lanci %% 2 == 0          # pari
+B <- lanci > 3                 # maggiore di 3
+AeB <- A & B                  # intersezione (AND)
+AoB <- A | B                  # unione (OR)
+
+cat("P(A) simulata:       ", mean(A), "\n")
+cat("P(B) simulata:       ", mean(B), "\n")
+cat("P(A ∩ B) simulata:   ", mean(AeB), "\n")
+cat("P(A ∪ B) simulata:   ", mean(AoB), "\n")
+```
+
+**Domanda:** I valori simulati corrispondono (circa) a quelli calcolati a mano?
+
+::: {.callout-note}
+## Nota importante
+In R, `&` significa "AND" (intersezione) e `|` significa "OR" (unione). 
+Quando applichi queste operazioni a vettori di `TRUE`/`FALSE`, R le esegue 
+elemento per elemento. Poi `mean()` calcola la proporzione di `TRUE`, che è 
+la frequenza relativa — cioè la nostra stima della probabilità!
+:::
+
+
+# Probabilità condizionata: aggiornare le credenze
+
+La probabilità condizionata è l'idea più importante di questo corso. In 
+parole semplici: **come cambia la probabilità di un evento quando veniamo a 
+sapere qualcosa di nuovo?**
+
+## Esercizio 3a — Un esempio clinico (ragionamento)
+
+In una clinica universitaria, il 30% dei pazienti ha un disturbo d'ansia (A), 
+il 20% ha un disturbo del sonno (S), e il 12% ha *entrambi* i disturbi.
+
+1. $P(A) = ?$, $P(S) = ?$, $P(A \cap S) = ?$
+
+2. Se sappiamo che un paziente ha un disturbo d'ansia, qual è la probabilità 
+   che abbia anche un disturbo del sonno? Calcola: 
+   $$P(S \mid A) = \frac{P(A \cap S)}{P(A)} = ?$$
+
+3. Se sappiamo che un paziente ha un disturbo del sonno, qual è la probabilità 
+   che abbia anche un disturbo d'ansia? Calcola: 
+   $$P(A \mid S) = \frac{P(A \cap S)}{P(S)} = ?$$
+
+4. $P(S \mid A)$ e $P(A \mid S)$ sono uguali? Perché? *(Suggerimento: 
+   attenzione — confondere queste due probabilità è un errore molto comune, 
+   anche tra professionisti.)*
+
+
+## Esercizio 3b — Simulazione della clinica
+
+Simuliamo 10.000 pazienti. L'idea è creare una "popolazione virtuale" che 
+rispetti le probabilità date:
+
+```r
+set.seed(2026)
+n <- 10000
+
+# Genera il disturbo d'ansia (30% dei pazienti)
+ansia <- rbinom(n, 1, prob = 0.30)
+
+# Genera il disturbo del sonno in modo coerente:
+# - se il paziente ha ansia, P(sonno) deve dare P(A ∩ S) = 0.12
+#   cioè P(S|A) = 0.12/0.30 = 0.40
+# - se non ha ansia, P(S) deve dare P(S) - P(A∩S) ripartito sui non-ansia
+#   cioè P(S|¬A) = (0.20 - 0.12) / 0.70 ≈ 0.114
+sonno <- ifelse(ansia == 1,
+                rbinom(sum(ansia == 1), 1, prob = 0.40),
+                rbinom(sum(ansia == 0), 1, prob = 0.08/0.70))
+
+# Verifica
+cat("P(A) simulata:     ", mean(ansia), "\n")
+cat("P(S) simulata:     ", mean(sonno), "\n")
+cat("P(A ∩ S) simulata: ", mean(ansia == 1 & sonno == 1), "\n")
+cat("P(S|A) simulata:   ", mean(sonno[ansia == 1]), "\n")
+cat("P(A|S) simulata:   ", mean(ansia[sonno == 1]), "\n")
+```
+
+**Domanda:** I valori simulati sono vicini a quelli calcolati a mano? 
+Quale delle due probabilità condizionate è più grande, $P(S|A)$ o $P(A|S)$?
+
+
+# Il teorema di Bayes: il cuore del ragionamento
+
+Il teorema di Bayes ci dice come "invertire" una probabilità condizionata. 
+È uno strumento potentissimo, e lo useremo per tutto il resto del corso.
+
+## Esercizio 4a — Screening per la depressione (ragionamento guidato)
+
+Un questionario di screening per la depressione ha le seguenti caratteristiche:
+
+- **Sensibilità** (probabilità di test positivo se il paziente è depresso): 
+  $P(+|D) = 0.90$
+- **Specificità** (probabilità di test negativo se il paziente NON è depresso): 
+  $P(-|\neg D) = 0.85$
+- **Prevalenza** della depressione nella popolazione studentesca: $P(D) = 0.15$
+
+Un studente risulta **positivo** al test. Qual è la probabilità che sia 
+davvero depresso?
+
+**Risolvi passo per passo:**
+
+*Passo 1:* Immagina 1000 studenti. Quanti sono depressi? Quanti no?
+
+*Passo 2:* Dei depressi, quanti risultano positivi al test? (usa la sensibilità)
+
+*Passo 3:* Dei non-depressi, quanti risultano positivi? (calcola il tasso di 
+falsi positivi: $P(+|\neg D) = 1 - 0.85 = ?$)
+
+*Passo 4:* In totale, quanti studenti sono positivi?
+
+*Passo 5:* Di questi positivi, quanti sono davvero depressi? Questa è 
+$P(D|+)$.
+
+Completa la tabella:
+
+|                 | Depressi ($D$) | Non depressi ($\neg D$) | Totale |
+|:---------------:|:--------------:|:-----------------------:|:------:|
+| Test + (positivo) |              |                         |        |
+| Test − (negativo) |              |                         |        |
+| **Totale**        |   150        |          850            |  1000  |
+
+
+## Esercizio 4b — Con la formula di Bayes
+
+Verifica il risultato usando la formula:
+
+$$P(D|+) = \frac{P(+|D) \cdot P(D)}{P(+|D) \cdot P(D) + P(+|\neg D) \cdot P(\neg D)}$$
+
+Calcola il numeratore e il denominatore separatamente, poi fai la divisione.
+
+
+## Esercizio 4c — Simulazione dello screening
+
+```r
+set.seed(2026)
+n <- 100000
+
+# 1. Genera chi è depresso e chi no
+depresso <- rbinom(n, 1, prob = 0.15)
+
+# 2. Genera il risultato del test
+test_pos <- ifelse(depresso == 1,
+                   rbinom(sum(depresso == 1), 1, prob = ___),    # sensibilità
+                   rbinom(sum(depresso == 0), 1, prob = ___))    # falsi positivi
+
+# 3. Calcola P(D|+)
+cat("P(D|+) simulata:", mean(depresso[test_pos == 1]), "\n")
+```
+
+*(Suggerimento: al primo `___` metti la sensibilità, al secondo il tasso 
+di falsi positivi.)*
+
+**Domanda:** Il risultato ti sorprende? Anche con un test abbastanza buono 
+(sensibilità 90%, specificità 85%), $P(D|+)$ è ben lontano dal 90%. 
+Spiega in 2–3 frasi perché succede questo. *(Suggerimento: c'entra la 
+prevalenza — quando la malattia è rara, i falsi positivi diventano molto 
+numerosi.)*
+
+
+## Esercizio 4d — Come cambia con la prevalenza?
+
+Ripeti il calcolo (a mano o con R) per tre diversi valori di prevalenza e 
+completa la tabella:
+
+| Prevalenza $P(D)$ | $P(D\mid +)$ |
+|:------------------:|:-------------:|
+|       0.01         |               |
+|       0.15         | (già calcolato) |
+|       0.50         |               |
+
+**Domanda:** Cosa osservi? Quando la prevalenza è molto bassa (1%), il valore 
+predittivo positivo è alto o basso? E quando è alta (50%)? Scrivi 2–3 frasi 
+che spieghino perché questo è importante nella pratica clinica.
+
+
+# Indipendenza: quando sapere non cambia nulla
+
+## Esercizio 5a — Indipendenza (ragionamento)
+
+Due eventi $A$ e $B$ sono **indipendenti** quando conoscere uno non cambia la 
+probabilità dell'altro, cioè $P(A|B) = P(A)$ (e $P(B|A) = P(B)$).
+
+In questo caso vale una proprietà molto comoda:
+$$P(A \cap B) = P(A) \cdot P(B)$$
+
+Torniamo all'esempio clinico dell'Esercizio 3: ansia ($P(A) = 0.30$) e 
+disturbo del sonno ($P(S) = 0.20$).
+
+1. Se i due disturbi fossero indipendenti, quanto varrebbe $P(A \cap S)$?
+2. Noi sappiamo che $P(A \cap S) = 0.12$. I due disturbi sono indipendenti? 
+   Perché?
+3. Il fatto che $P(A \cap S) > P(A) \cdot P(S)$ cosa ci dice sulla relazione 
+   tra ansia e sonno?
+
+
+## Esercizio 5b — Verifica con i dadi
+
+Due lanci successivi di un dado sono eventi indipendenti. Verifichiamolo:
+
+```r
+set.seed(42)
+n <- 100000
+dado1 <- sample(1:6, n, replace = TRUE)
+dado2 <- sample(1:6, n, replace = TRUE)
+
+# P(dado1 = 6)
+p_sei_1 <- mean(dado1 == 6)
+
+# P(dado1 = 6 | dado2 = 6)
+p_sei_1_dato_sei_2 <- mean(dado1[dado2 == 6] == 6)
+
+cat("P(dado1 = 6):            ", round(p_sei_1, 4), "\n")
+cat("P(dado1 = 6 | dado2 = 6):", round(p_sei_1_dato_sei_2, 4), "\n")
+cat("Sono (circa) uguali?     ", 
+    abs(p_sei_1 - p_sei_1_dato_sei_2) < 0.01, "\n")
+```
+
+**Domanda:** Sapere che il secondo dado ha dato 6, cambia la probabilità che 
+il primo dia 6? Questo conferma l'indipendenza?
+
+
+# Conclusione: perché tutto questo è importante
+
+## Esercizio 6 — Riflessione
+
+In circa 100 parole, rispondi a questa domanda:
+
+> L'esercizio sullo screening per la depressione (Esercizio 4) mostra che 
+> $P(D|+) \neq P(+|D)$. In pratica, quando un clinico legge un test positivo, 
+> quale delle due probabilità gli interessa di più? Perché?
+
+Non c'è una risposta giusta o sbagliata — l'importante è dimostrare che ci 
+hai ragionato.
+
+
+# Criteri di valutazione
+
+| Livello | Cosa significa |
+|---------|----------------|
+| **Sufficiente** | I calcoli a mano sono presenti e ragionevolmente corretti; il codice R è presente anche se con qualche errore; le interpretazioni sono abbozzate. |
+| **Buono** | Calcoli a mano corretti, simulazioni funzionanti, interpretazioni chiare e ragionate. |
+| **Ottimo** | Tutto quanto sopra, più riflessioni che mostrano comprensione profonda del legame tra simulazione e teoria. |
+
+::: {.callout-tip}
+## Se ti blocchi...
+1. Rileggi la parte corrispondente del sito 
+   [La probabilità](https://ccaudek.github.io/utet-prob/).
+2. Prova a eseguire il codice riga per riga.
+3. Per i calcoli a mano: usa il "metodo delle 1000 persone" (o 10.000) — 
+   trasforma le probabilità in conteggi, è molto più intuitivo!
+4. Scrivi nel tuo elaborato **dove** ti sei bloccato e **cosa** hai provato.
+:::
+
+Buon lavoro!
