@@ -1,0 +1,26 @@
+project:
+  type: website
+  output-dir: _site
+  render:
+    - index.qmd
+    - "lezioni/**/*.qmd"
+    - "!lezioni/_extensions/"
+    - "!lezioni/**/*_old.qmd"
+
+website:
+  title: "Psicometria 2025-26"
+  site-url: https://ccaudek.github.io/psicometria_2026/
+  repo-url: https://github.com/ccaudek/psicometria_2026
+
+lang: it
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 2
+
+# Il codice R viene eseguito solo sul computer locale; i risultati sono
+# salvati in _freeze/ e un file viene rieseguito solo se il .qmd cambia.
+execute:
+  freeze: auto

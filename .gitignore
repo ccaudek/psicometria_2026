@@ -3,4 +3,11 @@
 !*.qmd
 !*.csv
 !*.scss
+!_quarto.yml
+!_publish.yml
 
+# output di Quarto (pubblicato sul branch gh-pages, non su main)
+/_site/
+/.quarto/
+
+**/*.quarto_ipynb

@@ -1,0 +1,175 @@
+---
+title: "Psicometria — Slide delle lezioni"
+subtitle: "Corrado Caudek · Università degli Studi di Firenze · A.A. 2025-2026"
+---
+
+Ogni lezione è divisa in segmenti; ciascun link apre le slide di un segmento nel browser.
+
+::: {.callout-tip collapse="true"}
+## Come usare le slide
+
+- Usate le frecce **←** e **→** (oppure la barra spaziatrice) per scorrere le slide.
+- Premete **F** per lo schermo intero ed **Esc** per la vista d'insieme.
+- Premete **?** per l'elenco completo dei comandi da tastiera.
+- Per salvare le slide in PDF, premete **E** per passare alla vista di stampa e poi stampate la pagina dal browser (scegliendo «Salva come PDF»).
+:::
+
+## Introduzione, R e statistica descrittiva
+
+**01 · La crisi della replicabilità in psicologia**
+
+- [Quali implicazioni per la professione dello psicologo?](lezioni/01_replicabilita/02_motivazione.qmd)
+
+**02 · Dalla crisi della replicabilità alle distribuzioni**
+
+- [Dalla crisi della replicabilità a una psicologia più solida: storia, cause profonde e soluzioni concrete](lezioni/02_distribuzioni/01_storia_1.qmd)
+- [Istogramma: dalla tabella di frequenze alla densità](lezioni/02_distribuzioni/02_istogramma/istogramma.qmd)
+
+**03 · Primi passi con R e statistica descrittiva**
+
+- [Primi passi con R: esplorare prima di concludere](lezioni/03_descrittiva/01_primi_passi_R.qmd)
+- [Statistica descrittiva: quando i numeri nascondono (e quando rivelano) la realtà](lezioni/03_descrittiva/02_statistica_descrittiva.qmd)
+
+**04 · Sintassi R**
+
+- [Vettori, dataframe, dplyr e ggplot2](lezioni/04_syntax_r/04_sintassi_R.qmd)
+
+## Probabilità
+
+**05 · Fondamenti della probabilità**
+
+- [Eventi, spazi campionari e assiomi](lezioni/05_probabilita_1/1_spazio_campionario.qmd)
+- [Probabilità e calcolo combinatorio](lezioni/05_probabilita_1/2_combinatoria.qmd)
+
+**06 · Probabilità condizionata e teorema di Bayes**
+
+- [Probabilità condizionata come aggiornamento](lezioni/06_probabilita_2/1_prob_condizionata_aggiornamento.qmd)
+- [Il teorema di Bayes](lezioni/06_probabilita_2/2_teorema_bayes.qmd)
+
+**07 · Esercitazione: probabilità**
+
+- [Segmento 1 — Problemi di probabilità e probabilità condizionata (senza R)](lezioni/07_probabilita_3_esercitazione/esercitazione_probabilita_1.qmd)
+- [Segmento 2 — Simulazioni e problemi in R](lezioni/07_probabilita_3_esercitazione/esercitazione_probabilita_2_R.qmd)
+
+**08 · Distribuzioni discrete: Bernoulli, binomiale, Poisson**
+
+- [Segmento 1 — Esercizi a mano](lezioni/08_probabilita_4/distribuzioni_discrete_1.qmd)
+- [Segmento 2 — Esercizi con R](lezioni/08_probabilita_4/distribuzioni_discrete_2_R.qmd)
+
+**09 · Distribuzioni continue**
+
+- [Segmento 1 — La distribuzione normale](lezioni/09_probabilita_5/1_distribuzioni_continue.qmd)
+- [Segmento 2 — La distribuzione Beta e l'uso di R](lezioni/09_probabilita_5/2_distribuzioni_continue.qmd)
+
+**10 · Variabili casuali**
+
+- [Segmento 1 — Valore atteso e varianza](lezioni/10_probabilita_6/1_variabili_casuali.qmd)
+- [Segmento 2 — Funzioni di variabili casuali e calcoli in R](lezioni/10_probabilita_6/2_variabili_casuali.qmd)
+
+**11 · Probabilità congiunta**
+
+- [Segmento 1 — Distribuzioni congiunte e indipendenza statistica](lezioni/11_probabilita_7/1_probabilita_congiunta.qmd)
+- [Segmento 2 — Calcoli e simulazioni in R](lezioni/11_probabilita_7/2_probabilita_congiunta.qmd)
+
+**12 · La funzione di verosimiglianza**
+
+- [Segmento 1 — Cosa ci dicono i dati sul parametro](lezioni/12_probabilita_8/verosimiglianza_1.qmd)
+- [Segmento 2 — Calcolare e visualizzare la verosimiglianza in R](lezioni/12_probabilita_8/verosimiglianza_2.qmd)
+
+**13 · Esercitazione: la verosimiglianza in R**
+
+- [Segmento 1 — Applicazioni alla pratica clinica](lezioni/13_probabilita_9_esercitazione/verosimiglianza_esercitazione_seg1.qmd)
+- [Segmento 2 — Dati continui e combinazione di evidenze](lezioni/13_probabilita_9_esercitazione/verosimiglianza_esercitazione_seg2.qmd)
+
+## Inferenza frequentista
+
+**14 · La domanda del ricercatore e la risposta frequentista**
+
+- [Segmento 1](lezioni/14_frequentismo_1/frequentismo_1.qmd)
+- [Segmento 2](lezioni/14_frequentismo_1/frequentismo_2.qmd)
+
+**15 · Il valore-*p* e l'intervallo di confidenza: cosa dicono davvero**
+
+- [Segmento 1](lezioni/15_frequentismo_2/pvalue_1.qmd)
+- [Segmento 2](lezioni/15_frequentismo_2/pvalue_2.qmd)
+
+**16 · Dal laboratorio al mondo reale: perché il sistema ha fallito**
+
+- [Segmento 1](lezioni/16_frequentismo_3/crisi_1.qmd)
+- [Segmento 2](lezioni/16_frequentismo_3/crisi_2.qmd)
+
+## Inferenza bayesiana
+
+**17 · Prior, verosimiglianza e posterior: l'architettura dell'inferenza bayesiana**
+
+- [Segmento 1](lezioni/17_bayes_1/prior_post_1.qmd)
+- [Segmento 2](lezioni/17_bayes_1/prior_post_2.qmd)
+
+**18 · Quantificare e aggiornare l'incertezza: l'apprendimento sequenziale**
+
+- [Segmento 1](lezioni/18_bayes_2/apprendimento_sequenziale_1.qmd)
+- [Segmento 2](lezioni/18_bayes_2/apprendimento_sequenziale_2.qmd)
+
+**19 · Distribuzioni coniugate**
+
+- [Segmento 1 — Beta-Binomiale](lezioni/19_bayes_3/coniugate_beta_binomiale.qmd)
+- [Segmento 2 — Normale-Normale](lezioni/19_bayes_3/coniugate_normale_normale.qmd)
+
+**20 · Sintesi della distribuzione a posteriori**
+
+- [Segmento 1 — Stime puntuali](lezioni/20_bayes_4/sintesi_posteriori_1.qmd)
+- [Segmento 2 — Intervalli di credibilità](lezioni/20_bayes_4/sintesi_posteriori_2.qmd)
+
+*21 · Prima prova in itinere*
+
+**22 · Distribuzione predittiva a priori**
+
+- [Segmento 1 — Cosa ci aspettiamo prima di vedere i dati](lezioni/22_bayes_5/prior_predictive_1.qmd)
+- [Segmento 2 — Applicazioni e calibrazione](lezioni/22_bayes_5/prior_predictive_2.qmd)
+
+**23 · Distribuzione predittiva a posteriori**
+
+- [Segmento 1 — Fare previsioni dopo aver osservato i dati](lezioni/23_bayes_6/posterior_predictive_1.qmd)
+- [Segmento 2 — Applicazioni pratiche con brms](lezioni/23_bayes_6/posterior_predictive_2.qmd)
+
+## Regressione e modelli
+
+**24 · Il modello di regressione lineare bayesiano**
+
+- [Segmento 1 — Concetti fondamentali](lezioni/24_regressione_1/regressione_bayesiana_1.qmd)
+- [Segmento 2 — Implementazione pratica con brms](lezioni/24_regressione_1/regressione_bayesiana_2.qmd)
+
+**25 · Inferenza bayesiana su una media**
+
+- [Segmento 1 — Stima, incertezza e confronto con l'approccio frequentista](lezioni/25_regressione_2/inferenza_media_1.qmd)
+- [Segmento 2 — Dal gruppo all'individuo](lezioni/25_regressione_2/inferenza_media_2.qmd)
+
+**26 · Confronto tra due gruppi**
+
+- [Segmento 1 — Inferenza bayesiana sulla differenza tra medie](lezioni/26_regressione_3/confronto_due_gruppi_1.qmd)
+- [Segmento 2 — Implementazione bayesiana e previsioni individuali](lezioni/26_regressione_3/confronto_due_gruppi_2.qmd)
+
+**27 · Flusso di lavoro riproducibile**
+
+- [Segmento 1 — Struttura del progetto e pulizia dei dati](lezioni/27_workflow/1_workflow_riproducibile_1.qmd)
+- [Segmento 2 — Dall'analisi al report: decisioni tracciabili](lezioni/27_workflow/2_dall_analisi_al_report.qmd)
+- [Segmento 3 — Dimostrazione in R: gradi di libertà dello sperimentatore e crisi di replicabilità](lezioni/27_workflow/3_gradi_liberta.qmd)
+
+**28 · Esercitazione finale**
+
+- [Segmento 1 — Dal dataset al giudizio scientifico](lezioni/28_esercitazione/esercitazione_part1.qmd)
+- [Segmento 2 — Analisi completa di un dataset psicologico](lezioni/28_esercitazione/esercitazione_part2.qmd)
+
+**29 · Modelli multilivello e confronto tra modelli**
+
+- [Segmento 1 — Modelli multilivello e modellazione formale](lezioni/29_multilevel_model_comparison/1_multilivello_modellazione.qmd)
+- [Segmento 2 — Confronto tra modelli: come scegliere il modello migliore](lezioni/29_multilevel_model_comparison/2_confronto_modelli.qmd)
+
+## Ripasso
+
+**30 · Esercitazione di ripasso**
+
+- [Segmento 1 — Distribuzioni predittive, algoritmo di Metropolis, limiti del frequentismo](lezioni/30_ripasso/esercitazione_ripasso_seg1.qmd)
+- [Segmento 2 — Regressione, inferenza su medie, confronto frequentista-bayesiano](lezioni/30_ripasso/esercitazione_ripasso_seg2.qmd)
+
+*31 · Seconda prova in itinere*
