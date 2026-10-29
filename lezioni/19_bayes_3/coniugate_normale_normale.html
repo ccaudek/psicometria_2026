@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html lang="it"><head>
-<script src="coniugate_normale_normale_files/libs/clipboard/clipboard.min.js"></script>
-<script src="coniugate_normale_normale_files/libs/quarto-html/tabby.min.js"></script>
-<script src="coniugate_normale_normale_files/libs/quarto-html/popper.min.js"></script>
-<script src="coniugate_normale_normale_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="coniugate_normale_normale_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="coniugate_normale_normale_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="coniugate_normale_normale_files/libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.27">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-5c1318cf63eba56dbef7ba16bc7d56f5.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
 
   <meta name="author" content="Corrado Caudek">
-  <title>Distribuzioni coniugate</title>
+  <title>Psicometria 2025-26 – Distribuzioni coniugate</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="coniugate_normale_normale_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="coniugate_normale_normale_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
   <style>
-    code{white-space: pre-wrap;}
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -95,11 +101,11 @@
     code span.vs { color: #032f62; } /* VerbatimString */
     code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="coniugate_normale_normale_files/libs/revealjs/dist/theme/quarto-32eda4d62c2e25823ebe39cba2bb0a8e.css">
-  <link href="coniugate_normale_normale_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="coniugate_normale_normale_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="coniugate_normale_normale_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="coniugate_normale_normale_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-172e614ca6238f6067b3ffab71e7e169.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -199,7 +205,7 @@
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
+Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid" aria-label="ORCID profile for Corrado Caudek"> <img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
 </div>
 <div class="quarto-title-author-email">
 <a href="mailto:corrado.caudek@unifi.it">corrado.caudek@unifi.it</a>
@@ -210,7 +216,7 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
     </div>
 </div>
 
-  <p class="date">15 febbraio 2026</p>
+  <p class="date">29 ottobre 2026</p>
 </section>
 <section id="obiettivi" class="slide level2 unnumbered unlisted">
 <h2>Obiettivi</h2>
@@ -355,15 +361,15 @@ w = \frac{\sigma^2 / n}{\sigma_0^2 + \sigma^2 / n}
 <li>deviazione standard: <span class="math inline">\(\sigma_0 = 5\)</span> (incertezza: <span class="math inline">\(\pm 10\)</span> punti copre ~95%).</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>mu0 <span class="ot">&lt;-</span> <span class="dv">25</span></span>
-<span id="cb1-2"><a href=""></a>sigma0 <span class="ot">&lt;-</span> <span class="dv">5</span></span>
-<span id="cb1-3"><a href=""></a></span>
-<span id="cb1-4"><a href=""></a><span class="fu">cat</span>(<span class="st">"Prior: Normale("</span>, mu0, <span class="st">","</span>, sigma0<span class="sc">^</span><span class="dv">2</span>, <span class="st">")</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-label="1"></a>mu0 <span class="ot">&lt;-</span> <span class="dv">25</span></span>
+<span id="cb1-2"><a aria-label="2"></a>sigma0 <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb1-3"><a aria-label="3"></a></span>
+<span id="cb1-4"><a aria-label="4"></a><span class="fu">cat</span>(<span class="st">"Prior: Normale("</span>, mu0, <span class="st">","</span>, sigma0<span class="sc">^</span><span class="dv">2</span>, <span class="st">")</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Prior: Normale( 25 , 25 )</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Intervallo 95% prior: ["</span>, <span class="fu">round</span>(mu0 <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span>sigma0, <span class="dv">1</span>), <span class="st">","</span>, </span>
-<span id="cb3-2"><a href=""></a>    <span class="fu">round</span>(mu0 <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span>sigma0, <span class="dv">1</span>), <span class="st">"]"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Intervallo 95% prior: ["</span>, <span class="fu">round</span>(mu0 <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span>sigma0, <span class="dv">1</span>), <span class="st">","</span>, </span>
+<span id="cb3-2"><a aria-label="2"></a>    <span class="fu">round</span>(mu0 <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span>sigma0, <span class="dv">1</span>), <span class="st">"]"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Intervallo 95% prior: [ 15.2 , 34.8 ]</code></pre>
 </div>
@@ -377,18 +383,18 @@ w = \frac{\sigma^2 / n}{\sigma_0^2 + \sigma^2 / n}
 <h2>I dati</h2>
 <p>Lo psicologo raccoglie dati da <strong>n = 12</strong> pazienti. Assumiamo che la variabilità individuale (<span class="math inline">\(\sigma\)</span>) sia nota dalla letteratura: <span class="math inline">\(\sigma = 8\)</span>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="co"># Dati simulati (punteggi BDI-II)</span></span>
-<span id="cb5-2"><a href=""></a>punteggi <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">28</span>, <span class="dv">32</span>, <span class="dv">24</span>, <span class="dv">29</span>, <span class="dv">35</span>, <span class="dv">27</span>, <span class="dv">31</span>, <span class="dv">26</span>, <span class="dv">30</span>, <span class="dv">28</span>, <span class="dv">33</span>, <span class="dv">29</span>)</span>
-<span id="cb5-3"><a href=""></a></span>
-<span id="cb5-4"><a href=""></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(punteggi)</span>
-<span id="cb5-5"><a href=""></a>ybar <span class="ot">&lt;-</span> <span class="fu">mean</span>(punteggi)</span>
-<span id="cb5-6"><a href=""></a>sigma <span class="ot">&lt;-</span> <span class="dv">8</span></span>
-<span id="cb5-7"><a href=""></a></span>
-<span id="cb5-8"><a href=""></a><span class="fu">cat</span>(<span class="st">"Numero pazienti:"</span>, n, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a aria-label="1"></a><span class="co"># Dati simulati (punteggi BDI-II)</span></span>
+<span id="cb5-2"><a aria-label="2"></a>punteggi <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">28</span>, <span class="dv">32</span>, <span class="dv">24</span>, <span class="dv">29</span>, <span class="dv">35</span>, <span class="dv">27</span>, <span class="dv">31</span>, <span class="dv">26</span>, <span class="dv">30</span>, <span class="dv">28</span>, <span class="dv">33</span>, <span class="dv">29</span>)</span>
+<span id="cb5-3"><a aria-label="3"></a></span>
+<span id="cb5-4"><a aria-label="4"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(punteggi)</span>
+<span id="cb5-5"><a aria-label="5"></a>ybar <span class="ot">&lt;-</span> <span class="fu">mean</span>(punteggi)</span>
+<span id="cb5-6"><a aria-label="6"></a>sigma <span class="ot">&lt;-</span> <span class="dv">8</span></span>
+<span id="cb5-7"><a aria-label="7"></a></span>
+<span id="cb5-8"><a aria-label="8"></a><span class="fu">cat</span>(<span class="st">"Numero pazienti:"</span>, n, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Numero pazienti: 12 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Media campionaria:"</span>, <span class="fu">round</span>(ybar, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Media campionaria:"</span>, <span class="fu">round</span>(ybar, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Media campionaria: 29.33 </code></pre>
 </div>
@@ -397,26 +403,26 @@ w = \frac{\sigma^2 / n}{\sigma_0^2 + \sigma^2 / n}
 <section id="calcoliamo-il-posterior" class="slide level2">
 <h2>Calcoliamo il posterior</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="co"># Precisioni (inverso della varianza)</span></span>
-<span id="cb9-2"><a href=""></a>prec_prior <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> sigma0<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb9-3"><a href=""></a>prec_dati <span class="ot">&lt;-</span> n <span class="sc">/</span> sigma<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb9-4"><a href=""></a>prec_post <span class="ot">&lt;-</span> prec_prior <span class="sc">+</span> prec_dati</span>
-<span id="cb9-5"><a href=""></a></span>
-<span id="cb9-6"><a href=""></a><span class="co"># Media del posterior</span></span>
-<span id="cb9-7"><a href=""></a>mu_post <span class="ot">&lt;-</span> (prec_prior <span class="sc">*</span> mu0 <span class="sc">+</span> prec_dati <span class="sc">*</span> ybar) <span class="sc">/</span> prec_post</span>
-<span id="cb9-8"><a href=""></a></span>
-<span id="cb9-9"><a href=""></a><span class="co"># SD del posterior</span></span>
-<span id="cb9-10"><a href=""></a>sigma_post <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">/</span> prec_post)</span>
-<span id="cb9-11"><a href=""></a></span>
-<span id="cb9-12"><a href=""></a><span class="fu">cat</span>(<span class="st">"Posterior: Normale("</span>, <span class="fu">round</span>(mu_post, <span class="dv">2</span>), <span class="st">","</span>, <span class="fu">round</span>(sigma_post<span class="sc">^</span><span class="dv">2</span>, <span class="dv">2</span>), <span class="st">")</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a aria-label="1"></a><span class="co"># Precisioni (inverso della varianza)</span></span>
+<span id="cb9-2"><a aria-label="2"></a>prec_prior <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> sigma0<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb9-3"><a aria-label="3"></a>prec_dati <span class="ot">&lt;-</span> n <span class="sc">/</span> sigma<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb9-4"><a aria-label="4"></a>prec_post <span class="ot">&lt;-</span> prec_prior <span class="sc">+</span> prec_dati</span>
+<span id="cb9-5"><a aria-label="5"></a></span>
+<span id="cb9-6"><a aria-label="6"></a><span class="co"># Media del posterior</span></span>
+<span id="cb9-7"><a aria-label="7"></a>mu_post <span class="ot">&lt;-</span> (prec_prior <span class="sc">*</span> mu0 <span class="sc">+</span> prec_dati <span class="sc">*</span> ybar) <span class="sc">/</span> prec_post</span>
+<span id="cb9-8"><a aria-label="8"></a></span>
+<span id="cb9-9"><a aria-label="9"></a><span class="co"># SD del posterior</span></span>
+<span id="cb9-10"><a aria-label="10"></a>sigma_post <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">/</span> prec_post)</span>
+<span id="cb9-11"><a aria-label="11"></a></span>
+<span id="cb9-12"><a aria-label="12"></a><span class="fu">cat</span>(<span class="st">"Posterior: Normale("</span>, <span class="fu">round</span>(mu_post, <span class="dv">2</span>), <span class="st">","</span>, <span class="fu">round</span>(sigma_post<span class="sc">^</span><span class="dv">2</span>, <span class="dv">2</span>), <span class="st">")</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Posterior: Normale( 28.57 , 4.4 )</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Media posterior:"</span>, <span class="fu">round</span>(mu_post, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Media posterior:"</span>, <span class="fu">round</span>(mu_post, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Media posterior: 28.57 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"SD posterior:"</span>, <span class="fu">round</span>(sigma_post, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"SD posterior:"</span>, <span class="fu">round</span>(sigma_post, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>SD posterior: 2.1 </code></pre>
 </div>
@@ -438,10 +444,10 @@ w = \frac{\sigma^2 / n}{\sigma_0^2 + \sigma^2 / n}
 <section id="intervallo-di-credibilità-al-95" class="slide level2">
 <h2>Intervallo di credibilità al 95%</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a><span class="co"># Intervallo di credibilità</span></span>
-<span id="cb15-2"><a href=""></a>ci_low <span class="ot">&lt;-</span> mu_post <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> sigma_post</span>
-<span id="cb15-3"><a href=""></a>ci_high <span class="ot">&lt;-</span> mu_post <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> sigma_post</span>
-<span id="cb15-4"><a href=""></a><span class="fu">cat</span>(<span class="st">"Intervallo di credibilità 95%: ["</span>, <span class="fu">round</span>(ci_low, <span class="dv">2</span>), <span class="st">","</span>, <span class="fu">round</span>(ci_high, <span class="dv">2</span>), <span class="st">"]</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a aria-label="1"></a><span class="co"># Intervallo di credibilità</span></span>
+<span id="cb15-2"><a aria-label="2"></a>ci_low <span class="ot">&lt;-</span> mu_post <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> sigma_post</span>
+<span id="cb15-3"><a aria-label="3"></a>ci_high <span class="ot">&lt;-</span> mu_post <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> sigma_post</span>
+<span id="cb15-4"><a aria-label="4"></a><span class="fu">cat</span>(<span class="st">"Intervallo di credibilità 95%: ["</span>, <span class="fu">round</span>(ci_low, <span class="dv">2</span>), <span class="st">","</span>, <span class="fu">round</span>(ci_high, <span class="dv">2</span>), <span class="st">"]</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Intervallo di credibilità 95%: [ 24.46 , 32.68 ]</code></pre>
 </div>
@@ -458,8 +464,8 @@ w = \frac{\sigma^2 / n}{\sigma_0^2 + \sigma^2 / n}
 </blockquote>
 <div class="fragment">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a>prob_gt_28 <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">pnorm</span>(<span class="dv">28</span>, <span class="at">mean =</span> mu_post, <span class="at">sd =</span> sigma_post)</span>
-<span id="cb17-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"P(μ &gt; 28) ="</span>, <span class="fu">round</span>(prob_gt_28 <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a aria-label="1"></a>prob_gt_28 <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">pnorm</span>(<span class="dv">28</span>, <span class="at">mean =</span> mu_post, <span class="at">sd =</span> sigma_post)</span>
+<span id="cb17-2"><a aria-label="2"></a><span class="fu">cat</span>(<span class="st">"P(μ &gt; 28) ="</span>, <span class="fu">round</span>(prob_gt_28 <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>P(μ &gt; 28) = 60.7 %</code></pre>
 </div>
@@ -494,36 +500,36 @@ w = \frac{\sigma^2 / n}{\sigma_0^2 + \sigma^2 / n}
 <section id="calcolo-per-i-tre-scenari" class="slide level2">
 <h2>Calcolo per i tre scenari</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a>calcola_posterior <span class="ot">&lt;-</span> <span class="cf">function</span>(mu0, sigma0, ybar, sigma, n) {</span>
-<span id="cb19-2"><a href=""></a>  prec_prior <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> sigma0<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb19-3"><a href=""></a>  prec_dati <span class="ot">&lt;-</span> n <span class="sc">/</span> sigma<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb19-4"><a href=""></a>  prec_post <span class="ot">&lt;-</span> prec_prior <span class="sc">+</span> prec_dati</span>
-<span id="cb19-5"><a href=""></a>  </span>
-<span id="cb19-6"><a href=""></a>  mu_post <span class="ot">&lt;-</span> (prec_prior <span class="sc">*</span> mu0 <span class="sc">+</span> prec_dati <span class="sc">*</span> ybar) <span class="sc">/</span> prec_post</span>
-<span id="cb19-7"><a href=""></a>  sigma_post <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">/</span> prec_post)</span>
-<span id="cb19-8"><a href=""></a>  </span>
-<span id="cb19-9"><a href=""></a>  <span class="fu">list</span>(<span class="at">mu =</span> mu_post, <span class="at">sigma =</span> sigma_post)</span>
-<span id="cb19-10"><a href=""></a>}</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a aria-label="1"></a>calcola_posterior <span class="ot">&lt;-</span> <span class="cf">function</span>(mu0, sigma0, ybar, sigma, n) {</span>
+<span id="cb19-2"><a aria-label="2"></a>  prec_prior <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> sigma0<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb19-3"><a aria-label="3"></a>  prec_dati <span class="ot">&lt;-</span> n <span class="sc">/</span> sigma<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb19-4"><a aria-label="4"></a>  prec_post <span class="ot">&lt;-</span> prec_prior <span class="sc">+</span> prec_dati</span>
+<span id="cb19-5"><a aria-label="5"></a>  </span>
+<span id="cb19-6"><a aria-label="6"></a>  mu_post <span class="ot">&lt;-</span> (prec_prior <span class="sc">*</span> mu0 <span class="sc">+</span> prec_dati <span class="sc">*</span> ybar) <span class="sc">/</span> prec_post</span>
+<span id="cb19-7"><a aria-label="7"></a>  sigma_post <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">/</span> prec_post)</span>
+<span id="cb19-8"><a aria-label="8"></a>  </span>
+<span id="cb19-9"><a aria-label="9"></a>  <span class="fu">list</span>(<span class="at">mu =</span> mu_post, <span class="at">sigma =</span> sigma_post)</span>
+<span id="cb19-10"><a aria-label="10"></a>}</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a>post_n5 <span class="ot">&lt;-</span> <span class="fu">calcola_posterior</span>(<span class="dv">25</span>, <span class="dv">5</span>, <span class="fl">29.3</span>, <span class="dv">8</span>, <span class="dv">5</span>)</span>
-<span id="cb20-2"><a href=""></a>post_n12 <span class="ot">&lt;-</span> <span class="fu">calcola_posterior</span>(<span class="dv">25</span>, <span class="dv">5</span>, <span class="fl">29.3</span>, <span class="dv">8</span>, <span class="dv">12</span>)</span>
-<span id="cb20-3"><a href=""></a>post_n50 <span class="ot">&lt;-</span> <span class="fu">calcola_posterior</span>(<span class="dv">25</span>, <span class="dv">5</span>, <span class="fl">29.3</span>, <span class="dv">8</span>, <span class="dv">50</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a aria-label="1"></a>post_n5 <span class="ot">&lt;-</span> <span class="fu">calcola_posterior</span>(<span class="dv">25</span>, <span class="dv">5</span>, <span class="fl">29.3</span>, <span class="dv">8</span>, <span class="dv">5</span>)</span>
+<span id="cb20-2"><a aria-label="2"></a>post_n12 <span class="ot">&lt;-</span> <span class="fu">calcola_posterior</span>(<span class="dv">25</span>, <span class="dv">5</span>, <span class="fl">29.3</span>, <span class="dv">8</span>, <span class="dv">12</span>)</span>
+<span id="cb20-3"><a aria-label="3"></a>post_n50 <span class="ot">&lt;-</span> <span class="fu">calcola_posterior</span>(<span class="dv">25</span>, <span class="dv">5</span>, <span class="fl">29.3</span>, <span class="dv">8</span>, <span class="dv">50</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"n = 5:  μ ="</span>, <span class="fu">round</span>(post_n5<span class="sc">$</span>mu, <span class="dv">2</span>), <span class="st">", σ ="</span>, <span class="fu">round</span>(post_n5<span class="sc">$</span>sigma, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"n = 5:  μ ="</span>, <span class="fu">round</span>(post_n5<span class="sc">$</span>mu, <span class="dv">2</span>), <span class="st">", σ ="</span>, <span class="fu">round</span>(post_n5<span class="sc">$</span>sigma, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>n = 5:  μ = 27.84 , σ = 2.91 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"n = 12: μ ="</span>, <span class="fu">round</span>(post_n12<span class="sc">$</span>mu, <span class="dv">2</span>), <span class="st">", σ ="</span>, <span class="fu">round</span>(post_n12<span class="sc">$</span>sigma, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"n = 12: μ ="</span>, <span class="fu">round</span>(post_n12<span class="sc">$</span>mu, <span class="dv">2</span>), <span class="st">", σ ="</span>, <span class="fu">round</span>(post_n12<span class="sc">$</span>sigma, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>n = 12: μ = 28.54 , σ = 2.1 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"n = 50: μ ="</span>, <span class="fu">round</span>(post_n50<span class="sc">$</span>mu, <span class="dv">2</span>), <span class="st">", σ ="</span>, <span class="fu">round</span>(post_n50<span class="sc">$</span>sigma, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"n = 50: μ ="</span>, <span class="fu">round</span>(post_n50<span class="sc">$</span>mu, <span class="dv">2</span>), <span class="st">", σ ="</span>, <span class="fu">round</span>(post_n50<span class="sc">$</span>sigma, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>n = 50: μ = 29.09 , σ = 1.1 </code></pre>
 </div>
@@ -795,6 +801,7 @@ Figura&nbsp;1: Apparato sperimentale (Ernst &amp; Banks, 2002).
 <p>Vedremo come <strong>riassumere</strong> e <strong>comunicare</strong> i risultati dell’inferenza bayesiana — trasformando una distribuzione in decisioni e report scientifici.</p>
 
 
+
 </section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
@@ -804,19 +811,19 @@ Figura&nbsp;1: Apparato sperimentale (Ernst &amp; Banks, 2002).
 </div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="coniugate_normale_normale_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="coniugate_normale_normale_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="coniugate_normale_normale_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="coniugate_normale_normale_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="coniugate_normale_normale_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="coniugate_normale_normale_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="coniugate_normale_normale_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="coniugate_normale_normale_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="coniugate_normale_normale_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="coniugate_normale_normale_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -1119,7 +1126,7 @@ Figura&nbsp;1: Apparato sperimentale (Ernst &amp; Banks, 2002).
         }
           var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
           var mailtoRegex = new RegExp(/^mailto:/);
-            var filterRegex = new RegExp('/' + window.location.host + '/');
+            var filterRegex = new RegExp("https:\/\/ccaudek\.github\.io\/psicometria_2026\/");
           var isInternal = (href) => {
               return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
           }

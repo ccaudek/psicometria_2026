@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html lang="it"><head>
-<script src="posterior_predictive_1_files/libs/clipboard/clipboard.min.js"></script>
-<script src="posterior_predictive_1_files/libs/quarto-html/tabby.min.js"></script>
-<script src="posterior_predictive_1_files/libs/quarto-html/popper.min.js"></script>
-<script src="posterior_predictive_1_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="posterior_predictive_1_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="posterior_predictive_1_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="posterior_predictive_1_files/libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.27">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-5c1318cf63eba56dbef7ba16bc7d56f5.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
 
   <meta name="author" content="Corrado Caudek">
-  <title>Distribuzione predittiva a posteriori</title>
+  <title>Psicometria 2025-26 – Distribuzione predittiva a posteriori</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="posterior_predictive_1_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="posterior_predictive_1_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
   <style>
-    code{white-space: pre-wrap;}
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -95,11 +101,11 @@
     code span.vs { color: #032f62; } /* VerbatimString */
     code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="posterior_predictive_1_files/libs/revealjs/dist/theme/quarto-32eda4d62c2e25823ebe39cba2bb0a8e.css">
-  <link href="posterior_predictive_1_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="posterior_predictive_1_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="posterior_predictive_1_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="posterior_predictive_1_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-172e614ca6238f6067b3ffab71e7e169.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -199,7 +205,7 @@
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
+Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid" aria-label="ORCID profile for Corrado Caudek"> <img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
 </div>
 <div class="quarto-title-author-email">
 <a href="mailto:corrado.caudek@unifi.it">corrado.caudek@unifi.it</a>
@@ -210,7 +216,7 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
     </div>
 </div>
 
-  <p class="date">27 febbraio 2026</p>
+  <p class="date">29 ottobre 2026</p>
 </section>
 <section id="dalla-lezione-precedente-a-oggi" class="slide level2" data-background-color="#2c3e50" style="color: white;">
 <h2>Dalla lezione precedente a oggi</h2>
@@ -421,19 +427,19 @@ p(\tilde{y} \mid y)
 <section class="slide level2">
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="co"># Prior</span></span>
-<span id="cb1-2"><a href=""></a>alpha_prior <span class="ot">&lt;-</span> <span class="dv">3</span></span>
-<span id="cb1-3"><a href=""></a>beta_prior <span class="ot">&lt;-</span> <span class="dv">3</span></span>
-<span id="cb1-4"><a href=""></a></span>
-<span id="cb1-5"><a href=""></a><span class="co"># Dati osservati</span></span>
-<span id="cb1-6"><a href=""></a>n_osservati <span class="ot">&lt;-</span> <span class="dv">25</span></span>
-<span id="cb1-7"><a href=""></a>successi_osservati <span class="ot">&lt;-</span> <span class="dv">18</span></span>
-<span id="cb1-8"><a href=""></a></span>
-<span id="cb1-9"><a href=""></a><span class="co"># Posterior</span></span>
-<span id="cb1-10"><a href=""></a>alpha_post <span class="ot">&lt;-</span> alpha_prior <span class="sc">+</span> successi_osservati</span>
-<span id="cb1-11"><a href=""></a>beta_post <span class="ot">&lt;-</span> beta_prior <span class="sc">+</span> (n_osservati <span class="sc">-</span> successi_osservati)</span>
-<span id="cb1-12"><a href=""></a></span>
-<span id="cb1-13"><a href=""></a><span class="fu">cat</span>(<span class="st">"Posterior: Beta("</span>, alpha_post, <span class="st">","</span>, beta_post, <span class="st">")</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-label="1"></a><span class="co"># Prior</span></span>
+<span id="cb1-2"><a aria-label="2"></a>alpha_prior <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb1-3"><a aria-label="3"></a>beta_prior <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb1-4"><a aria-label="4"></a></span>
+<span id="cb1-5"><a aria-label="5"></a><span class="co"># Dati osservati</span></span>
+<span id="cb1-6"><a aria-label="6"></a>n_osservati <span class="ot">&lt;-</span> <span class="dv">25</span></span>
+<span id="cb1-7"><a aria-label="7"></a>successi_osservati <span class="ot">&lt;-</span> <span class="dv">18</span></span>
+<span id="cb1-8"><a aria-label="8"></a></span>
+<span id="cb1-9"><a aria-label="9"></a><span class="co"># Posterior</span></span>
+<span id="cb1-10"><a aria-label="10"></a>alpha_post <span class="ot">&lt;-</span> alpha_prior <span class="sc">+</span> successi_osservati</span>
+<span id="cb1-11"><a aria-label="11"></a>beta_post <span class="ot">&lt;-</span> beta_prior <span class="sc">+</span> (n_osservati <span class="sc">-</span> successi_osservati)</span>
+<span id="cb1-12"><a aria-label="12"></a></span>
+<span id="cb1-13"><a aria-label="13"></a><span class="fu">cat</span>(<span class="st">"Posterior: Beta("</span>, alpha_post, <span class="st">","</span>, beta_post, <span class="st">")</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Posterior: Beta( 21 , 10 )</code></pre>
 </div>
@@ -447,24 +453,24 @@ p(\tilde{y} \mid y)
 <h2>Passo 2: simuliamo <strong>un</strong> nuovo studio</h2>
 <p>Immaginiamo di trattare <strong>30 nuovi pazienti</strong>. Quanti miglioreranno?</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="co"># Simuliamo UN nuovo studio</span></span>
-<span id="cb3-2"><a href=""></a></span>
-<span id="cb3-3"><a href=""></a><span class="co"># 1. Estraiamo UN valore di theta dalla posterior</span></span>
-<span id="cb3-4"><a href=""></a>theta_1 <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">shape1 =</span> alpha_post, <span class="at">shape2 =</span> beta_post)</span>
-<span id="cb3-5"><a href=""></a></span>
-<span id="cb3-6"><a href=""></a><span class="co"># 2. Generiamo il numero di successi per 30 nuovi pazienti</span></span>
-<span id="cb3-7"><a href=""></a>n_nuovi <span class="ot">&lt;-</span> <span class="dv">30</span></span>
-<span id="cb3-8"><a href=""></a>successi_1 <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">size =</span> n_nuovi, <span class="at">prob =</span> theta_1)</span>
-<span id="cb3-9"><a href=""></a></span>
-<span id="cb3-10"><a href=""></a><span class="fu">cat</span>(<span class="st">"Simulazione 1:</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a aria-label="1"></a><span class="co"># Simuliamo UN nuovo studio</span></span>
+<span id="cb3-2"><a aria-label="2"></a></span>
+<span id="cb3-3"><a aria-label="3"></a><span class="co"># 1. Estraiamo UN valore di theta dalla posterior</span></span>
+<span id="cb3-4"><a aria-label="4"></a>theta_1 <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">shape1 =</span> alpha_post, <span class="at">shape2 =</span> beta_post)</span>
+<span id="cb3-5"><a aria-label="5"></a></span>
+<span id="cb3-6"><a aria-label="6"></a><span class="co"># 2. Generiamo il numero di successi per 30 nuovi pazienti</span></span>
+<span id="cb3-7"><a aria-label="7"></a>n_nuovi <span class="ot">&lt;-</span> <span class="dv">30</span></span>
+<span id="cb3-8"><a aria-label="8"></a>successi_1 <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">size =</span> n_nuovi, <span class="at">prob =</span> theta_1)</span>
+<span id="cb3-9"><a aria-label="9"></a></span>
+<span id="cb3-10"><a aria-label="10"></a><span class="fu">cat</span>(<span class="st">"Simulazione 1:</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Simulazione 1:</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"  theta estratto:"</span>, <span class="fu">round</span>(theta_1, <span class="dv">3</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"  theta estratto:"</span>, <span class="fu">round</span>(theta_1, <span class="dv">3</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  theta estratto: 0.729 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"  successi previsti:"</span>, successi_1, <span class="st">"su"</span>, n_nuovi, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"  successi previsti:"</span>, successi_1, <span class="st">"su"</span>, n_nuovi, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  successi previsti: 21 su 30 </code></pre>
 </div>
@@ -473,19 +479,19 @@ p(\tilde{y} \mid y)
 <section id="ripetiamo-un-secondo-studio-simulato" class="slide level2">
 <h2>Ripetiamo: un secondo studio simulato</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="co"># Un altro mondo possibile</span></span>
-<span id="cb9-2"><a href=""></a>theta_2 <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="dv">1</span>, alpha_post, beta_post)</span>
-<span id="cb9-3"><a href=""></a>successi_2 <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">1</span>, n_nuovi, theta_2)</span>
-<span id="cb9-4"><a href=""></a></span>
-<span id="cb9-5"><a href=""></a><span class="fu">cat</span>(<span class="st">"Simulazione 2:</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a aria-label="1"></a><span class="co"># Un altro mondo possibile</span></span>
+<span id="cb9-2"><a aria-label="2"></a>theta_2 <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="dv">1</span>, alpha_post, beta_post)</span>
+<span id="cb9-3"><a aria-label="3"></a>successi_2 <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">1</span>, n_nuovi, theta_2)</span>
+<span id="cb9-4"><a aria-label="4"></a></span>
+<span id="cb9-5"><a aria-label="5"></a><span class="fu">cat</span>(<span class="st">"Simulazione 2:</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Simulazione 2:</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"  theta estratto:"</span>, <span class="fu">round</span>(theta_2, <span class="dv">3</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"  theta estratto:"</span>, <span class="fu">round</span>(theta_2, <span class="dv">3</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  theta estratto: 0.673 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"  successi previsti:"</span>, successi_2, <span class="st">"su"</span>, n_nuovi, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"  successi previsti:"</span>, successi_2, <span class="st">"su"</span>, n_nuovi, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  successi previsti: 23 su 30 </code></pre>
 </div>
@@ -502,24 +508,24 @@ p(\tilde{y} \mid y)
 <section id="passo-3-simuliamo-molti-studi-futuri" class="slide level2">
 <h2>Passo 3: simuliamo <strong>molti</strong> studi futuri</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a>n_sim <span class="ot">&lt;-</span> <span class="dv">5000</span></span>
-<span id="cb15-2"><a href=""></a></span>
-<span id="cb15-3"><a href=""></a><span class="co"># 1. Estraiamo n_sim valori di theta dalla posterior</span></span>
-<span id="cb15-4"><a href=""></a>theta_sim <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(n_sim, alpha_post, beta_post)</span>
-<span id="cb15-5"><a href=""></a></span>
-<span id="cb15-6"><a href=""></a><span class="co"># 2. Per ogni theta, generiamo il numero di successi</span></span>
-<span id="cb15-7"><a href=""></a>successi_sim <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n_sim, <span class="at">size =</span> n_nuovi, <span class="at">prob =</span> theta_sim)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a aria-label="1"></a>n_sim <span class="ot">&lt;-</span> <span class="dv">5000</span></span>
+<span id="cb15-2"><a aria-label="2"></a></span>
+<span id="cb15-3"><a aria-label="3"></a><span class="co"># 1. Estraiamo n_sim valori di theta dalla posterior</span></span>
+<span id="cb15-4"><a aria-label="4"></a>theta_sim <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(n_sim, alpha_post, beta_post)</span>
+<span id="cb15-5"><a aria-label="5"></a></span>
+<span id="cb15-6"><a aria-label="6"></a><span class="co"># 2. Per ogni theta, generiamo il numero di successi</span></span>
+<span id="cb15-7"><a aria-label="7"></a>successi_sim <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n_sim, <span class="at">size =</span> n_nuovi, <span class="at">prob =</span> theta_sim)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Notate</strong>: negli esempi precedenti il primo argomento di <code>rbeta()</code> e di <code>rbinom()</code> era <code>1</code>. Ora è <code>n_sim</code>, ovvero 5000.</p>
 </section>
 <section class="slide level2">
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="co"># Vediamo i primi 10 risultati</span></span>
-<span id="cb16-2"><a href=""></a><span class="fu">head</span>(<span class="fu">data.frame</span>(</span>
-<span id="cb16-3"><a href=""></a>  <span class="at">theta =</span> <span class="fu">round</span>(theta_sim, <span class="dv">3</span>),</span>
-<span id="cb16-4"><a href=""></a>  <span class="at">successi =</span> successi_sim</span>
-<span id="cb16-5"><a href=""></a>), <span class="dv">10</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a aria-label="1"></a><span class="co"># Vediamo i primi 10 risultati</span></span>
+<span id="cb16-2"><a aria-label="2"></a><span class="fu">head</span>(<span class="fu">data.frame</span>(</span>
+<span id="cb16-3"><a aria-label="3"></a>  <span class="at">theta =</span> <span class="fu">round</span>(theta_sim, <span class="dv">3</span>),</span>
+<span id="cb16-4"><a aria-label="4"></a>  <span class="at">successi =</span> successi_sim</span>
+<span id="cb16-5"><a aria-label="5"></a>), <span class="dv">10</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   theta successi
 1  0.637       19
@@ -551,16 +557,16 @@ p(\tilde{y} \mid y)
 <h2>Riassumiamo le previsioni</h2>
 <p>Previsioni per 30 nuovi pazienti:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"  Media:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(successi_sim), <span class="dv">1</span>), <span class="st">"successi</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"  Media:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(successi_sim), <span class="dv">1</span>), <span class="st">"successi</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Media: 20.4 successi</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"  Mediana:"</span>, <span class="fu">median</span>(successi_sim), <span class="st">"successi</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"  Mediana:"</span>, <span class="fu">median</span>(successi_sim), <span class="st">"successi</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Mediana: 21 successi</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"  Intervallo 95%:"</span>, <span class="fu">quantile</span>(successi_sim, <span class="fl">0.025</span>), <span class="st">"-"</span>,</span>
-<span id="cb22-2"><a href=""></a>    <span class="fu">quantile</span>(successi_sim, <span class="fl">0.975</span>), <span class="st">"successi</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"  Intervallo 95%:"</span>, <span class="fu">quantile</span>(successi_sim, <span class="fl">0.025</span>), <span class="st">"-"</span>,</span>
+<span id="cb22-2"><a aria-label="2"></a>    <span class="fu">quantile</span>(successi_sim, <span class="fl">0.975</span>), <span class="st">"successi</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Intervallo 95%: 13 - 27 successi</code></pre>
 </div>
@@ -588,10 +594,10 @@ p(\tilde{y} \mid y)
 <section id="domanda-1-qual-è-la-probabilità-di-almeno-20-successi" class="slide level2">
 <h2>Domanda 1: qual è la probabilità di almeno 20 successi?</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a><span class="co"># Proporzione di simulazioni con &gt;= 20 successi</span></span>
-<span id="cb24-2"><a href=""></a>prob_almeno_20 <span class="ot">&lt;-</span> <span class="fu">mean</span>(successi_sim <span class="sc">&gt;=</span> <span class="dv">20</span>)</span>
-<span id="cb24-3"><a href=""></a></span>
-<span id="cb24-4"><a href=""></a><span class="fu">cat</span>(<span class="st">"P(successi &gt;= 20) ="</span>, <span class="fu">round</span>(prob_almeno_20 <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a aria-label="1"></a><span class="co"># Proporzione di simulazioni con &gt;= 20 successi</span></span>
+<span id="cb24-2"><a aria-label="2"></a>prob_almeno_20 <span class="ot">&lt;-</span> <span class="fu">mean</span>(successi_sim <span class="sc">&gt;=</span> <span class="dv">20</span>)</span>
+<span id="cb24-3"><a aria-label="3"></a></span>
+<span id="cb24-4"><a aria-label="4"></a><span class="fu">cat</span>(<span class="st">"P(successi &gt;= 20) ="</span>, <span class="fu">round</span>(prob_almeno_20 <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>P(successi &gt;= 20) = 60.7 %</code></pre>
 </div>
@@ -603,10 +609,10 @@ p(\tilde{y} \mid y)
 <section id="domanda-2-qual-è-la-probabilità-che-il-trattamento-funzioni-per-più-della-metà" class="slide level2">
 <h2>Domanda 2: qual è la probabilità che il trattamento funzioni per più della metà?</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a><span class="co"># Più di 15 successi su 30</span></span>
-<span id="cb26-2"><a href=""></a>prob_maggioranza <span class="ot">&lt;-</span> <span class="fu">mean</span>(successi_sim <span class="sc">&gt;</span> <span class="dv">15</span>)</span>
-<span id="cb26-3"><a href=""></a></span>
-<span id="cb26-4"><a href=""></a><span class="fu">cat</span>(<span class="st">"P(successi &gt; 15) ="</span>, <span class="fu">round</span>(prob_maggioranza <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a aria-label="1"></a><span class="co"># Più di 15 successi su 30</span></span>
+<span id="cb26-2"><a aria-label="2"></a>prob_maggioranza <span class="ot">&lt;-</span> <span class="fu">mean</span>(successi_sim <span class="sc">&gt;</span> <span class="dv">15</span>)</span>
+<span id="cb26-3"><a aria-label="3"></a></span>
+<span id="cb26-4"><a aria-label="4"></a><span class="fu">cat</span>(<span class="st">"P(successi &gt; 15) ="</span>, <span class="fu">round</span>(prob_maggioranza <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>P(successi &gt; 15) = 90.3 %</code></pre>
 </div>
@@ -618,10 +624,10 @@ p(\tilde{y} \mid y)
 <section id="domanda-3-qual-è-la-probabilità-di-meno-di-10-successi" class="slide level2">
 <h2>Domanda 3: qual è la probabilità di meno di 10 successi?</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href=""></a><span class="co"># Meno di 10 successi (scenario pessimistico)</span></span>
-<span id="cb28-2"><a href=""></a>prob_pochi <span class="ot">&lt;-</span> <span class="fu">mean</span>(successi_sim <span class="sc">&lt;</span> <span class="dv">10</span>)</span>
-<span id="cb28-3"><a href=""></a></span>
-<span id="cb28-4"><a href=""></a><span class="fu">cat</span>(<span class="st">"P(successi &lt; 10) ="</span>, <span class="fu">round</span>(prob_pochi <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a aria-label="1"></a><span class="co"># Meno di 10 successi (scenario pessimistico)</span></span>
+<span id="cb28-2"><a aria-label="2"></a>prob_pochi <span class="ot">&lt;-</span> <span class="fu">mean</span>(successi_sim <span class="sc">&lt;</span> <span class="dv">10</span>)</span>
+<span id="cb28-3"><a aria-label="3"></a></span>
+<span id="cb28-4"><a aria-label="4"></a><span class="fu">cat</span>(<span class="st">"P(successi &lt; 10) ="</span>, <span class="fu">round</span>(prob_pochi <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>P(successi &lt; 10) = 0.28 %</code></pre>
 </div>
@@ -649,12 +655,12 @@ p(\tilde{y} \mid y)
 <h2>Cosa cambia dopo aver visto i dati?</h2>
 <p>Confrontiamo le previsioni <strong>prima</strong> e <strong>dopo</strong> aver osservato i 18 successi su 25.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href=""></a><span class="co"># PRIOR predictive (prima dei dati)</span></span>
-<span id="cb30-2"><a href=""></a>theta_prior_sim <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(n_sim, alpha_prior, beta_prior)</span>
-<span id="cb30-3"><a href=""></a>successi_prior_sim <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n_sim, n_nuovi, theta_prior_sim)</span>
-<span id="cb30-4"><a href=""></a></span>
-<span id="cb30-5"><a href=""></a><span class="co"># POSTERIOR predictive (dopo i dati)</span></span>
-<span id="cb30-6"><a href=""></a><span class="co"># (già calcolato: successi_sim)</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a aria-label="1"></a><span class="co"># PRIOR predictive (prima dei dati)</span></span>
+<span id="cb30-2"><a aria-label="2"></a>theta_prior_sim <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(n_sim, alpha_prior, beta_prior)</span>
+<span id="cb30-3"><a aria-label="3"></a>successi_prior_sim <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n_sim, n_nuovi, theta_prior_sim)</span>
+<span id="cb30-4"><a aria-label="4"></a></span>
+<span id="cb30-5"><a aria-label="5"></a><span class="co"># POSTERIOR predictive (dopo i dati)</span></span>
+<span id="cb30-6"><a aria-label="6"></a><span class="co"># (già calcolato: successi_sim)</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="confronto-visivo" class="slide level2">
@@ -665,24 +671,24 @@ p(\tilde{y} \mid y)
 <h2>Confronto numerico</h2>
 <p>PRIOR predictive (prima dei dati):</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"  Media:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(successi_prior_sim), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"  Media:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(successi_prior_sim), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Media: 15 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"  Intervallo 95%:"</span>, <span class="fu">quantile</span>(successi_prior_sim, <span class="fl">0.025</span>), <span class="st">"-"</span>,</span>
-<span id="cb33-2"><a href=""></a>    <span class="fu">quantile</span>(successi_prior_sim, <span class="fl">0.975</span>), <span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"  Intervallo 95%:"</span>, <span class="fu">quantile</span>(successi_prior_sim, <span class="fl">0.025</span>), <span class="st">"-"</span>,</span>
+<span id="cb33-2"><a aria-label="2"></a>    <span class="fu">quantile</span>(successi_prior_sim, <span class="fl">0.975</span>), <span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Intervallo 95%: 3 - 27 </code></pre>
 </div>
 </div>
 <p>POSTERIOR predictive (dopo i dati):</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"  Media:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(successi_sim), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"  Media:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(successi_sim), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Media: 20.4 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"  Intervallo 95%:"</span>, <span class="fu">quantile</span>(successi_sim, <span class="fl">0.025</span>), <span class="st">"-"</span>,</span>
-<span id="cb37-2"><a href=""></a>    <span class="fu">quantile</span>(successi_sim, <span class="fl">0.975</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"  Intervallo 95%:"</span>, <span class="fu">quantile</span>(successi_sim, <span class="fl">0.025</span>), <span class="st">"-"</span>,</span>
+<span id="cb37-2"><a aria-label="2"></a>    <span class="fu">quantile</span>(successi_sim, <span class="fl">0.975</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Intervallo 95%: 13 - 27 </code></pre>
 </div>
@@ -722,6 +728,7 @@ p(\tilde{y} \mid y)
 </ul>
 
 
+
 </section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
@@ -731,19 +738,19 @@ p(\tilde{y} \mid y)
 </div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="posterior_predictive_1_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="posterior_predictive_1_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="posterior_predictive_1_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="posterior_predictive_1_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="posterior_predictive_1_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="posterior_predictive_1_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="posterior_predictive_1_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="posterior_predictive_1_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="posterior_predictive_1_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="posterior_predictive_1_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -1046,7 +1053,7 @@ p(\tilde{y} \mid y)
         }
           var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
           var mailtoRegex = new RegExp(/^mailto:/);
-            var filterRegex = new RegExp('/' + window.location.host + '/');
+            var filterRegex = new RegExp("https:\/\/ccaudek\.github\.io\/psicometria_2026\/");
           var isInternal = (href) => {
               return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
           }

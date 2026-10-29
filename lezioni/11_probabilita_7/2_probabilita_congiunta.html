@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html lang="it"><head>
-<script src="2_probabilita_congiunta_files/libs/clipboard/clipboard.min.js"></script>
-<script src="2_probabilita_congiunta_files/libs/quarto-html/tabby.min.js"></script>
-<script src="2_probabilita_congiunta_files/libs/quarto-html/popper.min.js"></script>
-<script src="2_probabilita_congiunta_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="2_probabilita_congiunta_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="2_probabilita_congiunta_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="2_probabilita_congiunta_files/libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.27">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-5c1318cf63eba56dbef7ba16bc7d56f5.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
 
   <meta name="author" content="Corrado Caudek">
-  <title>Probabilità congiunta</title>
+  <title>Psicometria 2025-26 – Probabilità congiunta</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="2_probabilita_congiunta_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="2_probabilita_congiunta_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
   <style>
-    code{white-space: pre-wrap;}
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -95,11 +101,11 @@
     code span.vs { color: #032f62; } /* VerbatimString */
     code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="2_probabilita_congiunta_files/libs/revealjs/dist/theme/quarto-32eda4d62c2e25823ebe39cba2bb0a8e.css">
-  <link href="2_probabilita_congiunta_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="2_probabilita_congiunta_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="2_probabilita_congiunta_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="2_probabilita_congiunta_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-172e614ca6238f6067b3ffab71e7e169.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -199,7 +205,7 @@
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
+Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid" aria-label="ORCID profile for Corrado Caudek"> <img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
 </div>
 <div class="quarto-title-author-email">
 <a href="mailto:corrado.caudek@unifi.it">corrado.caudek@unifi.it</a>
@@ -210,7 +216,7 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
     </div>
 </div>
 
-  <p class="date">11 febbraio 2026</p>
+  <p class="date">29 ottobre 2026</p>
 </section>
 <section>
 <section id="simulare-relazioni-tra-variabili" class="title-slide slide level1 center" data-background-color="#e74c3c" style="color: white;">
@@ -290,24 +296,24 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
 <h2>Creare la tabella</h2>
 <p>Inseriamo le probabilità <strong>riga per riga</strong>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="co"># Riga 1: X = 0</span></span>
-<span id="cb1-2"><a href=""></a>riga1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>, <span class="dv">0</span>)</span>
-<span id="cb1-3"><a href=""></a></span>
-<span id="cb1-4"><a href=""></a><span class="co"># Riga 2: X = 1</span></span>
-<span id="cb1-5"><a href=""></a>riga2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span><span class="sc">/</span><span class="dv">8</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>)</span>
-<span id="cb1-6"><a href=""></a></span>
-<span id="cb1-7"><a href=""></a><span class="co"># Riga 3: X = 2</span></span>
-<span id="cb1-8"><a href=""></a>riga3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>, <span class="dv">2</span><span class="sc">/</span><span class="dv">8</span>)</span>
-<span id="cb1-9"><a href=""></a></span>
-<span id="cb1-10"><a href=""></a><span class="co"># Riga 4: X = 3</span></span>
-<span id="cb1-11"><a href=""></a>riga4 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-label="1"></a><span class="co"># Riga 1: X = 0</span></span>
+<span id="cb1-2"><a aria-label="2"></a>riga1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>, <span class="dv">0</span>)</span>
+<span id="cb1-3"><a aria-label="3"></a></span>
+<span id="cb1-4"><a aria-label="4"></a><span class="co"># Riga 2: X = 1</span></span>
+<span id="cb1-5"><a aria-label="5"></a>riga2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span><span class="sc">/</span><span class="dv">8</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>)</span>
+<span id="cb1-6"><a aria-label="6"></a></span>
+<span id="cb1-7"><a aria-label="7"></a><span class="co"># Riga 3: X = 2</span></span>
+<span id="cb1-8"><a aria-label="8"></a>riga3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>, <span class="dv">2</span><span class="sc">/</span><span class="dv">8</span>)</span>
+<span id="cb1-9"><a aria-label="9"></a></span>
+<span id="cb1-10"><a aria-label="10"></a><span class="co"># Riga 4: X = 3</span></span>
+<span id="cb1-11"><a aria-label="11"></a>riga4 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="unire-le-righe-in-una-matrice" class="slide level2">
 <h2>Unire le righe in una matrice</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a>tabella <span class="ot">&lt;-</span> <span class="fu">rbind</span>(riga1, riga2, riga3, riga4)</span>
-<span id="cb2-2"><a href=""></a>tabella</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a aria-label="1"></a>tabella <span class="ot">&lt;-</span> <span class="fu">rbind</span>(riga1, riga2, riga3, riga4)</span>
+<span id="cb2-2"><a aria-label="2"></a>tabella</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       [,1]  [,2]
 riga1 0.125 0.000
@@ -321,10 +327,10 @@ riga4 0.000 0.125</code></pre>
 <section id="aggiungere-nomi-opzionale-ma-utile" class="slide level2">
 <h2>Aggiungere nomi (opzionale ma utile)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">rownames</span>(tabella) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"X=0"</span>, <span class="st">"X=1"</span>, <span class="st">"X=2"</span>, <span class="st">"X=3"</span>)</span>
-<span id="cb4-2"><a href=""></a><span class="fu">colnames</span>(tabella) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Y=0"</span>, <span class="st">"Y=1"</span>)</span>
-<span id="cb4-3"><a href=""></a></span>
-<span id="cb4-4"><a href=""></a>tabella</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a aria-label="1"></a><span class="fu">rownames</span>(tabella) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"X=0"</span>, <span class="st">"X=1"</span>, <span class="st">"X=2"</span>, <span class="st">"X=3"</span>)</span>
+<span id="cb4-2"><a aria-label="2"></a><span class="fu">colnames</span>(tabella) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Y=0"</span>, <span class="st">"Y=1"</span>)</span>
+<span id="cb4-3"><a aria-label="3"></a></span>
+<span id="cb4-4"><a aria-label="4"></a>tabella</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      Y=0   Y=1
 X=0 0.125 0.000
@@ -338,7 +344,7 @@ X=3 0.000 0.125</code></pre>
 <section id="controllo-le-probabilità-sommano-a-1" class="slide level2">
 <h2>Controllo: le probabilità sommano a 1?</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">sum</span>(tabella)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a aria-label="1"></a><span class="fu">sum</span>(tabella)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1</code></pre>
 </div>
@@ -356,8 +362,8 @@ X=3 0.000 0.125</code></pre>
 <section id="calcolare-la-marginale-di-x" class="slide level2">
 <h2>Calcolare la marginale di X</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a>P_X <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(tabella)</span>
-<span id="cb8-2"><a href=""></a>P_X</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a aria-label="1"></a>P_X <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(tabella)</span>
+<span id="cb8-2"><a aria-label="2"></a>P_X</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  X=0   X=1   X=2   X=3 
 0.125 0.375 0.375 0.125 </code></pre>
@@ -378,8 +384,8 @@ X=3 0.000 0.125</code></pre>
 <section id="calcolare-la-marginale-di-y" class="slide level2">
 <h2>Calcolare la marginale di Y</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>P_Y <span class="ot">&lt;-</span> <span class="fu">colSums</span>(tabella)</span>
-<span id="cb10-2"><a href=""></a>P_Y</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a aria-label="1"></a>P_Y <span class="ot">&lt;-</span> <span class="fu">colSums</span>(tabella)</span>
+<span id="cb10-2"><a aria-label="2"></a>P_Y</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Y=0 Y=1 
 0.5 0.5 </code></pre>
@@ -408,19 +414,19 @@ X=3 0.000 0.125</code></pre>
 <section id="passo-1-definire-i-valori-possibili" class="slide level2">
 <h2>Passo 1: Definire i valori possibili</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="co"># Valori che X può assumere</span></span>
-<span id="cb12-2"><a href=""></a>valori_X <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
-<span id="cb12-3"><a href=""></a></span>
-<span id="cb12-4"><a href=""></a><span class="co"># Valori che Y può assumere</span></span>
-<span id="cb12-5"><a href=""></a>valori_Y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a aria-label="1"></a><span class="co"># Valori che X può assumere</span></span>
+<span id="cb12-2"><a aria-label="2"></a>valori_X <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb12-3"><a aria-label="3"></a></span>
+<span id="cb12-4"><a aria-label="4"></a><span class="co"># Valori che Y può assumere</span></span>
+<span id="cb12-5"><a aria-label="5"></a>valori_Y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="passo-2-calcolare-ex" class="slide level2">
 <h2>Passo 2: Calcolare E(X)</h2>
 <p>La media è la somma pesata: ogni valore per la sua probabilità.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a>E_X <span class="ot">&lt;-</span> <span class="fu">sum</span>(valori_X <span class="sc">*</span> P_X)</span>
-<span id="cb13-2"><a href=""></a>E_X</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a aria-label="1"></a>E_X <span class="ot">&lt;-</span> <span class="fu">sum</span>(valori_X <span class="sc">*</span> P_X)</span>
+<span id="cb13-2"><a aria-label="2"></a>E_X</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.5</code></pre>
 </div>
@@ -430,8 +436,8 @@ X=3 0.000 0.125</code></pre>
 <section id="passo-3-calcolare-ey" class="slide level2">
 <h2>Passo 3: Calcolare E(Y)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a>E_Y <span class="ot">&lt;-</span> <span class="fu">sum</span>(valori_Y <span class="sc">*</span> P_Y)</span>
-<span id="cb15-2"><a href=""></a>E_Y</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a aria-label="1"></a>E_Y <span class="ot">&lt;-</span> <span class="fu">sum</span>(valori_Y <span class="sc">*</span> P_Y)</span>
+<span id="cb15-2"><a aria-label="2"></a>E_Y</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.5</code></pre>
 </div>
@@ -448,23 +454,23 @@ X=3 0.000 0.125</code></pre>
 <h2>E(XY): il calcolo esplicito</h2>
 <p>Scriviamo tutti i termini:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a><span class="co"># Per ogni cella: x * y * P(x, y)</span></span>
-<span id="cb17-2"><a href=""></a>termine_00 <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="sc">*</span> <span class="dv">0</span> <span class="sc">*</span> tabella[<span class="st">"X=0"</span>, <span class="st">"Y=0"</span>]  <span class="co"># = 0</span></span>
-<span id="cb17-3"><a href=""></a>termine_01 <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="sc">*</span> <span class="dv">1</span> <span class="sc">*</span> tabella[<span class="st">"X=0"</span>, <span class="st">"Y=1"</span>]  <span class="co"># = 0</span></span>
-<span id="cb17-4"><a href=""></a>termine_10 <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">*</span> <span class="dv">0</span> <span class="sc">*</span> tabella[<span class="st">"X=1"</span>, <span class="st">"Y=0"</span>]  <span class="co"># = 0</span></span>
-<span id="cb17-5"><a href=""></a>termine_11 <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">*</span> <span class="dv">1</span> <span class="sc">*</span> tabella[<span class="st">"X=1"</span>, <span class="st">"Y=1"</span>]  <span class="co"># = 1/8</span></span>
-<span id="cb17-6"><a href=""></a>termine_20 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="dv">0</span> <span class="sc">*</span> tabella[<span class="st">"X=2"</span>, <span class="st">"Y=0"</span>]  <span class="co"># = 0</span></span>
-<span id="cb17-7"><a href=""></a>termine_21 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="dv">1</span> <span class="sc">*</span> tabella[<span class="st">"X=2"</span>, <span class="st">"Y=1"</span>]  <span class="co"># = 4/8</span></span>
-<span id="cb17-8"><a href=""></a>termine_30 <span class="ot">&lt;-</span> <span class="dv">3</span> <span class="sc">*</span> <span class="dv">0</span> <span class="sc">*</span> tabella[<span class="st">"X=3"</span>, <span class="st">"Y=0"</span>]  <span class="co"># = 0</span></span>
-<span id="cb17-9"><a href=""></a>termine_31 <span class="ot">&lt;-</span> <span class="dv">3</span> <span class="sc">*</span> <span class="dv">1</span> <span class="sc">*</span> tabella[<span class="st">"X=3"</span>, <span class="st">"Y=1"</span>]  <span class="co"># = 3/8</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a aria-label="1"></a><span class="co"># Per ogni cella: x * y * P(x, y)</span></span>
+<span id="cb17-2"><a aria-label="2"></a>termine_00 <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="sc">*</span> <span class="dv">0</span> <span class="sc">*</span> tabella[<span class="st">"X=0"</span>, <span class="st">"Y=0"</span>]  <span class="co"># = 0</span></span>
+<span id="cb17-3"><a aria-label="3"></a>termine_01 <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="sc">*</span> <span class="dv">1</span> <span class="sc">*</span> tabella[<span class="st">"X=0"</span>, <span class="st">"Y=1"</span>]  <span class="co"># = 0</span></span>
+<span id="cb17-4"><a aria-label="4"></a>termine_10 <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">*</span> <span class="dv">0</span> <span class="sc">*</span> tabella[<span class="st">"X=1"</span>, <span class="st">"Y=0"</span>]  <span class="co"># = 0</span></span>
+<span id="cb17-5"><a aria-label="5"></a>termine_11 <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">*</span> <span class="dv">1</span> <span class="sc">*</span> tabella[<span class="st">"X=1"</span>, <span class="st">"Y=1"</span>]  <span class="co"># = 1/8</span></span>
+<span id="cb17-6"><a aria-label="6"></a>termine_20 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="dv">0</span> <span class="sc">*</span> tabella[<span class="st">"X=2"</span>, <span class="st">"Y=0"</span>]  <span class="co"># = 0</span></span>
+<span id="cb17-7"><a aria-label="7"></a>termine_21 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="dv">1</span> <span class="sc">*</span> tabella[<span class="st">"X=2"</span>, <span class="st">"Y=1"</span>]  <span class="co"># = 4/8</span></span>
+<span id="cb17-8"><a aria-label="8"></a>termine_30 <span class="ot">&lt;-</span> <span class="dv">3</span> <span class="sc">*</span> <span class="dv">0</span> <span class="sc">*</span> tabella[<span class="st">"X=3"</span>, <span class="st">"Y=0"</span>]  <span class="co"># = 0</span></span>
+<span id="cb17-9"><a aria-label="9"></a>termine_31 <span class="ot">&lt;-</span> <span class="dv">3</span> <span class="sc">*</span> <span class="dv">1</span> <span class="sc">*</span> tabella[<span class="st">"X=3"</span>, <span class="st">"Y=1"</span>]  <span class="co"># = 3/8</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="exy-la-somma" class="slide level2">
 <h2>E(XY): la somma</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a>E_XY <span class="ot">&lt;-</span> termine_00 <span class="sc">+</span> termine_01 <span class="sc">+</span> termine_10 <span class="sc">+</span> termine_11 <span class="sc">+</span></span>
-<span id="cb18-2"><a href=""></a>        termine_20 <span class="sc">+</span> termine_21 <span class="sc">+</span> termine_30 <span class="sc">+</span> termine_31</span>
-<span id="cb18-3"><a href=""></a>E_XY</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a aria-label="1"></a>E_XY <span class="ot">&lt;-</span> termine_00 <span class="sc">+</span> termine_01 <span class="sc">+</span> termine_10 <span class="sc">+</span> termine_11 <span class="sc">+</span></span>
+<span id="cb18-2"><a aria-label="2"></a>        termine_20 <span class="sc">+</span> termine_21 <span class="sc">+</span> termine_30 <span class="sc">+</span> termine_31</span>
+<span id="cb18-3"><a aria-label="3"></a>E_XY</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1</code></pre>
 </div>
@@ -475,9 +481,9 @@ X=3 0.000 0.125</code></pre>
 <p>Notiamo che molti termini sono zero (perché <span class="math inline">\(x = 0\)</span> oppure <span class="math inline">\(y = 0\)</span>).</p>
 <p>I termini non nulli sono solo quelli con <span class="math inline">\(y = 1\)</span> e <span class="math inline">\(x &gt; 0\)</span>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a><span class="co"># Solo i termini non nulli</span></span>
-<span id="cb20-2"><a href=""></a>E_XY <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">*</span> <span class="dv">1</span> <span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>) <span class="sc">+</span> <span class="dv">2</span> <span class="sc">*</span> <span class="dv">1</span> <span class="sc">*</span> (<span class="dv">2</span><span class="sc">/</span><span class="dv">8</span>) <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> <span class="dv">1</span> <span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>)</span>
-<span id="cb20-3"><a href=""></a>E_XY</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a aria-label="1"></a><span class="co"># Solo i termini non nulli</span></span>
+<span id="cb20-2"><a aria-label="2"></a>E_XY <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">*</span> <span class="dv">1</span> <span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>) <span class="sc">+</span> <span class="dv">2</span> <span class="sc">*</span> <span class="dv">1</span> <span class="sc">*</span> (<span class="dv">2</span><span class="sc">/</span><span class="dv">8</span>) <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> <span class="dv">1</span> <span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>)</span>
+<span id="cb20-3"><a aria-label="3"></a>E_XY</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1</code></pre>
 </div>
@@ -490,8 +496,8 @@ X=3 0.000 0.125</code></pre>
 \text{Cov}(X, Y) = \mathbb{E}(XY) - \mathbb{E}(X) \cdot \mathbb{E}(Y)
 \]</span></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a>Cov_XY <span class="ot">&lt;-</span> E_XY <span class="sc">-</span> E_X <span class="sc">*</span> E_Y</span>
-<span id="cb22-2"><a href=""></a>Cov_XY</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a aria-label="1"></a>Cov_XY <span class="ot">&lt;-</span> E_XY <span class="sc">-</span> E_X <span class="sc">*</span> E_Y</span>
+<span id="cb22-2"><a aria-label="2"></a>Cov_XY</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.25</code></pre>
 </div>
@@ -514,17 +520,17 @@ X=3 0.000 0.125</code></pre>
 <h2>Varianza di X</h2>
 <p>Formula: <span class="math inline">\(\text{Var}(X) = \mathbb{E}(X^2) - [\mathbb{E}(X)]^2\)</span></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a><span class="co"># E(X^2): media dei quadrati</span></span>
-<span id="cb24-2"><a href=""></a>E_X2 <span class="ot">&lt;-</span> <span class="fu">sum</span>(valori_X<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> P_X)</span>
-<span id="cb24-3"><a href=""></a>E_X2</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a aria-label="1"></a><span class="co"># E(X^2): media dei quadrati</span></span>
+<span id="cb24-2"><a aria-label="2"></a>E_X2 <span class="ot">&lt;-</span> <span class="fu">sum</span>(valori_X<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> P_X)</span>
+<span id="cb24-3"><a aria-label="3"></a>E_X2</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a><span class="co"># Varianza</span></span>
-<span id="cb26-2"><a href=""></a>Var_X <span class="ot">&lt;-</span> E_X2 <span class="sc">-</span> E_X<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb26-3"><a href=""></a>Var_X</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a aria-label="1"></a><span class="co"># Varianza</span></span>
+<span id="cb26-2"><a aria-label="2"></a>Var_X <span class="ot">&lt;-</span> E_X2 <span class="sc">-</span> E_X<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb26-3"><a aria-label="3"></a>Var_X</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.75</code></pre>
 </div>
@@ -533,9 +539,9 @@ X=3 0.000 0.125</code></pre>
 <section id="varianza-di-y" class="slide level2">
 <h2>Varianza di Y</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href=""></a>E_Y2 <span class="ot">&lt;-</span> <span class="fu">sum</span>(valori_Y<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> P_Y)</span>
-<span id="cb28-2"><a href=""></a>Var_Y <span class="ot">&lt;-</span> E_Y2 <span class="sc">-</span> E_Y<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb28-3"><a href=""></a>Var_Y</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a aria-label="1"></a>E_Y2 <span class="ot">&lt;-</span> <span class="fu">sum</span>(valori_Y<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> P_Y)</span>
+<span id="cb28-2"><a aria-label="2"></a>Var_Y <span class="ot">&lt;-</span> E_Y2 <span class="sc">-</span> E_Y<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb28-3"><a aria-label="3"></a>Var_Y</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.25</code></pre>
 </div>
@@ -544,8 +550,8 @@ X=3 0.000 0.125</code></pre>
 <section id="correlazione" class="slide level2">
 <h2>Correlazione</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href=""></a>rho <span class="ot">&lt;-</span> Cov_XY <span class="sc">/</span> <span class="fu">sqrt</span>(Var_X <span class="sc">*</span> Var_Y)</span>
-<span id="cb30-2"><a href=""></a>rho</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a aria-label="1"></a>rho <span class="ot">&lt;-</span> Cov_XY <span class="sc">/</span> <span class="fu">sqrt</span>(Var_X <span class="sc">*</span> Var_Y)</span>
+<span id="cb30-2"><a aria-label="2"></a>rho</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.5773503</code></pre>
 </div>
@@ -564,17 +570,17 @@ P(X = x, Y = y) = P(X = x) \cdot P(Y = y)
 <h2>Verifica per una cella</h2>
 <p>Prendiamo la cella <span class="math inline">\((X = 1, Y = 0)\)</span>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href=""></a><span class="co"># Probabilità congiunta (dalla tabella)</span></span>
-<span id="cb32-2"><a href=""></a>P_congiunta <span class="ot">&lt;-</span> tabella[<span class="st">"X=1"</span>, <span class="st">"Y=0"</span>]</span>
-<span id="cb32-3"><a href=""></a>P_congiunta</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a aria-label="1"></a><span class="co"># Probabilità congiunta (dalla tabella)</span></span>
+<span id="cb32-2"><a aria-label="2"></a>P_congiunta <span class="ot">&lt;-</span> tabella[<span class="st">"X=1"</span>, <span class="st">"Y=0"</span>]</span>
+<span id="cb32-3"><a aria-label="3"></a>P_congiunta</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.25</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href=""></a><span class="co"># Prodotto delle marginali</span></span>
-<span id="cb34-2"><a href=""></a>P_prodotto <span class="ot">&lt;-</span> P_X[<span class="st">"X=1"</span>] <span class="sc">*</span> P_Y[<span class="st">"Y=0"</span>]</span>
-<span id="cb34-3"><a href=""></a>P_prodotto</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a aria-label="1"></a><span class="co"># Prodotto delle marginali</span></span>
+<span id="cb34-2"><a aria-label="2"></a>P_prodotto <span class="ot">&lt;-</span> P_X[<span class="st">"X=1"</span>] <span class="sc">*</span> P_Y[<span class="st">"Y=0"</span>]</span>
+<span id="cb34-3"><a aria-label="3"></a>P_prodotto</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   X=1 
 0.1875 </code></pre>
@@ -584,7 +590,7 @@ P(X = x, Y = y) = P(X = x) \cdot P(Y = y)
 <section id="confronto" class="slide level2">
 <h2>Confronto</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href=""></a><span class="fu">c</span>(<span class="at">Congiunta =</span> P_congiunta, <span class="at">Prodotto =</span> P_prodotto)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a aria-label="1"></a><span class="fu">c</span>(<span class="at">Congiunta =</span> P_congiunta, <span class="at">Prodotto =</span> P_prodotto)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Congiunta Prodotto.X=1 
       0.2500       0.1875 </code></pre>
@@ -597,13 +603,13 @@ P(X = x, Y = y) = P(X = x) \cdot P(Y = y)
 <h2>Verifica per tutte le celle</h2>
 <p>Calcoliamo il prodotto delle marginali per ogni cella:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href=""></a><span class="co"># Per X = 0</span></span>
-<span id="cb38-2"><a href=""></a>P_X[<span class="st">"X=0"</span>] <span class="sc">*</span> P_Y[<span class="st">"Y=0"</span>]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a aria-label="1"></a><span class="co"># Per X = 0</span></span>
+<span id="cb38-2"><a aria-label="2"></a>P_X[<span class="st">"X=0"</span>] <span class="sc">*</span> P_Y[<span class="st">"Y=0"</span>]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   X=0 
 0.0625 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href=""></a>P_X[<span class="st">"X=0"</span>] <span class="sc">*</span> P_Y[<span class="st">"Y=1"</span>]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a aria-label="1"></a>P_X[<span class="st">"X=0"</span>] <span class="sc">*</span> P_Y[<span class="st">"Y=1"</span>]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   X=0 
 0.0625 </code></pre>
@@ -613,26 +619,26 @@ P(X = x, Y = y) = P(X = x) \cdot P(Y = y)
 <section id="verifica-per-tutte-le-celle-continua" class="slide level2">
 <h2>Verifica per tutte le celle (continua)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href=""></a><span class="co"># Per X = 1</span></span>
-<span id="cb42-2"><a href=""></a>P_X[<span class="st">"X=1"</span>] <span class="sc">*</span> P_Y[<span class="st">"Y=0"</span>]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a aria-label="1"></a><span class="co"># Per X = 1</span></span>
+<span id="cb42-2"><a aria-label="2"></a>P_X[<span class="st">"X=1"</span>] <span class="sc">*</span> P_Y[<span class="st">"Y=0"</span>]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   X=1 
 0.1875 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href=""></a>P_X[<span class="st">"X=1"</span>] <span class="sc">*</span> P_Y[<span class="st">"Y=1"</span>]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a aria-label="1"></a>P_X[<span class="st">"X=1"</span>] <span class="sc">*</span> P_Y[<span class="st">"Y=1"</span>]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   X=1 
 0.1875 </code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href=""></a><span class="co"># Per X = 2</span></span>
-<span id="cb46-2"><a href=""></a>P_X[<span class="st">"X=2"</span>] <span class="sc">*</span> P_Y[<span class="st">"Y=0"</span>]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a aria-label="1"></a><span class="co"># Per X = 2</span></span>
+<span id="cb46-2"><a aria-label="2"></a>P_X[<span class="st">"X=2"</span>] <span class="sc">*</span> P_Y[<span class="st">"Y=0"</span>]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   X=2 
 0.1875 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href=""></a>P_X[<span class="st">"X=2"</span>] <span class="sc">*</span> P_Y[<span class="st">"Y=1"</span>]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a aria-label="1"></a>P_X[<span class="st">"X=2"</span>] <span class="sc">*</span> P_Y[<span class="st">"Y=1"</span>]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   X=2 
 0.1875 </code></pre>
@@ -719,28 +725,28 @@ P(X = x, Y = y) = P(X = x) \cdot P(Y = y)
 <section id="simulare-i-lanci" class="slide level2">
 <h2>Simulare i lanci</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href=""></a><span class="co"># Numero di esperimenti</span></span>
-<span id="cb50-2"><a href=""></a>n <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
-<span id="cb50-3"><a href=""></a></span>
-<span id="cb50-4"><a href=""></a><span class="co"># Lanciamo 3 monete per ogni esperimento</span></span>
-<span id="cb50-5"><a href=""></a><span class="co"># Ogni riga: un esperimento; ogni colonna: una moneta</span></span>
-<span id="cb50-6"><a href=""></a>lanci <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">sample</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>, n <span class="sc">*</span> <span class="dv">3</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb50-7"><a href=""></a>                <span class="at">nrow =</span> n, <span class="at">ncol =</span> <span class="dv">3</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a aria-label="1"></a><span class="co"># Numero di esperimenti</span></span>
+<span id="cb50-2"><a aria-label="2"></a>n <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
+<span id="cb50-3"><a aria-label="3"></a></span>
+<span id="cb50-4"><a aria-label="4"></a><span class="co"># Lanciamo 3 monete per ogni esperimento</span></span>
+<span id="cb50-5"><a aria-label="5"></a><span class="co"># Ogni riga: un esperimento; ogni colonna: una moneta</span></span>
+<span id="cb50-6"><a aria-label="6"></a>lanci <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">sample</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>, n <span class="sc">*</span> <span class="dv">3</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb50-7"><a aria-label="7"></a>                <span class="at">nrow =</span> n, <span class="at">ncol =</span> <span class="dv">3</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="cosa-abbiamo-creato" class="slide level2">
 <h2>Cosa abbiamo creato?</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href=""></a><span class="co"># Prime 6 righe della matrice</span></span>
-<span id="cb51-2"><a href=""></a><span class="fu">head</span>(lanci)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a aria-label="1"></a><span class="co"># Prime 6 righe della matrice</span></span>
+<span id="cb51-2"><a aria-label="2"></a><span class="fu">head</span>(lanci)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2] [,3]
-[1,]    0    0    0
-[2,]    0    0    1
-[3,]    1    1    1
-[4,]    0    1    1
-[5,]    0    0    1
-[6,]    1    0    0</code></pre>
+[1,]    1    1    0
+[2,]    0    1    0
+[3,]    0    0    1
+[4,]    1    0    0
+[5,]    0    1    1
+[6,]    1    1    0</code></pre>
 </div>
 </div>
 <p>Ogni riga è un esperimento (3 lanci).</p>
@@ -749,28 +755,28 @@ P(X = x, Y = y) = P(X = x) \cdot P(Y = y)
 <section id="calcolare-x-e-y" class="slide level2">
 <h2>Calcolare X e Y</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href=""></a><span class="co"># X = somma delle 3 monete (totale teste)</span></span>
-<span id="cb53-2"><a href=""></a>X <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(lanci)</span>
-<span id="cb53-3"><a href=""></a></span>
-<span id="cb53-4"><a href=""></a><span class="co"># Y = risultato della prima moneta</span></span>
-<span id="cb53-5"><a href=""></a>Y <span class="ot">&lt;-</span> lanci[, <span class="dv">1</span>]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a aria-label="1"></a><span class="co"># X = somma delle 3 monete (totale teste)</span></span>
+<span id="cb53-2"><a aria-label="2"></a>X <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(lanci)</span>
+<span id="cb53-3"><a aria-label="3"></a></span>
+<span id="cb53-4"><a aria-label="4"></a><span class="co"># Y = risultato della prima moneta</span></span>
+<span id="cb53-5"><a aria-label="5"></a>Y <span class="ot">&lt;-</span> lanci[, <span class="dv">1</span>]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="verificare-x" class="slide level2">
 <h2>Verificare X</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href=""></a><span class="fu">head</span>(X, <span class="dv">10</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a aria-label="1"></a><span class="fu">head</span>(X, <span class="dv">10</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] 0 1 3 2 1 1 1 2 0 0</code></pre>
+<pre><code> [1] 2 1 1 1 2 2 2 1 1 2</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href=""></a><span class="co"># Distribuzione di X</span></span>
-<span id="cb56-2"><a href=""></a><span class="fu">table</span>(X) <span class="sc">/</span> n</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a aria-label="1"></a><span class="co"># Distribuzione di X</span></span>
+<span id="cb56-2"><a aria-label="2"></a><span class="fu">table</span>(X) <span class="sc">/</span> n</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>X
      0      1      2      3 
-0.1281 0.3709 0.3751 0.1259 </code></pre>
+0.1155 0.3760 0.3879 0.1206 </code></pre>
 </div>
 </div>
 <p>Simile a <span class="math inline">\(P(X) = (0.125, 0.375, 0.375, 0.125)\)</span>.</p>
@@ -778,9 +784,9 @@ P(X = x, Y = y) = P(X = x) \cdot P(Y = y)
 <section id="covarianza-campionaria" class="slide level2">
 <h2>Covarianza campionaria</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href=""></a><span class="fu">cov</span>(X, Y)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a aria-label="1"></a><span class="fu">cov</span>(X, Y)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.2545262</code></pre>
+<pre><code>[1] 0.2423514</code></pre>
 </div>
 </div>
 <p>Vicino a 0.25.</p>
@@ -788,9 +794,9 @@ P(X = x, Y = y) = P(X = x) \cdot P(Y = y)
 <section id="correlazione-campionaria" class="slide level2">
 <h2>Correlazione campionaria</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href=""></a><span class="fu">cor</span>(X, Y)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a aria-label="1"></a><span class="fu">cor</span>(X, Y)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.5846354</code></pre>
+<pre><code>[1] 0.5703777</code></pre>
 </div>
 </div>
 <p>Vicino a 0.58.</p>
@@ -886,7 +892,7 @@ P(X = x, Y = y) = P(X = x) \cdot P(Y = y)
 <section id="passo-1-definire-le-medie" class="slide level2">
 <h2>Passo 1: Definire le medie</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href=""></a>medie <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">30</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a aria-label="1"></a>medie <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">30</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Il primo numero è la media di Ansia, il secondo di Stress.</p>
 </section>
@@ -900,14 +906,14 @@ P(X = x, Y = y) = P(X = x) \cdot P(Y = y)
 <section id="costruire-la-matrice-in-r" class="slide level2">
 <h2>Costruire la matrice in R</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href=""></a><span class="co">#       Ansia  Stress</span></span>
-<span id="cb63-2"><a href=""></a><span class="co"># Ansia   100     40</span></span>
-<span id="cb63-3"><a href=""></a><span class="co"># Stress   40     64</span></span>
-<span id="cb63-4"><a href=""></a></span>
-<span id="cb63-5"><a href=""></a>Sigma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">40</span>,</span>
-<span id="cb63-6"><a href=""></a>                   <span class="dv">40</span>, <span class="dv">64</span>), </span>
-<span id="cb63-7"><a href=""></a>                <span class="at">nrow =</span> <span class="dv">2</span>)</span>
-<span id="cb63-8"><a href=""></a>Sigma</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a aria-label="1"></a><span class="co">#       Ansia  Stress</span></span>
+<span id="cb63-2"><a aria-label="2"></a><span class="co"># Ansia   100     40</span></span>
+<span id="cb63-3"><a aria-label="3"></a><span class="co"># Stress   40     64</span></span>
+<span id="cb63-4"><a aria-label="4"></a></span>
+<span id="cb63-5"><a aria-label="5"></a>Sigma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">40</span>,</span>
+<span id="cb63-6"><a aria-label="6"></a>                   <span class="dv">40</span>, <span class="dv">64</span>), </span>
+<span id="cb63-7"><a aria-label="7"></a>                <span class="at">nrow =</span> <span class="dv">2</span>)</span>
+<span id="cb63-8"><a aria-label="8"></a>Sigma</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2]
 [1,]  100   40
@@ -926,9 +932,9 @@ P(X = x, Y = y) = P(X = x) \cdot P(Y = y)
 <section id="passo-3-generare-i-dati" class="slide level2">
 <h2>Passo 3: Generare i dati</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href=""></a><span class="fu">library</span>(MASS)</span>
-<span id="cb65-2"><a href=""></a></span>
-<span id="cb65-3"><a href=""></a>dati <span class="ot">&lt;-</span> <span class="fu">mvrnorm</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">mu =</span> medie, <span class="at">Sigma =</span> Sigma)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a aria-label="1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb65-2"><a aria-label="2"></a></span>
+<span id="cb65-3"><a aria-label="3"></a>dati <span class="ot">&lt;-</span> <span class="fu">mvrnorm</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">mu =</span> medie, <span class="at">Sigma =</span> Sigma)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ul>
 <li><code>n = 1000</code>: quante osservazioni</li>
@@ -939,16 +945,16 @@ P(X = x, Y = y) = P(X = x) \cdot P(Y = y)
 <section id="cosa-abbiamo-ottenuto" class="slide level2">
 <h2>Cosa abbiamo ottenuto?</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href=""></a><span class="fu">colnames</span>(dati) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Ansia"</span>, <span class="st">"Stress"</span>)</span>
-<span id="cb66-2"><a href=""></a><span class="fu">head</span>(dati)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a aria-label="1"></a><span class="fu">colnames</span>(dati) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Ansia"</span>, <span class="st">"Stress"</span>)</span>
+<span id="cb66-2"><a aria-label="2"></a><span class="fu">head</span>(dati)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        Ansia   Stress
-[1,] 42.18966 40.55769
-[2,] 58.67045 37.55301
-[3,] 48.17886 30.75347
-[4,] 50.82631 31.62740
-[5,] 47.40167 34.51366
-[6,] 37.73041 15.70169</code></pre>
+[1,] 51.66052 25.31466
+[2,] 61.12340 27.75169
+[3,] 60.85604 31.72480
+[4,] 56.76830 38.58527
+[5,] 47.99901 41.90491
+[6,] 40.04854 37.94505</code></pre>
 </div>
 </div>
 <p>Ogni riga è una “persona” con un punteggio di Ansia e uno di Stress.</p>
@@ -957,10 +963,10 @@ P(X = x, Y = y) = P(X = x) \cdot P(Y = y)
 <h2>Passo 4: Verificare la simulazione</h2>
 <p>Le medie campionarie sono vicine a (50, 30)?</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href=""></a><span class="fu">colMeans</span>(dati)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a aria-label="1"></a><span class="fu">colMeans</span>(dati)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Ansia   Stress 
-49.99313 30.11928 </code></pre>
+50.75640 30.38329 </code></pre>
 </div>
 </div>
 </section>
@@ -968,25 +974,25 @@ P(X = x, Y = y) = P(X = x) \cdot P(Y = y)
 <h2>La covarianza campionaria</h2>
 <p>La covarianza campionaria è vicina a 40?</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href=""></a><span class="fu">cov</span>(dati[, <span class="st">"Ansia"</span>], dati[, <span class="st">"Stress"</span>])</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a aria-label="1"></a><span class="fu">cov</span>(dati[, <span class="st">"Ansia"</span>], dati[, <span class="st">"Stress"</span>])</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 41.22793</code></pre>
+<pre><code>[1] 41.99426</code></pre>
 </div>
 </div>
 </section>
 <section id="la-matrice-di-covarianza-campionaria" class="slide level2">
 <h2>La matrice di covarianza campionaria</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href=""></a><span class="fu">cov</span>(dati) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a aria-label="1"></a><span class="fu">cov</span>(dati) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>       Ansia Stress
-Ansia  99.94  41.23
-Stress 41.23  64.68</code></pre>
+<pre><code>        Ansia Stress
+Ansia  108.22  41.99
+Stress  41.99  61.34</code></pre>
 </div>
 </div>
 <p>Confronta con la matrice teorica:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href=""></a>Sigma</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a aria-label="1"></a>Sigma</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2]
 [1,]  100   40
@@ -1006,11 +1012,11 @@ Stress 41.23  64.68</code></pre>
 <h2>Esercizio 3 — Cambiare la covarianza</h2>
 <p>Cosa succede se la covarianza è <strong>negativa</strong>?</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb76"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href=""></a>Sigma_neg <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">100</span>, <span class="sc">-</span><span class="dv">40</span>,</span>
-<span id="cb76-2"><a href=""></a>                      <span class="sc">-</span><span class="dv">40</span>,  <span class="dv">64</span>), <span class="at">nrow =</span> <span class="dv">2</span>)</span>
-<span id="cb76-3"><a href=""></a></span>
-<span id="cb76-4"><a href=""></a>dati_neg <span class="ot">&lt;-</span> <span class="fu">mvrnorm</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">mu =</span> medie, <span class="at">Sigma =</span> Sigma_neg)</span>
-<span id="cb76-5"><a href=""></a><span class="fu">colnames</span>(dati_neg) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Ansia"</span>, <span class="st">"Stress"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb76"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a aria-label="1"></a>Sigma_neg <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">100</span>, <span class="sc">-</span><span class="dv">40</span>,</span>
+<span id="cb76-2"><a aria-label="2"></a>                      <span class="sc">-</span><span class="dv">40</span>,  <span class="dv">64</span>), <span class="at">nrow =</span> <span class="dv">2</span>)</span>
+<span id="cb76-3"><a aria-label="3"></a></span>
+<span id="cb76-4"><a aria-label="4"></a>dati_neg <span class="ot">&lt;-</span> <span class="fu">mvrnorm</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">mu =</span> medie, <span class="at">Sigma =</span> Sigma_neg)</span>
+<span id="cb76-5"><a aria-label="5"></a><span class="fu">colnames</span>(dati_neg) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Ansia"</span>, <span class="st">"Stress"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="visualizzazione-con-covarianza-negativa" class="slide level2">
@@ -1025,11 +1031,11 @@ Stress 41.23  64.68</code></pre>
 <h2>Covarianza zero</h2>
 <p>Cosa succede se le variabili sono <strong>indipendenti</strong>?</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb77"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href=""></a>Sigma_zero <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">100</span>,  <span class="dv">0</span>,</span>
-<span id="cb77-2"><a href=""></a>                         <span class="dv">0</span>, <span class="dv">64</span>), <span class="at">nrow =</span> <span class="dv">2</span>)</span>
-<span id="cb77-3"><a href=""></a></span>
-<span id="cb77-4"><a href=""></a>dati_ind <span class="ot">&lt;-</span> <span class="fu">mvrnorm</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">mu =</span> medie, <span class="at">Sigma =</span> Sigma_zero)</span>
-<span id="cb77-5"><a href=""></a><span class="fu">colnames</span>(dati_ind) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Ansia"</span>, <span class="st">"Stress"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb77"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a aria-label="1"></a>Sigma_zero <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">100</span>,  <span class="dv">0</span>,</span>
+<span id="cb77-2"><a aria-label="2"></a>                         <span class="dv">0</span>, <span class="dv">64</span>), <span class="at">nrow =</span> <span class="dv">2</span>)</span>
+<span id="cb77-3"><a aria-label="3"></a></span>
+<span id="cb77-4"><a aria-label="4"></a>dati_ind <span class="ot">&lt;-</span> <span class="fu">mvrnorm</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">mu =</span> medie, <span class="at">Sigma =</span> Sigma_zero)</span>
+<span id="cb77-5"><a aria-label="5"></a><span class="fu">colnames</span>(dati_ind) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Ansia"</span>, <span class="st">"Stress"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="visualizzazione-con-covarianza-zero" class="slide level2">
@@ -1055,16 +1061,16 @@ Stress 41.23  64.68</code></pre>
 <section id="calcolo-per-il-nostro-esempio" class="slide level2">
 <h2>Calcolo per il nostro esempio</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb78"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href=""></a><span class="co"># Covarianza teorica</span></span>
-<span id="cb78-2"><a href=""></a>cov_teorica <span class="ot">&lt;-</span> <span class="dv">40</span></span>
-<span id="cb78-3"><a href=""></a></span>
-<span id="cb78-4"><a href=""></a><span class="co"># Deviazioni standard teoriche</span></span>
-<span id="cb78-5"><a href=""></a>sd_ansia <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="dv">100</span>)  <span class="co"># = 10</span></span>
-<span id="cb78-6"><a href=""></a>sd_stress <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="dv">64</span>)  <span class="co"># = 8</span></span>
-<span id="cb78-7"><a href=""></a></span>
-<span id="cb78-8"><a href=""></a><span class="co"># Correlazione teorica</span></span>
-<span id="cb78-9"><a href=""></a>rho_teorica <span class="ot">&lt;-</span> cov_teorica <span class="sc">/</span> (sd_ansia <span class="sc">*</span> sd_stress)</span>
-<span id="cb78-10"><a href=""></a>rho_teorica</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb78"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a aria-label="1"></a><span class="co"># Covarianza teorica</span></span>
+<span id="cb78-2"><a aria-label="2"></a>cov_teorica <span class="ot">&lt;-</span> <span class="dv">40</span></span>
+<span id="cb78-3"><a aria-label="3"></a></span>
+<span id="cb78-4"><a aria-label="4"></a><span class="co"># Deviazioni standard teoriche</span></span>
+<span id="cb78-5"><a aria-label="5"></a>sd_ansia <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="dv">100</span>)  <span class="co"># = 10</span></span>
+<span id="cb78-6"><a aria-label="6"></a>sd_stress <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="dv">64</span>)  <span class="co"># = 8</span></span>
+<span id="cb78-7"><a aria-label="7"></a></span>
+<span id="cb78-8"><a aria-label="8"></a><span class="co"># Correlazione teorica</span></span>
+<span id="cb78-9"><a aria-label="9"></a>rho_teorica <span class="ot">&lt;-</span> cov_teorica <span class="sc">/</span> (sd_ansia <span class="sc">*</span> sd_stress)</span>
+<span id="cb78-10"><a aria-label="10"></a>rho_teorica</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.5</code></pre>
 </div>
@@ -1073,9 +1079,9 @@ Stress 41.23  64.68</code></pre>
 <section id="verifica-con-i-dati-simulati" class="slide level2">
 <h2>Verifica con i dati simulati</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb80"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href=""></a><span class="fu">cor</span>(dati[, <span class="st">"Ansia"</span>], dati[, <span class="st">"Stress"</span>])</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb80"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a aria-label="1"></a><span class="fu">cor</span>(dati[, <span class="st">"Ansia"</span>], dati[, <span class="st">"Stress"</span>])</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.5128009</code></pre>
+<pre><code>[1] 0.5154371</code></pre>
 </div>
 </div>
 <p>Vicino a 0.5.</p>
@@ -1177,31 +1183,31 @@ Stress 41.23  64.68</code></pre>
 <h2>Simulare i dati</h2>
 <p>Generiamo 10,000 coppie (X, Y):</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb82"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href=""></a>n <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
-<span id="cb82-2"><a href=""></a></span>
-<span id="cb82-3"><a href=""></a><span class="co"># 2500 copie di ogni coppia</span></span>
-<span id="cb82-4"><a href=""></a>X1 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="at">times =</span> <span class="dv">2500</span>); Y1 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="at">times =</span> <span class="dv">2500</span>)</span>
-<span id="cb82-5"><a href=""></a>X2 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="at">times =</span> <span class="dv">2500</span>); Y2 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="at">times =</span> <span class="dv">2500</span>)</span>
-<span id="cb82-6"><a href=""></a>X3 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="at">times =</span> <span class="dv">2500</span>); Y3 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="at">times =</span> <span class="dv">2500</span>)</span>
-<span id="cb82-7"><a href=""></a>X4 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">2</span>, <span class="at">times =</span> <span class="dv">2500</span>); Y4 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="at">times =</span> <span class="dv">2500</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb82"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a aria-label="1"></a>n <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
+<span id="cb82-2"><a aria-label="2"></a></span>
+<span id="cb82-3"><a aria-label="3"></a><span class="co"># 2500 copie di ogni coppia</span></span>
+<span id="cb82-4"><a aria-label="4"></a>X1 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="at">times =</span> <span class="dv">2500</span>); Y1 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="at">times =</span> <span class="dv">2500</span>)</span>
+<span id="cb82-5"><a aria-label="5"></a>X2 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="at">times =</span> <span class="dv">2500</span>); Y2 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="at">times =</span> <span class="dv">2500</span>)</span>
+<span id="cb82-6"><a aria-label="6"></a>X3 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="at">times =</span> <span class="dv">2500</span>); Y3 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="at">times =</span> <span class="dv">2500</span>)</span>
+<span id="cb82-7"><a aria-label="7"></a>X4 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">2</span>, <span class="at">times =</span> <span class="dv">2500</span>); Y4 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="at">times =</span> <span class="dv">2500</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="unire-e-mescolare" class="slide level2">
 <h2>Unire e mescolare</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb83"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href=""></a>X_ordinato <span class="ot">&lt;-</span> <span class="fu">c</span>(X1, X2, X3, X4)</span>
-<span id="cb83-2"><a href=""></a>Y_ordinato <span class="ot">&lt;-</span> <span class="fu">c</span>(Y1, Y2, Y3, Y4)</span>
-<span id="cb83-3"><a href=""></a></span>
-<span id="cb83-4"><a href=""></a><span class="co"># Ordine casuale</span></span>
-<span id="cb83-5"><a href=""></a>ordine_casuale <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>n)</span>
-<span id="cb83-6"><a href=""></a>X <span class="ot">&lt;-</span> X_ordinato[ordine_casuale]</span>
-<span id="cb83-7"><a href=""></a>Y <span class="ot">&lt;-</span> Y_ordinato[ordine_casuale]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb83"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a aria-label="1"></a>X_ordinato <span class="ot">&lt;-</span> <span class="fu">c</span>(X1, X2, X3, X4)</span>
+<span id="cb83-2"><a aria-label="2"></a>Y_ordinato <span class="ot">&lt;-</span> <span class="fu">c</span>(Y1, Y2, Y3, Y4)</span>
+<span id="cb83-3"><a aria-label="3"></a></span>
+<span id="cb83-4"><a aria-label="4"></a><span class="co"># Ordine casuale</span></span>
+<span id="cb83-5"><a aria-label="5"></a>ordine_casuale <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>n)</span>
+<span id="cb83-6"><a aria-label="6"></a>X <span class="ot">&lt;-</span> X_ordinato[ordine_casuale]</span>
+<span id="cb83-7"><a aria-label="7"></a>Y <span class="ot">&lt;-</span> Y_ordinato[ordine_casuale]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="verifica-le-coppie-sono-equiprobabili" class="slide level2">
 <h2>Verifica: le coppie sono equiprobabili?</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href=""></a><span class="fu">table</span>(X, Y)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a aria-label="1"></a><span class="fu">table</span>(X, Y)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Y
 X     -1    0    1
@@ -1215,7 +1221,7 @@ X     -1    0    1
 <section id="calcolare-la-covarianza-1" class="slide level2">
 <h2>Calcolare la covarianza</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb86"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href=""></a><span class="fu">cov</span>(X, Y)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb86"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a aria-label="1"></a><span class="fu">cov</span>(X, Y)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0</code></pre>
 </div>
@@ -1240,8 +1246,8 @@ X     -1    0    1
 <section id="risposta" class="slide level2">
 <h2>Risposta</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb88"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href=""></a><span class="co"># Quante volte compare (X=0, Y=1)?</span></span>
-<span id="cb88-2"><a href=""></a><span class="fu">sum</span>(X <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span> Y <span class="sc">==</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb88"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a aria-label="1"></a><span class="co"># Quante volte compare (X=0, Y=1)?</span></span>
+<span id="cb88-2"><a aria-label="2"></a><span class="fu">sum</span>(X <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span> Y <span class="sc">==</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0</code></pre>
 </div>
@@ -1252,7 +1258,7 @@ X     -1    0    1
 <section id="la-tabella-completa" class="slide level2">
 <h2>La tabella completa</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb90"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href=""></a><span class="fu">table</span>(X, Y)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb90"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a aria-label="1"></a><span class="fu">table</span>(X, Y)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Y
 X     -1    0    1
@@ -1320,35 +1326,35 @@ X     -1    0    1
 
 <h3 id="soluzione-esercizio-6-simulazione">Soluzione Esercizio 6 — Simulazione</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb92"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href=""></a><span class="fu">library</span>(MASS)</span>
-<span id="cb92-2"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">111</span>)</span>
-<span id="cb92-3"><a href=""></a></span>
-<span id="cb92-4"><a href=""></a><span class="co"># 1. Parametri delle due variabili</span></span>
-<span id="cb92-5"><a href=""></a>media_X <span class="ot">&lt;-</span> <span class="dv">50</span></span>
-<span id="cb92-6"><a href=""></a>media_Y <span class="ot">&lt;-</span> <span class="dv">50</span></span>
-<span id="cb92-7"><a href=""></a>sd_X    <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb92-8"><a href=""></a>sd_Y    <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb92-9"><a href=""></a>rho     <span class="ot">&lt;-</span> <span class="fl">0.6</span></span>
-<span id="cb92-10"><a href=""></a></span>
-<span id="cb92-11"><a href=""></a><span class="co"># 2. Matrice di covarianza</span></span>
-<span id="cb92-12"><a href=""></a>Sigma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(</span>
-<span id="cb92-13"><a href=""></a>  <span class="fu">c</span>(sd_X<span class="sc">^</span><span class="dv">2</span>,        rho <span class="sc">*</span> sd_X <span class="sc">*</span> sd_Y,</span>
-<span id="cb92-14"><a href=""></a>    rho <span class="sc">*</span> sd_X <span class="sc">*</span> sd_Y,  sd_Y<span class="sc">^</span><span class="dv">2</span>),</span>
-<span id="cb92-15"><a href=""></a>  <span class="at">nrow =</span> <span class="dv">2</span></span>
-<span id="cb92-16"><a href=""></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb92"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a aria-label="1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb92-2"><a aria-label="2"></a><span class="fu">set.seed</span>(<span class="dv">111</span>)</span>
+<span id="cb92-3"><a aria-label="3"></a></span>
+<span id="cb92-4"><a aria-label="4"></a><span class="co"># 1. Parametri delle due variabili</span></span>
+<span id="cb92-5"><a aria-label="5"></a>media_X <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb92-6"><a aria-label="6"></a>media_Y <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb92-7"><a aria-label="7"></a>sd_X    <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb92-8"><a aria-label="8"></a>sd_Y    <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb92-9"><a aria-label="9"></a>rho     <span class="ot">&lt;-</span> <span class="fl">0.6</span></span>
+<span id="cb92-10"><a aria-label="10"></a></span>
+<span id="cb92-11"><a aria-label="11"></a><span class="co"># 2. Matrice di covarianza</span></span>
+<span id="cb92-12"><a aria-label="12"></a>Sigma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(</span>
+<span id="cb92-13"><a aria-label="13"></a>  <span class="fu">c</span>(sd_X<span class="sc">^</span><span class="dv">2</span>,        rho <span class="sc">*</span> sd_X <span class="sc">*</span> sd_Y,</span>
+<span id="cb92-14"><a aria-label="14"></a>    rho <span class="sc">*</span> sd_X <span class="sc">*</span> sd_Y,  sd_Y<span class="sc">^</span><span class="dv">2</span>),</span>
+<span id="cb92-15"><a aria-label="15"></a>  <span class="at">nrow =</span> <span class="dv">2</span></span>
+<span id="cb92-16"><a aria-label="16"></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb93"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href=""></a><span class="co"># 3. Simulazione di 10.000 osservazioni</span></span>
-<span id="cb93-2"><a href=""></a>dati <span class="ot">&lt;-</span> <span class="fu">mvrnorm</span>(</span>
-<span id="cb93-3"><a href=""></a>  <span class="at">n =</span> <span class="dv">10000</span>,</span>
-<span id="cb93-4"><a href=""></a>  <span class="at">mu =</span> <span class="fu">c</span>(media_X, media_Y),</span>
-<span id="cb93-5"><a href=""></a>  <span class="at">Sigma =</span> Sigma</span>
-<span id="cb93-6"><a href=""></a>)</span>
-<span id="cb93-7"><a href=""></a></span>
-<span id="cb93-8"><a href=""></a>dati[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, ]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb93"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a aria-label="1"></a><span class="co"># 3. Simulazione di 10.000 osservazioni</span></span>
+<span id="cb93-2"><a aria-label="2"></a>dati <span class="ot">&lt;-</span> <span class="fu">mvrnorm</span>(</span>
+<span id="cb93-3"><a aria-label="3"></a>  <span class="at">n =</span> <span class="dv">10000</span>,</span>
+<span id="cb93-4"><a aria-label="4"></a>  <span class="at">mu =</span> <span class="fu">c</span>(media_X, media_Y),</span>
+<span id="cb93-5"><a aria-label="5"></a>  <span class="at">Sigma =</span> Sigma</span>
+<span id="cb93-6"><a aria-label="6"></a>)</span>
+<span id="cb93-7"><a aria-label="7"></a></span>
+<span id="cb93-8"><a aria-label="8"></a>dati[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, ]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          [,1]     [,2]
  [1,] 56.58105 47.62671
@@ -1364,22 +1370,22 @@ X     -1    0    1
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb95"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href=""></a>X <span class="ot">&lt;-</span> dati[, <span class="dv">1</span>]</span>
-<span id="cb95-2"><a href=""></a>Y <span class="ot">&lt;-</span> dati[, <span class="dv">2</span>]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb95"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a aria-label="1"></a>X <span class="ot">&lt;-</span> dati[, <span class="dv">1</span>]</span>
+<span id="cb95-2"><a aria-label="2"></a>Y <span class="ot">&lt;-</span> dati[, <span class="dv">2</span>]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
 
 <h3 id="verifica-empirica-della-formula">Verifica empirica della formula</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb96"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href=""></a>var_X  <span class="ot">&lt;-</span> <span class="fu">var</span>(X)</span>
-<span id="cb96-2"><a href=""></a>var_Y  <span class="ot">&lt;-</span> <span class="fu">var</span>(Y)</span>
-<span id="cb96-3"><a href=""></a>cov_XY <span class="ot">&lt;-</span> <span class="fu">cov</span>(X, Y)</span>
-<span id="cb96-4"><a href=""></a></span>
-<span id="cb96-5"><a href=""></a><span class="fu">c</span>(</span>
-<span id="cb96-6"><a href=""></a>  <span class="at">Var_somma_osservata =</span> <span class="fu">var</span>(X <span class="sc">+</span> Y),</span>
-<span id="cb96-7"><a href=""></a>  <span class="at">Var_somma_teorica   =</span> var_X <span class="sc">+</span> var_Y <span class="sc">+</span> <span class="dv">2</span> <span class="sc">*</span> cov_XY</span>
-<span id="cb96-8"><a href=""></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb96"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a aria-label="1"></a>var_X  <span class="ot">&lt;-</span> <span class="fu">var</span>(X)</span>
+<span id="cb96-2"><a aria-label="2"></a>var_Y  <span class="ot">&lt;-</span> <span class="fu">var</span>(Y)</span>
+<span id="cb96-3"><a aria-label="3"></a>cov_XY <span class="ot">&lt;-</span> <span class="fu">cov</span>(X, Y)</span>
+<span id="cb96-4"><a aria-label="4"></a></span>
+<span id="cb96-5"><a aria-label="5"></a><span class="fu">c</span>(</span>
+<span id="cb96-6"><a aria-label="6"></a>  <span class="at">Var_somma_osservata =</span> <span class="fu">var</span>(X <span class="sc">+</span> Y),</span>
+<span id="cb96-7"><a aria-label="7"></a>  <span class="at">Var_somma_teorica   =</span> var_X <span class="sc">+</span> var_Y <span class="sc">+</span> <span class="dv">2</span> <span class="sc">*</span> cov_XY</span>
+<span id="cb96-8"><a aria-label="8"></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Var_somma_osservata   Var_somma_teorica 
             321.262             321.262 </code></pre>
@@ -1429,22 +1435,22 @@ X     -1    0    1
 
 <h3 id="soluzione-esercizio-7-simulazione">Soluzione Esercizio 7 — Simulazione</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb98"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href=""></a><span class="fu">library</span>(MASS)</span>
-<span id="cb98-2"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">222</span>)</span>
-<span id="cb98-3"><a href=""></a></span>
-<span id="cb98-4"><a href=""></a>n <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
-<span id="cb98-5"><a href=""></a>sd_xy <span class="ot">&lt;-</span> <span class="dv">10</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb98"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a aria-label="1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb98-2"><a aria-label="2"></a><span class="fu">set.seed</span>(<span class="dv">222</span>)</span>
+<span id="cb98-3"><a aria-label="3"></a></span>
+<span id="cb98-4"><a aria-label="4"></a>n <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
+<span id="cb98-5"><a aria-label="5"></a>sd_xy <span class="ot">&lt;-</span> <span class="dv">10</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
 
 <h3 id="scenario-a-variabili-indipendenti">Scenario A — Variabili indipendenti</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb99"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href=""></a>X_ind <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> sd_xy)</span>
-<span id="cb99-2"><a href=""></a>Y_ind <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> sd_xy)</span>
-<span id="cb99-3"><a href=""></a></span>
-<span id="cb99-4"><a href=""></a>var_somma_ind <span class="ot">&lt;-</span> <span class="fu">var</span>(X_ind <span class="sc">+</span> Y_ind)</span>
-<span id="cb99-5"><a href=""></a>var_somma_ind</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb99"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a aria-label="1"></a>X_ind <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> sd_xy)</span>
+<span id="cb99-2"><a aria-label="2"></a>Y_ind <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> sd_xy)</span>
+<span id="cb99-3"><a aria-label="3"></a></span>
+<span id="cb99-4"><a aria-label="4"></a>var_somma_ind <span class="ot">&lt;-</span> <span class="fu">var</span>(X_ind <span class="sc">+</span> Y_ind)</span>
+<span id="cb99-5"><a aria-label="5"></a>var_somma_ind</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 200.6753</code></pre>
 </div>
@@ -1454,18 +1460,18 @@ X     -1    0    1
 
 <h3 id="scenario-b-variabili-correlate-ρ-0.7">Scenario B — Variabili correlate (ρ = 0.7)</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb101"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href=""></a>rho <span class="ot">&lt;-</span> <span class="fl">0.7</span></span>
-<span id="cb101-2"><a href=""></a></span>
-<span id="cb101-3"><a href=""></a>Sigma_corr <span class="ot">&lt;-</span> <span class="fu">matrix</span>(</span>
-<span id="cb101-4"><a href=""></a>  <span class="fu">c</span>(sd_xy<span class="sc">^</span><span class="dv">2</span>,        rho <span class="sc">*</span> sd_xy<span class="sc">^</span><span class="dv">2</span>,</span>
-<span id="cb101-5"><a href=""></a>    rho <span class="sc">*</span> sd_xy<span class="sc">^</span><span class="dv">2</span>,  sd_xy<span class="sc">^</span><span class="dv">2</span>),</span>
-<span id="cb101-6"><a href=""></a>  <span class="at">nrow =</span> <span class="dv">2</span></span>
-<span id="cb101-7"><a href=""></a>)</span>
-<span id="cb101-8"><a href=""></a></span>
-<span id="cb101-9"><a href=""></a>dati_corr <span class="ot">&lt;-</span> <span class="fu">mvrnorm</span>(n, <span class="at">mu =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>), <span class="at">Sigma =</span> Sigma_corr)</span>
-<span id="cb101-10"><a href=""></a></span>
-<span id="cb101-11"><a href=""></a>var_somma_corr <span class="ot">&lt;-</span> <span class="fu">var</span>(dati_corr[,<span class="dv">1</span>] <span class="sc">+</span> dati_corr[,<span class="dv">2</span>])</span>
-<span id="cb101-12"><a href=""></a>var_somma_corr</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb101"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a aria-label="1"></a>rho <span class="ot">&lt;-</span> <span class="fl">0.7</span></span>
+<span id="cb101-2"><a aria-label="2"></a></span>
+<span id="cb101-3"><a aria-label="3"></a>Sigma_corr <span class="ot">&lt;-</span> <span class="fu">matrix</span>(</span>
+<span id="cb101-4"><a aria-label="4"></a>  <span class="fu">c</span>(sd_xy<span class="sc">^</span><span class="dv">2</span>,        rho <span class="sc">*</span> sd_xy<span class="sc">^</span><span class="dv">2</span>,</span>
+<span id="cb101-5"><a aria-label="5"></a>    rho <span class="sc">*</span> sd_xy<span class="sc">^</span><span class="dv">2</span>,  sd_xy<span class="sc">^</span><span class="dv">2</span>),</span>
+<span id="cb101-6"><a aria-label="6"></a>  <span class="at">nrow =</span> <span class="dv">2</span></span>
+<span id="cb101-7"><a aria-label="7"></a>)</span>
+<span id="cb101-8"><a aria-label="8"></a></span>
+<span id="cb101-9"><a aria-label="9"></a>dati_corr <span class="ot">&lt;-</span> <span class="fu">mvrnorm</span>(n, <span class="at">mu =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>), <span class="at">Sigma =</span> Sigma_corr)</span>
+<span id="cb101-10"><a aria-label="10"></a></span>
+<span id="cb101-11"><a aria-label="11"></a>var_somma_corr <span class="ot">&lt;-</span> <span class="fu">var</span>(dati_corr[,<span class="dv">1</span>] <span class="sc">+</span> dati_corr[,<span class="dv">2</span>])</span>
+<span id="cb101-12"><a aria-label="12"></a>var_somma_corr</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 339.8852</code></pre>
 </div>
@@ -1475,10 +1481,10 @@ X     -1    0    1
 
 <h3 id="confronto-finale">Confronto finale</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb103"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href=""></a><span class="fu">c</span>(</span>
-<span id="cb103-2"><a href=""></a>  <span class="at">Var_somma_indipendenti =</span> var_somma_ind,</span>
-<span id="cb103-3"><a href=""></a>  <span class="at">Var_somma_correlati    =</span> var_somma_corr</span>
-<span id="cb103-4"><a href=""></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb103"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a aria-label="1"></a><span class="fu">c</span>(</span>
+<span id="cb103-2"><a aria-label="2"></a>  <span class="at">Var_somma_indipendenti =</span> var_somma_ind,</span>
+<span id="cb103-3"><a aria-label="3"></a>  <span class="at">Var_somma_correlati    =</span> var_somma_corr</span>
+<span id="cb103-4"><a aria-label="4"></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Var_somma_indipendenti    Var_somma_correlati 
               200.6753               339.8852 </code></pre>
@@ -1518,14 +1524,14 @@ X     -1    0    1
 
 <h3 id="soluzione-esercizio-8">Soluzione Esercizio 8</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb105"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">333</span>)</span>
-<span id="cb105-2"><a href=""></a></span>
-<span id="cb105-3"><a href=""></a><span class="co"># Matrice di covarianza</span></span>
-<span id="cb105-4"><a href=""></a>sigma_qi <span class="ot">&lt;-</span> <span class="dv">15</span></span>
-<span id="cb105-5"><a href=""></a>rho_qi <span class="ot">&lt;-</span> <span class="fl">0.65</span></span>
-<span id="cb105-6"><a href=""></a>cov_qi <span class="ot">&lt;-</span> rho_qi <span class="sc">*</span> sigma_qi<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb105-7"><a href=""></a>Sigma_qi <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">225</span>, cov_qi, cov_qi, <span class="dv">225</span>), <span class="at">nrow =</span> <span class="dv">2</span>)</span>
-<span id="cb105-8"><a href=""></a>Sigma_qi</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb105"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a aria-label="1"></a><span class="fu">set.seed</span>(<span class="dv">333</span>)</span>
+<span id="cb105-2"><a aria-label="2"></a></span>
+<span id="cb105-3"><a aria-label="3"></a><span class="co"># Matrice di covarianza</span></span>
+<span id="cb105-4"><a aria-label="4"></a>sigma_qi <span class="ot">&lt;-</span> <span class="dv">15</span></span>
+<span id="cb105-5"><a aria-label="5"></a>rho_qi <span class="ot">&lt;-</span> <span class="fl">0.65</span></span>
+<span id="cb105-6"><a aria-label="6"></a>cov_qi <span class="ot">&lt;-</span> rho_qi <span class="sc">*</span> sigma_qi<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb105-7"><a aria-label="7"></a>Sigma_qi <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">225</span>, cov_qi, cov_qi, <span class="dv">225</span>), <span class="at">nrow =</span> <span class="dv">2</span>)</span>
+<span id="cb105-8"><a aria-label="8"></a>Sigma_qi</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       [,1]   [,2]
 [1,] 225.00 146.25
@@ -1536,9 +1542,9 @@ X     -1    0    1
 <section class="slide level2">
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb107"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href=""></a><span class="co"># Simulazione</span></span>
-<span id="cb107-2"><a href=""></a>qi_dati <span class="ot">&lt;-</span> <span class="fu">mvrnorm</span>(<span class="dv">500</span>, <span class="at">mu =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">100</span>), <span class="at">Sigma =</span> Sigma_qi)</span>
-<span id="cb107-3"><a href=""></a><span class="fu">head</span>(qi_dati)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb107"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a aria-label="1"></a><span class="co"># Simulazione</span></span>
+<span id="cb107-2"><a aria-label="2"></a>qi_dati <span class="ot">&lt;-</span> <span class="fu">mvrnorm</span>(<span class="dv">500</span>, <span class="at">mu =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">100</span>), <span class="at">Sigma =</span> Sigma_qi)</span>
+<span id="cb107-3"><a aria-label="3"></a><span class="fu">head</span>(qi_dati)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          [,1]      [,2]
 [1,] 103.82238  93.92110
@@ -1553,10 +1559,10 @@ X     -1    0    1
 <section class="slide level2">
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb109"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href=""></a>qi_verbale <span class="ot">&lt;-</span> qi_dati[, <span class="dv">1</span>]</span>
-<span id="cb109-2"><a href=""></a>qi_numerico <span class="ot">&lt;-</span> qi_dati[, <span class="dv">2</span>]</span>
-<span id="cb109-3"><a href=""></a></span>
-<span id="cb109-4"><a href=""></a><span class="fu">cat</span>(<span class="st">"Correlazione osservata:"</span>, <span class="fu">cor</span>(qi_verbale, qi_numerico), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb109"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a aria-label="1"></a>qi_verbale <span class="ot">&lt;-</span> qi_dati[, <span class="dv">1</span>]</span>
+<span id="cb109-2"><a aria-label="2"></a>qi_numerico <span class="ot">&lt;-</span> qi_dati[, <span class="dv">2</span>]</span>
+<span id="cb109-3"><a aria-label="3"></a></span>
+<span id="cb109-4"><a aria-label="4"></a><span class="fu">cat</span>(<span class="st">"Correlazione osservata:"</span>, <span class="fu">cor</span>(qi_verbale, qi_numerico), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Correlazione osservata: 0.6278354 </code></pre>
 </div>
@@ -1576,14 +1582,14 @@ X     -1    0    1
 <section id="funzioni-r-per-covarianza-e-correlazione" class="slide level2">
 <h2>Funzioni R per covarianza e correlazione</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb111"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href=""></a><span class="co"># Covarianza tra due vettori</span></span>
-<span id="cb111-2"><a href=""></a><span class="fu">cov</span>(x, y)</span>
-<span id="cb111-3"><a href=""></a></span>
-<span id="cb111-4"><a href=""></a><span class="co"># Correlazione tra due vettori</span></span>
-<span id="cb111-5"><a href=""></a><span class="fu">cor</span>(x, y)</span>
-<span id="cb111-6"><a href=""></a></span>
-<span id="cb111-7"><a href=""></a><span class="co"># Matrice di correlazione per più variabili</span></span>
-<span id="cb111-8"><a href=""></a><span class="fu">cor</span>(<span class="fu">data.frame</span>(x, y, z))</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb111"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a aria-label="1"></a><span class="co"># Covarianza tra due vettori</span></span>
+<span id="cb111-2"><a aria-label="2"></a><span class="fu">cov</span>(x, y)</span>
+<span id="cb111-3"><a aria-label="3"></a></span>
+<span id="cb111-4"><a aria-label="4"></a><span class="co"># Correlazione tra due vettori</span></span>
+<span id="cb111-5"><a aria-label="5"></a><span class="fu">cor</span>(x, y)</span>
+<span id="cb111-6"><a aria-label="6"></a></span>
+<span id="cb111-7"><a aria-label="7"></a><span class="co"># Matrice di correlazione per più variabili</span></span>
+<span id="cb111-8"><a aria-label="8"></a><span class="fu">cor</span>(<span class="fu">data.frame</span>(x, y, z))</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="riepilogo-funzioni-r-essenziali" class="slide level2">
@@ -1659,6 +1665,7 @@ X     -1    0    1
 </blockquote>
 
 
+
 </section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
@@ -1668,19 +1675,19 @@ X     -1    0    1
 </div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="2_probabilita_congiunta_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="2_probabilita_congiunta_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="2_probabilita_congiunta_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="2_probabilita_congiunta_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="2_probabilita_congiunta_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="2_probabilita_congiunta_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="2_probabilita_congiunta_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="2_probabilita_congiunta_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="2_probabilita_congiunta_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="2_probabilita_congiunta_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -1983,7 +1990,7 @@ X     -1    0    1
         }
           var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
           var mailtoRegex = new RegExp(/^mailto:/);
-            var filterRegex = new RegExp('/' + window.location.host + '/');
+            var filterRegex = new RegExp("https:\/\/ccaudek\.github\.io\/psicometria_2026\/");
           var isInternal = (href) => {
               return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
           }

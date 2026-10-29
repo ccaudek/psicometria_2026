@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html lang="it"><head>
-<script src="prior_predictive_2_files/libs/clipboard/clipboard.min.js"></script>
-<script src="prior_predictive_2_files/libs/quarto-html/tabby.min.js"></script>
-<script src="prior_predictive_2_files/libs/quarto-html/popper.min.js"></script>
-<script src="prior_predictive_2_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="prior_predictive_2_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="prior_predictive_2_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="prior_predictive_2_files/libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.27">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-5c1318cf63eba56dbef7ba16bc7d56f5.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
 
   <meta name="author" content="Corrado Caudek">
-  <title>Distribuzione predittiva a priori</title>
+  <title>Psicometria 2025-26 – Distribuzione predittiva a priori</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="prior_predictive_2_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="prior_predictive_2_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
   <style>
-    code{white-space: pre-wrap;}
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -95,11 +101,11 @@
     code span.vs { color: #032f62; } /* VerbatimString */
     code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="prior_predictive_2_files/libs/revealjs/dist/theme/quarto-32eda4d62c2e25823ebe39cba2bb0a8e.css">
-  <link href="prior_predictive_2_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="prior_predictive_2_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="prior_predictive_2_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="prior_predictive_2_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-172e614ca6238f6067b3ffab71e7e169.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -199,7 +205,7 @@
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
+Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid" aria-label="ORCID profile for Corrado Caudek"> <img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
 </div>
 <div class="quarto-title-author-email">
 <a href="mailto:corrado.caudek@unifi.it">corrado.caudek@unifi.it</a>
@@ -210,7 +216,7 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
     </div>
 </div>
 
-  <p class="date">15 febbraio 2026</p>
+  <p class="date">29 ottobre 2026</p>
 </section>
 <section id="obiettivi" class="slide level2 unnumbered unlisted">
 <h2>Obiettivi</h2>
@@ -272,28 +278,28 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
 <h2>Passo 1: simuliamo <strong>un solo studio</strong></h2>
 <p>Iniziamo in un modo semplice: immaginiamo di fare <strong>uno studio</strong> con 20 pazienti.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="co"># Passo 1: Simuliamo UN SOLO studio</span></span>
-<span id="cb1-2"><a href=""></a></span>
-<span id="cb1-3"><a href=""></a><span class="co"># 1. Scegliamo una prior per la media (mu)</span></span>
-<span id="cb1-4"><a href=""></a>mu_sim <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">mean =</span> <span class="dv">30</span>, <span class="at">sd =</span> <span class="dv">20</span>)</span>
-<span id="cb1-5"><a href=""></a></span>
-<span id="cb1-6"><a href=""></a><span class="co"># 2. Scegliamo una prior per la deviazione standard (sigma)</span></span>
-<span id="cb1-7"><a href=""></a>sigma_sim <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">rate =</span> <span class="fl">0.1</span>)</span>
-<span id="cb1-8"><a href=""></a></span>
-<span id="cb1-9"><a href=""></a><span class="co"># 3. Generiamo i dati per 20 pazienti</span></span>
-<span id="cb1-10"><a href=""></a>n_pazienti <span class="ot">&lt;-</span> <span class="dv">20</span></span>
-<span id="cb1-11"><a href=""></a>punteggi_simulati <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(</span>
-<span id="cb1-12"><a href=""></a>  <span class="at">n =</span> n_pazienti,</span>
-<span id="cb1-13"><a href=""></a>  <span class="at">mean =</span> mu_sim,</span>
-<span id="cb1-14"><a href=""></a>  <span class="at">sd =</span> sigma_sim</span>
-<span id="cb1-15"><a href=""></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-label="1"></a><span class="co"># Passo 1: Simuliamo UN SOLO studio</span></span>
+<span id="cb1-2"><a aria-label="2"></a></span>
+<span id="cb1-3"><a aria-label="3"></a><span class="co"># 1. Scegliamo una prior per la media (mu)</span></span>
+<span id="cb1-4"><a aria-label="4"></a>mu_sim <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">mean =</span> <span class="dv">30</span>, <span class="at">sd =</span> <span class="dv">20</span>)</span>
+<span id="cb1-5"><a aria-label="5"></a></span>
+<span id="cb1-6"><a aria-label="6"></a><span class="co"># 2. Scegliamo una prior per la deviazione standard (sigma)</span></span>
+<span id="cb1-7"><a aria-label="7"></a>sigma_sim <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">rate =</span> <span class="fl">0.1</span>)</span>
+<span id="cb1-8"><a aria-label="8"></a></span>
+<span id="cb1-9"><a aria-label="9"></a><span class="co"># 3. Generiamo i dati per 20 pazienti</span></span>
+<span id="cb1-10"><a aria-label="10"></a>n_pazienti <span class="ot">&lt;-</span> <span class="dv">20</span></span>
+<span id="cb1-11"><a aria-label="11"></a>punteggi_simulati <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(</span>
+<span id="cb1-12"><a aria-label="12"></a>  <span class="at">n =</span> n_pazienti,</span>
+<span id="cb1-13"><a aria-label="13"></a>  <span class="at">mean =</span> mu_sim,</span>
+<span id="cb1-14"><a aria-label="14"></a>  <span class="at">sd =</span> sigma_sim</span>
+<span id="cb1-15"><a aria-label="15"></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="co"># Vediamo i primi 6 punteggi</span></span>
-<span id="cb2-2"><a href=""></a><span class="fu">head</span>(punteggi_simulati)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a aria-label="1"></a><span class="co"># Vediamo i primi 6 punteggi</span></span>
+<span id="cb2-2"><a aria-label="2"></a><span class="fu">head</span>(punteggi_simulati)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 65.42709 57.82030 48.16588 61.93460 62.27959 51.91123</code></pre>
 </div>
@@ -311,12 +317,12 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
 <h2>E se ripetiamo? Un secondo studio</h2>
 <p>Rifacciamo lo stesso procedimento:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="co"># Altro studio (altri parametri, altri dati)</span></span>
-<span id="cb4-2"><a href=""></a>mu_sim2 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="at">mean =</span> <span class="dv">30</span>, <span class="at">sd =</span> <span class="dv">20</span>)</span>
-<span id="cb4-3"><a href=""></a>sigma_sim2 <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="dv">1</span>, <span class="at">rate =</span> <span class="fl">0.1</span>)</span>
-<span id="cb4-4"><a href=""></a></span>
-<span id="cb4-5"><a href=""></a>punteggi_simulati2 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">20</span>, <span class="at">mean =</span> mu_sim2, <span class="at">sd =</span> sigma_sim2)</span>
-<span id="cb4-6"><a href=""></a><span class="fu">head</span>(punteggi_simulati2)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a aria-label="1"></a><span class="co"># Altro studio (altri parametri, altri dati)</span></span>
+<span id="cb4-2"><a aria-label="2"></a>mu_sim2 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="at">mean =</span> <span class="dv">30</span>, <span class="at">sd =</span> <span class="dv">20</span>)</span>
+<span id="cb4-3"><a aria-label="3"></a>sigma_sim2 <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="dv">1</span>, <span class="at">rate =</span> <span class="fl">0.1</span>)</span>
+<span id="cb4-4"><a aria-label="4"></a></span>
+<span id="cb4-5"><a aria-label="5"></a>punteggi_simulati2 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">20</span>, <span class="at">mean =</span> mu_sim2, <span class="at">sd =</span> sigma_sim2)</span>
+<span id="cb4-6"><a aria-label="6"></a><span class="fu">head</span>(punteggi_simulati2)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 77.11850 66.80188 67.57019 60.89005 70.75242 65.87242</code></pre>
 </div>
@@ -333,45 +339,45 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
 <section class="slide level2">
 
 <p>Per gestire tanti studi, usiamo una <strong>lista</strong>: ogni elemento della lista è uno studio.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="co"># Spiegazione: le liste in R</span></span>
-<span id="cb6-2"><a href=""></a><span class="co"># Una lista è un contenitore che può contenere oggetti diversi.</span></span>
-<span id="cb6-3"><a href=""></a><span class="co"># Esempio:</span></span>
-<span id="cb6-4"><a href=""></a>mia_lista <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb6-5"><a href=""></a>  <span class="st">"primo_elemento"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>),</span>
-<span id="cb6-6"><a href=""></a>  <span class="st">"secondo_elemento"</span> <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">nrow =</span> <span class="dv">2</span>)</span>
-<span id="cb6-7"><a href=""></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a aria-label="1"></a><span class="co"># Spiegazione: le liste in R</span></span>
+<span id="cb6-2"><a aria-label="2"></a><span class="co"># Una lista è un contenitore che può contenere oggetti diversi.</span></span>
+<span id="cb6-3"><a aria-label="3"></a><span class="co"># Esempio:</span></span>
+<span id="cb6-4"><a aria-label="4"></a>mia_lista <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb6-5"><a aria-label="5"></a>  <span class="st">"primo_elemento"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>),</span>
+<span id="cb6-6"><a aria-label="6"></a>  <span class="st">"secondo_elemento"</span> <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">nrow =</span> <span class="dv">2</span>)</span>
+<span id="cb6-7"><a aria-label="7"></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="simulazione-di-5000-studi" class="slide level2">
 <h2>Simulazione di 5000 studi</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="co"># Numero di studi da simulare</span></span>
-<span id="cb7-2"><a href=""></a>n_sim <span class="ot">&lt;-</span> <span class="dv">5000</span></span>
-<span id="cb7-3"><a href=""></a>n_pazienti <span class="ot">&lt;-</span> <span class="dv">20</span></span>
-<span id="cb7-4"><a href=""></a></span>
-<span id="cb7-5"><a href=""></a><span class="co"># Prior per mu: Normale(media=30, sd=20)</span></span>
-<span id="cb7-6"><a href=""></a>mu_sim <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_sim, <span class="at">mean =</span> <span class="dv">30</span>, <span class="at">sd =</span> <span class="dv">20</span>)</span>
-<span id="cb7-7"><a href=""></a></span>
-<span id="cb7-8"><a href=""></a><span class="co"># Prior per sigma: Esponenziale(rate=0.1)</span></span>
-<span id="cb7-9"><a href=""></a>sigma_sim <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n_sim, <span class="at">rate =</span> <span class="fl">0.1</span>)</span>
-<span id="cb7-10"><a href=""></a></span>
-<span id="cb7-11"><a href=""></a><span class="co"># Creiamo una lista vuota per i dati</span></span>
-<span id="cb7-12"><a href=""></a>dati_sim <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"list"</span>, n_sim)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a aria-label="1"></a><span class="co"># Numero di studi da simulare</span></span>
+<span id="cb7-2"><a aria-label="2"></a>n_sim <span class="ot">&lt;-</span> <span class="dv">5000</span></span>
+<span id="cb7-3"><a aria-label="3"></a>n_pazienti <span class="ot">&lt;-</span> <span class="dv">20</span></span>
+<span id="cb7-4"><a aria-label="4"></a></span>
+<span id="cb7-5"><a aria-label="5"></a><span class="co"># Prior per mu: Normale(media=30, sd=20)</span></span>
+<span id="cb7-6"><a aria-label="6"></a>mu_sim <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_sim, <span class="at">mean =</span> <span class="dv">30</span>, <span class="at">sd =</span> <span class="dv">20</span>)</span>
+<span id="cb7-7"><a aria-label="7"></a></span>
+<span id="cb7-8"><a aria-label="8"></a><span class="co"># Prior per sigma: Esponenziale(rate=0.1)</span></span>
+<span id="cb7-9"><a aria-label="9"></a>sigma_sim <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n_sim, <span class="at">rate =</span> <span class="fl">0.1</span>)</span>
+<span id="cb7-10"><a aria-label="10"></a></span>
+<span id="cb7-11"><a aria-label="11"></a><span class="co"># Creiamo una lista vuota per i dati</span></span>
+<span id="cb7-12"><a aria-label="12"></a>dati_sim <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"list"</span>, n_sim)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="co"># Riempiamo la lista: ogni elemento è uno studio</span></span>
-<span id="cb8-2"><a href=""></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_sim) {</span>
-<span id="cb8-3"><a href=""></a>  dati_sim[[i]] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(</span>
-<span id="cb8-4"><a href=""></a>    <span class="at">n =</span> n_pazienti,</span>
-<span id="cb8-5"><a href=""></a>    <span class="at">mean =</span> mu_sim[i],</span>
-<span id="cb8-6"><a href=""></a>    <span class="at">sd =</span> sigma_sim[i]</span>
-<span id="cb8-7"><a href=""></a>  )</span>
-<span id="cb8-8"><a href=""></a>}</span>
-<span id="cb8-9"><a href=""></a></span>
-<span id="cb8-10"><a href=""></a><span class="co"># Esempio: primi 6 punteggi del primo studio</span></span>
-<span id="cb8-11"><a href=""></a><span class="fu">head</span>(dati_sim[[<span class="dv">1</span>]])</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a aria-label="1"></a><span class="co"># Riempiamo la lista: ogni elemento è uno studio</span></span>
+<span id="cb8-2"><a aria-label="2"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_sim) {</span>
+<span id="cb8-3"><a aria-label="3"></a>  dati_sim[[i]] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(</span>
+<span id="cb8-4"><a aria-label="4"></a>    <span class="at">n =</span> n_pazienti,</span>
+<span id="cb8-5"><a aria-label="5"></a>    <span class="at">mean =</span> mu_sim[i],</span>
+<span id="cb8-6"><a aria-label="6"></a>    <span class="at">sd =</span> sigma_sim[i]</span>
+<span id="cb8-7"><a aria-label="7"></a>  )</span>
+<span id="cb8-8"><a aria-label="8"></a>}</span>
+<span id="cb8-9"><a aria-label="9"></a></span>
+<span id="cb8-10"><a aria-label="10"></a><span class="co"># Esempio: primi 6 punteggi del primo studio</span></span>
+<span id="cb8-11"><a aria-label="11"></a><span class="fu">head</span>(dati_sim[[<span class="dv">1</span>]])</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2.136815 3.674425 1.880833 2.063878 1.210190 2.271152</code></pre>
 </div>
@@ -399,27 +405,27 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
 <h2>Quantifichiamo il problema</h2>
 <p>Calcoliamo quanti valori simulati sono <strong>impossibili</strong> (&lt;0 o &gt;63).</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="co"># Uniamo TUTTI i punteggi di tutti gli studi</span></span>
-<span id="cb10-2"><a href=""></a>tutti_i_valori <span class="ot">&lt;-</span> <span class="fu">unlist</span>(dati_sim)</span>
-<span id="cb10-3"><a href=""></a></span>
-<span id="cb10-4"><a href=""></a><span class="co"># Proporzioni</span></span>
-<span id="cb10-5"><a href=""></a>prop_negativi <span class="ot">&lt;-</span> <span class="fu">mean</span>(tutti_i_valori <span class="sc">&lt;</span> <span class="dv">0</span>)</span>
-<span id="cb10-6"><a href=""></a>prop_troppo_alti <span class="ot">&lt;-</span> <span class="fu">mean</span>(tutti_i_valori <span class="sc">&gt;</span> <span class="dv">63</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a aria-label="1"></a><span class="co"># Uniamo TUTTI i punteggi di tutti gli studi</span></span>
+<span id="cb10-2"><a aria-label="2"></a>tutti_i_valori <span class="ot">&lt;-</span> <span class="fu">unlist</span>(dati_sim)</span>
+<span id="cb10-3"><a aria-label="3"></a></span>
+<span id="cb10-4"><a aria-label="4"></a><span class="co"># Proporzioni</span></span>
+<span id="cb10-5"><a aria-label="5"></a>prop_negativi <span class="ot">&lt;-</span> <span class="fu">mean</span>(tutti_i_valori <span class="sc">&lt;</span> <span class="dv">0</span>)</span>
+<span id="cb10-6"><a aria-label="6"></a>prop_troppo_alti <span class="ot">&lt;-</span> <span class="fu">mean</span>(tutti_i_valori <span class="sc">&gt;</span> <span class="dv">63</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Valori &lt; 0:"</span>, <span class="fu">round</span>(prop_negativi <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Valori &lt; 0:"</span>, <span class="fu">round</span>(prop_negativi <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Valori &lt; 0: 10.3 %</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Valori &gt; 63:"</span>, <span class="fu">round</span>(prop_troppo_alti <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Valori &gt; 63:"</span>, <span class="fu">round</span>(prop_troppo_alti <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Valori &gt; 63: 7.7 %</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Totale valori impossibili:"</span>,</span>
-<span id="cb15-2"><a href=""></a>    <span class="fu">round</span>((prop_negativi <span class="sc">+</span> prop_troppo_alti) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Totale valori impossibili:"</span>,</span>
+<span id="cb15-2"><a aria-label="2"></a>    <span class="fu">round</span>((prop_negativi <span class="sc">+</span> prop_troppo_alti) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Totale valori impossibili: 18 %</code></pre>
 </div>
@@ -456,37 +462,37 @@ dobbiamo scegliere prior che rispettino i <strong>vincoli del problema reale</st
 <section class="slide level2">
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a><span class="co"># Prior più informative</span></span>
-<span id="cb17-2"><a href=""></a>mu_sim_good <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_sim, <span class="at">mean =</span> <span class="dv">32</span>, <span class="at">sd =</span> <span class="dv">8</span>)</span>
-<span id="cb17-3"><a href=""></a></span>
-<span id="cb17-4"><a href=""></a><span class="co"># Gamma per sigma: media 10</span></span>
-<span id="cb17-5"><a href=""></a>sigma_sim_good <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(n_sim, <span class="at">shape =</span> <span class="dv">4</span>, <span class="at">rate =</span> <span class="fl">0.4</span>)</span>
-<span id="cb17-6"><a href=""></a></span>
-<span id="cb17-7"><a href=""></a><span class="co"># Simuliamo di nuovo</span></span>
-<span id="cb17-8"><a href=""></a>dati_sim_good <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"list"</span>, n_sim)</span>
-<span id="cb17-9"><a href=""></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_sim) {</span>
-<span id="cb17-10"><a href=""></a>  dati_sim_good[[i]] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(</span>
-<span id="cb17-11"><a href=""></a>    n_pazienti,</span>
-<span id="cb17-12"><a href=""></a>    <span class="at">mean =</span> mu_sim_good[i],</span>
-<span id="cb17-13"><a href=""></a>    <span class="at">sd =</span> sigma_sim_good[i]</span>
-<span id="cb17-14"><a href=""></a>  )</span>
-<span id="cb17-15"><a href=""></a>}</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a aria-label="1"></a><span class="co"># Prior più informative</span></span>
+<span id="cb17-2"><a aria-label="2"></a>mu_sim_good <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_sim, <span class="at">mean =</span> <span class="dv">32</span>, <span class="at">sd =</span> <span class="dv">8</span>)</span>
+<span id="cb17-3"><a aria-label="3"></a></span>
+<span id="cb17-4"><a aria-label="4"></a><span class="co"># Gamma per sigma: media 10</span></span>
+<span id="cb17-5"><a aria-label="5"></a>sigma_sim_good <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(n_sim, <span class="at">shape =</span> <span class="dv">4</span>, <span class="at">rate =</span> <span class="fl">0.4</span>)</span>
+<span id="cb17-6"><a aria-label="6"></a></span>
+<span id="cb17-7"><a aria-label="7"></a><span class="co"># Simuliamo di nuovo</span></span>
+<span id="cb17-8"><a aria-label="8"></a>dati_sim_good <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"list"</span>, n_sim)</span>
+<span id="cb17-9"><a aria-label="9"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_sim) {</span>
+<span id="cb17-10"><a aria-label="10"></a>  dati_sim_good[[i]] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(</span>
+<span id="cb17-11"><a aria-label="11"></a>    n_pazienti,</span>
+<span id="cb17-12"><a aria-label="12"></a>    <span class="at">mean =</span> mu_sim_good[i],</span>
+<span id="cb17-13"><a aria-label="13"></a>    <span class="at">sd =</span> sigma_sim_good[i]</span>
+<span id="cb17-14"><a aria-label="14"></a>  )</span>
+<span id="cb17-15"><a aria-label="15"></a>}</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="confronto-quantitativo" class="slide level2">
 <h2>Confronto quantitativo</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a>tutti_good <span class="ot">&lt;-</span> <span class="fu">unlist</span>(dati_sim_good)</span>
-<span id="cb18-2"><a href=""></a></span>
-<span id="cb18-3"><a href=""></a><span class="fu">cat</span>(<span class="st">"Con prior più ragionevoli:</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a aria-label="1"></a>tutti_good <span class="ot">&lt;-</span> <span class="fu">unlist</span>(dati_sim_good)</span>
+<span id="cb18-2"><a aria-label="2"></a></span>
+<span id="cb18-3"><a aria-label="3"></a><span class="fu">cat</span>(<span class="st">"Con prior più ragionevoli:</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Con prior più ragionevoli:</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Valori &lt; 0:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(tutti_good <span class="sc">&lt;</span> <span class="dv">0</span>) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Valori &lt; 0:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(tutti_good <span class="sc">&lt;</span> <span class="dv">0</span>) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Valori &lt; 0: 1.39 %</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Valori &gt; 63:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(tutti_good <span class="sc">&gt;</span> <span class="dv">63</span>) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Valori &gt; 63:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(tutti_good <span class="sc">&gt;</span> <span class="dv">63</span>) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Valori &gt; 63: 1.52 %</code></pre>
 </div>
@@ -553,34 +559,34 @@ dobbiamo scegliere prior che rispettino i <strong>vincoli del problema reale</st
 <section id="una-funzione-che-rappresenta-uno-studio-simulato" class="slide level2">
 <h2>Una funzione che rappresenta <em>uno studio simulato</em></h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a>simula_bdi <span class="ot">&lt;-</span> <span class="cf">function</span>(sigma_prior_fn,</span>
-<span id="cb24-2"><a href=""></a>                       <span class="at">n_sim =</span> <span class="dv">1000</span>,</span>
-<span id="cb24-3"><a href=""></a>                       <span class="at">n_pazienti =</span> <span class="dv">20</span>) {</span>
-<span id="cb24-4"><a href=""></a>  </span>
-<span id="cb24-5"><a href=""></a>  <span class="co"># 1. Estraiamo le medie per ciascuno studio</span></span>
-<span id="cb24-6"><a href=""></a>  mu_sim <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_sim, <span class="at">mean =</span> <span class="dv">32</span>, <span class="at">sd =</span> <span class="dv">8</span>)</span>
-<span id="cb24-7"><a href=""></a>  </span>
-<span id="cb24-8"><a href=""></a>  <span class="co"># 2. Estraiamo le sigma dalla prior scelta</span></span>
-<span id="cb24-9"><a href=""></a>  sigma_sim <span class="ot">&lt;-</span> <span class="fu">sigma_prior_fn</span>(n_sim)</span>
-<span id="cb24-10"><a href=""></a>  </span>
-<span id="cb24-11"><a href=""></a>  <span class="co"># 3. Generiamo i dati per ciascuno studio</span></span>
-<span id="cb24-12"><a href=""></a>  dati <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span>n_sim, <span class="cf">function</span>(i) {</span>
-<span id="cb24-13"><a href=""></a>    <span class="fu">rnorm</span>(n_pazienti,</span>
-<span id="cb24-14"><a href=""></a>          <span class="at">mean =</span> mu_sim[i],</span>
-<span id="cb24-15"><a href=""></a>          <span class="at">sd   =</span> sigma_sim[i])</span>
-<span id="cb24-16"><a href=""></a>  })</span>
-<span id="cb24-17"><a href=""></a>  </span>
-<span id="cb24-18"><a href=""></a>  <span class="co"># 4. Restituiamo tutti i valori come un unico vettore</span></span>
-<span id="cb24-19"><a href=""></a>  <span class="fu">as.vector</span>(dati)</span>
-<span id="cb24-20"><a href=""></a>}</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a aria-label="1"></a>simula_bdi <span class="ot">&lt;-</span> <span class="cf">function</span>(sigma_prior_fn,</span>
+<span id="cb24-2"><a aria-label="2"></a>                       <span class="at">n_sim =</span> <span class="dv">1000</span>,</span>
+<span id="cb24-3"><a aria-label="3"></a>                       <span class="at">n_pazienti =</span> <span class="dv">20</span>) {</span>
+<span id="cb24-4"><a aria-label="4"></a>  </span>
+<span id="cb24-5"><a aria-label="5"></a>  <span class="co"># 1. Estraiamo le medie per ciascuno studio</span></span>
+<span id="cb24-6"><a aria-label="6"></a>  mu_sim <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_sim, <span class="at">mean =</span> <span class="dv">32</span>, <span class="at">sd =</span> <span class="dv">8</span>)</span>
+<span id="cb24-7"><a aria-label="7"></a>  </span>
+<span id="cb24-8"><a aria-label="8"></a>  <span class="co"># 2. Estraiamo le sigma dalla prior scelta</span></span>
+<span id="cb24-9"><a aria-label="9"></a>  sigma_sim <span class="ot">&lt;-</span> <span class="fu">sigma_prior_fn</span>(n_sim)</span>
+<span id="cb24-10"><a aria-label="10"></a>  </span>
+<span id="cb24-11"><a aria-label="11"></a>  <span class="co"># 3. Generiamo i dati per ciascuno studio</span></span>
+<span id="cb24-12"><a aria-label="12"></a>  dati <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span>n_sim, <span class="cf">function</span>(i) {</span>
+<span id="cb24-13"><a aria-label="13"></a>    <span class="fu">rnorm</span>(n_pazienti,</span>
+<span id="cb24-14"><a aria-label="14"></a>          <span class="at">mean =</span> mu_sim[i],</span>
+<span id="cb24-15"><a aria-label="15"></a>          <span class="at">sd   =</span> sigma_sim[i])</span>
+<span id="cb24-16"><a aria-label="16"></a>  })</span>
+<span id="cb24-17"><a aria-label="17"></a>  </span>
+<span id="cb24-18"><a aria-label="18"></a>  <span class="co"># 4. Restituiamo tutti i valori come un unico vettore</span></span>
+<span id="cb24-19"><a aria-label="19"></a>  <span class="fu">as.vector</span>(dati)</span>
+<span id="cb24-20"><a aria-label="20"></a>}</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="cosa-fa-sapply" class="slide level2">
 <h2>Cosa fa <code>sapply()</code></h2>
 <p>Questa riga:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a>dati <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span>n_sim, <span class="cf">function</span>(i) {</span>
-<span id="cb25-2"><a href=""></a>  <span class="fu">rnorm</span>(n_pazienti, <span class="at">mean =</span> mu_sim[i], <span class="at">sd =</span> sigma_sim[i])</span>
-<span id="cb25-3"><a href=""></a>})</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a aria-label="1"></a>dati <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span>n_sim, <span class="cf">function</span>(i) {</span>
+<span id="cb25-2"><a aria-label="2"></a>  <span class="fu">rnorm</span>(n_pazienti, <span class="at">mean =</span> mu_sim[i], <span class="at">sd =</span> sigma_sim[i])</span>
+<span id="cb25-3"><a aria-label="3"></a>})</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <p>va letta così:</p>
 <blockquote>
 <p>“Per <strong>ogni studio</strong> <span class="math inline">\(i = 1, \dots, n_{\text{sim}}\)</span>: genera <strong>20 osservazioni</strong> da una Normale con media <span class="math inline">\(\mu_i\)</span> e deviazione standard <span class="math inline">\(\sigma_i\)</span>.”</p>
@@ -589,34 +595,34 @@ dobbiamo scegliere prior che rispettino i <strong>vincoli del problema reale</st
 <section class="slide level2">
 
 <p><code>sapply()</code> è un modo compatto per dire:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a><span class="co"># Versione esplicita (concettualmente equivalente)</span></span>
-<span id="cb26-2"><a href=""></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_sim) {</span>
-<span id="cb26-3"><a href=""></a>  genera <span class="dv">20</span> dati usando mu_sim[i] e sigma_sim[i]</span>
-<span id="cb26-4"><a href=""></a>}</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a aria-label="1"></a><span class="co"># Versione esplicita (concettualmente equivalente)</span></span>
+<span id="cb26-2"><a aria-label="2"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_sim) {</span>
+<span id="cb26-3"><a aria-label="3"></a>  genera <span class="dv">20</span> dati usando mu_sim[i] e sigma_sim[i]</span>
+<span id="cb26-4"><a aria-label="4"></a>}</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <p>È solo un <em>loop scritto in modo più breve</em>.</p>
 </section>
 <section id="simulazione-comparativa-delle-tre-prior" class="slide level2">
 <h2>Simulazione comparativa delle tre prior</h2>
 <p>Ora applichiamo la stessa procedura a tre prior diverse su σ:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a>dati_vaga <span class="ot">&lt;-</span> <span class="fu">simula_bdi</span>(<span class="cf">function</span>(n) <span class="fu">rgamma</span>(n, <span class="dv">1</span>, <span class="fl">0.1</span>))</span>
-<span id="cb27-2"><a href=""></a>dati_moderata <span class="ot">&lt;-</span> <span class="fu">simula_bdi</span>(<span class="cf">function</span>(n) <span class="fu">rgamma</span>(n, <span class="dv">4</span>, <span class="fl">0.4</span>))</span>
-<span id="cb27-3"><a href=""></a>dati_informativa <span class="ot">&lt;-</span> <span class="fu">simula_bdi</span>(<span class="cf">function</span>(n) <span class="fu">rgamma</span>(n, <span class="dv">9</span>, <span class="fl">0.9</span>))</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a aria-label="1"></a>dati_vaga <span class="ot">&lt;-</span> <span class="fu">simula_bdi</span>(<span class="cf">function</span>(n) <span class="fu">rgamma</span>(n, <span class="dv">1</span>, <span class="fl">0.1</span>))</span>
+<span id="cb27-2"><a aria-label="2"></a>dati_moderata <span class="ot">&lt;-</span> <span class="fu">simula_bdi</span>(<span class="cf">function</span>(n) <span class="fu">rgamma</span>(n, <span class="dv">4</span>, <span class="fl">0.4</span>))</span>
+<span id="cb27-3"><a aria-label="3"></a>dati_informativa <span class="ot">&lt;-</span> <span class="fu">simula_bdi</span>(<span class="cf">function</span>(n) <span class="fu">rgamma</span>(n, <span class="dv">9</span>, <span class="fl">0.9</span>))</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Ogni vettore contiene <strong>tutti i punteggi simulati</strong> prodotti da migliaia di studi ipotetici.</p>
 </section>
 <section id="risultati-della-calibrazione" class="slide level2">
 <h2>Risultati della calibrazione</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Prior vaga – IQR:"</span>, <span class="fu">round</span>(<span class="fu">IQR</span>(dati_vaga), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Prior vaga – IQR:"</span>, <span class="fu">round</span>(<span class="fu">IQR</span>(dati_vaga), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Prior vaga – IQR: 15.6 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Prior moderata – IQR:"</span>, <span class="fu">round</span>(<span class="fu">IQR</span>(dati_moderata), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Prior moderata – IQR:"</span>, <span class="fu">round</span>(<span class="fu">IQR</span>(dati_moderata), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Prior moderata – IQR: 16.5 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Prior informativa – IQR:"</span>, <span class="fu">round</span>(<span class="fu">IQR</span>(dati_informativa), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Prior informativa – IQR:"</span>, <span class="fu">round</span>(<span class="fu">IQR</span>(dati_informativa), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Prior informativa – IQR: 17.4 </code></pre>
 </div>
@@ -625,20 +631,20 @@ dobbiamo scegliere prior che rispettino i <strong>vincoli del problema reale</st
 <section class="slide level2">
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Valori fuori range (&lt; 0 o &gt; 63):</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Valori fuori range (&lt; 0 o &gt; 63):</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Valori fuori range (&lt; 0 o &gt; 63):</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Prior vaga:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(dati_vaga <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">|</span> dati_vaga <span class="sc">&gt;</span> <span class="dv">63</span>) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Prior vaga:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(dati_vaga <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">|</span> dati_vaga <span class="sc">&gt;</span> <span class="dv">63</span>) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Prior vaga: 5.5 %</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Prior moderata:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(dati_moderata <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">|</span> dati_moderata <span class="sc">&gt;</span> <span class="dv">63</span>) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Prior moderata:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(dati_moderata <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">|</span> dati_moderata <span class="sc">&gt;</span> <span class="dv">63</span>) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Prior moderata: 3.2 %</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Prior informativa:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(dati_informativa <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">|</span> dati_informativa <span class="sc">&gt;</span> <span class="dv">63</span>) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Prior informativa:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(dati_informativa <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">|</span> dati_informativa <span class="sc">&gt;</span> <span class="dv">63</span>) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Prior informativa: 2.3 %</code></pre>
 </div>
@@ -757,9 +763,9 @@ y \sim \mathcal{N}(\mu,\sigma^2),
 <h2>Controlliamo cosa implicano le prior (senza simulare dati)</h2>
 <p>Prior su μ: N(6, 0.75):</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"  Intervallo 95%:"</span>,</span>
-<span id="cb42-2"><a href=""></a>    <span class="fu">round</span>(<span class="fu">qnorm</span>(<span class="fl">0.025</span>, <span class="dv">6</span>, <span class="fl">0.75</span>), <span class="dv">1</span>), <span class="st">"-"</span>,</span>
-<span id="cb42-3"><a href=""></a>    <span class="fu">round</span>(<span class="fu">qnorm</span>(<span class="fl">0.975</span>, <span class="dv">6</span>, <span class="fl">0.75</span>), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"  Intervallo 95%:"</span>,</span>
+<span id="cb42-2"><a aria-label="2"></a>    <span class="fu">round</span>(<span class="fu">qnorm</span>(<span class="fl">0.025</span>, <span class="dv">6</span>, <span class="fl">0.75</span>), <span class="dv">1</span>), <span class="st">"-"</span>,</span>
+<span id="cb42-3"><a aria-label="3"></a>    <span class="fu">round</span>(<span class="fu">qnorm</span>(<span class="fl">0.975</span>, <span class="dv">6</span>, <span class="fl">0.75</span>), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Intervallo 95%: 4.5 - 7.5 </code></pre>
 </div>
@@ -773,13 +779,13 @@ y \sim \mathcal{N}(\mu,\sigma^2),
 
 <p>Prior su σ: Gamma(9, 6):</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"  Media:"</span>, <span class="fu">round</span>(<span class="dv">9</span><span class="sc">/</span><span class="dv">6</span>, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"  Media:"</span>, <span class="fu">round</span>(<span class="dv">9</span><span class="sc">/</span><span class="dv">6</span>, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Media: 1.5 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"  Intervallo 95%:"</span>,</span>
-<span id="cb46-2"><a href=""></a>    <span class="fu">round</span>(<span class="fu">qgamma</span>(<span class="fl">0.025</span>, <span class="dv">9</span>, <span class="dv">6</span>), <span class="dv">2</span>), <span class="st">"-"</span>,</span>
-<span id="cb46-3"><a href=""></a>    <span class="fu">round</span>(<span class="fu">qgamma</span>(<span class="fl">0.975</span>, <span class="dv">9</span>, <span class="dv">6</span>), <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"  Intervallo 95%:"</span>,</span>
+<span id="cb46-2"><a aria-label="2"></a>    <span class="fu">round</span>(<span class="fu">qgamma</span>(<span class="fl">0.025</span>, <span class="dv">9</span>, <span class="dv">6</span>), <span class="dv">2</span>), <span class="st">"-"</span>,</span>
+<span id="cb46-3"><a aria-label="3"></a>    <span class="fu">round</span>(<span class="fu">qgamma</span>(<span class="fl">0.975</span>, <span class="dv">9</span>, <span class="dv">6</span>), <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Intervallo 95%: 0.69 - 2.63 </code></pre>
 </div>
@@ -825,11 +831,11 @@ y \sim \mathcal{N}(\mu,\sigma^2),
 
 <h3 id="le-funzioni-prior_mu-e-prior_sigma">2) Le funzioni <code>prior_mu()</code> e <code>prior_sigma()</code></h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href=""></a><span class="co"># Prior su mu: media intorno a 6 (incertezza moderata)</span></span>
-<span id="cb48-2"><a href=""></a>prior_mu <span class="ot">&lt;-</span> <span class="cf">function</span>(n) <span class="fu">rnorm</span>(n, <span class="at">mean =</span> <span class="dv">6</span>, <span class="at">sd =</span> <span class="fl">0.75</span>)</span>
-<span id="cb48-3"><a href=""></a></span>
-<span id="cb48-4"><a href=""></a><span class="co"># Prior su sigma: variabilità tipica ~ 1-2</span></span>
-<span id="cb48-5"><a href=""></a>prior_sigma <span class="ot">&lt;-</span> <span class="cf">function</span>(n) <span class="fu">rgamma</span>(n, <span class="at">shape =</span> <span class="dv">9</span>, <span class="at">rate =</span> <span class="dv">6</span>)  <span class="co"># media = 1.5</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a aria-label="1"></a><span class="co"># Prior su mu: media intorno a 6 (incertezza moderata)</span></span>
+<span id="cb48-2"><a aria-label="2"></a>prior_mu <span class="ot">&lt;-</span> <span class="cf">function</span>(n) <span class="fu">rnorm</span>(n, <span class="at">mean =</span> <span class="dv">6</span>, <span class="at">sd =</span> <span class="fl">0.75</span>)</span>
+<span id="cb48-3"><a aria-label="3"></a></span>
+<span id="cb48-4"><a aria-label="4"></a><span class="co"># Prior su sigma: variabilità tipica ~ 1-2</span></span>
+<span id="cb48-5"><a aria-label="5"></a>prior_sigma <span class="ot">&lt;-</span> <span class="cf">function</span>(n) <span class="fu">rgamma</span>(n, <span class="at">shape =</span> <span class="dv">9</span>, <span class="at">rate =</span> <span class="dv">6</span>)  <span class="co"># media = 1.5</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
@@ -855,16 +861,16 @@ y \sim \mathcal{N}(\mu,\sigma^2),
 <section id="simuliamo-uno-studio-25-soggetti" class="slide level2">
 <h2>3) Simuliamo UNO studio (25 soggetti)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb49-2"><a href=""></a></span>
-<span id="cb49-3"><a href=""></a>n_soggetti <span class="ot">&lt;-</span> <span class="dv">25</span></span>
-<span id="cb49-4"><a href=""></a></span>
-<span id="cb49-5"><a href=""></a><span class="co"># 1) estraiamo una possibile media e una possibile SD</span></span>
-<span id="cb49-6"><a href=""></a>mu_1 <span class="ot">&lt;-</span> <span class="fu">prior_mu</span>(<span class="dv">1</span>)</span>
-<span id="cb49-7"><a href=""></a>sigma_1 <span class="ot">&lt;-</span> <span class="fu">prior_sigma</span>(<span class="dv">1</span>)</span>
-<span id="cb49-8"><a href=""></a></span>
-<span id="cb49-9"><a href=""></a><span class="co"># 2) generiamo i dati per 25 soggetti</span></span>
-<span id="cb49-10"><a href=""></a>digit_1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_soggetti, <span class="at">mean =</span> mu_1, <span class="at">sd =</span> sigma_1)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a aria-label="1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb49-2"><a aria-label="2"></a></span>
+<span id="cb49-3"><a aria-label="3"></a>n_soggetti <span class="ot">&lt;-</span> <span class="dv">25</span></span>
+<span id="cb49-4"><a aria-label="4"></a></span>
+<span id="cb49-5"><a aria-label="5"></a><span class="co"># 1) estraiamo una possibile media e una possibile SD</span></span>
+<span id="cb49-6"><a aria-label="6"></a>mu_1 <span class="ot">&lt;-</span> <span class="fu">prior_mu</span>(<span class="dv">1</span>)</span>
+<span id="cb49-7"><a aria-label="7"></a>sigma_1 <span class="ot">&lt;-</span> <span class="fu">prior_sigma</span>(<span class="dv">1</span>)</span>
+<span id="cb49-8"><a aria-label="8"></a></span>
+<span id="cb49-9"><a aria-label="9"></a><span class="co"># 2) generiamo i dati per 25 soggetti</span></span>
+<span id="cb49-10"><a aria-label="10"></a>digit_1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_soggetti, <span class="at">mean =</span> mu_1, <span class="at">sd =</span> sigma_1)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
@@ -880,11 +886,11 @@ y \sim \mathcal{N}(\mu,\sigma^2),
 <section id="stampiamo-cosa-è-successo" class="slide level2">
 <h2>Stampiamo cosa è successo</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Studio 1: mu ="</span>, <span class="fu">round</span>(mu_1, <span class="dv">2</span>), <span class="st">"| sigma ="</span>, <span class="fu">round</span>(sigma_1, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Studio 1: mu ="</span>, <span class="fu">round</span>(mu_1, <span class="dv">2</span>), <span class="st">"| sigma ="</span>, <span class="fu">round</span>(sigma_1, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Studio 1: mu = 5.53 | sigma = 1.51 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href=""></a>digit_1</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a aria-label="1"></a>digit_1</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] 4.270611 7.934737 6.026829 4.293462 6.264865 6.643041 6.398039 5.069846
  [9] 7.808877 6.117773 4.593760 2.191928 7.225775 5.462431 5.505756 6.952810
@@ -899,11 +905,11 @@ y \sim \mathcal{N}(\mu,\sigma^2),
 <section id="simuliamo-un-secondo-studio" class="slide level2">
 <h2>4) Simuliamo un SECONDO studio</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href=""></a>mu_2 <span class="ot">&lt;-</span> <span class="fu">prior_mu</span>(<span class="dv">1</span>)</span>
-<span id="cb54-2"><a href=""></a>sigma_2 <span class="ot">&lt;-</span> <span class="fu">prior_sigma</span>(<span class="dv">1</span>)</span>
-<span id="cb54-3"><a href=""></a></span>
-<span id="cb54-4"><a href=""></a>digit_2 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_soggetti, <span class="at">mean =</span> mu_2, <span class="at">sd =</span> sigma_2)</span>
-<span id="cb54-5"><a href=""></a>digit_2</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a aria-label="1"></a>mu_2 <span class="ot">&lt;-</span> <span class="fu">prior_mu</span>(<span class="dv">1</span>)</span>
+<span id="cb54-2"><a aria-label="2"></a>sigma_2 <span class="ot">&lt;-</span> <span class="fu">prior_sigma</span>(<span class="dv">1</span>)</span>
+<span id="cb54-3"><a aria-label="3"></a></span>
+<span id="cb54-4"><a aria-label="4"></a>digit_2 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_soggetti, <span class="at">mean =</span> mu_2, <span class="at">sd =</span> sigma_2)</span>
+<span id="cb54-5"><a aria-label="5"></a>digit_2</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] 4.615537 4.248807 4.379627 4.121562 5.764570 6.272150 6.081430 4.384160
  [9] 6.375290 4.563437 6.995615 5.566384 4.356378 3.903598 3.504221 3.624777
@@ -922,14 +928,14 @@ y \sim \mathcal{N}(\mu,\sigma^2),
 <h2>5) Prior predictive: simuliamo MOLTI studi (5000)</h2>
 <p>Qui facciamo lo stesso, ma ripetuto 5000 volte.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb56-2"><a href=""></a></span>
-<span id="cb56-3"><a href=""></a>n_sim <span class="ot">&lt;-</span> <span class="dv">5000</span></span>
-<span id="cb56-4"><a href=""></a>n_soggetti <span class="ot">&lt;-</span> <span class="dv">25</span></span>
-<span id="cb56-5"><a href=""></a></span>
-<span id="cb56-6"><a href=""></a><span class="co"># 1) parametri per ciascuno studio</span></span>
-<span id="cb56-7"><a href=""></a>mu_sim <span class="ot">&lt;-</span> <span class="fu">prior_mu</span>(n_sim)</span>
-<span id="cb56-8"><a href=""></a>sigma_sim <span class="ot">&lt;-</span> <span class="fu">prior_sigma</span>(n_sim)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a aria-label="1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb56-2"><a aria-label="2"></a></span>
+<span id="cb56-3"><a aria-label="3"></a>n_sim <span class="ot">&lt;-</span> <span class="dv">5000</span></span>
+<span id="cb56-4"><a aria-label="4"></a>n_soggetti <span class="ot">&lt;-</span> <span class="dv">25</span></span>
+<span id="cb56-5"><a aria-label="5"></a></span>
+<span id="cb56-6"><a aria-label="6"></a><span class="co"># 1) parametri per ciascuno studio</span></span>
+<span id="cb56-7"><a aria-label="7"></a>mu_sim <span class="ot">&lt;-</span> <span class="fu">prior_mu</span>(n_sim)</span>
+<span id="cb56-8"><a aria-label="8"></a>sigma_sim <span class="ot">&lt;-</span> <span class="fu">prior_sigma</span>(n_sim)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
@@ -949,7 +955,7 @@ y \sim \mathcal{N}(\mu,\sigma^2),
 <section id="creiamo-un-contenitore-per-salvare-i-dati-di-ogni-studio" class="slide level2">
 <h2>Creiamo un contenitore per salvare i dati di ogni studio</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href=""></a>dati_digit <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"list"</span>, n_sim)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a aria-label="1"></a>dati_digit <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"list"</span>, n_sim)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Cos’è una lista?</strong></p>
 <p>Una lista in R è un contenitore flessibile che può ospitare oggetti di tipo diverso (vettori, dataframe, persino altre liste).</p>
@@ -984,9 +990,9 @@ y \sim \mathcal{N}(\mu,\sigma^2),
 <section id="riempire-la-lista-con-un-loop-for" class="slide level2">
 <h2>Riempire la lista con un loop <code>for</code></h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href=""></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_sim) {</span>
-<span id="cb58-2"><a href=""></a>  dati_digit[[i]] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_soggetti, <span class="at">mean =</span> mu_sim[i], <span class="at">sd =</span> sigma_sim[i])</span>
-<span id="cb58-3"><a href=""></a>}</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a aria-label="1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_sim) {</span>
+<span id="cb58-2"><a aria-label="2"></a>  dati_digit[[i]] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_soggetti, <span class="at">mean =</span> mu_sim[i], <span class="at">sd =</span> sigma_sim[i])</span>
+<span id="cb58-3"><a aria-label="3"></a>}</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ul>
 <li><code>for (i in 1:n_sim)</code> significa: “ripeti per i = 1,2,3,…,5000”.</li>
@@ -1002,7 +1008,7 @@ y \sim \mathcal{N}(\mu,\sigma^2),
 <section id="uniamo-tutti-i-valori-per-le-statistiche-globali" class="slide level2">
 <h2>Uniamo tutti i valori (per le statistiche globali)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href=""></a>tutti_digit <span class="ot">&lt;-</span> <span class="fu">unlist</span>(dati_digit)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a aria-label="1"></a>tutti_digit <span class="ot">&lt;-</span> <span class="fu">unlist</span>(dati_digit)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Cosa fa <code>unlist()</code>?</strong></p>
 <p>Prende la lista di 5000 studi (ognuno con 25 numeri) e la “schiaccia” in un unico vettore lungo:</p>
@@ -1014,26 +1020,26 @@ y \sim \mathcal{N}(\mu,\sigma^2),
 <section id="controlli-rapidi-di-plausibilità" class="slide level2">
 <h2>6) Controlli rapidi di plausibilità</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Media:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(tutti_digit), <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Media:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(tutti_digit), <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Media: 6 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"SD:"</span>, <span class="fu">round</span>(<span class="fu">sd</span>(tutti_digit), <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"SD:"</span>, <span class="fu">round</span>(<span class="fu">sd</span>(tutti_digit), <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>SD: 1.74 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Range:"</span>, <span class="fu">round</span>(<span class="fu">min</span>(tutti_digit), <span class="dv">1</span>), <span class="st">"-"</span>, <span class="fu">round</span>(<span class="fu">max</span>(tutti_digit), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Range:"</span>, <span class="fu">round</span>(<span class="fu">min</span>(tutti_digit), <span class="dv">1</span>), <span class="st">"-"</span>, <span class="fu">round</span>(<span class="fu">max</span>(tutti_digit), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Range: -9.3 - 17.4 </code></pre>
 </div>
 </div>
 <p>Poi controlliamo quanti valori sono “chiaramente strani”:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Valori fuori dal range plausibile (&lt; 3 o &gt; 10):</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Valori fuori dal range plausibile (&lt; 3 o &gt; 10):</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Valori fuori dal range plausibile (&lt; 3 o &gt; 10):</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href=""></a><span class="fu">cat</span>(<span class="fu">round</span>(<span class="fu">mean</span>(tutti_digit <span class="sc">&lt;</span> <span class="dv">3</span> <span class="sc">|</span> tutti_digit <span class="sc">&gt;</span> <span class="dv">10</span>) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="fu">round</span>(<span class="fu">mean</span>(tutti_digit <span class="sc">&lt;</span> <span class="dv">3</span> <span class="sc">|</span> tutti_digit <span class="sc">&gt;</span> <span class="dv">10</span>) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>5.6 %</code></pre>
 </div>
@@ -1042,24 +1048,24 @@ y \sim \mathcal{N}(\mu,\sigma^2),
 </section>
 <section id="visualizzazione-100-studi-sovrapposti" class="slide level2">
 <h2>7) Visualizzazione: 100 studi sovrapposti</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb70-2"><a href=""></a>idx <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>n_sim, <span class="dv">100</span>)</span>
-<span id="cb70-3"><a href=""></a></span>
-<span id="cb70-4"><a href=""></a>df_digit_lines <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb70-5"><a href=""></a>  <span class="at">valore =</span> <span class="fu">unlist</span>(dati_digit[idx]),</span>
-<span id="cb70-6"><a href=""></a>  <span class="at">studio =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="at">each =</span> n_soggetti)</span>
-<span id="cb70-7"><a href=""></a>)</span>
-<span id="cb70-8"><a href=""></a></span>
-<span id="cb70-9"><a href=""></a><span class="fu">ggplot</span>(df_digit_lines, <span class="fu">aes</span>(<span class="at">x =</span> valore, <span class="at">group =</span> studio)) <span class="sc">+</span></span>
-<span id="cb70-10"><a href=""></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.1</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
-<span id="cb70-11"><a href=""></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">10</span>), <span class="at">color =</span> <span class="st">"darkred"</span>,</span>
-<span id="cb70-12"><a href=""></a>             <span class="at">linewidth =</span> <span class="dv">1</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
-<span id="cb70-13"><a href=""></a>  <span class="fu">annotate</span>(<span class="st">"rect"</span>, <span class="at">xmin =</span> <span class="dv">4</span>, <span class="at">xmax =</span> <span class="dv">9</span>, <span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> <span class="cn">Inf</span>,</span>
-<span id="cb70-14"><a href=""></a>           <span class="at">fill =</span> <span class="st">"forestgreen"</span>, <span class="at">alpha =</span> <span class="fl">0.08</span>) <span class="sc">+</span></span>
-<span id="cb70-15"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Prior predictive check: digit span"</span>,</span>
-<span id="cb70-16"><a href=""></a>       <span class="at">subtitle =</span> <span class="st">"100 studi simulati — la maggior parte dei valori è nel range plausibile"</span>,</span>
-<span id="cb70-17"><a href=""></a>       <span class="at">x =</span> <span class="st">"Digit span"</span>, <span class="at">y =</span> <span class="st">"Densità"</span>) <span class="sc">+</span></span>
-<span id="cb70-18"><a href=""></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a aria-label="1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb70-2"><a aria-label="2"></a>idx <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>n_sim, <span class="dv">100</span>)</span>
+<span id="cb70-3"><a aria-label="3"></a></span>
+<span id="cb70-4"><a aria-label="4"></a>df_digit_lines <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb70-5"><a aria-label="5"></a>  <span class="at">valore =</span> <span class="fu">unlist</span>(dati_digit[idx]),</span>
+<span id="cb70-6"><a aria-label="6"></a>  <span class="at">studio =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="at">each =</span> n_soggetti)</span>
+<span id="cb70-7"><a aria-label="7"></a>)</span>
+<span id="cb70-8"><a aria-label="8"></a></span>
+<span id="cb70-9"><a aria-label="9"></a><span class="fu">ggplot</span>(df_digit_lines, <span class="fu">aes</span>(<span class="at">x =</span> valore, <span class="at">group =</span> studio)) <span class="sc">+</span></span>
+<span id="cb70-10"><a aria-label="10"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.1</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb70-11"><a aria-label="11"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">10</span>), <span class="at">color =</span> <span class="st">"darkred"</span>,</span>
+<span id="cb70-12"><a aria-label="12"></a>             <span class="at">linewidth =</span> <span class="dv">1</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb70-13"><a aria-label="13"></a>  <span class="fu">annotate</span>(<span class="st">"rect"</span>, <span class="at">xmin =</span> <span class="dv">4</span>, <span class="at">xmax =</span> <span class="dv">9</span>, <span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> <span class="cn">Inf</span>,</span>
+<span id="cb70-14"><a aria-label="14"></a>           <span class="at">fill =</span> <span class="st">"forestgreen"</span>, <span class="at">alpha =</span> <span class="fl">0.08</span>) <span class="sc">+</span></span>
+<span id="cb70-15"><a aria-label="15"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Prior predictive check: digit span"</span>,</span>
+<span id="cb70-16"><a aria-label="16"></a>       <span class="at">subtitle =</span> <span class="st">"100 studi simulati — la maggior parte dei valori è nel range plausibile"</span>,</span>
+<span id="cb70-17"><a aria-label="17"></a>       <span class="at">x =</span> <span class="st">"Digit span"</span>, <span class="at">y =</span> <span class="st">"Densità"</span>) <span class="sc">+</span></span>
+<span id="cb70-18"><a aria-label="18"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section class="slide level2">
 
@@ -1155,6 +1161,7 @@ y \sim \mathcal{N}(\mu,\sigma^2),
 <p>Oggi abbiamo visto cosa il modello si aspetta <em>prima</em> dei dati. Domani vedremo cosa il modello prevede <em>dopo</em> — e come le previsioni si restringono grazie all’evidenza.</p>
 
 
+
 </section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
@@ -1164,19 +1171,19 @@ y \sim \mathcal{N}(\mu,\sigma^2),
 </div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="prior_predictive_2_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="prior_predictive_2_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="prior_predictive_2_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="prior_predictive_2_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="prior_predictive_2_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="prior_predictive_2_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="prior_predictive_2_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="prior_predictive_2_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="prior_predictive_2_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="prior_predictive_2_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -1479,7 +1486,7 @@ y \sim \mathcal{N}(\mu,\sigma^2),
         }
           var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
           var mailtoRegex = new RegExp(/^mailto:/);
-            var filterRegex = new RegExp('/' + window.location.host + '/');
+            var filterRegex = new RegExp("https:\/\/ccaudek\.github\.io\/psicometria_2026\/");
           var isInternal = (href) => {
               return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
           }

@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html lang="it"><head>
-<script src="inferenza_media_2_files/libs/clipboard/clipboard.min.js"></script>
-<script src="inferenza_media_2_files/libs/quarto-html/tabby.min.js"></script>
-<script src="inferenza_media_2_files/libs/quarto-html/popper.min.js"></script>
-<script src="inferenza_media_2_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="inferenza_media_2_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="inferenza_media_2_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="inferenza_media_2_files/libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.27">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-5c1318cf63eba56dbef7ba16bc7d56f5.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
 
   <meta name="author" content="Corrado Caudek">
-  <title>Inferenza bayesiana su una media</title>
+  <title>Psicometria 2025-26 – Inferenza bayesiana su una media</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="inferenza_media_2_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="inferenza_media_2_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
   <style>
-    code{white-space: pre-wrap;}
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -95,11 +101,11 @@
     code span.vs { color: #032f62; } /* VerbatimString */
     code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="inferenza_media_2_files/libs/revealjs/dist/theme/quarto-32eda4d62c2e25823ebe39cba2bb0a8e.css">
-  <link href="inferenza_media_2_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="inferenza_media_2_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="inferenza_media_2_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="inferenza_media_2_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-172e614ca6238f6067b3ffab71e7e169.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -199,7 +205,7 @@
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
+Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid" aria-label="ORCID profile for Corrado Caudek"> <img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
 </div>
 <div class="quarto-title-author-email">
 <a href="mailto:corrado.caudek@unifi.it">corrado.caudek@unifi.it</a>
@@ -210,7 +216,7 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
     </div>
 </div>
 
-  <p class="date">16 febbraio 2026</p>
+  <p class="date">29 ottobre 2026</p>
 </section>
 <section id="obiettivi" class="slide level2 unnumbered unlisted">
 <h2>Obiettivi</h2>
@@ -381,25 +387,25 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
 <section id="calcoliamo-la-varianza-della-posterior" class="slide level2">
 <h2>Calcoliamo la varianza della posterior</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="co"># I nostri dati</span></span>
-<span id="cb1-2"><a href=""></a>mu_0 <span class="ot">&lt;-</span> <span class="fl">81.4</span>     <span class="co"># Media prior (popolazione generale)</span></span>
-<span id="cb1-3"><a href=""></a>sigma_0 <span class="ot">&lt;-</span> <span class="dv">8</span>     <span class="co"># DS prior</span></span>
-<span id="cb1-4"><a href=""></a>y_obs <span class="ot">&lt;-</span> <span class="dv">76</span>      <span class="co"># Stima per questo profilo specifico</span></span>
-<span id="cb1-5"><a href=""></a>sigma_obs <span class="ot">&lt;-</span> <span class="dv">10</span>  <span class="co"># Incertezza della stima</span></span>
-<span id="cb1-6"><a href=""></a></span>
-<span id="cb1-7"><a href=""></a><span class="co"># Passo 1: calcolare le precisioni (1 / varianza)</span></span>
-<span id="cb1-8"><a href=""></a>precisione_prior <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> sigma_0<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb1-9"><a href=""></a>precisione_dati <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> sigma_obs<span class="sc">^</span><span class="dv">2</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-label="1"></a><span class="co"># I nostri dati</span></span>
+<span id="cb1-2"><a aria-label="2"></a>mu_0 <span class="ot">&lt;-</span> <span class="fl">81.4</span>     <span class="co"># Media prior (popolazione generale)</span></span>
+<span id="cb1-3"><a aria-label="3"></a>sigma_0 <span class="ot">&lt;-</span> <span class="dv">8</span>     <span class="co"># DS prior</span></span>
+<span id="cb1-4"><a aria-label="4"></a>y_obs <span class="ot">&lt;-</span> <span class="dv">76</span>      <span class="co"># Stima per questo profilo specifico</span></span>
+<span id="cb1-5"><a aria-label="5"></a>sigma_obs <span class="ot">&lt;-</span> <span class="dv">10</span>  <span class="co"># Incertezza della stima</span></span>
+<span id="cb1-6"><a aria-label="6"></a></span>
+<span id="cb1-7"><a aria-label="7"></a><span class="co"># Passo 1: calcolare le precisioni (1 / varianza)</span></span>
+<span id="cb1-8"><a aria-label="8"></a>precisione_prior <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> sigma_0<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb1-9"><a aria-label="9"></a>precisione_dati <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> sigma_obs<span class="sc">^</span><span class="dv">2</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Precisione del prior:"</span>, <span class="fu">round</span>(precisione_prior, <span class="dv">4</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Precisione del prior:"</span>, <span class="fu">round</span>(precisione_prior, <span class="dv">4</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Precisione del prior: 0.0156 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Precisione dei dati:"</span>, <span class="fu">round</span>(precisione_dati, <span class="dv">4</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Precisione dei dati:"</span>, <span class="fu">round</span>(precisione_dati, <span class="dv">4</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Precisione dei dati: 0.01 </code></pre>
 </div>
@@ -410,26 +416,26 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
 
 <p><strong>Calcoliamo ora la varianza posterior:</strong></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="co"># La precisione totale è la SOMMA delle precisioni</span></span>
-<span id="cb6-2"><a href=""></a>precisione_totale <span class="ot">&lt;-</span> precisione_prior <span class="sc">+</span> precisione_dati</span>
-<span id="cb6-3"><a href=""></a></span>
-<span id="cb6-4"><a href=""></a><span class="co"># La varianza posterior è l'inverso della precisione totale</span></span>
-<span id="cb6-5"><a href=""></a>var_post <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> precisione_totale</span>
-<span id="cb6-6"><a href=""></a>sigma_post <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(var_post)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a aria-label="1"></a><span class="co"># La precisione totale è la SOMMA delle precisioni</span></span>
+<span id="cb6-2"><a aria-label="2"></a>precisione_totale <span class="ot">&lt;-</span> precisione_prior <span class="sc">+</span> precisione_dati</span>
+<span id="cb6-3"><a aria-label="3"></a></span>
+<span id="cb6-4"><a aria-label="4"></a><span class="co"># La varianza posterior è l'inverso della precisione totale</span></span>
+<span id="cb6-5"><a aria-label="5"></a>var_post <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> precisione_totale</span>
+<span id="cb6-6"><a aria-label="6"></a>sigma_post <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(var_post)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Precisione totale:"</span>, <span class="fu">round</span>(precisione_totale, <span class="dv">4</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Precisione totale:"</span>, <span class="fu">round</span>(precisione_totale, <span class="dv">4</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Precisione totale: 0.0256 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Varianza posterior:"</span>, <span class="fu">round</span>(var_post, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Varianza posterior:"</span>, <span class="fu">round</span>(var_post, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Varianza posterior: 39.02 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"DS posterior:"</span>, <span class="fu">round</span>(sigma_post, <span class="dv">2</span>), <span class="st">"anni</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"DS posterior:"</span>, <span class="fu">round</span>(sigma_post, <span class="dv">2</span>), <span class="st">"anni</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>DS posterior: 6.25 anni</code></pre>
 </div>
@@ -439,10 +445,10 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
 <section id="calcoliamo-la-media-della-posterior" class="slide level2">
 <h2>Calcoliamo la media della posterior</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a><span class="co"># Media pesata, dove i pesi sono le precisioni</span></span>
-<span id="cb13-2"><a href=""></a>mu_post <span class="ot">&lt;-</span> (precisione_prior <span class="sc">*</span> mu_0 <span class="sc">+</span> precisione_dati <span class="sc">*</span> y_obs) <span class="sc">/</span> precisione_totale</span>
-<span id="cb13-3"><a href=""></a></span>
-<span id="cb13-4"><a href=""></a><span class="fu">cat</span>(<span class="st">"Media posterior:"</span>, <span class="fu">round</span>(mu_post, <span class="dv">2</span>), <span class="st">"anni</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a aria-label="1"></a><span class="co"># Media pesata, dove i pesi sono le precisioni</span></span>
+<span id="cb13-2"><a aria-label="2"></a>mu_post <span class="ot">&lt;-</span> (precisione_prior <span class="sc">*</span> mu_0 <span class="sc">+</span> precisione_dati <span class="sc">*</span> y_obs) <span class="sc">/</span> precisione_totale</span>
+<span id="cb13-3"><a aria-label="3"></a></span>
+<span id="cb13-4"><a aria-label="4"></a><span class="fu">cat</span>(<span class="st">"Media posterior:"</span>, <span class="fu">round</span>(mu_post, <span class="dv">2</span>), <span class="st">"anni</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Media posterior: 79.29 anni</code></pre>
 </div>
@@ -461,15 +467,15 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
 <section id="riepilogo-la-posterior-per-la-media" class="slide level2">
 <h2>Riepilogo: la posterior per la media</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"POSTERIOR PER LA MEDIA μ:</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"POSTERIOR PER LA MEDIA μ:</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>POSTERIOR PER LA MEDIA μ:</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"  μ_post ="</span>, <span class="fu">round</span>(mu_post, <span class="dv">2</span>), <span class="st">"anni</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"  μ_post ="</span>, <span class="fu">round</span>(mu_post, <span class="dv">2</span>), <span class="st">"anni</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  μ_post = 79.29 anni</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"  σ_post ="</span>, <span class="fu">round</span>(sigma_post, <span class="dv">2</span>), <span class="st">"anni</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"  σ_post ="</span>, <span class="fu">round</span>(sigma_post, <span class="dv">2</span>), <span class="st">"anni</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  σ_post = 6.25 anni</code></pre>
 </div>
@@ -488,10 +494,10 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
 <h2>Probabilità che la media sia &gt; 90 anni</h2>
 <p>Calcoliamo la probabilità che la media della distribuzione a posteriori superi 90:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href=""></a><span class="co"># P(μ &gt; 90)</span></span>
-<span id="cb21-2"><a href=""></a>prob_media_90 <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">pnorm</span>(<span class="dv">90</span>, mu_post, sigma_post)</span>
-<span id="cb21-3"><a href=""></a></span>
-<span id="cb21-4"><a href=""></a><span class="fu">cat</span>(<span class="st">"P(μ &gt; 90) ="</span>, <span class="fu">round</span>(prob_media_90 <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a aria-label="1"></a><span class="co"># P(μ &gt; 90)</span></span>
+<span id="cb21-2"><a aria-label="2"></a>prob_media_90 <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">pnorm</span>(<span class="dv">90</span>, mu_post, sigma_post)</span>
+<span id="cb21-3"><a aria-label="3"></a></span>
+<span id="cb21-4"><a aria-label="4"></a><span class="fu">cat</span>(<span class="st">"P(μ &gt; 90) ="</span>, <span class="fu">round</span>(prob_media_90 <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>P(μ &gt; 90) = 4.33 %</code></pre>
 </div>
@@ -504,14 +510,14 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
 <section id="intervallo-di-credibilità-per-la-media" class="slide level2">
 <h2>Intervallo di credibilità per la media</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a><span class="co"># IC 95% per μ</span></span>
-<span id="cb23-2"><a href=""></a>ic_95 <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(<span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>), mu_post, sigma_post)</span>
-<span id="cb23-3"><a href=""></a></span>
-<span id="cb23-4"><a href=""></a><span class="fu">cat</span>(<span class="st">"Intervallo di credibilità 95% per μ:</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a aria-label="1"></a><span class="co"># IC 95% per μ</span></span>
+<span id="cb23-2"><a aria-label="2"></a>ic_95 <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(<span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>), mu_post, sigma_post)</span>
+<span id="cb23-3"><a aria-label="3"></a></span>
+<span id="cb23-4"><a aria-label="4"></a><span class="fu">cat</span>(<span class="st">"Intervallo di credibilità 95% per μ:</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Intervallo di credibilità 95% per μ:</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"  ["</span>, <span class="fu">round</span>(ic_95[<span class="dv">1</span>], <span class="dv">1</span>), <span class="st">","</span>, <span class="fu">round</span>(ic_95[<span class="dv">2</span>], <span class="dv">1</span>), <span class="st">"] anni</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"  ["</span>, <span class="fu">round</span>(ic_95[<span class="dv">1</span>], <span class="dv">1</span>), <span class="st">","</span>, <span class="fu">round</span>(ic_95[<span class="dv">2</span>], <span class="dv">1</span>), <span class="st">"] anni</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  [ 67 , 91.5 ] anni</code></pre>
 </div>
@@ -624,12 +630,12 @@ X \mid \mu^{*} \sim \text{Normale}(\mu^{*},\ \sigma_{\text{ind}}).
 <p>Vediamo <strong>concretamente</strong> come funziona la predizione individuale.</p>
 <p>Ogni “vita simulata” nasce da <strong>due passaggi successivi</strong>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a><span class="co"># Simuliamo 5 "vite" per visualizzare il meccanismo</span></span>
-<span id="cb27-2"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb27-3"><a href=""></a></span>
-<span id="cb27-4"><a href=""></a>sigma_ind <span class="ot">&lt;-</span> <span class="dv">12</span>  <span class="co"># Variabilità individuale (anni)</span></span>
-<span id="cb27-5"><a href=""></a></span>
-<span id="cb27-6"><a href=""></a><span class="fu">cat</span>(<span class="st">"Simulazione di 5 possibili vite:</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a aria-label="1"></a><span class="co"># Simuliamo 5 "vite" per visualizzare il meccanismo</span></span>
+<span id="cb27-2"><a aria-label="2"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb27-3"><a aria-label="3"></a></span>
+<span id="cb27-4"><a aria-label="4"></a>sigma_ind <span class="ot">&lt;-</span> <span class="dv">12</span>  <span class="co"># Variabilità individuale (anni)</span></span>
+<span id="cb27-5"><a aria-label="5"></a></span>
+<span id="cb27-6"><a aria-label="6"></a><span class="fu">cat</span>(<span class="st">"Simulazione di 5 possibili vite:</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Simulazione di 5 possibili vite:</code></pre>
 </div>
@@ -638,18 +644,18 @@ X \mid \mu^{*} \sim \text{Normale}(\mu^{*},\ \sigma_{\text{ind}}).
 <section class="slide level2">
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) {</span>
-<span id="cb29-2"><a href=""></a>  </span>
-<span id="cb29-3"><a href=""></a>  <span class="co"># Passo 1: scegliamo una media plausibile del gruppo</span></span>
-<span id="cb29-4"><a href=""></a>  mu_star <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, mu_post, sigma_post)</span>
-<span id="cb29-5"><a href=""></a>  </span>
-<span id="cb29-6"><a href=""></a>  <span class="co"># Passo 2: data quella media, estraiamo la vita dell'individuo</span></span>
-<span id="cb29-7"><a href=""></a>  X <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, mu_star, sigma_ind)</span>
-<span id="cb29-8"><a href=""></a>  </span>
-<span id="cb29-9"><a href=""></a>  <span class="fu">cat</span>(<span class="st">"Vita"</span>, i, </span>
-<span id="cb29-10"><a href=""></a>      <span class="st">": media estratta μ* ="</span>, <span class="fu">round</span>(mu_star, <span class="dv">1</span>),</span>
-<span id="cb29-11"><a href=""></a>      <span class="st">"→ vita simulata X ="</span>, <span class="fu">round</span>(X, <span class="dv">1</span>), <span class="st">"anni</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb29-12"><a href=""></a>}</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a aria-label="1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) {</span>
+<span id="cb29-2"><a aria-label="2"></a>  </span>
+<span id="cb29-3"><a aria-label="3"></a>  <span class="co"># Passo 1: scegliamo una media plausibile del gruppo</span></span>
+<span id="cb29-4"><a aria-label="4"></a>  mu_star <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, mu_post, sigma_post)</span>
+<span id="cb29-5"><a aria-label="5"></a>  </span>
+<span id="cb29-6"><a aria-label="6"></a>  <span class="co"># Passo 2: data quella media, estraiamo la vita dell'individuo</span></span>
+<span id="cb29-7"><a aria-label="7"></a>  X <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, mu_star, sigma_ind)</span>
+<span id="cb29-8"><a aria-label="8"></a>  </span>
+<span id="cb29-9"><a aria-label="9"></a>  <span class="fu">cat</span>(<span class="st">"Vita"</span>, i, </span>
+<span id="cb29-10"><a aria-label="10"></a>      <span class="st">": media estratta μ* ="</span>, <span class="fu">round</span>(mu_star, <span class="dv">1</span>),</span>
+<span id="cb29-11"><a aria-label="11"></a>      <span class="st">"→ vita simulata X ="</span>, <span class="fu">round</span>(X, <span class="dv">1</span>), <span class="st">"anni</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb29-12"><a aria-label="12"></a>}</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Vita 1 : media estratta μ* = 75.8 → vita simulata X = 73 anni
 Vita 2 : media estratta μ* = 89 → vita simulata X = 89.9 anni
@@ -754,22 +760,22 @@ X = \mu + \varepsilon,
 <section id="calcoliamo-passo-per-passo" class="slide level2">
 <h2>Calcoliamo passo per passo</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href=""></a><span class="co"># Le due fonti di incertezza</span></span>
-<span id="cb31-2"><a href=""></a><span class="co"># sigma_post calcolato in precedenza</span></span>
-<span id="cb31-3"><a href=""></a>sigma_ind <span class="ot">&lt;-</span> <span class="dv">12</span>     <span class="co"># Variabilità individuale</span></span>
-<span id="cb31-4"><a href=""></a></span>
-<span id="cb31-5"><a href=""></a><span class="co"># Calcoliamo la varianza totale</span></span>
-<span id="cb31-6"><a href=""></a>var_totale <span class="ot">&lt;-</span> sigma_post<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> sigma_ind<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb31-7"><a href=""></a></span>
-<span id="cb31-8"><a href=""></a><span class="fu">cat</span>(<span class="st">"Varianza dovuta all'incertezza su μ:"</span>, <span class="fu">round</span>(sigma_post<span class="sc">^</span><span class="dv">2</span>, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a aria-label="1"></a><span class="co"># Le due fonti di incertezza</span></span>
+<span id="cb31-2"><a aria-label="2"></a><span class="co"># sigma_post calcolato in precedenza</span></span>
+<span id="cb31-3"><a aria-label="3"></a>sigma_ind <span class="ot">&lt;-</span> <span class="dv">12</span>     <span class="co"># Variabilità individuale</span></span>
+<span id="cb31-4"><a aria-label="4"></a></span>
+<span id="cb31-5"><a aria-label="5"></a><span class="co"># Calcoliamo la varianza totale</span></span>
+<span id="cb31-6"><a aria-label="6"></a>var_totale <span class="ot">&lt;-</span> sigma_post<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> sigma_ind<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb31-7"><a aria-label="7"></a></span>
+<span id="cb31-8"><a aria-label="8"></a><span class="fu">cat</span>(<span class="st">"Varianza dovuta all'incertezza su μ:"</span>, <span class="fu">round</span>(sigma_post<span class="sc">^</span><span class="dv">2</span>, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Varianza dovuta all'incertezza su μ: 39.02 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Varianza dovuta alla variabilità individuale:"</span>, <span class="fu">round</span>(sigma_ind<span class="sc">^</span><span class="dv">2</span>, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Varianza dovuta alla variabilità individuale:"</span>, <span class="fu">round</span>(sigma_ind<span class="sc">^</span><span class="dv">2</span>, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Varianza dovuta alla variabilità individuale: 144 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Varianza TOTALE:"</span>, <span class="fu">round</span>(var_totale, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Varianza TOTALE:"</span>, <span class="fu">round</span>(var_totale, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Varianza TOTALE: 183.02 </code></pre>
 </div>
@@ -778,10 +784,10 @@ X = \mu + \varepsilon,
 <section id="la-deviazione-standard-predittiva" class="slide level2">
 <h2>La deviazione standard predittiva</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href=""></a><span class="co"># La DS predittiva</span></span>
-<span id="cb37-2"><a href=""></a>sigma_pred <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(var_totale)</span>
-<span id="cb37-3"><a href=""></a></span>
-<span id="cb37-4"><a href=""></a><span class="fu">cat</span>(<span class="st">"DS predittiva:"</span>, <span class="fu">round</span>(sigma_pred, <span class="dv">2</span>), <span class="st">"anni</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a aria-label="1"></a><span class="co"># La DS predittiva</span></span>
+<span id="cb37-2"><a aria-label="2"></a>sigma_pred <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(var_totale)</span>
+<span id="cb37-3"><a aria-label="3"></a></span>
+<span id="cb37-4"><a aria-label="4"></a><span class="fu">cat</span>(<span class="st">"DS predittiva:"</span>, <span class="fu">round</span>(sigma_pred, <span class="dv">2</span>), <span class="st">"anni</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>DS predittiva: 13.53 anni</code></pre>
 </div>
@@ -825,12 +831,12 @@ X \mid \text{dati} \sim \text{Normale}(\mu_{\text{post}}, \ \sigma_{\text{pred}}
 P(\mu &gt; 90) = 1 - \Phi\!\left(\frac{90 - \mu_{\text{post}}}{\sigma_{\text{post}}}\right).
 \]</span></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href=""></a>z_media <span class="ot">&lt;-</span> (<span class="dv">90</span> <span class="sc">-</span> mu_post) <span class="sc">/</span> sigma_post</span>
-<span id="cb39-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"z per la media:"</span>, <span class="fu">round</span>(z_media, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a aria-label="1"></a>z_media <span class="ot">&lt;-</span> (<span class="dv">90</span> <span class="sc">-</span> mu_post) <span class="sc">/</span> sigma_post</span>
+<span id="cb39-2"><a aria-label="2"></a><span class="fu">cat</span>(<span class="st">"z per la media:"</span>, <span class="fu">round</span>(z_media, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>z per la media: 1.71 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"P(μ &gt; 90) ="</span>, <span class="fu">round</span>((<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pnorm</span>(z_media)) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"P(μ &gt; 90) ="</span>, <span class="fu">round</span>((<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pnorm</span>(z_media)) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>P(μ &gt; 90) = 4.33 %</code></pre>
 </div>
@@ -845,12 +851,12 @@ P(\mu &gt; 90) = 1 - \Phi\!\left(\frac{90 - \mu_{\text{post}}}{\sigma_{\text{pos
 P(X &gt; 90) = 1 - \Phi\!\left(\frac{90 - \mu_{\text{post}}}{\sigma_{\text{pred}}}\right).
 \]</span></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href=""></a>z_ind <span class="ot">&lt;-</span> (<span class="dv">90</span> <span class="sc">-</span> mu_post) <span class="sc">/</span> sigma_pred</span>
-<span id="cb43-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"z per l'individuo:"</span>, <span class="fu">round</span>(z_ind, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a aria-label="1"></a>z_ind <span class="ot">&lt;-</span> (<span class="dv">90</span> <span class="sc">-</span> mu_post) <span class="sc">/</span> sigma_pred</span>
+<span id="cb43-2"><a aria-label="2"></a><span class="fu">cat</span>(<span class="st">"z per l'individuo:"</span>, <span class="fu">round</span>(z_ind, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>z per l'individuo: 0.79 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"P(X &gt; 90) ="</span>, <span class="fu">round</span>((<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pnorm</span>(z_ind)) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"P(X &gt; 90) ="</span>, <span class="fu">round</span>((<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pnorm</span>(z_ind)) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>P(X &gt; 90) = 21.43 %</code></pre>
 </div>
@@ -924,14 +930,14 @@ P(X &gt; 90) = 1 - \Phi\!\left(\frac{90 - \mu_{\text{post}}}{\sigma_{\text{pred}
 <section id="intervallo-predittivo-individuale" class="slide level2">
 <h2>Intervallo predittivo individuale</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href=""></a><span class="co"># IC 95% predittivo per l'individuo</span></span>
-<span id="cb56-2"><a href=""></a>ic_pred_95 <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(<span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>), mu_post, sigma_pred)</span>
-<span id="cb56-3"><a href=""></a></span>
-<span id="cb56-4"><a href=""></a><span class="fu">cat</span>(<span class="st">"Intervallo predittivo 95% per un individuo:</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a aria-label="1"></a><span class="co"># IC 95% predittivo per l'individuo</span></span>
+<span id="cb56-2"><a aria-label="2"></a>ic_pred_95 <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(<span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>), mu_post, sigma_pred)</span>
+<span id="cb56-3"><a aria-label="3"></a></span>
+<span id="cb56-4"><a aria-label="4"></a><span class="fu">cat</span>(<span class="st">"Intervallo predittivo 95% per un individuo:</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Intervallo predittivo 95% per un individuo:</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"  ["</span>, <span class="fu">round</span>(ic_pred_95[<span class="dv">1</span>], <span class="dv">1</span>), <span class="st">","</span>, <span class="fu">round</span>(ic_pred_95[<span class="dv">2</span>], <span class="dv">1</span>), <span class="st">"] anni</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"  ["</span>, <span class="fu">round</span>(ic_pred_95[<span class="dv">1</span>], <span class="dv">1</span>), <span class="st">","</span>, <span class="fu">round</span>(ic_pred_95[<span class="dv">2</span>], <span class="dv">1</span>), <span class="st">"] anni</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  [ 52.8 , 105.8 ] anni</code></pre>
 </div>
@@ -1002,32 +1008,32 @@ P(X &gt; 90) = 1 - \Phi\!\left(\frac{90 - \mu_{\text{post}}}{\sigma_{\text{pred}
 <section id="i-numeri-nascosti-dalla-media" class="slide level2">
 <h2>I numeri nascosti dalla media</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href=""></a><span class="co"># Quanti peggiorano?</span></span>
-<span id="cb60-2"><a href=""></a>n_peggiorano <span class="ot">&lt;-</span> <span class="fu">sum</span>(miglioramenti <span class="sc">&lt;</span> <span class="dv">0</span>)</span>
-<span id="cb60-3"><a href=""></a>perc_peggiorano <span class="ot">&lt;-</span> <span class="fu">mean</span>(miglioramenti <span class="sc">&lt;</span> <span class="dv">0</span>) <span class="sc">*</span> <span class="dv">100</span></span>
-<span id="cb60-4"><a href=""></a></span>
-<span id="cb60-5"><a href=""></a><span class="co"># Quanti migliorano molto?</span></span>
-<span id="cb60-6"><a href=""></a>perc_molto <span class="ot">&lt;-</span> <span class="fu">mean</span>(miglioramenti <span class="sc">&gt;</span> <span class="dv">10</span>) <span class="sc">*</span> <span class="dv">100</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a aria-label="1"></a><span class="co"># Quanti peggiorano?</span></span>
+<span id="cb60-2"><a aria-label="2"></a>n_peggiorano <span class="ot">&lt;-</span> <span class="fu">sum</span>(miglioramenti <span class="sc">&lt;</span> <span class="dv">0</span>)</span>
+<span id="cb60-3"><a aria-label="3"></a>perc_peggiorano <span class="ot">&lt;-</span> <span class="fu">mean</span>(miglioramenti <span class="sc">&lt;</span> <span class="dv">0</span>) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb60-4"><a aria-label="4"></a></span>
+<span id="cb60-5"><a aria-label="5"></a><span class="co"># Quanti migliorano molto?</span></span>
+<span id="cb60-6"><a aria-label="6"></a>perc_molto <span class="ot">&lt;-</span> <span class="fu">mean</span>(miglioramenti <span class="sc">&gt;</span> <span class="dv">10</span>) <span class="sc">*</span> <span class="dv">100</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Su 200 pazienti:</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Su 200 pazienti:</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Su 200 pazienti:</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"  Miglioramento medio:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(miglioramenti), <span class="dv">1</span>), <span class="st">"punti BDI</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"  Miglioramento medio:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(miglioramenti), <span class="dv">1</span>), <span class="st">"punti BDI</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Miglioramento medio: 4.9 punti BDI</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"  Pazienti che peggiorano:"</span>, n_peggiorano,</span>
-<span id="cb65-2"><a href=""></a>    <span class="st">"("</span>, <span class="fu">round</span>(perc_peggiorano, <span class="dv">1</span>), <span class="st">"%)</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"  Pazienti che peggiorano:"</span>, n_peggiorano,</span>
+<span id="cb65-2"><a aria-label="2"></a>    <span class="st">"("</span>, <span class="fu">round</span>(perc_peggiorano, <span class="dv">1</span>), <span class="st">"%)</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Pazienti che peggiorano: 51 ( 25.5 %)</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"  Pazienti con forte miglioramento (&gt;10 punti):"</span>,</span>
-<span id="cb67-2"><a href=""></a>    <span class="fu">round</span>(perc_molto, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"  Pazienti con forte miglioramento (&gt;10 punti):"</span>,</span>
+<span id="cb67-2"><a aria-label="2"></a>    <span class="fu">round</span>(perc_molto, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Pazienti con forte miglioramento (&gt;10 punti): 23.5 %</code></pre>
 </div>
@@ -1289,6 +1295,7 @@ P(X &gt; 90) = 1 - \Phi\!\left(\frac{90 - \mu_{\text{post}}}{\sigma_{\text{pred}
 <p>Estenderemo questi concetti al <strong>confronto tra due gruppi</strong>: come valutare se un trattamento funziona, sia a livello di gruppo che a livello individuale.</p>
 
 
+
 </section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
@@ -1298,19 +1305,19 @@ P(X &gt; 90) = 1 - \Phi\!\left(\frac{90 - \mu_{\text{post}}}{\sigma_{\text{pred}
 </div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="inferenza_media_2_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="inferenza_media_2_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="inferenza_media_2_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="inferenza_media_2_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="inferenza_media_2_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="inferenza_media_2_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="inferenza_media_2_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="inferenza_media_2_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="inferenza_media_2_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="inferenza_media_2_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -1613,7 +1620,7 @@ P(X &gt; 90) = 1 - \Phi\!\left(\frac{90 - \mu_{\text{post}}}{\sigma_{\text{pred}
         }
           var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
           var mailtoRegex = new RegExp(/^mailto:/);
-            var filterRegex = new RegExp('/' + window.location.host + '/');
+            var filterRegex = new RegExp("https:\/\/ccaudek\.github\.io\/psicometria_2026\/");
           var isInternal = (href) => {
               return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
           }

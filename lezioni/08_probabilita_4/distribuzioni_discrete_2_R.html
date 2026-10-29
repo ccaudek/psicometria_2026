@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html lang="it"><head>
-<script src="distribuzioni_discrete_2_R_files/libs/clipboard/clipboard.min.js"></script>
-<script src="distribuzioni_discrete_2_R_files/libs/quarto-html/tabby.min.js"></script>
-<script src="distribuzioni_discrete_2_R_files/libs/quarto-html/popper.min.js"></script>
-<script src="distribuzioni_discrete_2_R_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="distribuzioni_discrete_2_R_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="distribuzioni_discrete_2_R_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="distribuzioni_discrete_2_R_files/libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.27">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-5c1318cf63eba56dbef7ba16bc7d56f5.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
 
   <meta name="author" content="Corrado Caudek">
-  <title>Distribuzioni discrete: Bernoulli, Binomiale, Poisson</title>
+  <title>Psicometria 2025-26 – Distribuzioni discrete: Bernoulli, Binomiale, Poisson</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="distribuzioni_discrete_2_R_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="distribuzioni_discrete_2_R_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
   <style>
-    code{white-space: pre-wrap;}
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -95,11 +101,11 @@
     code span.vs { color: #032f62; } /* VerbatimString */
     code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="distribuzioni_discrete_2_R_files/libs/revealjs/dist/theme/quarto-32eda4d62c2e25823ebe39cba2bb0a8e.css">
-  <link href="distribuzioni_discrete_2_R_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="distribuzioni_discrete_2_R_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="distribuzioni_discrete_2_R_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="distribuzioni_discrete_2_R_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-172e614ca6238f6067b3ffab71e7e169.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -199,7 +205,7 @@
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
+Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid" aria-label="ORCID profile for Corrado Caudek"> <img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
 </div>
 <div class="quarto-title-author-email">
 <a href="mailto:corrado.caudek@unifi.it">corrado.caudek@unifi.it</a>
@@ -210,7 +216,7 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
     </div>
 </div>
 
-  <p class="date">10 febbraio 2026</p>
+  <p class="date">29 ottobre 2026</p>
 </section>
 <section id="obiettivi-del-segmento" class="slide level2 unnumbered unlisted">
 <h2>Obiettivi del segmento</h2>
@@ -239,11 +245,11 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
 <section id="setup-da-eseguire-una-volta" class="slide level2 unnumbered unlisted">
 <h2>Setup (da eseguire una volta)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="co"># Rendiamo i risultati replicabili</span></span>
-<span id="cb1-2"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">2026</span>)</span>
-<span id="cb1-3"><a href=""></a></span>
-<span id="cb1-4"><a href=""></a><span class="co"># Dimensione della simulazione (grande = stime più stabili)</span></span>
-<span id="cb1-5"><a href=""></a>Nsim <span class="ot">&lt;-</span> <span class="dv">200000</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-label="1"></a><span class="co"># Rendiamo i risultati replicabili</span></span>
+<span id="cb1-2"><a aria-label="2"></a><span class="fu">set.seed</span>(<span class="dv">2026</span>)</span>
+<span id="cb1-3"><a aria-label="3"></a></span>
+<span id="cb1-4"><a aria-label="4"></a><span class="co"># Dimensione della simulazione (grande = stime più stabili)</span></span>
+<span id="cb1-5"><a aria-label="5"></a>Nsim <span class="ot">&lt;-</span> <span class="dv">200000</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ul>
 <li><code>set.seed()</code> serve a ottenere gli stessi numeri casuali se rieseguiamo il codice.<br>
@@ -281,24 +287,24 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
 
 <h3 id="soluzione">Soluzione</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a>p <span class="ot">&lt;-</span> <span class="fl">0.15</span></span>
-<span id="cb2-2"><a href=""></a></span>
-<span id="cb2-3"><a href=""></a><span class="co"># Bernoulli è una binomiale con size = 1</span></span>
-<span id="cb2-4"><a href=""></a>P_pos <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> p)</span>
-<span id="cb2-5"><a href=""></a>P_neg <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">0</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> p)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a aria-label="1"></a>p <span class="ot">&lt;-</span> <span class="fl">0.15</span></span>
+<span id="cb2-2"><a aria-label="2"></a></span>
+<span id="cb2-3"><a aria-label="3"></a><span class="co"># Bernoulli è una binomiale con size = 1</span></span>
+<span id="cb2-4"><a aria-label="4"></a>P_pos <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> p)</span>
+<span id="cb2-5"><a aria-label="5"></a>P_neg <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">0</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> p)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ul>
 <li><code>dbinom(x, size, prob)</code> restituisce <span class="math inline">\(P(X=x)\)</span> per <span class="math inline">\(X \sim \text{Binomiale}(\text{size}, \text{prob})\)</span>.</li>
 <li>se <code>size = 1</code>, stiamo considerando una distribuzione di Bernoulli.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a>P_pos</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a aria-label="1"></a>P_pos</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.15</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a>P_neg</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a aria-label="1"></a>P_neg</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.85</code></pre>
 </div>
@@ -308,8 +314,8 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
 
 <p>Controllo concettuale:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="co"># La somma su tutti gli esiti possibili deve dare 1</span></span>
-<span id="cb7-2"><a href=""></a>P_pos <span class="sc">+</span> P_neg</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a aria-label="1"></a><span class="co"># La somma su tutti gli esiti possibili deve dare 1</span></span>
+<span id="cb7-2"><a aria-label="2"></a>P_pos <span class="sc">+</span> P_neg</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1</code></pre>
 </div>
@@ -325,8 +331,8 @@ Poi la confrontiamo con <code>p = 0.15</code>.</p>
 
 <h3 id="soluzione-guidata">Soluzione guidata</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="co"># rbinom genera 0/1: successi su prove</span></span>
-<span id="cb9-2"><a href=""></a>X <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="at">n =</span> Nsim, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> p)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a aria-label="1"></a><span class="co"># rbinom genera 0/1: successi su prove</span></span>
+<span id="cb9-2"><a aria-label="2"></a>X <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="at">n =</span> Nsim, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> p)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ul>
 <li><code>rbinom(..., size=1)</code> genera molte prove di Bernoulli (0/1).</li>
@@ -334,8 +340,8 @@ Poi la confrontiamo con <code>p = 0.15</code>.</p>
 Quindi <code>mean(X)</code> stima <span class="math inline">\(P(X=1)\)</span>.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="co"># La media di 0/1 è la proporzione di successi</span></span>
-<span id="cb10-2"><a href=""></a><span class="fu">mean</span>(X)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a aria-label="1"></a><span class="co"># La media di 0/1 è la proporzione di successi</span></span>
+<span id="cb10-2"><a aria-label="2"></a><span class="fu">mean</span>(X)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.151355</code></pre>
 </div>
@@ -361,16 +367,16 @@ Quindi <code>mean(X)</code> stima <span class="math inline">\(P(X=1)\)</span>.</
 
 <h3 id="soluzione-guidata-1">Soluzione guidata</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a>n <span class="ot">&lt;-</span> <span class="dv">20</span></span>
-<span id="cb12-2"><a href=""></a>p <span class="ot">&lt;-</span> <span class="fl">0.80</span></span>
-<span id="cb12-3"><a href=""></a>k <span class="ot">&lt;-</span> <span class="dv">16</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a aria-label="1"></a>n <span class="ot">&lt;-</span> <span class="dv">20</span></span>
+<span id="cb12-2"><a aria-label="2"></a>p <span class="ot">&lt;-</span> <span class="fl">0.80</span></span>
+<span id="cb12-3"><a aria-label="3"></a>k <span class="ot">&lt;-</span> <span class="dv">16</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ul>
 <li><code>dbinom(16, 20, 0.8)</code> calcola direttamente la probabilità che il numero di successi sia <strong>esattamente</strong> 16.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a>P_Xeq16 <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="at">x =</span> k, <span class="at">size =</span> n, <span class="at">prob =</span> p)</span>
-<span id="cb13-2"><a href=""></a>P_Xeq16</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a aria-label="1"></a>P_Xeq16 <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="at">x =</span> k, <span class="at">size =</span> n, <span class="at">prob =</span> p)</span>
+<span id="cb13-2"><a aria-label="2"></a>P_Xeq16</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.2181994</code></pre>
 </div>
@@ -391,12 +397,12 @@ Quindi <code>mean(X)</code> stima <span class="math inline">\(P(X=1)\)</span>.</
 <h3 id="soluzione-1">Soluzione</h3>
 <p><code>pbinom(q, ...)</code> restituisce <span class="math inline">\(P(X &lt;= q)\)</span>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a>P_Xle15 <span class="ot">&lt;-</span> <span class="fu">pbinom</span>(<span class="at">q =</span> <span class="dv">15</span>, <span class="at">size =</span> n, <span class="at">prob =</span> p)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a aria-label="1"></a>P_Xle15 <span class="ot">&lt;-</span> <span class="fu">pbinom</span>(<span class="at">q =</span> <span class="dv">15</span>, <span class="at">size =</span> n, <span class="at">prob =</span> p)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Quindi <span class="math inline">\(P(X &gt;= 16) = 1 - P(X &lt;= 15)\)</span>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a>P_Xge16 <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> P_Xle15</span>
-<span id="cb16-2"><a href=""></a>P_Xge16</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a aria-label="1"></a>P_Xge16 <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> P_Xle15</span>
+<span id="cb16-2"><a aria-label="2"></a>P_Xge16</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.6296483</code></pre>
 </div>
@@ -412,11 +418,11 @@ Quindi <code>mean(X)</code> stima <span class="math inline">\(P(X=1)\)</span>.</
 
 <p>Verifichiamo sommando le probabilità puntuali:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">16</span>, <span class="at">size =</span> n, <span class="at">prob =</span> p) <span class="sc">+</span></span>
-<span id="cb18-2"><a href=""></a>  <span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">17</span>, <span class="at">size =</span> n, <span class="at">prob =</span> p) <span class="sc">+</span></span>
-<span id="cb18-3"><a href=""></a>  <span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">18</span>, <span class="at">size =</span> n, <span class="at">prob =</span> p) <span class="sc">+</span></span>
-<span id="cb18-4"><a href=""></a>  <span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">19</span>, <span class="at">size =</span> n, <span class="at">prob =</span> p) <span class="sc">+</span></span>
-<span id="cb18-5"><a href=""></a>  <span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">20</span>, <span class="at">size =</span> n, <span class="at">prob =</span> p)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a aria-label="1"></a><span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">16</span>, <span class="at">size =</span> n, <span class="at">prob =</span> p) <span class="sc">+</span></span>
+<span id="cb18-2"><a aria-label="2"></a>  <span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">17</span>, <span class="at">size =</span> n, <span class="at">prob =</span> p) <span class="sc">+</span></span>
+<span id="cb18-3"><a aria-label="3"></a>  <span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">18</span>, <span class="at">size =</span> n, <span class="at">prob =</span> p) <span class="sc">+</span></span>
+<span id="cb18-4"><a aria-label="4"></a>  <span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">19</span>, <span class="at">size =</span> n, <span class="at">prob =</span> p) <span class="sc">+</span></span>
+<span id="cb18-5"><a aria-label="5"></a>  <span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">20</span>, <span class="at">size =</span> n, <span class="at">prob =</span> p)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.6296483</code></pre>
 </div>
@@ -429,7 +435,7 @@ Quindi <code>mean(X)</code> stima <span class="math inline">\(P(X=1)\)</span>.</
 <p><span class="math display">\[P(X = 16) + P(X = 17) + \dots + P(X = 20)\]</span></p>
 <p>possiamo passare alla funzione <code>dbinom()</code> un <strong>vettore</strong> di valori per l’argomento <code>x</code> e sommare i risultati in un unico comando:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a><span class="fu">sum</span>(<span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">16</span><span class="sc">:</span><span class="dv">20</span>, <span class="at">size =</span> n, <span class="at">prob =</span> p))</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a aria-label="1"></a><span class="fu">sum</span>(<span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">16</span><span class="sc">:</span><span class="dv">20</span>, <span class="at">size =</span> n, <span class="at">prob =</span> p))</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.6296483</code></pre>
 </div>
@@ -462,8 +468,8 @@ Quindi <code>mean(X)</code> stima <span class="math inline">\(P(X=1)\)</span>.</
 
 <h3 id="soluzione-2">Soluzione</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a><span class="co"># Calcoliamo tutte le probabilità puntuali in un vettore</span></span>
-<span id="cb22-2"><a href=""></a>pk <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">0</span><span class="sc">:</span>n, <span class="at">size =</span> n, <span class="at">prob =</span> p)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a aria-label="1"></a><span class="co"># Calcoliamo tutte le probabilità puntuali in un vettore</span></span>
+<span id="cb22-2"><a aria-label="2"></a>pk <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">0</span><span class="sc">:</span>n, <span class="at">size =</span> n, <span class="at">prob =</span> p)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ul>
 <li><code>dbinom()</code> prende come argomento anche un vettore: restituisce un vettore di probabilità;</li>
@@ -474,8 +480,8 @@ Quindi <code>mean(X)</code> stima <span class="math inline">\(P(X=1)\)</span>.</
 
 <p>Per visualizzare la distribuzione binomiale, creiamo un data frame:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a>tab_binom <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">k =</span> <span class="dv">0</span><span class="sc">:</span>n, <span class="at">P =</span> pk)</span>
-<span id="cb23-2"><a href=""></a>tab_binom</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a aria-label="1"></a>tab_binom <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">k =</span> <span class="dv">0</span><span class="sc">:</span>n, <span class="at">P =</span> pk)</span>
+<span id="cb23-2"><a aria-label="2"></a>tab_binom</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    k            P
 1   0 1.048576e-14
@@ -506,7 +512,7 @@ Quindi <code>mean(X)</code> stima <span class="math inline">\(P(X=1)\)</span>.</
 
 <p>Controllo: la somma deve essere 1.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a><span class="fu">sum</span>(tab_binom<span class="sc">$</span>P)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a aria-label="1"></a><span class="fu">sum</span>(tab_binom<span class="sc">$</span>P)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1</code></pre>
 </div>
@@ -516,9 +522,9 @@ Quindi <code>mean(X)</code> stima <span class="math inline">\(P(X=1)\)</span>.</
 
 <p>Grafico a barre:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a><span class="fu">barplot</span>(<span class="at">height =</span> tab_binom<span class="sc">$</span>P, <span class="at">names.arg =</span> tab_binom<span class="sc">$</span>k,</span>
-<span id="cb27-2"><a href=""></a>        <span class="at">xlab =</span> <span class="st">"k (numero di risposte corrette)"</span>,</span>
-<span id="cb27-3"><a href=""></a>        <span class="at">ylab =</span> <span class="st">"P(X = k)"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a aria-label="1"></a><span class="fu">barplot</span>(<span class="at">height =</span> tab_binom<span class="sc">$</span>P, <span class="at">names.arg =</span> tab_binom<span class="sc">$</span>k,</span>
+<span id="cb27-2"><a aria-label="2"></a>        <span class="at">xlab =</span> <span class="st">"k (numero di risposte corrette)"</span>,</span>
+<span id="cb27-3"><a aria-label="3"></a>        <span class="at">ylab =</span> <span class="st">"P(X = k)"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 
 </div>
 <img data-src="distribuzioni_discrete_2_R_files/figure-revealjs/unnamed-chunk-17-1.png" width="960" class="r-stretch"></section>
@@ -526,15 +532,15 @@ Quindi <code>mean(X)</code> stima <span class="math inline">\(P(X=1)\)</span>.</
 
 <p>Usiamo <code>ggplot2</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb28-2"><a href=""></a></span>
-<span id="cb28-3"><a href=""></a>tab_binom <span class="sc">|&gt;</span> </span>
-<span id="cb28-4"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> k, <span class="at">y =</span> P)) <span class="sc">+</span></span>
-<span id="cb28-5"><a href=""></a>    <span class="fu">geom_col</span>() <span class="sc">+</span></span>
-<span id="cb28-6"><a href=""></a>    <span class="fu">labs</span>(</span>
-<span id="cb28-7"><a href=""></a>      <span class="at">x =</span> <span class="st">"k (numero di risposte corrette)"</span>,</span>
-<span id="cb28-8"><a href=""></a>      <span class="at">y =</span> <span class="st">"P(X = k)"</span></span>
-<span id="cb28-9"><a href=""></a>    )</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a aria-label="1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb28-2"><a aria-label="2"></a></span>
+<span id="cb28-3"><a aria-label="3"></a>tab_binom <span class="sc">|&gt;</span> </span>
+<span id="cb28-4"><a aria-label="4"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> k, <span class="at">y =</span> P)) <span class="sc">+</span></span>
+<span id="cb28-5"><a aria-label="5"></a>    <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb28-6"><a aria-label="6"></a>    <span class="fu">labs</span>(</span>
+<span id="cb28-7"><a aria-label="7"></a>      <span class="at">x =</span> <span class="st">"k (numero di risposte corrette)"</span>,</span>
+<span id="cb28-8"><a aria-label="8"></a>      <span class="at">y =</span> <span class="st">"P(X = k)"</span></span>
+<span id="cb28-9"><a aria-label="9"></a>    )</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 
 </div>
 <img data-src="distribuzioni_discrete_2_R_files/figure-revealjs/unnamed-chunk-18-1.png" width="960" class="r-stretch"></section>
@@ -584,16 +590,16 @@ Distribuzione empirica di X</code></pre>
 <p><strong>Generazione dei dati simulati</strong></p>
 <p>La funzione <code>rbinom()</code> genera direttamente il numero di successi:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href=""></a><span class="co"># Parametri</span></span>
-<span id="cb30-2"><a href=""></a>n <span class="ot">&lt;-</span> <span class="dv">20</span>      <span class="co"># Numero di prove per esperimento</span></span>
-<span id="cb30-3"><a href=""></a>p <span class="ot">&lt;-</span> <span class="fl">0.80</span>    <span class="co"># Probabilità di successo</span></span>
-<span id="cb30-4"><a href=""></a>Nsim <span class="ot">&lt;-</span> <span class="dv">10000</span> <span class="co"># Numero di simulazioni</span></span>
-<span id="cb30-5"><a href=""></a></span>
-<span id="cb30-6"><a href=""></a><span class="co"># Simulazione: Nsim valori dalla Binomiale(20, 0.80)</span></span>
-<span id="cb30-7"><a href=""></a>X_sim <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="at">n =</span> Nsim, <span class="at">size =</span> n, <span class="at">prob =</span> p)</span>
-<span id="cb30-8"><a href=""></a></span>
-<span id="cb30-9"><a href=""></a><span class="co"># Primi 10 valori generati</span></span>
-<span id="cb30-10"><a href=""></a><span class="fu">head</span>(X_sim, <span class="dv">10</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a aria-label="1"></a><span class="co"># Parametri</span></span>
+<span id="cb30-2"><a aria-label="2"></a>n <span class="ot">&lt;-</span> <span class="dv">20</span>      <span class="co"># Numero di prove per esperimento</span></span>
+<span id="cb30-3"><a aria-label="3"></a>p <span class="ot">&lt;-</span> <span class="fl">0.80</span>    <span class="co"># Probabilità di successo</span></span>
+<span id="cb30-4"><a aria-label="4"></a>Nsim <span class="ot">&lt;-</span> <span class="dv">10000</span> <span class="co"># Numero di simulazioni</span></span>
+<span id="cb30-5"><a aria-label="5"></a></span>
+<span id="cb30-6"><a aria-label="6"></a><span class="co"># Simulazione: Nsim valori dalla Binomiale(20, 0.80)</span></span>
+<span id="cb30-7"><a aria-label="7"></a>X_sim <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="at">n =</span> Nsim, <span class="at">size =</span> n, <span class="at">prob =</span> p)</span>
+<span id="cb30-8"><a aria-label="8"></a></span>
+<span id="cb30-9"><a aria-label="9"></a><span class="co"># Primi 10 valori generati</span></span>
+<span id="cb30-10"><a aria-label="10"></a><span class="fu">head</span>(X_sim, <span class="dv">10</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] 17 15 17 18 14 16 18 14 12 17</code></pre>
 </div>
@@ -606,11 +612,11 @@ Distribuzione empirica di X</code></pre>
 <p><strong>Domanda:</strong> qual è la frequenza relativa con cui otteniamo <em>esattamente</em> 16 successi?</p>
 <p><strong>Passo 1: Identificare i casi favorevoli</strong></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href=""></a><span class="co"># Test logico: quali simulazioni hanno dato 16 successi?</span></span>
-<span id="cb32-2"><a href=""></a>is_16 <span class="ot">&lt;-</span> X_sim <span class="sc">==</span> <span class="dv">16</span></span>
-<span id="cb32-3"><a href=""></a></span>
-<span id="cb32-4"><a href=""></a><span class="co"># Visualizzazione parziale</span></span>
-<span id="cb32-5"><a href=""></a><span class="fu">head</span>(is_16, <span class="dv">10</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a aria-label="1"></a><span class="co"># Test logico: quali simulazioni hanno dato 16 successi?</span></span>
+<span id="cb32-2"><a aria-label="2"></a>is_16 <span class="ot">&lt;-</span> X_sim <span class="sc">==</span> <span class="dv">16</span></span>
+<span id="cb32-3"><a aria-label="3"></a></span>
+<span id="cb32-4"><a aria-label="4"></a><span class="co"># Visualizzazione parziale</span></span>
+<span id="cb32-5"><a aria-label="5"></a><span class="fu">head</span>(is_16, <span class="dv">10</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE</code></pre>
 </div>
@@ -623,9 +629,9 @@ Distribuzione empirica di X</code></pre>
 
 <p><strong>Passo 2: Calcolare la frequenza relativa</strong></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href=""></a><span class="co"># Proporzione di TRUE = frequenza relativa di X = 16</span></span>
-<span id="cb34-2"><a href=""></a>freq_16 <span class="ot">&lt;-</span> <span class="fu">mean</span>(is_16)</span>
-<span id="cb34-3"><a href=""></a>freq_16</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a aria-label="1"></a><span class="co"># Proporzione di TRUE = frequenza relativa di X = 16</span></span>
+<span id="cb34-2"><a aria-label="2"></a>freq_16 <span class="ot">&lt;-</span> <span class="fu">mean</span>(is_16)</span>
+<span id="cb34-3"><a aria-label="3"></a>freq_16</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.2146</code></pre>
 </div>
@@ -640,16 +646,16 @@ nelle 10.000 simulazioni, circa il 22% ha prodotto esattamente 16 successi.</p>
 
 <h3 class="unnumbered unlisted" id="confronto-critico-simulazione-vs-teoria">5. Confronto critico: simulazione vs teoria</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href=""></a><span class="co"># Confronto quantitativo</span></span>
-<span id="cb36-2"><a href=""></a>confronto <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb36-3"><a href=""></a>  <span class="at">Metodo =</span> <span class="fu">c</span>(<span class="st">"Simulazione (Monte Carlo)"</span>, <span class="st">"Teoria (formula binomiale)"</span>),</span>
-<span id="cb36-4"><a href=""></a>  Probabilità <span class="ot">=</span> <span class="fu">c</span>(</span>
-<span id="cb36-5"><a href=""></a>    <span class="fu">mean</span>(X_sim <span class="sc">==</span> <span class="dv">16</span>),      <span class="co"># Stima empirica</span></span>
-<span id="cb36-6"><a href=""></a>    <span class="fu">dbinom</span>(<span class="dv">16</span>, <span class="at">size =</span> n, <span class="at">prob =</span> p)  <span class="co"># Valore teorico esatto</span></span>
-<span id="cb36-7"><a href=""></a>  )</span>
-<span id="cb36-8"><a href=""></a>)</span>
-<span id="cb36-9"><a href=""></a></span>
-<span id="cb36-10"><a href=""></a>confronto</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a aria-label="1"></a><span class="co"># Confronto quantitativo</span></span>
+<span id="cb36-2"><a aria-label="2"></a>confronto <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb36-3"><a aria-label="3"></a>  <span class="at">Metodo =</span> <span class="fu">c</span>(<span class="st">"Simulazione (Monte Carlo)"</span>, <span class="st">"Teoria (formula binomiale)"</span>),</span>
+<span id="cb36-4"><a aria-label="4"></a>  Probabilità <span class="ot">=</span> <span class="fu">c</span>(</span>
+<span id="cb36-5"><a aria-label="5"></a>    <span class="fu">mean</span>(X_sim <span class="sc">==</span> <span class="dv">16</span>),      <span class="co"># Stima empirica</span></span>
+<span id="cb36-6"><a aria-label="6"></a>    <span class="fu">dbinom</span>(<span class="dv">16</span>, <span class="at">size =</span> n, <span class="at">prob =</span> p)  <span class="co"># Valore teorico esatto</span></span>
+<span id="cb36-7"><a aria-label="7"></a>  )</span>
+<span id="cb36-8"><a aria-label="8"></a>)</span>
+<span id="cb36-9"><a aria-label="9"></a></span>
+<span id="cb36-10"><a aria-label="10"></a>confronto</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                      Metodo Probabilità
 1  Simulazione (Monte Carlo)   0.2146000
@@ -660,14 +666,14 @@ nelle 10.000 simulazioni, circa il 22% ha prodotto esattamente 16 successi.</p>
 <section class="slide level2">
 
 <p><strong>Visualizzazione del confronto</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href=""></a>confronto <span class="sc">|&gt;</span></span>
-<span id="cb38-2"><a href=""></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Metodo, <span class="at">y =</span> Probabilità, <span class="at">fill =</span> Metodo)) <span class="sc">+</span></span>
-<span id="cb38-3"><a href=""></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
-<span id="cb38-4"><a href=""></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">round</span>(Probabilità, <span class="dv">4</span>)), <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb38-5"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Confronto: Stima Monte Carlo vs Teoria"</span>,</span>
-<span id="cb38-6"><a href=""></a>       <span class="at">subtitle =</span> <span class="st">"P(X = 16) per Binomiale(20, 0.80)"</span>) <span class="sc">+</span></span>
-<span id="cb38-7"><a href=""></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb38-8"><a href=""></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="fl">0.25</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a aria-label="1"></a>confronto <span class="sc">|&gt;</span></span>
+<span id="cb38-2"><a aria-label="2"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Metodo, <span class="at">y =</span> Probabilità, <span class="at">fill =</span> Metodo)) <span class="sc">+</span></span>
+<span id="cb38-3"><a aria-label="3"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb38-4"><a aria-label="4"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">round</span>(Probabilità, <span class="dv">4</span>)), <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb38-5"><a aria-label="5"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Confronto: Stima Monte Carlo vs Teoria"</span>,</span>
+<span id="cb38-6"><a aria-label="6"></a>       <span class="at">subtitle =</span> <span class="st">"P(X = 16) per Binomiale(20, 0.80)"</span>) <span class="sc">+</span></span>
+<span id="cb38-7"><a aria-label="7"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb38-8"><a aria-label="8"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="fl">0.25</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section class="slide level2">
 
@@ -691,9 +697,9 @@ Con <span class="math inline">\(N_{\text{sim}} = 10,000\)</span>, la stima empir
 <ol start="3" type="1">
 <li><p><strong>Aumentando <span class="math inline">\(N_{\text{sim}}\)</span>:</strong></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href=""></a><span class="co"># Con 1 milione di simulazioni</span></span>
-<span id="cb39-2"><a href=""></a>X_large <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="fl">1e6</span>, n, p)</span>
-<span id="cb39-3"><a href=""></a><span class="fu">mean</span>(X_large <span class="sc">==</span> <span class="dv">16</span>)  <span class="co"># Molto più vicino a 0.2182</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a aria-label="1"></a><span class="co"># Con 1 milione di simulazioni</span></span>
+<span id="cb39-2"><a aria-label="2"></a>X_large <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="fl">1e6</span>, n, p)</span>
+<span id="cb39-3"><a aria-label="3"></a><span class="fu">mean</span>(X_large <span class="sc">==</span> <span class="dv">16</span>)  <span class="co"># Molto più vicino a 0.2182</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.218567</code></pre>
 </div>
@@ -783,15 +789,15 @@ Calcolare tre probabilità utili per la gestione del servizio:</p>
 <p><strong>Soluzione in R</strong></p>
 <p>Impostazione del parametro</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href=""></a><span class="co"># Tasso medio: 2 pazienti/ora</span></span>
-<span id="cb41-2"><a href=""></a>lambda <span class="ot">&lt;-</span> <span class="dv">2</span>  </span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a aria-label="1"></a><span class="co"># Tasso medio: 2 pazienti/ora</span></span>
+<span id="cb41-2"><a aria-label="2"></a>lambda <span class="ot">&lt;-</span> <span class="dv">2</span>  </span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol type="1">
 <li>Probabilità di nessun arrivo <span class="math inline">\(P(X = 0)\)</span>:</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href=""></a>P0 <span class="ot">&lt;-</span> <span class="fu">dpois</span>(<span class="at">x =</span> <span class="dv">0</span>, <span class="at">lambda =</span> lambda)</span>
-<span id="cb42-2"><a href=""></a>P0</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a aria-label="1"></a>P0 <span class="ot">&lt;-</span> <span class="fu">dpois</span>(<span class="at">x =</span> <span class="dv">0</span>, <span class="at">lambda =</span> lambda)</span>
+<span id="cb42-2"><a aria-label="2"></a>P0</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.1353353</code></pre>
 </div>
@@ -806,8 +812,8 @@ Calcolare tre probabilità utili per la gestione del servizio:</p>
 <li>Probabilità di esattamente 3 arrivi <span class="math inline">\(P(X = 3)\)</span></li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href=""></a>P3 <span class="ot">&lt;-</span> <span class="fu">dpois</span>(<span class="at">x =</span> <span class="dv">3</span>, <span class="at">lambda =</span> lambda)</span>
-<span id="cb44-2"><a href=""></a>P3</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a aria-label="1"></a>P3 <span class="ot">&lt;-</span> <span class="fu">dpois</span>(<span class="at">x =</span> <span class="dv">3</span>, <span class="at">lambda =</span> lambda)</span>
+<span id="cb44-2"><a aria-label="2"></a>P3</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.180447</code></pre>
 </div>
@@ -820,8 +826,8 @@ Calcolare tre probabilità utili per la gestione del servizio:</p>
 <li>Probabilità di al più 1 arrivo <span class="math inline">\(P(X \leq 1)\)</span>:</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href=""></a>P_le1 <span class="ot">&lt;-</span> <span class="fu">ppois</span>(<span class="at">q =</span> <span class="dv">1</span>, <span class="at">lambda =</span> lambda)</span>
-<span id="cb46-2"><a href=""></a>P_le1</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a aria-label="1"></a>P_le1 <span class="ot">&lt;-</span> <span class="fu">ppois</span>(<span class="at">q =</span> <span class="dv">1</span>, <span class="at">lambda =</span> lambda)</span>
+<span id="cb46-2"><a aria-label="2"></a>P_le1</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.4060058</code></pre>
 </div>
@@ -833,24 +839,24 @@ Calcolare tre probabilità utili per la gestione del servizio:</p>
 <h3 id="visualizzazione-della-distribuzione-di-poisson">Visualizzazione della distribuzione di Poisson</h3>
 <p>Passo 1: preparare i dati per il grafico.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href=""></a><span class="co"># 1. Creiamo una sequenza di valori possibili per k (numero di pazienti)</span></span>
-<span id="cb48-2"><a href=""></a>k_valori <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">8</span>  <span class="co"># Da 0 a 8 pazienti</span></span>
-<span id="cb48-3"><a href=""></a></span>
-<span id="cb48-4"><a href=""></a><span class="co"># 2. Calcoliamo le probabilità per ciascun valore di k</span></span>
-<span id="cb48-5"><a href=""></a>probabilita <span class="ot">&lt;-</span> <span class="fu">dpois</span>(k_valori, <span class="at">lambda =</span> <span class="dv">2</span>)</span>
-<span id="cb48-6"><a href=""></a></span>
-<span id="cb48-7"><a href=""></a><span class="co"># 3. Mettiamo i dati in una tabella (data frame)</span></span>
-<span id="cb48-8"><a href=""></a>tabella <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb48-9"><a href=""></a>  <span class="at">pazienti =</span> k_valori,    <span class="co"># Prima colonna: numero di pazienti</span></span>
-<span id="cb48-10"><a href=""></a>  <span class="at">prob =</span> probabilita      <span class="co"># Seconda colonna: probabilità</span></span>
-<span id="cb48-11"><a href=""></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a aria-label="1"></a><span class="co"># 1. Creiamo una sequenza di valori possibili per k (numero di pazienti)</span></span>
+<span id="cb48-2"><a aria-label="2"></a>k_valori <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">8</span>  <span class="co"># Da 0 a 8 pazienti</span></span>
+<span id="cb48-3"><a aria-label="3"></a></span>
+<span id="cb48-4"><a aria-label="4"></a><span class="co"># 2. Calcoliamo le probabilità per ciascun valore di k</span></span>
+<span id="cb48-5"><a aria-label="5"></a>probabilita <span class="ot">&lt;-</span> <span class="fu">dpois</span>(k_valori, <span class="at">lambda =</span> <span class="dv">2</span>)</span>
+<span id="cb48-6"><a aria-label="6"></a></span>
+<span id="cb48-7"><a aria-label="7"></a><span class="co"># 3. Mettiamo i dati in una tabella (data frame)</span></span>
+<span id="cb48-8"><a aria-label="8"></a>tabella <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb48-9"><a aria-label="9"></a>  <span class="at">pazienti =</span> k_valori,    <span class="co"># Prima colonna: numero di pazienti</span></span>
+<span id="cb48-10"><a aria-label="10"></a>  <span class="at">prob =</span> probabilita      <span class="co"># Seconda colonna: probabilità</span></span>
+<span id="cb48-11"><a aria-label="11"></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
 
 <p>Visualizziamo la tabella per vedere i valori:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href=""></a>tabella</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a aria-label="1"></a>tabella</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  pazienti         prob
 1        0 0.1353352832
@@ -878,12 +884,12 @@ Calcolare tre probabilità utili per la gestione del servizio:</p>
 
 <p>Passo 2: creare il grafico a barre.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href=""></a>tabella <span class="sc">|&gt;</span> </span>
-<span id="cb51-2"><a href=""></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> pazienti, <span class="at">y =</span> prob)) <span class="sc">+</span></span>
-<span id="cb51-3"><a href=""></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
-<span id="cb51-4"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribuzione di Poisson (2 pazienti/ora in media)"</span>,</span>
-<span id="cb51-5"><a href=""></a>       <span class="at">x =</span> <span class="st">"Numero di pazienti in un'ora"</span>,</span>
-<span id="cb51-6"><a href=""></a>       <span class="at">y =</span> <span class="st">"Probabilità"</span>) </span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a aria-label="1"></a>tabella <span class="sc">|&gt;</span> </span>
+<span id="cb51-2"><a aria-label="2"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> pazienti, <span class="at">y =</span> prob)) <span class="sc">+</span></span>
+<span id="cb51-3"><a aria-label="3"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb51-4"><a aria-label="4"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribuzione di Poisson (2 pazienti/ora in media)"</span>,</span>
+<span id="cb51-5"><a aria-label="5"></a>       <span class="at">x =</span> <span class="st">"Numero di pazienti in un'ora"</span>,</span>
+<span id="cb51-6"><a aria-label="6"></a>       <span class="at">y =</span> <span class="st">"Probabilità"</span>) </span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 
 </div>
 <img data-src="distribuzioni_discrete_2_R_files/figure-revealjs/unnamed-chunk-31-1.png" width="960" class="r-stretch"></section>
@@ -895,8 +901,8 @@ Calcolare tre probabilità utili per la gestione del servizio:</p>
 <p>“Quale organico serve per coprire <strong>almeno il 95%</strong> delle ore senza sovraccarico?”</p>
 </blockquote>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href=""></a><span class="co"># Probabilità cumulativa: P(X &lt;= k) per ogni k</span></span>
-<span id="cb52-2"><a href=""></a><span class="fu">ppois</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">lambda =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a aria-label="1"></a><span class="co"># Probabilità cumulativa: P(X &lt;= k) per ogni k</span></span>
+<span id="cb52-2"><a aria-label="2"></a><span class="fu">ppois</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">lambda =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.1353353 0.4060058 0.6766764 0.8571235 0.9473470 0.9834364 0.9954662</code></pre>
 </div>
@@ -937,7 +943,7 @@ X \le k.
 
 <h3 id="uso-della-poisson-cumulativa">Uso della Poisson cumulativa</h3>
 <p>Calcoliamo la probabilità cumulativa per diversi valori di <span class="math inline">\(k\)</span>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href=""></a><span class="fu">ppois</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">lambda =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a aria-label="1"></a><span class="fu">ppois</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">lambda =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Questo comando restituisce:</p>
 <ul>
 <li><span class="math inline">\(P(X \le 0)\)</span></li>
@@ -1103,9 +1109,9 @@ X \le k.
 <p><strong>Procedura passo-passo</strong></p>
 <p>Passo 1: impostare i parametri</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href=""></a><span class="co"># Parametri della simulazione</span></span>
-<span id="cb55-2"><a href=""></a>lambda <span class="ot">&lt;-</span> <span class="dv">2</span>         <span class="co"># Media: 2 pazienti all'ora</span></span>
-<span id="cb55-3"><a href=""></a>Nsim <span class="ot">&lt;-</span> <span class="dv">10000</span>       <span class="co"># Numero di simulazioni (10,000)</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a aria-label="1"></a><span class="co"># Parametri della simulazione</span></span>
+<span id="cb55-2"><a aria-label="2"></a>lambda <span class="ot">&lt;-</span> <span class="dv">2</span>         <span class="co"># Media: 2 pazienti all'ora</span></span>
+<span id="cb55-3"><a aria-label="3"></a>Nsim <span class="ot">&lt;-</span> <span class="dv">10000</span>       <span class="co"># Numero di simulazioni (10,000)</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Spiegazione:</strong> simuleremo 10,000 volte il conteggio di pazienti in un’ora, con una media di 2 pazienti.</p>
 </section>
@@ -1113,11 +1119,11 @@ X \le k.
 
 <p>Passo 2: generare i dati simulati.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href=""></a><span class="co"># Genera Nsim valori dalla distribuzione Poisson</span></span>
-<span id="cb56-2"><a href=""></a>arrivi_simulati <span class="ot">&lt;-</span> <span class="fu">rpois</span>(<span class="at">n =</span> Nsim, <span class="at">lambda =</span> lambda)</span>
-<span id="cb56-3"><a href=""></a></span>
-<span id="cb56-4"><a href=""></a><span class="co"># Visualizza i primi 20 valori</span></span>
-<span id="cb56-5"><a href=""></a><span class="fu">head</span>(arrivi_simulati, <span class="dv">20</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a aria-label="1"></a><span class="co"># Genera Nsim valori dalla distribuzione Poisson</span></span>
+<span id="cb56-2"><a aria-label="2"></a>arrivi_simulati <span class="ot">&lt;-</span> <span class="fu">rpois</span>(<span class="at">n =</span> Nsim, <span class="at">lambda =</span> lambda)</span>
+<span id="cb56-3"><a aria-label="3"></a></span>
+<span id="cb56-4"><a aria-label="4"></a><span class="co"># Visualizza i primi 20 valori</span></span>
+<span id="cb56-5"><a aria-label="5"></a><span class="fu">head</span>(arrivi_simulati, <span class="dv">20</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] 4 2 4 0 2 2 1 4 4 0 0 0 3 2 2 4 2 0 1 2</code></pre>
 </div>
@@ -1128,21 +1134,21 @@ X \le k.
 
 <p>Passo 3: calcolare le frequenze osservate.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href=""></a><span class="co"># Frequenza di 0 arrivi (ore senza pazienti)</span></span>
-<span id="cb58-2"><a href=""></a>freq_0 <span class="ot">&lt;-</span> <span class="fu">mean</span>(arrivi_simulati <span class="sc">==</span> <span class="dv">0</span>)</span>
-<span id="cb58-3"><a href=""></a></span>
-<span id="cb58-4"><a href=""></a><span class="co"># Frequenza di 3 arrivi (ore con 3 pazienti)</span></span>
-<span id="cb58-5"><a href=""></a>freq_3 <span class="ot">&lt;-</span> <span class="fu">mean</span>(arrivi_simulati <span class="sc">==</span> <span class="dv">3</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a aria-label="1"></a><span class="co"># Frequenza di 0 arrivi (ore senza pazienti)</span></span>
+<span id="cb58-2"><a aria-label="2"></a>freq_0 <span class="ot">&lt;-</span> <span class="fu">mean</span>(arrivi_simulati <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb58-3"><a aria-label="3"></a></span>
+<span id="cb58-4"><a aria-label="4"></a><span class="co"># Frequenza di 3 arrivi (ore con 3 pazienti)</span></span>
+<span id="cb58-5"><a aria-label="5"></a>freq_3 <span class="ot">&lt;-</span> <span class="fu">mean</span>(arrivi_simulati <span class="sc">==</span> <span class="dv">3</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href=""></a><span class="co"># Mostra i risultati</span></span>
-<span id="cb59-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"Frequenza osservata di 0 arrivi:"</span>, freq_0, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a aria-label="1"></a><span class="co"># Mostra i risultati</span></span>
+<span id="cb59-2"><a aria-label="2"></a><span class="fu">cat</span>(<span class="st">"Frequenza osservata di 0 arrivi:"</span>, freq_0, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Frequenza osservata di 0 arrivi: 0.1378 </code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Frequenza osservata di 3 arrivi:"</span>, freq_3)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Frequenza osservata di 3 arrivi:"</span>, freq_3)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Frequenza osservata di 3 arrivi: 0.183</code></pre>
 </div>
@@ -1160,20 +1166,20 @@ X \le k.
 
 <p>Passo 4: confronto diretto con la teoria.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href=""></a><span class="co"># Calcola le probabilità teoriche</span></span>
-<span id="cb63-2"><a href=""></a>teoria_0 <span class="ot">&lt;-</span> <span class="fu">dpois</span>(<span class="dv">0</span>, lambda)  <span class="co"># P(X = 0) teorica</span></span>
-<span id="cb63-3"><a href=""></a>teoria_3 <span class="ot">&lt;-</span> <span class="fu">dpois</span>(<span class="dv">3</span>, lambda)  <span class="co"># P(X = 3) teorica</span></span>
-<span id="cb63-4"><a href=""></a></span>
-<span id="cb63-5"><a href=""></a><span class="co"># Crea una tabella di confronto</span></span>
-<span id="cb63-6"><a href=""></a>confronto <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb63-7"><a href=""></a>  <span class="at">Evento =</span> <span class="fu">c</span>(<span class="st">"0 arrivi"</span>, <span class="st">"3 arrivi"</span>),</span>
-<span id="cb63-8"><a href=""></a>  <span class="at">Simulazione =</span> <span class="fu">c</span>(freq_0, freq_3),</span>
-<span id="cb63-9"><a href=""></a>  <span class="at">Teoria =</span> <span class="fu">c</span>(teoria_0, teoria_3),</span>
-<span id="cb63-10"><a href=""></a>  <span class="at">Differenza =</span> <span class="fu">c</span>(freq_0 <span class="sc">-</span> teoria_0, freq_3 <span class="sc">-</span> teoria_3)</span>
-<span id="cb63-11"><a href=""></a>)</span>
-<span id="cb63-12"><a href=""></a></span>
-<span id="cb63-13"><a href=""></a><span class="co"># Mostra la tabella</span></span>
-<span id="cb63-14"><a href=""></a><span class="fu">print</span>(confronto)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a aria-label="1"></a><span class="co"># Calcola le probabilità teoriche</span></span>
+<span id="cb63-2"><a aria-label="2"></a>teoria_0 <span class="ot">&lt;-</span> <span class="fu">dpois</span>(<span class="dv">0</span>, lambda)  <span class="co"># P(X = 0) teorica</span></span>
+<span id="cb63-3"><a aria-label="3"></a>teoria_3 <span class="ot">&lt;-</span> <span class="fu">dpois</span>(<span class="dv">3</span>, lambda)  <span class="co"># P(X = 3) teorica</span></span>
+<span id="cb63-4"><a aria-label="4"></a></span>
+<span id="cb63-5"><a aria-label="5"></a><span class="co"># Crea una tabella di confronto</span></span>
+<span id="cb63-6"><a aria-label="6"></a>confronto <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb63-7"><a aria-label="7"></a>  <span class="at">Evento =</span> <span class="fu">c</span>(<span class="st">"0 arrivi"</span>, <span class="st">"3 arrivi"</span>),</span>
+<span id="cb63-8"><a aria-label="8"></a>  <span class="at">Simulazione =</span> <span class="fu">c</span>(freq_0, freq_3),</span>
+<span id="cb63-9"><a aria-label="9"></a>  <span class="at">Teoria =</span> <span class="fu">c</span>(teoria_0, teoria_3),</span>
+<span id="cb63-10"><a aria-label="10"></a>  <span class="at">Differenza =</span> <span class="fu">c</span>(freq_0 <span class="sc">-</span> teoria_0, freq_3 <span class="sc">-</span> teoria_3)</span>
+<span id="cb63-11"><a aria-label="11"></a>)</span>
+<span id="cb63-12"><a aria-label="12"></a></span>
+<span id="cb63-13"><a aria-label="13"></a><span class="co"># Mostra la tabella</span></span>
+<span id="cb63-14"><a aria-label="14"></a><span class="fu">print</span>(confronto)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    Evento Simulazione    Teoria  Differenza
 1 0 arrivi      0.1378 0.1353353 0.002464717
@@ -1186,12 +1192,12 @@ X \le k.
 
 <p>Se aumentiamo le simulazioni (Nsim = 100,000):</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href=""></a>arrivi_grandi <span class="ot">&lt;-</span> <span class="fu">rpois</span>(<span class="dv">100000</span>, lambda)</span>
-<span id="cb65-2"><a href=""></a><span class="fu">mean</span>(arrivi_grandi <span class="sc">==</span> <span class="dv">0</span>)  <span class="co"># Più vicino a 0.1353</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a aria-label="1"></a>arrivi_grandi <span class="ot">&lt;-</span> <span class="fu">rpois</span>(<span class="dv">100000</span>, lambda)</span>
+<span id="cb65-2"><a aria-label="2"></a><span class="fu">mean</span>(arrivi_grandi <span class="sc">==</span> <span class="dv">0</span>)  <span class="co"># Più vicino a 0.1353</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.13472</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href=""></a><span class="fu">mean</span>(arrivi_grandi <span class="sc">==</span> <span class="dv">3</span>)  <span class="co"># Più vicino a 0.1804</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a aria-label="1"></a><span class="fu">mean</span>(arrivi_grandi <span class="sc">==</span> <span class="dv">3</span>)  <span class="co"># Più vicino a 0.1804</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.18262</code></pre>
 </div>
@@ -1227,28 +1233,28 @@ X \le k.
 
 <p>Codice per generare i dati:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href=""></a><span class="co"># Parametri</span></span>
-<span id="cb69-2"><a href=""></a>n <span class="ot">&lt;-</span> <span class="dv">20</span></span>
-<span id="cb69-3"><a href=""></a>k_vals <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span>n  <span class="co"># Valori possibili per k (da 0 a 20)</span></span>
-<span id="cb69-4"><a href=""></a></span>
-<span id="cb69-5"><a href=""></a><span class="co"># Calcola le probabilità per tre diversi valori di p</span></span>
-<span id="cb69-6"><a href=""></a>pk_p02 <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(k_vals, <span class="at">size =</span> n, <span class="at">prob =</span> <span class="fl">0.2</span>)  <span class="co"># p basso</span></span>
-<span id="cb69-7"><a href=""></a>pk_p05 <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(k_vals, <span class="at">size =</span> n, <span class="at">prob =</span> <span class="fl">0.5</span>)  <span class="co"># p intermedio</span></span>
-<span id="cb69-8"><a href=""></a>pk_p08 <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(k_vals, <span class="at">size =</span> n, <span class="at">prob =</span> <span class="fl">0.8</span>)  <span class="co"># p alto</span></span>
-<span id="cb69-9"><a href=""></a></span>
-<span id="cb69-10"><a href=""></a><span class="co"># Combina i dati in un'unica tabella</span></span>
-<span id="cb69-11"><a href=""></a>dati_binom <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb69-12"><a href=""></a>  <span class="at">k =</span> <span class="fu">rep</span>(k_vals, <span class="dv">3</span>),</span>
-<span id="cb69-13"><a href=""></a>  <span class="at">prob =</span> <span class="fu">c</span>(pk_p02, pk_p05, pk_p08),</span>
-<span id="cb69-14"><a href=""></a>  <span class="at">p =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"p = 0.2"</span>, <span class="st">"p = 0.5"</span>, <span class="st">"p = 0.8"</span>), <span class="at">each =</span> <span class="fu">length</span>(k_vals)))</span>
-<span id="cb69-15"><a href=""></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a aria-label="1"></a><span class="co"># Parametri</span></span>
+<span id="cb69-2"><a aria-label="2"></a>n <span class="ot">&lt;-</span> <span class="dv">20</span></span>
+<span id="cb69-3"><a aria-label="3"></a>k_vals <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span>n  <span class="co"># Valori possibili per k (da 0 a 20)</span></span>
+<span id="cb69-4"><a aria-label="4"></a></span>
+<span id="cb69-5"><a aria-label="5"></a><span class="co"># Calcola le probabilità per tre diversi valori di p</span></span>
+<span id="cb69-6"><a aria-label="6"></a>pk_p02 <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(k_vals, <span class="at">size =</span> n, <span class="at">prob =</span> <span class="fl">0.2</span>)  <span class="co"># p basso</span></span>
+<span id="cb69-7"><a aria-label="7"></a>pk_p05 <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(k_vals, <span class="at">size =</span> n, <span class="at">prob =</span> <span class="fl">0.5</span>)  <span class="co"># p intermedio</span></span>
+<span id="cb69-8"><a aria-label="8"></a>pk_p08 <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(k_vals, <span class="at">size =</span> n, <span class="at">prob =</span> <span class="fl">0.8</span>)  <span class="co"># p alto</span></span>
+<span id="cb69-9"><a aria-label="9"></a></span>
+<span id="cb69-10"><a aria-label="10"></a><span class="co"># Combina i dati in un'unica tabella</span></span>
+<span id="cb69-11"><a aria-label="11"></a>dati_binom <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb69-12"><a aria-label="12"></a>  <span class="at">k =</span> <span class="fu">rep</span>(k_vals, <span class="dv">3</span>),</span>
+<span id="cb69-13"><a aria-label="13"></a>  <span class="at">prob =</span> <span class="fu">c</span>(pk_p02, pk_p05, pk_p08),</span>
+<span id="cb69-14"><a aria-label="14"></a>  <span class="at">p =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"p = 0.2"</span>, <span class="st">"p = 0.5"</span>, <span class="st">"p = 0.8"</span>), <span class="at">each =</span> <span class="fu">length</span>(k_vals)))</span>
+<span id="cb69-15"><a aria-label="15"></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
 
 <p>Visualizza le prime righe:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href=""></a><span class="fu">head</span>(dati_binom, <span class="dv">10</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a aria-label="1"></a><span class="fu">head</span>(dati_binom, <span class="dv">10</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   k        prob       p
 1  0 0.011529215 p = 0.2
@@ -1267,14 +1273,14 @@ X \le k.
 <section class="slide level2">
 
 <h3 id="visualizzazione-con-ggplot2">Visualizzazione con ggplot2</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb72"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href=""></a>dati_binom <span class="sc">|&gt;</span> </span>
-<span id="cb72-2"><a href=""></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> k, <span class="at">y =</span> prob, <span class="at">fill =</span> p)) <span class="sc">+</span></span>
-<span id="cb72-3"><a href=""></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb72-4"><a href=""></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> p, <span class="at">ncol =</span> <span class="dv">3</span>) <span class="sc">+</span>  <span class="co"># Tre grafici affiancati</span></span>
-<span id="cb72-5"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribuzione Binomiale: effetto di p (n = 20)"</span>,</span>
-<span id="cb72-6"><a href=""></a>       <span class="at">x =</span> <span class="st">"Numero di successi (k)"</span>,</span>
-<span id="cb72-7"><a href=""></a>       <span class="at">y =</span> <span class="st">"P(X = k)"</span>) <span class="sc">+</span></span>
-<span id="cb72-8"><a href=""></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)  <span class="co"># Rimuove la legenda (ridondante)</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb72"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a aria-label="1"></a>dati_binom <span class="sc">|&gt;</span> </span>
+<span id="cb72-2"><a aria-label="2"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> k, <span class="at">y =</span> prob, <span class="at">fill =</span> p)) <span class="sc">+</span></span>
+<span id="cb72-3"><a aria-label="3"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb72-4"><a aria-label="4"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> p, <span class="at">ncol =</span> <span class="dv">3</span>) <span class="sc">+</span>  <span class="co"># Tre grafici affiancati</span></span>
+<span id="cb72-5"><a aria-label="5"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribuzione Binomiale: effetto di p (n = 20)"</span>,</span>
+<span id="cb72-6"><a aria-label="6"></a>       <span class="at">x =</span> <span class="st">"Numero di successi (k)"</span>,</span>
+<span id="cb72-7"><a aria-label="7"></a>       <span class="at">y =</span> <span class="st">"P(X = k)"</span>) <span class="sc">+</span></span>
+<span id="cb72-8"><a aria-label="8"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)  <span class="co"># Rimuove la legenda (ridondante)</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section class="slide level2">
 
@@ -1308,13 +1314,13 @@ X \le k.
 <section class="slide level2">
 
 <h3 id="versione-alternativa-sovrapporre-le-distribuzioni">Versione alternativa: sovrapporre le distribuzioni</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb73"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href=""></a><span class="fu">ggplot</span>(dati_binom, <span class="fu">aes</span>(<span class="at">x =</span> k, <span class="at">y =</span> prob, <span class="at">color =</span> p)) <span class="sc">+</span></span>
-<span id="cb73-2"><a href=""></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
-<span id="cb73-3"><a href=""></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb73-4"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Confronto diretto: Binomiale con diversi p"</span>,</span>
-<span id="cb73-5"><a href=""></a>       <span class="at">x =</span> <span class="st">"Numero di successi (k)"</span>,</span>
-<span id="cb73-6"><a href=""></a>       <span class="at">y =</span> <span class="st">"P(X = k)"</span>,</span>
-<span id="cb73-7"><a href=""></a>       <span class="at">color =</span> <span class="st">"Probabilità</span><span class="sc">\n</span><span class="st">di successo"</span>) </span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb73"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a aria-label="1"></a><span class="fu">ggplot</span>(dati_binom, <span class="fu">aes</span>(<span class="at">x =</span> k, <span class="at">y =</span> prob, <span class="at">color =</span> p)) <span class="sc">+</span></span>
+<span id="cb73-2"><a aria-label="2"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb73-3"><a aria-label="3"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb73-4"><a aria-label="4"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Confronto diretto: Binomiale con diversi p"</span>,</span>
+<span id="cb73-5"><a aria-label="5"></a>       <span class="at">x =</span> <span class="st">"Numero di successi (k)"</span>,</span>
+<span id="cb73-6"><a aria-label="6"></a>       <span class="at">y =</span> <span class="st">"P(X = k)"</span>,</span>
+<span id="cb73-7"><a aria-label="7"></a>       <span class="at">color =</span> <span class="st">"Probabilità</span><span class="sc">\n</span><span class="st">di successo"</span>) </span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section class="slide level2">
 
@@ -1324,32 +1330,32 @@ X \le k.
 <h2>Parte 2: Distribuzione Poisson - Effetto di <code>λ</code></h2>
 <p>Codice per generare i dati</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href=""></a><span class="co"># Valori di k da visualizzare</span></span>
-<span id="cb74-2"><a href=""></a>k_vals <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">20</span></span>
-<span id="cb74-3"><a href=""></a></span>
-<span id="cb74-4"><a href=""></a><span class="co"># Calcola le probabilità per tre diversi lambda</span></span>
-<span id="cb74-5"><a href=""></a>pk_l05 <span class="ot">&lt;-</span> <span class="fu">dpois</span>(k_vals, <span class="at">lambda =</span> <span class="fl">0.5</span>)  <span class="co"># Lambda piccolo</span></span>
-<span id="cb74-6"><a href=""></a>pk_l2  <span class="ot">&lt;-</span> <span class="fu">dpois</span>(k_vals, <span class="at">lambda =</span> <span class="dv">2</span>)    <span class="co"># Lambda intermedio</span></span>
-<span id="cb74-7"><a href=""></a>pk_l6  <span class="ot">&lt;-</span> <span class="fu">dpois</span>(k_vals, <span class="at">lambda =</span> <span class="dv">6</span>)    <span class="co"># Lambda grande</span></span>
-<span id="cb74-8"><a href=""></a></span>
-<span id="cb74-9"><a href=""></a><span class="co"># Combina i dati</span></span>
-<span id="cb74-10"><a href=""></a>dati_pois <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb74-11"><a href=""></a>  <span class="at">k =</span> <span class="fu">rep</span>(k_vals, <span class="dv">3</span>),</span>
-<span id="cb74-12"><a href=""></a>  <span class="at">prob =</span> <span class="fu">c</span>(pk_l05, pk_l2, pk_l6),</span>
-<span id="cb74-13"><a href=""></a>  <span class="at">lambda =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"λ = 0.5"</span>, <span class="st">"λ = 2"</span>, <span class="st">"λ = 6"</span>), <span class="at">each =</span> <span class="fu">length</span>(k_vals)))</span>
-<span id="cb74-14"><a href=""></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a aria-label="1"></a><span class="co"># Valori di k da visualizzare</span></span>
+<span id="cb74-2"><a aria-label="2"></a>k_vals <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">20</span></span>
+<span id="cb74-3"><a aria-label="3"></a></span>
+<span id="cb74-4"><a aria-label="4"></a><span class="co"># Calcola le probabilità per tre diversi lambda</span></span>
+<span id="cb74-5"><a aria-label="5"></a>pk_l05 <span class="ot">&lt;-</span> <span class="fu">dpois</span>(k_vals, <span class="at">lambda =</span> <span class="fl">0.5</span>)  <span class="co"># Lambda piccolo</span></span>
+<span id="cb74-6"><a aria-label="6"></a>pk_l2  <span class="ot">&lt;-</span> <span class="fu">dpois</span>(k_vals, <span class="at">lambda =</span> <span class="dv">2</span>)    <span class="co"># Lambda intermedio</span></span>
+<span id="cb74-7"><a aria-label="7"></a>pk_l6  <span class="ot">&lt;-</span> <span class="fu">dpois</span>(k_vals, <span class="at">lambda =</span> <span class="dv">6</span>)    <span class="co"># Lambda grande</span></span>
+<span id="cb74-8"><a aria-label="8"></a></span>
+<span id="cb74-9"><a aria-label="9"></a><span class="co"># Combina i dati</span></span>
+<span id="cb74-10"><a aria-label="10"></a>dati_pois <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb74-11"><a aria-label="11"></a>  <span class="at">k =</span> <span class="fu">rep</span>(k_vals, <span class="dv">3</span>),</span>
+<span id="cb74-12"><a aria-label="12"></a>  <span class="at">prob =</span> <span class="fu">c</span>(pk_l05, pk_l2, pk_l6),</span>
+<span id="cb74-13"><a aria-label="13"></a>  <span class="at">lambda =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"λ = 0.5"</span>, <span class="st">"λ = 2"</span>, <span class="st">"λ = 6"</span>), <span class="at">each =</span> <span class="fu">length</span>(k_vals)))</span>
+<span id="cb74-14"><a aria-label="14"></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
 
 <p>Visualizzazione:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb75"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href=""></a><span class="fu">ggplot</span>(dati_pois, <span class="fu">aes</span>(<span class="at">x =</span> k, <span class="at">y =</span> prob, <span class="at">fill =</span> lambda)) <span class="sc">+</span></span>
-<span id="cb75-2"><a href=""></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb75-3"><a href=""></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> lambda, <span class="at">ncol =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb75-4"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribuzione di Poisson: effetto di λ"</span>,</span>
-<span id="cb75-5"><a href=""></a>       <span class="at">x =</span> <span class="st">"Numero di eventi (k)"</span>,</span>
-<span id="cb75-6"><a href=""></a>       <span class="at">y =</span> <span class="st">"P(X = k)"</span>) <span class="sc">+</span></span>
-<span id="cb75-7"><a href=""></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb75"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a aria-label="1"></a><span class="fu">ggplot</span>(dati_pois, <span class="fu">aes</span>(<span class="at">x =</span> k, <span class="at">y =</span> prob, <span class="at">fill =</span> lambda)) <span class="sc">+</span></span>
+<span id="cb75-2"><a aria-label="2"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb75-3"><a aria-label="3"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> lambda, <span class="at">ncol =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb75-4"><a aria-label="4"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribuzione di Poisson: effetto di λ"</span>,</span>
+<span id="cb75-5"><a aria-label="5"></a>       <span class="at">x =</span> <span class="st">"Numero di eventi (k)"</span>,</span>
+<span id="cb75-6"><a aria-label="6"></a>       <span class="at">y =</span> <span class="st">"P(X = k)"</span>) <span class="sc">+</span></span>
+<span id="cb75-7"><a aria-label="7"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section class="slide level2">
 
@@ -1378,13 +1384,13 @@ X \le k.
 <section class="slide level2">
 
 <h3 id="versione-alternativa-sovrapporre-le-distribuzioni-1">Versione alternativa: sovrapporre le distribuzioni</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb76"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href=""></a><span class="fu">ggplot</span>(dati_pois, <span class="fu">aes</span>(<span class="at">x =</span> k, <span class="at">y =</span> prob, <span class="at">color =</span> lambda)) <span class="sc">+</span></span>
-<span id="cb76-2"><a href=""></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
-<span id="cb76-3"><a href=""></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb76-4"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Confronto diretto: Poisson con diversi λ"</span>,</span>
-<span id="cb76-5"><a href=""></a>       <span class="at">x =</span> <span class="st">"Numero di eventi (k)"</span>,</span>
-<span id="cb76-6"><a href=""></a>       <span class="at">y =</span> <span class="st">"P(X = k)"</span>,</span>
-<span id="cb76-7"><a href=""></a>       <span class="at">color =</span> <span class="st">"Tasso</span><span class="sc">\n</span><span class="st">medio (λ)"</span>) </span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb76"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a aria-label="1"></a><span class="fu">ggplot</span>(dati_pois, <span class="fu">aes</span>(<span class="at">x =</span> k, <span class="at">y =</span> prob, <span class="at">color =</span> lambda)) <span class="sc">+</span></span>
+<span id="cb76-2"><a aria-label="2"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb76-3"><a aria-label="3"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb76-4"><a aria-label="4"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Confronto diretto: Poisson con diversi λ"</span>,</span>
+<span id="cb76-5"><a aria-label="5"></a>       <span class="at">x =</span> <span class="st">"Numero di eventi (k)"</span>,</span>
+<span id="cb76-6"><a aria-label="6"></a>       <span class="at">y =</span> <span class="st">"P(X = k)"</span>,</span>
+<span id="cb76-7"><a aria-label="7"></a>       <span class="at">color =</span> <span class="st">"Tasso</span><span class="sc">\n</span><span class="st">medio (λ)"</span>) </span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section class="slide level2">
 
@@ -1496,25 +1502,25 @@ in media arrivano <strong>2 pazienti all’ora</strong>.</p>
 <h3 id="calcolo-del-tasso-per-intervalli-diversi">Calcolo del tasso per intervalli diversi</h3>
 <p>Usiamo la formula <span class="math inline">\(\lambda_t = \lambda \times t\)</span>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb77"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href=""></a><span class="co"># Tasso base: 2 pazienti all'ora</span></span>
-<span id="cb77-2"><a href=""></a>lambda <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb77-3"><a href=""></a></span>
-<span id="cb77-4"><a href=""></a><span class="co"># Mezz'ora (t = 0.5)</span></span>
-<span id="cb77-5"><a href=""></a>lambda_30min <span class="ot">&lt;-</span> lambda <span class="sc">*</span> <span class="fl">0.5</span></span>
-<span id="cb77-6"><a href=""></a></span>
-<span id="cb77-7"><a href=""></a><span class="co"># Due ore (t = 2)</span></span>
-<span id="cb77-8"><a href=""></a>lambda_2h <span class="ot">&lt;-</span> lambda <span class="sc">*</span> <span class="dv">2</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb77"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a aria-label="1"></a><span class="co"># Tasso base: 2 pazienti all'ora</span></span>
+<span id="cb77-2"><a aria-label="2"></a>lambda <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb77-3"><a aria-label="3"></a></span>
+<span id="cb77-4"><a aria-label="4"></a><span class="co"># Mezz'ora (t = 0.5)</span></span>
+<span id="cb77-5"><a aria-label="5"></a>lambda_30min <span class="ot">&lt;-</span> lambda <span class="sc">*</span> <span class="fl">0.5</span></span>
+<span id="cb77-6"><a aria-label="6"></a></span>
+<span id="cb77-7"><a aria-label="7"></a><span class="co"># Due ore (t = 2)</span></span>
+<span id="cb77-8"><a aria-label="8"></a>lambda_2h <span class="ot">&lt;-</span> lambda <span class="sc">*</span> <span class="dv">2</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
 
 <h3 id="i-risultati">I risultati</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb78"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href=""></a>lambda_30min</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb78"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a aria-label="1"></a>lambda_30min</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb80"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href=""></a>lambda_2h</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb80"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a aria-label="1"></a>lambda_2h</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 4</code></pre>
 </div>
@@ -1552,16 +1558,16 @@ in media arrivano <strong>2 pazienti all’ora</strong>.</p>
 <p>Nella Poisson, <span class="math inline">\(P(X = 0) = e^{-\lambda}\)</span>.</p>
 <p>Più alto è λ, più bassa è questa probabilità.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb82"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href=""></a><span class="co"># P(X = 0) nei tre scenari</span></span>
-<span id="cb82-2"><a href=""></a><span class="fu">dpois</span>(<span class="dv">0</span>, <span class="at">lambda =</span> <span class="dv">1</span>)    <span class="co"># 30 minuti</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb82"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a aria-label="1"></a><span class="co"># P(X = 0) nei tre scenari</span></span>
+<span id="cb82-2"><a aria-label="2"></a><span class="fu">dpois</span>(<span class="dv">0</span>, <span class="at">lambda =</span> <span class="dv">1</span>)    <span class="co"># 30 minuti</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.3678794</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href=""></a><span class="fu">dpois</span>(<span class="dv">0</span>, <span class="at">lambda =</span> <span class="dv">2</span>)    <span class="co"># 1 ora</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a aria-label="1"></a><span class="fu">dpois</span>(<span class="dv">0</span>, <span class="at">lambda =</span> <span class="dv">2</span>)    <span class="co"># 1 ora</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.1353353</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb86"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href=""></a><span class="fu">dpois</span>(<span class="dv">0</span>, <span class="at">lambda =</span> <span class="dv">4</span>)    <span class="co"># 2 ore</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb86"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a aria-label="1"></a><span class="fu">dpois</span>(<span class="dv">0</span>, <span class="at">lambda =</span> <span class="dv">4</span>)    <span class="co"># 2 ore</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.01831564</code></pre>
 </div>
@@ -1668,6 +1674,7 @@ R ci permette di calcolare, controllare e capire questi strumenti in modo immedi
 </blockquote>
 
 
+
 </div>
 </section>
     </div>
@@ -1678,19 +1685,19 @@ R ci permette di calcolare, controllare e capire questi strumenti in modo immedi
 </div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="distribuzioni_discrete_2_R_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="distribuzioni_discrete_2_R_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="distribuzioni_discrete_2_R_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="distribuzioni_discrete_2_R_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="distribuzioni_discrete_2_R_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="distribuzioni_discrete_2_R_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="distribuzioni_discrete_2_R_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="distribuzioni_discrete_2_R_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="distribuzioni_discrete_2_R_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="distribuzioni_discrete_2_R_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -1993,7 +2000,7 @@ R ci permette di calcolare, controllare e capire questi strumenti in modo immedi
         }
           var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
           var mailtoRegex = new RegExp(/^mailto:/);
-            var filterRegex = new RegExp('/' + window.location.host + '/');
+            var filterRegex = new RegExp("https:\/\/ccaudek\.github\.io\/psicometria_2026\/");
           var isInternal = (href) => {
               return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
           }

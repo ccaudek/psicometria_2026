@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html lang="it"><head>
-<script src="3_gradi_liberta_files/libs/clipboard/clipboard.min.js"></script>
-<script src="3_gradi_liberta_files/libs/quarto-html/tabby.min.js"></script>
-<script src="3_gradi_liberta_files/libs/quarto-html/popper.min.js"></script>
-<script src="3_gradi_liberta_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="3_gradi_liberta_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="3_gradi_liberta_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="3_gradi_liberta_files/libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.27">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-5c1318cf63eba56dbef7ba16bc7d56f5.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
 
   <meta name="author" content="Corrado Caudek">
-  <title>Flusso di lavoro riproducibile</title>
+  <title>Psicometria 2025-26 – Flusso di lavoro riproducibile</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="3_gradi_liberta_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="3_gradi_liberta_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
   <style>
-    code{white-space: pre-wrap;}
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -95,11 +101,11 @@
     code span.vs { color: #032f62; } /* VerbatimString */
     code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="3_gradi_liberta_files/libs/revealjs/dist/theme/quarto-32eda4d62c2e25823ebe39cba2bb0a8e.css">
-  <link href="3_gradi_liberta_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="3_gradi_liberta_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="3_gradi_liberta_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="3_gradi_liberta_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-172e614ca6238f6067b3ffab71e7e169.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -199,7 +205,7 @@
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
+Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid" aria-label="ORCID profile for Corrado Caudek"> <img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
 </div>
 <div class="quarto-title-author-email">
 <a href="mailto:corrado.caudek@unifi.it">corrado.caudek@unifi.it</a>
@@ -210,7 +216,7 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
     </div>
 </div>
 
-  <p class="date">16 febbraio 2026</p>
+  <p class="date">29 ottobre 2026</p>
 </section>
 <section id="obiettivo" class="slide level2">
 <h2>Obiettivo</h2>
@@ -283,54 +289,54 @@ insieme delle scelte possibili (spesso non pre-specificate) su:
 <section class="slide level2">
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>simulate_case <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">seed_start =</span> <span class="dv">2026</span>, <span class="at">max_tries =</span> <span class="dv">5000</span>,</span>
-<span id="cb1-2"><a href=""></a>                          <span class="at">n =</span> <span class="dv">40</span>, <span class="at">mu_A =</span> <span class="dv">0</span>, <span class="at">mu_B =</span> <span class="fl">0.45</span>,</span>
-<span id="cb1-3"><a href=""></a>                          <span class="at">extreme_A =</span> <span class="dv">10</span>, <span class="at">extreme_B =</span> <span class="sc">-</span><span class="dv">10</span>,</span>
-<span id="cb1-4"><a href=""></a>                          <span class="at">moderate_A =</span> <span class="fl">6.3</span>) {</span>
-<span id="cb1-5"><a href=""></a></span>
-<span id="cb1-6"><a href=""></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">0</span><span class="sc">:</span>max_tries) {</span>
-<span id="cb1-7"><a href=""></a>    <span class="fu">set.seed</span>(seed_start <span class="sc">+</span> k)</span>
-<span id="cb1-8"><a href=""></a></span>
-<span id="cb1-9"><a href=""></a>    A <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> mu_A, <span class="at">sd =</span> <span class="dv">1</span>)</span>
-<span id="cb1-10"><a href=""></a>    B <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> mu_B, <span class="at">sd =</span> <span class="dv">1</span>)</span>
-<span id="cb1-11"><a href=""></a></span>
-<span id="cb1-12"><a href=""></a>    <span class="co"># Outlier estremi (molto influenti, tipicamente |z| &gt; 3)</span></span>
-<span id="cb1-13"><a href=""></a>    A[<span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">12</span>)] <span class="ot">&lt;-</span> A[<span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">12</span>)] <span class="sc">+</span> extreme_A</span>
-<span id="cb1-14"><a href=""></a>    B[<span class="dv">7</span>]        <span class="ot">&lt;-</span> B[<span class="dv">7</span>] <span class="sc">+</span> extreme_B</span>
-<span id="cb1-15"><a href=""></a></span>
-<span id="cb1-16"><a href=""></a>    <span class="co"># Outlier "moderato" (tipicamente 2 &lt; |z| &lt;= 3): rimosso da z=2 ma non da z=3</span></span>
-<span id="cb1-17"><a href=""></a>    A[<span class="dv">20</span>] <span class="ot">&lt;-</span> A[<span class="dv">20</span>] <span class="sc">+</span> moderate_A</span>
-<span id="cb1-18"><a href=""></a></span>
-<span id="cb1-19"><a href=""></a>    dat1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb1-20"><a href=""></a>      <span class="at">y =</span> <span class="fu">c</span>(A, B),</span>
-<span id="cb1-21"><a href=""></a>      <span class="at">group =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>), <span class="at">each =</span> n)</span>
-<span id="cb1-22"><a href=""></a>    )</span>
-<span id="cb1-23"><a href=""></a></span>
-<span id="cb1-24"><a href=""></a>    <span class="co"># p-value dataset completo</span></span>
-<span id="cb1-25"><a href=""></a>    p0 <span class="ot">&lt;-</span> <span class="fu">t.test</span>(y <span class="sc">~</span> group, <span class="at">data =</span> dat1, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span>
-<span id="cb1-26"><a href=""></a></span>
-<span id="cb1-27"><a href=""></a>    <span class="co"># z-score sul totale</span></span>
-<span id="cb1-28"><a href=""></a>    z <span class="ot">&lt;-</span> <span class="fu">scale</span>(dat1<span class="sc">$</span>y)[,<span class="dv">1</span>]</span>
-<span id="cb1-29"><a href=""></a></span>
-<span id="cb1-30"><a href=""></a>    dat_z2 <span class="ot">&lt;-</span> dat1[<span class="fu">abs</span>(z) <span class="sc">&lt;=</span> <span class="dv">2</span>, ]</span>
-<span id="cb1-31"><a href=""></a>    dat_z3 <span class="ot">&lt;-</span> dat1[<span class="fu">abs</span>(z) <span class="sc">&lt;=</span> <span class="dv">3</span>, ]</span>
-<span id="cb1-32"><a href=""></a></span>
-<span id="cb1-33"><a href=""></a>    <span class="co"># p-value dopo esclusione outlier</span></span>
-<span id="cb1-34"><a href=""></a>    p2 <span class="ot">&lt;-</span> <span class="fu">t.test</span>(y <span class="sc">~</span> group, <span class="at">data =</span> dat_z2, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span>
-<span id="cb1-35"><a href=""></a>    p3 <span class="ot">&lt;-</span> <span class="fu">t.test</span>(y <span class="sc">~</span> group, <span class="at">data =</span> dat_z3, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span>
-<span id="cb1-36"><a href=""></a></span>
-<span id="cb1-37"><a href=""></a>    <span class="cf">if</span> (p0 <span class="sc">&gt;</span> <span class="fl">0.05</span> <span class="sc">&amp;&amp;</span> p2 <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;&amp;</span> p3 <span class="sc">&gt;</span> <span class="fl">0.05</span>) {</span>
-<span id="cb1-38"><a href=""></a>      <span class="fu">attr</span>(dat1, <span class="st">"seed"</span>) <span class="ot">&lt;-</span> seed_start <span class="sc">+</span> k</span>
-<span id="cb1-39"><a href=""></a>      <span class="fu">return</span>(dat1)</span>
-<span id="cb1-40"><a href=""></a>    }</span>
-<span id="cb1-41"><a href=""></a>  }</span>
-<span id="cb1-42"><a href=""></a></span>
-<span id="cb1-43"><a href=""></a>  <span class="fu">stop</span>(<span class="st">"Nessun dataset trovato: prova ad aumentare max_tries o a cambiare moderate_A."</span>)</span>
-<span id="cb1-44"><a href=""></a>}</span>
-<span id="cb1-45"><a href=""></a></span>
-<span id="cb1-46"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">2032</span>)</span>
-<span id="cb1-47"><a href=""></a>dat1 <span class="ot">&lt;-</span> <span class="fu">simulate_case</span>()</span>
-<span id="cb1-48"><a href=""></a><span class="fu">attr</span>(dat1, <span class="st">"seed"</span>)  <span class="co"># seed effettivo trovato</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-label="1"></a>simulate_case <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">seed_start =</span> <span class="dv">2026</span>, <span class="at">max_tries =</span> <span class="dv">5000</span>,</span>
+<span id="cb1-2"><a aria-label="2"></a>                          <span class="at">n =</span> <span class="dv">40</span>, <span class="at">mu_A =</span> <span class="dv">0</span>, <span class="at">mu_B =</span> <span class="fl">0.45</span>,</span>
+<span id="cb1-3"><a aria-label="3"></a>                          <span class="at">extreme_A =</span> <span class="dv">10</span>, <span class="at">extreme_B =</span> <span class="sc">-</span><span class="dv">10</span>,</span>
+<span id="cb1-4"><a aria-label="4"></a>                          <span class="at">moderate_A =</span> <span class="fl">6.3</span>) {</span>
+<span id="cb1-5"><a aria-label="5"></a></span>
+<span id="cb1-6"><a aria-label="6"></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">0</span><span class="sc">:</span>max_tries) {</span>
+<span id="cb1-7"><a aria-label="7"></a>    <span class="fu">set.seed</span>(seed_start <span class="sc">+</span> k)</span>
+<span id="cb1-8"><a aria-label="8"></a></span>
+<span id="cb1-9"><a aria-label="9"></a>    A <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> mu_A, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb1-10"><a aria-label="10"></a>    B <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> mu_B, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb1-11"><a aria-label="11"></a></span>
+<span id="cb1-12"><a aria-label="12"></a>    <span class="co"># Outlier estremi (molto influenti, tipicamente |z| &gt; 3)</span></span>
+<span id="cb1-13"><a aria-label="13"></a>    A[<span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">12</span>)] <span class="ot">&lt;-</span> A[<span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">12</span>)] <span class="sc">+</span> extreme_A</span>
+<span id="cb1-14"><a aria-label="14"></a>    B[<span class="dv">7</span>]        <span class="ot">&lt;-</span> B[<span class="dv">7</span>] <span class="sc">+</span> extreme_B</span>
+<span id="cb1-15"><a aria-label="15"></a></span>
+<span id="cb1-16"><a aria-label="16"></a>    <span class="co"># Outlier "moderato" (tipicamente 2 &lt; |z| &lt;= 3): rimosso da z=2 ma non da z=3</span></span>
+<span id="cb1-17"><a aria-label="17"></a>    A[<span class="dv">20</span>] <span class="ot">&lt;-</span> A[<span class="dv">20</span>] <span class="sc">+</span> moderate_A</span>
+<span id="cb1-18"><a aria-label="18"></a></span>
+<span id="cb1-19"><a aria-label="19"></a>    dat1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-20"><a aria-label="20"></a>      <span class="at">y =</span> <span class="fu">c</span>(A, B),</span>
+<span id="cb1-21"><a aria-label="21"></a>      <span class="at">group =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>), <span class="at">each =</span> n)</span>
+<span id="cb1-22"><a aria-label="22"></a>    )</span>
+<span id="cb1-23"><a aria-label="23"></a></span>
+<span id="cb1-24"><a aria-label="24"></a>    <span class="co"># p-value dataset completo</span></span>
+<span id="cb1-25"><a aria-label="25"></a>    p0 <span class="ot">&lt;-</span> <span class="fu">t.test</span>(y <span class="sc">~</span> group, <span class="at">data =</span> dat1, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span>
+<span id="cb1-26"><a aria-label="26"></a></span>
+<span id="cb1-27"><a aria-label="27"></a>    <span class="co"># z-score sul totale</span></span>
+<span id="cb1-28"><a aria-label="28"></a>    z <span class="ot">&lt;-</span> <span class="fu">scale</span>(dat1<span class="sc">$</span>y)[,<span class="dv">1</span>]</span>
+<span id="cb1-29"><a aria-label="29"></a></span>
+<span id="cb1-30"><a aria-label="30"></a>    dat_z2 <span class="ot">&lt;-</span> dat1[<span class="fu">abs</span>(z) <span class="sc">&lt;=</span> <span class="dv">2</span>, ]</span>
+<span id="cb1-31"><a aria-label="31"></a>    dat_z3 <span class="ot">&lt;-</span> dat1[<span class="fu">abs</span>(z) <span class="sc">&lt;=</span> <span class="dv">3</span>, ]</span>
+<span id="cb1-32"><a aria-label="32"></a></span>
+<span id="cb1-33"><a aria-label="33"></a>    <span class="co"># p-value dopo esclusione outlier</span></span>
+<span id="cb1-34"><a aria-label="34"></a>    p2 <span class="ot">&lt;-</span> <span class="fu">t.test</span>(y <span class="sc">~</span> group, <span class="at">data =</span> dat_z2, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span>
+<span id="cb1-35"><a aria-label="35"></a>    p3 <span class="ot">&lt;-</span> <span class="fu">t.test</span>(y <span class="sc">~</span> group, <span class="at">data =</span> dat_z3, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span>
+<span id="cb1-36"><a aria-label="36"></a></span>
+<span id="cb1-37"><a aria-label="37"></a>    <span class="cf">if</span> (p0 <span class="sc">&gt;</span> <span class="fl">0.05</span> <span class="sc">&amp;&amp;</span> p2 <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;&amp;</span> p3 <span class="sc">&gt;</span> <span class="fl">0.05</span>) {</span>
+<span id="cb1-38"><a aria-label="38"></a>      <span class="fu">attr</span>(dat1, <span class="st">"seed"</span>) <span class="ot">&lt;-</span> seed_start <span class="sc">+</span> k</span>
+<span id="cb1-39"><a aria-label="39"></a>      <span class="fu">return</span>(dat1)</span>
+<span id="cb1-40"><a aria-label="40"></a>    }</span>
+<span id="cb1-41"><a aria-label="41"></a>  }</span>
+<span id="cb1-42"><a aria-label="42"></a></span>
+<span id="cb1-43"><a aria-label="43"></a>  <span class="fu">stop</span>(<span class="st">"Nessun dataset trovato: prova ad aumentare max_tries o a cambiare moderate_A."</span>)</span>
+<span id="cb1-44"><a aria-label="44"></a>}</span>
+<span id="cb1-45"><a aria-label="45"></a></span>
+<span id="cb1-46"><a aria-label="46"></a><span class="fu">set.seed</span>(<span class="dv">2032</span>)</span>
+<span id="cb1-47"><a aria-label="47"></a>dat1 <span class="ot">&lt;-</span> <span class="fu">simulate_case</span>()</span>
+<span id="cb1-48"><a aria-label="48"></a><span class="fu">attr</span>(dat1, <span class="st">"seed"</span>)  <span class="co"># seed effettivo trovato</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2032</code></pre>
 </div>
@@ -339,12 +345,12 @@ insieme delle scelte possibili (spesso non pre-specificate) su:
 <section class="slide level2">
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">summary</span>(dat1<span class="sc">$</span>y)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a aria-label="1"></a><span class="fu">summary</span>(dat1<span class="sc">$</span>y)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
 -10.0579  -0.3380   0.4329   0.5483   1.3246  12.1624 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">table</span>(dat1<span class="sc">$</span>group)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a aria-label="1"></a><span class="fu">table</span>(dat1<span class="sc">$</span>group)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
  A  B 
@@ -355,12 +361,12 @@ insieme delle scelte possibili (spesso non pre-specificate) su:
 <section id="test-t-senza-rimozione-outlier" class="slide level2">
 <h2>Test <span class="math inline">\(t\)</span> senza rimozione outlier</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a>t0 <span class="ot">&lt;-</span> <span class="fu">t.test</span>(y <span class="sc">~</span> group, <span class="at">data =</span> dat1, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb7-2"><a href=""></a>t0<span class="sc">$</span>p.value</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a aria-label="1"></a>t0 <span class="ot">&lt;-</span> <span class="fu">t.test</span>(y <span class="sc">~</span> group, <span class="at">data =</span> dat1, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-2"><a aria-label="2"></a>t0<span class="sc">$</span>p.value</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.4634974</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>t0<span class="sc">$</span>estimate</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a aria-label="1"></a>t0<span class="sc">$</span>estimate</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>mean in group A mean in group B 
       0.7440052       0.3524972 </code></pre>
@@ -388,10 +394,10 @@ insieme delle scelte possibili (spesso non pre-specificate) su:
 <li>escludo casi con |z| &gt; 2.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a>z <span class="ot">&lt;-</span> <span class="fu">scale</span>(dat1<span class="sc">$</span>y)[,<span class="dv">1</span>]</span>
-<span id="cb11-2"><a href=""></a>dat_z2 <span class="ot">&lt;-</span> dat1[<span class="fu">abs</span>(z) <span class="sc">&lt;=</span> <span class="dv">2</span>, ]</span>
-<span id="cb11-3"><a href=""></a></span>
-<span id="cb11-4"><a href=""></a><span class="fu">nrow</span>(dat1); <span class="fu">nrow</span>(dat_z2)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a aria-label="1"></a>z <span class="ot">&lt;-</span> <span class="fu">scale</span>(dat1<span class="sc">$</span>y)[,<span class="dv">1</span>]</span>
+<span id="cb11-2"><a aria-label="2"></a>dat_z2 <span class="ot">&lt;-</span> dat1[<span class="fu">abs</span>(z) <span class="sc">&lt;=</span> <span class="dv">2</span>, ]</span>
+<span id="cb11-3"><a aria-label="3"></a></span>
+<span id="cb11-4"><a aria-label="4"></a><span class="fu">nrow</span>(dat1); <span class="fu">nrow</span>(dat_z2)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 80</code></pre>
 </div>
@@ -403,12 +409,12 @@ insieme delle scelte possibili (spesso non pre-specificate) su:
 <section class="slide level2">
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a>t1 <span class="ot">&lt;-</span> <span class="fu">t.test</span>(y <span class="sc">~</span> group, <span class="at">data =</span> dat_z2, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb14-2"><a href=""></a>t1<span class="sc">$</span>p.value</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a aria-label="1"></a>t1 <span class="ot">&lt;-</span> <span class="fu">t.test</span>(y <span class="sc">~</span> group, <span class="at">data =</span> dat_z2, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb14-2"><a aria-label="2"></a>t1<span class="sc">$</span>p.value</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.03842403</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a>t1<span class="sc">$</span>estimate</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a aria-label="1"></a>t1<span class="sc">$</span>estimate</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>mean in group A mean in group B 
       0.0832283       0.6194301 </code></pre>
@@ -423,21 +429,21 @@ insieme delle scelte possibili (spesso non pre-specificate) su:
 <h2>Rimozione outlier: soglia |z| &gt; 3</h2>
 <p>Stessa logica, soglia diversa.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a>dat_z3 <span class="ot">&lt;-</span> dat1[<span class="fu">abs</span>(z) <span class="sc">&lt;=</span> <span class="dv">3</span>, ]</span>
-<span id="cb18-2"><a href=""></a></span>
-<span id="cb18-3"><a href=""></a><span class="fu">nrow</span>(dat1); <span class="fu">nrow</span>(dat_z3)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a aria-label="1"></a>dat_z3 <span class="ot">&lt;-</span> dat1[<span class="fu">abs</span>(z) <span class="sc">&lt;=</span> <span class="dv">3</span>, ]</span>
+<span id="cb18-2"><a aria-label="2"></a></span>
+<span id="cb18-3"><a aria-label="3"></a><span class="fu">nrow</span>(dat1); <span class="fu">nrow</span>(dat_z3)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 80</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 77</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href=""></a>t2 <span class="ot">&lt;-</span> <span class="fu">t.test</span>(y <span class="sc">~</span> group, <span class="at">data =</span> dat_z3, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb21-2"><a href=""></a>t2<span class="sc">$</span>p.value</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a aria-label="1"></a>t2 <span class="ot">&lt;-</span> <span class="fu">t.test</span>(y <span class="sc">~</span> group, <span class="at">data =</span> dat_z3, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb21-2"><a aria-label="2"></a>t2<span class="sc">$</span>p.value</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.1697929</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a>t2<span class="sc">$</span>estimate</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a aria-label="1"></a>t2<span class="sc">$</span>estimate</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>mean in group A mean in group B 
       0.2226737       0.6194301 </code></pre>
@@ -508,71 +514,71 @@ ma vengono <em>trattati</em> come se fossero indicatori di benessere (errore tip
 <section class="slide level2">
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a><span class="co"># ---- Demo 2 ----</span></span>
-<span id="cb25-2"><a href=""></a></span>
-<span id="cb25-3"><a href=""></a><span class="co"># Funzione per generare dati che soddisfano i criteri</span></span>
-<span id="cb25-4"><a href=""></a>simulate_wellbeing <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">seed_start =</span> <span class="dv">3964</span>, <span class="at">max_tries =</span> <span class="dv">5000</span>, <span class="at">n =</span> <span class="dv">80</span>) {</span>
-<span id="cb25-5"><a href=""></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">0</span><span class="sc">:</span>max_tries) {</span>
-<span id="cb25-6"><a href=""></a>    <span class="fu">set.seed</span>(seed_start <span class="sc">+</span> k)</span>
-<span id="cb25-7"><a href=""></a>    </span>
-<span id="cb25-8"><a href=""></a>    group <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>), <span class="at">each =</span> n<span class="sc">/</span><span class="dv">2</span>)</span>
-<span id="cb25-9"><a href=""></a>    </span>
-<span id="cb25-10"><a href=""></a>    <span class="co"># Tratti latenti con effetti opposti:</span></span>
-<span id="cb25-11"><a href=""></a>    <span class="co"># - benessere più alto in B</span></span>
-<span id="cb25-12"><a href=""></a>    <span class="co"># - distress più alto in A</span></span>
-<span id="cb25-13"><a href=""></a>    wellbeing <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="dv">1</span>) <span class="sc">+</span> <span class="fu">ifelse</span>(group <span class="sc">==</span> <span class="st">"B"</span>, <span class="fl">0.6</span>, <span class="dv">0</span>)</span>
-<span id="cb25-14"><a href=""></a>    distress  <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="dv">1</span>) <span class="sc">+</span> <span class="fu">ifelse</span>(group <span class="sc">==</span> <span class="st">"A"</span>, <span class="fl">0.6</span>, <span class="dv">0</span>)</span>
-<span id="cb25-15"><a href=""></a>    </span>
-<span id="cb25-16"><a href=""></a>    <span class="co"># Funzione per generare item con un dato loading e rumore</span></span>
-<span id="cb25-17"><a href=""></a>    make_item <span class="ot">&lt;-</span> <span class="cf">function</span>(lat, loading, <span class="at">noise_sd =</span> <span class="fl">0.7</span>) {</span>
-<span id="cb25-18"><a href=""></a>      loading <span class="sc">*</span> lat <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(lat), <span class="dv">0</span>, noise_sd)</span>
-<span id="cb25-19"><a href=""></a>    }</span>
-<span id="cb25-20"><a href=""></a>    </span>
-<span id="cb25-21"><a href=""></a>    <span class="co"># Indicatori di benessere (caricano su wellbeing)</span></span>
-<span id="cb25-22"><a href=""></a>    i1 <span class="ot">&lt;-</span> <span class="fu">make_item</span>(wellbeing, <span class="at">loading =</span> <span class="fl">0.9</span>, <span class="at">noise_sd =</span> <span class="fl">0.6</span>)</span>
-<span id="cb25-23"><a href=""></a>    i2 <span class="ot">&lt;-</span> <span class="fu">make_item</span>(wellbeing, <span class="at">loading =</span> <span class="fl">0.9</span>, <span class="at">noise_sd =</span> <span class="fl">0.6</span>)</span>
-<span id="cb25-24"><a href=""></a>    i3 <span class="ot">&lt;-</span> <span class="fu">make_item</span>(wellbeing, <span class="at">loading =</span> <span class="fl">0.5</span>, <span class="at">noise_sd =</span> <span class="fl">0.8</span>)  <span class="co"># più debole</span></span>
-<span id="cb25-25"><a href=""></a>    i4 <span class="ot">&lt;-</span> <span class="fu">make_item</span>(wellbeing, <span class="at">loading =</span> <span class="fl">0.5</span>, <span class="at">noise_sd =</span> <span class="fl">0.8</span>)</span>
-<span id="cb25-26"><a href=""></a>    </span>
-<span id="cb25-27"><a href=""></a>    <span class="co"># Indicatori di distress (caricano su distress)</span></span>
-<span id="cb25-28"><a href=""></a>    i5 <span class="ot">&lt;-</span> <span class="fu">make_item</span>(distress,  <span class="at">loading =</span> <span class="fl">0.9</span>, <span class="at">noise_sd =</span> <span class="fl">0.6</span>)</span>
-<span id="cb25-29"><a href=""></a>    i6 <span class="ot">&lt;-</span> <span class="fu">make_item</span>(distress,  <span class="at">loading =</span> <span class="fl">0.9</span>, <span class="at">noise_sd =</span> <span class="fl">0.6</span>)</span>
-<span id="cb25-30"><a href=""></a>    i7 <span class="ot">&lt;-</span> <span class="fu">make_item</span>(distress,  <span class="at">loading =</span> <span class="fl">0.5</span>, <span class="at">noise_sd =</span> <span class="fl">0.8</span>)</span>
-<span id="cb25-31"><a href=""></a>    i8 <span class="ot">&lt;-</span> <span class="fu">make_item</span>(distress,  <span class="at">loading =</span> <span class="fl">0.5</span>, <span class="at">noise_sd =</span> <span class="fl">0.8</span>)</span>
-<span id="cb25-32"><a href=""></a>    </span>
-<span id="cb25-33"><a href=""></a>    dat <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(group, i1, i2, i3, i4, i5, i6, i7, i8)</span>
-<span id="cb25-34"><a href=""></a>    </span>
-<span id="cb25-35"><a href=""></a>    <span class="co"># Compositi</span></span>
-<span id="cb25-36"><a href=""></a>    dat<span class="sc">$</span>comp_wb   <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(dat[, <span class="fu">c</span>(<span class="st">"i1"</span>,<span class="st">"i2"</span>,<span class="st">"i3"</span>,<span class="st">"i4"</span>)])</span>
-<span id="cb25-37"><a href=""></a>    dat<span class="sc">$</span>comp_all  <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(dat[, <span class="fu">paste0</span>(<span class="st">"i"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>)])</span>
-<span id="cb25-38"><a href=""></a>    dat<span class="sc">$</span>comp_alt  <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(dat[, <span class="fu">c</span>(<span class="st">"i1"</span>,<span class="st">"i2"</span>,<span class="st">"i5"</span>,<span class="st">"i6"</span>)])</span>
-<span id="cb25-39"><a href=""></a>    </span>
-<span id="cb25-40"><a href=""></a>    <span class="co"># Test t per ciascun composito (varianze uguali)</span></span>
-<span id="cb25-41"><a href=""></a>    p_wb  <span class="ot">&lt;-</span> <span class="fu">t.test</span>(comp_wb <span class="sc">~</span> group, <span class="at">data =</span> dat, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span>
-<span id="cb25-42"><a href=""></a>    p_all <span class="ot">&lt;-</span> <span class="fu">t.test</span>(comp_all <span class="sc">~</span> group, <span class="at">data =</span> dat, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span>
-<span id="cb25-43"><a href=""></a>    p_alt <span class="ot">&lt;-</span> <span class="fu">t.test</span>(comp_alt <span class="sc">~</span> group, <span class="at">data =</span> dat, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span>
-<span id="cb25-44"><a href=""></a>    </span>
-<span id="cb25-45"><a href=""></a>    <span class="co"># Medie per gruppo per il composito alternativo</span></span>
-<span id="cb25-46"><a href=""></a>    m_alt <span class="ot">&lt;-</span> <span class="fu">t.test</span>(comp_alt <span class="sc">~</span> group, <span class="at">data =</span> dat, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>estimate</span>
-<span id="cb25-47"><a href=""></a>    </span>
-<span id="cb25-48"><a href=""></a>    <span class="co"># Condizioni desiderate:</span></span>
-<span id="cb25-49"><a href=""></a>    <span class="co"># - p_wb &lt; 0.05  (effetto benessere significativo)</span></span>
-<span id="cb25-50"><a href=""></a>    <span class="co"># - p_all &gt; 0.05 (effetto totale nullo)</span></span>
-<span id="cb25-51"><a href=""></a>    <span class="co"># - p_alt &lt; 0.05 e media gruppo A &gt; media gruppo B (inversione)</span></span>
-<span id="cb25-52"><a href=""></a>    <span class="cf">if</span> (p_wb <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;&amp;</span> p_all <span class="sc">&gt;</span> <span class="fl">0.05</span> <span class="sc">&amp;&amp;</span> p_alt <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;&amp;</span> m_alt[<span class="dv">1</span>] <span class="sc">&gt;</span> m_alt[<span class="dv">2</span>]) {</span>
-<span id="cb25-53"><a href=""></a>      <span class="fu">attr</span>(dat, <span class="st">"seed"</span>) <span class="ot">&lt;-</span> seed_start <span class="sc">+</span> k</span>
-<span id="cb25-54"><a href=""></a>      <span class="fu">return</span>(dat)</span>
-<span id="cb25-55"><a href=""></a>    }</span>
-<span id="cb25-56"><a href=""></a>  }</span>
-<span id="cb25-57"><a href=""></a>  <span class="fu">stop</span>(<span class="st">"Nessun dataset trovato: prova a modificare le grandezze degli effetti o i loading."</span>)</span>
-<span id="cb25-58"><a href=""></a>}</span>
-<span id="cb25-59"><a href=""></a></span>
-<span id="cb25-60"><a href=""></a><span class="co"># Genera i dati</span></span>
-<span id="cb25-61"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">4855</span>)  <span class="co"># per riproducibilità della ricerca</span></span>
-<span id="cb25-62"><a href=""></a>dat2 <span class="ot">&lt;-</span> <span class="fu">simulate_wellbeing</span>()</span>
-<span id="cb25-63"><a href=""></a></span>
-<span id="cb25-64"><a href=""></a><span class="co"># Mostra il seed utilizzato</span></span>
-<span id="cb25-65"><a href=""></a><span class="fu">attr</span>(dat2, <span class="st">"seed"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a aria-label="1"></a><span class="co"># ---- Demo 2 ----</span></span>
+<span id="cb25-2"><a aria-label="2"></a></span>
+<span id="cb25-3"><a aria-label="3"></a><span class="co"># Funzione per generare dati che soddisfano i criteri</span></span>
+<span id="cb25-4"><a aria-label="4"></a>simulate_wellbeing <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">seed_start =</span> <span class="dv">3964</span>, <span class="at">max_tries =</span> <span class="dv">5000</span>, <span class="at">n =</span> <span class="dv">80</span>) {</span>
+<span id="cb25-5"><a aria-label="5"></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">0</span><span class="sc">:</span>max_tries) {</span>
+<span id="cb25-6"><a aria-label="6"></a>    <span class="fu">set.seed</span>(seed_start <span class="sc">+</span> k)</span>
+<span id="cb25-7"><a aria-label="7"></a>    </span>
+<span id="cb25-8"><a aria-label="8"></a>    group <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>), <span class="at">each =</span> n<span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb25-9"><a aria-label="9"></a>    </span>
+<span id="cb25-10"><a aria-label="10"></a>    <span class="co"># Tratti latenti con effetti opposti:</span></span>
+<span id="cb25-11"><a aria-label="11"></a>    <span class="co"># - benessere più alto in B</span></span>
+<span id="cb25-12"><a aria-label="12"></a>    <span class="co"># - distress più alto in A</span></span>
+<span id="cb25-13"><a aria-label="13"></a>    wellbeing <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="dv">1</span>) <span class="sc">+</span> <span class="fu">ifelse</span>(group <span class="sc">==</span> <span class="st">"B"</span>, <span class="fl">0.6</span>, <span class="dv">0</span>)</span>
+<span id="cb25-14"><a aria-label="14"></a>    distress  <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="dv">1</span>) <span class="sc">+</span> <span class="fu">ifelse</span>(group <span class="sc">==</span> <span class="st">"A"</span>, <span class="fl">0.6</span>, <span class="dv">0</span>)</span>
+<span id="cb25-15"><a aria-label="15"></a>    </span>
+<span id="cb25-16"><a aria-label="16"></a>    <span class="co"># Funzione per generare item con un dato loading e rumore</span></span>
+<span id="cb25-17"><a aria-label="17"></a>    make_item <span class="ot">&lt;-</span> <span class="cf">function</span>(lat, loading, <span class="at">noise_sd =</span> <span class="fl">0.7</span>) {</span>
+<span id="cb25-18"><a aria-label="18"></a>      loading <span class="sc">*</span> lat <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(lat), <span class="dv">0</span>, noise_sd)</span>
+<span id="cb25-19"><a aria-label="19"></a>    }</span>
+<span id="cb25-20"><a aria-label="20"></a>    </span>
+<span id="cb25-21"><a aria-label="21"></a>    <span class="co"># Indicatori di benessere (caricano su wellbeing)</span></span>
+<span id="cb25-22"><a aria-label="22"></a>    i1 <span class="ot">&lt;-</span> <span class="fu">make_item</span>(wellbeing, <span class="at">loading =</span> <span class="fl">0.9</span>, <span class="at">noise_sd =</span> <span class="fl">0.6</span>)</span>
+<span id="cb25-23"><a aria-label="23"></a>    i2 <span class="ot">&lt;-</span> <span class="fu">make_item</span>(wellbeing, <span class="at">loading =</span> <span class="fl">0.9</span>, <span class="at">noise_sd =</span> <span class="fl">0.6</span>)</span>
+<span id="cb25-24"><a aria-label="24"></a>    i3 <span class="ot">&lt;-</span> <span class="fu">make_item</span>(wellbeing, <span class="at">loading =</span> <span class="fl">0.5</span>, <span class="at">noise_sd =</span> <span class="fl">0.8</span>)  <span class="co"># più debole</span></span>
+<span id="cb25-25"><a aria-label="25"></a>    i4 <span class="ot">&lt;-</span> <span class="fu">make_item</span>(wellbeing, <span class="at">loading =</span> <span class="fl">0.5</span>, <span class="at">noise_sd =</span> <span class="fl">0.8</span>)</span>
+<span id="cb25-26"><a aria-label="26"></a>    </span>
+<span id="cb25-27"><a aria-label="27"></a>    <span class="co"># Indicatori di distress (caricano su distress)</span></span>
+<span id="cb25-28"><a aria-label="28"></a>    i5 <span class="ot">&lt;-</span> <span class="fu">make_item</span>(distress,  <span class="at">loading =</span> <span class="fl">0.9</span>, <span class="at">noise_sd =</span> <span class="fl">0.6</span>)</span>
+<span id="cb25-29"><a aria-label="29"></a>    i6 <span class="ot">&lt;-</span> <span class="fu">make_item</span>(distress,  <span class="at">loading =</span> <span class="fl">0.9</span>, <span class="at">noise_sd =</span> <span class="fl">0.6</span>)</span>
+<span id="cb25-30"><a aria-label="30"></a>    i7 <span class="ot">&lt;-</span> <span class="fu">make_item</span>(distress,  <span class="at">loading =</span> <span class="fl">0.5</span>, <span class="at">noise_sd =</span> <span class="fl">0.8</span>)</span>
+<span id="cb25-31"><a aria-label="31"></a>    i8 <span class="ot">&lt;-</span> <span class="fu">make_item</span>(distress,  <span class="at">loading =</span> <span class="fl">0.5</span>, <span class="at">noise_sd =</span> <span class="fl">0.8</span>)</span>
+<span id="cb25-32"><a aria-label="32"></a>    </span>
+<span id="cb25-33"><a aria-label="33"></a>    dat <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(group, i1, i2, i3, i4, i5, i6, i7, i8)</span>
+<span id="cb25-34"><a aria-label="34"></a>    </span>
+<span id="cb25-35"><a aria-label="35"></a>    <span class="co"># Compositi</span></span>
+<span id="cb25-36"><a aria-label="36"></a>    dat<span class="sc">$</span>comp_wb   <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(dat[, <span class="fu">c</span>(<span class="st">"i1"</span>,<span class="st">"i2"</span>,<span class="st">"i3"</span>,<span class="st">"i4"</span>)])</span>
+<span id="cb25-37"><a aria-label="37"></a>    dat<span class="sc">$</span>comp_all  <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(dat[, <span class="fu">paste0</span>(<span class="st">"i"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>)])</span>
+<span id="cb25-38"><a aria-label="38"></a>    dat<span class="sc">$</span>comp_alt  <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(dat[, <span class="fu">c</span>(<span class="st">"i1"</span>,<span class="st">"i2"</span>,<span class="st">"i5"</span>,<span class="st">"i6"</span>)])</span>
+<span id="cb25-39"><a aria-label="39"></a>    </span>
+<span id="cb25-40"><a aria-label="40"></a>    <span class="co"># Test t per ciascun composito (varianze uguali)</span></span>
+<span id="cb25-41"><a aria-label="41"></a>    p_wb  <span class="ot">&lt;-</span> <span class="fu">t.test</span>(comp_wb <span class="sc">~</span> group, <span class="at">data =</span> dat, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span>
+<span id="cb25-42"><a aria-label="42"></a>    p_all <span class="ot">&lt;-</span> <span class="fu">t.test</span>(comp_all <span class="sc">~</span> group, <span class="at">data =</span> dat, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span>
+<span id="cb25-43"><a aria-label="43"></a>    p_alt <span class="ot">&lt;-</span> <span class="fu">t.test</span>(comp_alt <span class="sc">~</span> group, <span class="at">data =</span> dat, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span>
+<span id="cb25-44"><a aria-label="44"></a>    </span>
+<span id="cb25-45"><a aria-label="45"></a>    <span class="co"># Medie per gruppo per il composito alternativo</span></span>
+<span id="cb25-46"><a aria-label="46"></a>    m_alt <span class="ot">&lt;-</span> <span class="fu">t.test</span>(comp_alt <span class="sc">~</span> group, <span class="at">data =</span> dat, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>estimate</span>
+<span id="cb25-47"><a aria-label="47"></a>    </span>
+<span id="cb25-48"><a aria-label="48"></a>    <span class="co"># Condizioni desiderate:</span></span>
+<span id="cb25-49"><a aria-label="49"></a>    <span class="co"># - p_wb &lt; 0.05  (effetto benessere significativo)</span></span>
+<span id="cb25-50"><a aria-label="50"></a>    <span class="co"># - p_all &gt; 0.05 (effetto totale nullo)</span></span>
+<span id="cb25-51"><a aria-label="51"></a>    <span class="co"># - p_alt &lt; 0.05 e media gruppo A &gt; media gruppo B (inversione)</span></span>
+<span id="cb25-52"><a aria-label="52"></a>    <span class="cf">if</span> (p_wb <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;&amp;</span> p_all <span class="sc">&gt;</span> <span class="fl">0.05</span> <span class="sc">&amp;&amp;</span> p_alt <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;&amp;</span> m_alt[<span class="dv">1</span>] <span class="sc">&gt;</span> m_alt[<span class="dv">2</span>]) {</span>
+<span id="cb25-53"><a aria-label="53"></a>      <span class="fu">attr</span>(dat, <span class="st">"seed"</span>) <span class="ot">&lt;-</span> seed_start <span class="sc">+</span> k</span>
+<span id="cb25-54"><a aria-label="54"></a>      <span class="fu">return</span>(dat)</span>
+<span id="cb25-55"><a aria-label="55"></a>    }</span>
+<span id="cb25-56"><a aria-label="56"></a>  }</span>
+<span id="cb25-57"><a aria-label="57"></a>  <span class="fu">stop</span>(<span class="st">"Nessun dataset trovato: prova a modificare le grandezze degli effetti o i loading."</span>)</span>
+<span id="cb25-58"><a aria-label="58"></a>}</span>
+<span id="cb25-59"><a aria-label="59"></a></span>
+<span id="cb25-60"><a aria-label="60"></a><span class="co"># Genera i dati</span></span>
+<span id="cb25-61"><a aria-label="61"></a><span class="fu">set.seed</span>(<span class="dv">4855</span>)  <span class="co"># per riproducibilità della ricerca</span></span>
+<span id="cb25-62"><a aria-label="62"></a>dat2 <span class="ot">&lt;-</span> <span class="fu">simulate_wellbeing</span>()</span>
+<span id="cb25-63"><a aria-label="63"></a></span>
+<span id="cb25-64"><a aria-label="64"></a><span class="co"># Mostra il seed utilizzato</span></span>
+<span id="cb25-65"><a aria-label="65"></a><span class="fu">attr</span>(dat2, <span class="st">"seed"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 4855</code></pre>
 </div>
@@ -581,7 +587,7 @@ ma vengono <em>trattati</em> come se fossero indicatori di benessere (errore tip
 <section class="slide level2">
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a><span class="fu">head</span>(dat2)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a aria-label="1"></a><span class="fu">head</span>(dat2)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  group         i1          i2         i3          i4         i5        i6
 1     A  0.9282231  1.83372439  1.5726154 -0.52065979  1.5826626 0.9233847
@@ -603,10 +609,10 @@ ma vengono <em>trattati</em> come se fossero indicatori di benessere (errore tip
 <section id="composito-1-solo-indicatori-coerenti-di-benessere-i1i4" class="slide level2">
 <h2>Composito 1: solo indicatori coerenti di benessere (i1–i4)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a>dat2<span class="sc">$</span>comp_wb <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(dat2[, <span class="fu">c</span>(<span class="st">"i1"</span>,<span class="st">"i2"</span>,<span class="st">"i3"</span>,<span class="st">"i4"</span>)])</span>
-<span id="cb29-2"><a href=""></a></span>
-<span id="cb29-3"><a href=""></a>t_wb <span class="ot">&lt;-</span> <span class="fu">t.test</span>(comp_wb <span class="sc">~</span> group, <span class="at">data =</span> dat2, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb29-4"><a href=""></a>t_wb<span class="sc">$</span>p.value</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a aria-label="1"></a>dat2<span class="sc">$</span>comp_wb <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(dat2[, <span class="fu">c</span>(<span class="st">"i1"</span>,<span class="st">"i2"</span>,<span class="st">"i3"</span>,<span class="st">"i4"</span>)])</span>
+<span id="cb29-2"><a aria-label="2"></a></span>
+<span id="cb29-3"><a aria-label="3"></a>t_wb <span class="ot">&lt;-</span> <span class="fu">t.test</span>(comp_wb <span class="sc">~</span> group, <span class="at">data =</span> dat2, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb29-4"><a aria-label="4"></a>t_wb<span class="sc">$</span>p.value</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.03693664</code></pre>
 </div>
@@ -616,7 +622,7 @@ ma vengono <em>trattati</em> come se fossero indicatori di benessere (errore tip
 
 <p>Troviamo un risultato “statisticamente significativo”.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href=""></a>t_wb<span class="sc">$</span>estimate</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a aria-label="1"></a>t_wb<span class="sc">$</span>estimate</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>mean in group A mean in group B 
      0.01487572      0.41892940 </code></pre>
@@ -627,11 +633,11 @@ ma vengono <em>trattati</em> come se fossero indicatori di benessere (errore tip
 <h2>Composito 2: includo anche indicatori di distress <em>senza</em> invertire (i1–i8)</h2>
 <p>Questo è un errore concettuale comune: si sommano indicatori di costrutti diversi.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a><span class="co"># NOTA: qui NON invertiamo i5-i8</span></span>
-<span id="cb33-2"><a href=""></a>dat2<span class="sc">$</span>comp_all <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(dat2[, <span class="fu">paste0</span>(<span class="st">"i"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>)])</span>
-<span id="cb33-3"><a href=""></a></span>
-<span id="cb33-4"><a href=""></a>t_all <span class="ot">&lt;-</span> <span class="fu">t.test</span>(comp_all <span class="sc">~</span> group, <span class="at">data =</span> dat2, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb33-5"><a href=""></a>t_all<span class="sc">$</span>p.value</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a aria-label="1"></a><span class="co"># NOTA: qui NON invertiamo i5-i8</span></span>
+<span id="cb33-2"><a aria-label="2"></a>dat2<span class="sc">$</span>comp_all <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(dat2[, <span class="fu">paste0</span>(<span class="st">"i"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>)])</span>
+<span id="cb33-3"><a aria-label="3"></a></span>
+<span id="cb33-4"><a aria-label="4"></a>t_all <span class="ot">&lt;-</span> <span class="fu">t.test</span>(comp_all <span class="sc">~</span> group, <span class="at">data =</span> dat2, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb33-5"><a aria-label="5"></a>t_all<span class="sc">$</span>p.value</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.07250516</code></pre>
 </div>
@@ -641,7 +647,7 @@ ma vengono <em>trattati</em> come se fossero indicatori di benessere (errore tip
 
 <p>Non troviamo un risultato “statisticamente significativo”.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a>t_all<span class="sc">$</span>estimate</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a aria-label="1"></a>t_all<span class="sc">$</span>estimate</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>mean in group A mean in group B 
       0.3549104       0.1321970 </code></pre>
@@ -652,10 +658,10 @@ ma vengono <em>trattati</em> come se fossero indicatori di benessere (errore tip
 <h2>Composito 3: subset “alternativo” che può ribaltare il segno (i1,i2,i5,i6)</h2>
 <p>Se metto insieme due indicatori di benessere con due indicatori di distress non invertiti, il composito può cambiare direzione.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href=""></a>dat2<span class="sc">$</span>comp_alt <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(dat2[, <span class="fu">c</span>(<span class="st">"i1"</span>,<span class="st">"i2"</span>,<span class="st">"i5"</span>,<span class="st">"i6"</span>)])</span>
-<span id="cb37-2"><a href=""></a></span>
-<span id="cb37-3"><a href=""></a>t_alt <span class="ot">&lt;-</span> <span class="fu">t.test</span>(comp_alt <span class="sc">~</span> group, <span class="at">data =</span> dat2, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb37-4"><a href=""></a>t_alt<span class="sc">$</span>p.value</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a aria-label="1"></a>dat2<span class="sc">$</span>comp_alt <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(dat2[, <span class="fu">c</span>(<span class="st">"i1"</span>,<span class="st">"i2"</span>,<span class="st">"i5"</span>,<span class="st">"i6"</span>)])</span>
+<span id="cb37-2"><a aria-label="2"></a></span>
+<span id="cb37-3"><a aria-label="3"></a>t_alt <span class="ot">&lt;-</span> <span class="fu">t.test</span>(comp_alt <span class="sc">~</span> group, <span class="at">data =</span> dat2, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb37-4"><a aria-label="4"></a>t_alt<span class="sc">$</span>p.value</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.04306083</code></pre>
 </div>
@@ -665,7 +671,7 @@ ma vengono <em>trattati</em> come se fossero indicatori di benessere (errore tip
 
 <p>Troviamo un risultato “statisticamente significativo” nella direzione opposta.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href=""></a>t_alt<span class="sc">$</span>estimate</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a aria-label="1"></a>t_alt<span class="sc">$</span>estimate</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>mean in group A mean in group B 
       0.4617416       0.1424345 </code></pre>
@@ -1410,6 +1416,7 @@ può solo quantificare l’incertezza dato un modello e scelte definite.</p>
 <p>Nella Lezione 28 passeremo alla pratica: un’<strong>esercitazione completa</strong> su un dataset psicologico reale, applicando l’intero flusso di lavoro riproducibile — dalla domanda di ricerca, attraverso la pulizia dei dati e il modello bayesiano, fino al report.</p>
 
 
+
 </section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
@@ -1419,19 +1426,19 @@ può solo quantificare l’incertezza dato un modello e scelte definite.</p>
 </div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="3_gradi_liberta_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="3_gradi_liberta_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="3_gradi_liberta_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="3_gradi_liberta_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="3_gradi_liberta_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="3_gradi_liberta_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="3_gradi_liberta_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="3_gradi_liberta_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="3_gradi_liberta_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="3_gradi_liberta_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -1734,7 +1741,7 @@ può solo quantificare l’incertezza dato un modello e scelte definite.</p>
         }
           var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
           var mailtoRegex = new RegExp(/^mailto:/);
-            var filterRegex = new RegExp('/' + window.location.host + '/');
+            var filterRegex = new RegExp("https:\/\/ccaudek\.github\.io\/psicometria_2026\/");
           var isInternal = (href) => {
               return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
           }

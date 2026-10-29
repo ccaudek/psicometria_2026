@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html lang="it"><head>
-<script src="verosimiglianza_2_files/libs/clipboard/clipboard.min.js"></script>
-<script src="verosimiglianza_2_files/libs/quarto-html/tabby.min.js"></script>
-<script src="verosimiglianza_2_files/libs/quarto-html/popper.min.js"></script>
-<script src="verosimiglianza_2_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="verosimiglianza_2_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="verosimiglianza_2_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="verosimiglianza_2_files/libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.27">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-5c1318cf63eba56dbef7ba16bc7d56f5.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
 
   <meta name="author" content="Corrado Caudek">
-  <title>La funzione di verosimiglianza</title>
+  <title>Psicometria 2025-26 – La funzione di verosimiglianza</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="verosimiglianza_2_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="verosimiglianza_2_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
   <style>
-    code{white-space: pre-wrap;}
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -95,11 +101,11 @@
     code span.vs { color: #032f62; } /* VerbatimString */
     code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="verosimiglianza_2_files/libs/revealjs/dist/theme/quarto-32eda4d62c2e25823ebe39cba2bb0a8e.css">
-  <link href="verosimiglianza_2_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="verosimiglianza_2_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="verosimiglianza_2_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="verosimiglianza_2_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-172e614ca6238f6067b3ffab71e7e169.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -199,7 +205,7 @@
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
+Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid" aria-label="ORCID profile for Corrado Caudek"> <img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
 </div>
 <div class="quarto-title-author-email">
 <a href="mailto:corrado.caudek@unifi.it">corrado.caudek@unifi.it</a>
@@ -210,7 +216,7 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
     </div>
 </div>
 
-  <p class="date">12 febbraio 2026</p>
+  <p class="date">29 ottobre 2026</p>
 </section>
 <section>
 <section id="dalla-formula-al-codice" class="title-slide slide level1 center" data-background-color="#e74c3c" style="color: white;">
@@ -257,8 +263,8 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
 <section id="i-nostri-dati" class="slide level2">
 <h2>I nostri dati</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>n <span class="ot">&lt;-</span> <span class="dv">12</span> <span class="co"># Numero totale di pazienti</span></span>
-<span id="cb1-2"><a href=""></a>y <span class="ot">&lt;-</span> <span class="dv">9</span> <span class="co"># Numero di successi (miglioramenti)</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-label="1"></a>n <span class="ot">&lt;-</span> <span class="dv">12</span> <span class="co"># Numero totale di pazienti</span></span>
+<span id="cb1-2"><a aria-label="2"></a>y <span class="ot">&lt;-</span> <span class="dv">9</span> <span class="co"># Numero di successi (miglioramenti)</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Obiettivo:</strong><br>
 calcolare e confrontare <span class="math inline">\(\mathcal{L}(\theta)\)</span> per diversi valori della probabilità di successo <span class="math inline">\(\theta\)</span>.</p>
@@ -288,8 +294,8 @@ P(Y = y \mid \theta) = \binom{n}{y} \theta^y (1-\theta)^{n-y}.
 <section id="calcolo-di-mathcalltheta-per-theta-0.5" class="slide level2">
 <h2>Calcolo di <span class="math inline">\(\mathcal{L}(\theta)\)</span> per <span class="math inline">\(\theta = 0.5\)</span></h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="co"># Verosimiglianza per theta = 0.5</span></span>
-<span id="cb2-2"><a href=""></a><span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">9</span>, <span class="at">size =</span> <span class="dv">12</span>, <span class="at">prob =</span> <span class="fl">0.5</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a aria-label="1"></a><span class="co"># Verosimiglianza per theta = 0.5</span></span>
+<span id="cb2-2"><a aria-label="2"></a><span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">9</span>, <span class="at">size =</span> <span class="dv">12</span>, <span class="at">prob =</span> <span class="fl">0.5</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.05371094</code></pre>
 </div>
@@ -302,8 +308,8 @@ P(Y = y \mid \theta) = \binom{n}{y} \theta^y (1-\theta)^{n-y}.
 <section id="calcolo-di-mathcalltheta-per-theta-0.75" class="slide level2">
 <h2>Calcolo di <span class="math inline">\(\mathcal{L}(\theta)\)</span> per <span class="math inline">\(\theta = 0.75\)</span></h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="co"># Verosimiglianza per theta = 0.75</span></span>
-<span id="cb4-2"><a href=""></a><span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">9</span>, <span class="at">size =</span> <span class="dv">12</span>, <span class="at">prob =</span> <span class="fl">0.75</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a aria-label="1"></a><span class="co"># Verosimiglianza per theta = 0.75</span></span>
+<span id="cb4-2"><a aria-label="2"></a><span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">9</span>, <span class="at">size =</span> <span class="dv">12</span>, <span class="at">prob =</span> <span class="fl">0.75</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.2581036</code></pre>
 </div>
@@ -317,15 +323,15 @@ P(Y = y \mid \theta) = \binom{n}{y} \theta^y (1-\theta)^{n-y}.
 <section id="confronto-di-tre-valori" class="slide level2">
 <h2>Confronto di tre valori</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">dbinom</span>(<span class="dv">9</span>, <span class="dv">12</span>, <span class="at">prob =</span> <span class="fl">0.5</span>)   <span class="co"># theta = 0.5</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a aria-label="1"></a><span class="fu">dbinom</span>(<span class="dv">9</span>, <span class="dv">12</span>, <span class="at">prob =</span> <span class="fl">0.5</span>)   <span class="co"># theta = 0.5</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.05371094</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="fu">dbinom</span>(<span class="dv">9</span>, <span class="dv">12</span>, <span class="at">prob =</span> <span class="fl">0.75</span>)  <span class="co"># theta = 0.75</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a aria-label="1"></a><span class="fu">dbinom</span>(<span class="dv">9</span>, <span class="dv">12</span>, <span class="at">prob =</span> <span class="fl">0.75</span>)  <span class="co"># theta = 0.75</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.2581036</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="fu">dbinom</span>(<span class="dv">9</span>, <span class="dv">12</span>, <span class="at">prob =</span> <span class="fl">0.9</span>)   <span class="co"># theta = 0.9</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a aria-label="1"></a><span class="fu">dbinom</span>(<span class="dv">9</span>, <span class="dv">12</span>, <span class="at">prob =</span> <span class="fl">0.9</span>)   <span class="co"># theta = 0.9</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.08523251</code></pre>
 </div>
@@ -356,19 +362,19 @@ P(Y = y \mid \theta) = \binom{n}{y} \theta^y (1-\theta)^{n-y}.
 <section id="passo-1-creare-una-sequenza-di-valori" class="slide level2">
 <h2>Passo 1: creare una sequenza di valori</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="co"># Valori di theta da 0 a 1, a intervalli di 0.01</span></span>
-<span id="cb12-2"><a href=""></a>theta <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">1</span>, <span class="at">by =</span> <span class="fl">0.01</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a aria-label="1"></a><span class="co"># Valori di theta da 0 a 1, a intervalli di 0.01</span></span>
+<span id="cb12-2"><a aria-label="2"></a>theta <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">1</span>, <span class="at">by =</span> <span class="fl">0.01</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a><span class="co"># Esaminiamo i primi 10 valori</span></span>
-<span id="cb13-2"><a href=""></a>theta[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a aria-label="1"></a><span class="co"># Esaminiamo i primi 10 valori</span></span>
+<span id="cb13-2"><a aria-label="2"></a>theta[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] 0.00 0.01 0.02 0.03 0.04 0.05 0.06 0.07 0.08 0.09</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a><span class="co"># Quanti valori abbiamo?</span></span>
-<span id="cb15-2"><a href=""></a><span class="fu">length</span>(theta)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a aria-label="1"></a><span class="co"># Quanti valori abbiamo?</span></span>
+<span id="cb15-2"><a aria-label="2"></a><span class="fu">length</span>(theta)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 101</code></pre>
 </div>
@@ -380,12 +386,12 @@ P(Y = y \mid \theta) = \binom{n}{y} \theta^y (1-\theta)^{n-y}.
 <p>Ora che abbiamo creato un vettore <code>theta</code> (che va da 0 a 1), possiamo calcolare l’intera funzione di verosimiglianza in un unico passaggio.</p>
 <p>Il calcolo vettoriale in R:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a><span class="co"># Calcola la verosimiglianza per TUTTI i valori di theta</span></span>
-<span id="cb17-2"><a href=""></a>verosim <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">9</span>, <span class="at">size =</span> <span class="dv">12</span>, <span class="at">prob =</span> theta)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a aria-label="1"></a><span class="co"># Calcola la verosimiglianza per TUTTI i valori di theta</span></span>
+<span id="cb17-2"><a aria-label="2"></a>verosim <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">9</span>, <span class="at">size =</span> <span class="dv">12</span>, <span class="at">prob =</span> theta)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="co"># Prime 10 verosimiglianze</span></span>
-<span id="cb18-2"><a href=""></a><span class="fu">head</span>(verosim, <span class="dv">10</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a aria-label="1"></a><span class="co"># Prime 10 verosimiglianze</span></span>
+<span id="cb18-2"><a aria-label="2"></a><span class="fu">head</span>(verosim, <span class="dv">10</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] 0.000000e+00 2.134658e-16 1.060159e-13 3.952111e-12 5.102421e-11
  [6] 3.684033e-10 1.841482e-09 7.140915e-09 2.299302e-08 6.422875e-08</code></pre>
@@ -395,8 +401,8 @@ P(Y = y \mid \theta) = \binom{n}{y} \theta^y (1-\theta)^{n-y}.
 <section id="cosa-abbiamo-calcolato" class="slide level2">
 <h2>Cosa abbiamo calcolato?</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a><span class="co"># Dimensione: tanti valori di verosimiglianza quanti sono i valori di theta</span></span>
-<span id="cb20-2"><a href=""></a><span class="fu">length</span>(verosim)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a aria-label="1"></a><span class="co"># Dimensione: tanti valori di verosimiglianza quanti sono i valori di theta</span></span>
+<span id="cb20-2"><a aria-label="2"></a><span class="fu">length</span>(verosim)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 101</code></pre>
 </div>
@@ -413,15 +419,15 @@ P(Y = y \mid \theta) = \binom{n}{y} \theta^y (1-\theta)^{n-y}.
 <h2>Passo 3: disegnare il grafico</h2>
 <p>Ora abbiamo tutto ciò che serve per tracciare la curva di verosimiglianza completa.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb22-2"><a href=""></a>g1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(</span>
-<span id="cb22-3"><a href=""></a>  <span class="fu">data.frame</span>(<span class="at">theta =</span> theta, <span class="at">verosim =</span> verosim), </span>
-<span id="cb22-4"><a href=""></a>  <span class="fu">aes</span>(<span class="at">x =</span> theta, <span class="at">y =</span> verosim)) <span class="sc">+</span></span>
-<span id="cb22-5"><a href=""></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb22-6"><a href=""></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Theta (probabilità di successo)"</span>,</span>
-<span id="cb22-7"><a href=""></a>       <span class="at">y =</span> <span class="st">"Verosimiglianza"</span>,</span>
-<span id="cb22-8"><a href=""></a>       <span class="at">title =</span> <span class="st">"Funzione di verosimiglianza (9 successi su 12)"</span></span>
-<span id="cb22-9"><a href=""></a>  )</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a aria-label="1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb22-2"><a aria-label="2"></a>g1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(</span>
+<span id="cb22-3"><a aria-label="3"></a>  <span class="fu">data.frame</span>(<span class="at">theta =</span> theta, <span class="at">verosim =</span> verosim), </span>
+<span id="cb22-4"><a aria-label="4"></a>  <span class="fu">aes</span>(<span class="at">x =</span> theta, <span class="at">y =</span> verosim)) <span class="sc">+</span></span>
+<span id="cb22-5"><a aria-label="5"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb22-6"><a aria-label="6"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Theta (probabilità di successo)"</span>,</span>
+<span id="cb22-7"><a aria-label="7"></a>       <span class="at">y =</span> <span class="st">"Verosimiglianza"</span>,</span>
+<span id="cb22-8"><a aria-label="8"></a>       <span class="at">title =</span> <span class="st">"Funzione di verosimiglianza (9 successi su 12)"</span></span>
+<span id="cb22-9"><a aria-label="9"></a>  )</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
@@ -445,9 +451,9 @@ P(Y = y \mid \theta) = \binom{n}{y} \theta^y (1-\theta)^{n-y}.
 <section id="qual-è-il-valore-massimo-della-verosimiglianza" class="slide level2">
 <h2>Qual è il valore massimo della verosimiglianza?</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a><span class="co"># Il valore più alto che raggiunge la nostra curva</span></span>
-<span id="cb23-2"><a href=""></a>massimo_verosim <span class="ot">&lt;-</span> <span class="fu">max</span>(verosim)</span>
-<span id="cb23-3"><a href=""></a>massimo_verosim</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a aria-label="1"></a><span class="co"># Il valore più alto che raggiunge la nostra curva</span></span>
+<span id="cb23-2"><a aria-label="2"></a>massimo_verosim <span class="ot">&lt;-</span> <span class="fu">max</span>(verosim)</span>
+<span id="cb23-3"><a aria-label="3"></a>massimo_verosim</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.2581036</code></pre>
 </div>
@@ -462,10 +468,10 @@ P(Y = y \mid \theta) = \binom{n}{y} \theta^y (1-\theta)^{n-y}.
 <li>Dove si trova la cima (il <span class="math inline">\(\theta\)</span> corrispondente).</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a><span class="co"># which.max() ci dice DOVE si trova il massimo</span></span>
-<span id="cb25-2"><a href=""></a><span class="co"># Pensa: "which" = "quale", "max" = "massimo"</span></span>
-<span id="cb25-3"><a href=""></a>posizione_massimo <span class="ot">&lt;-</span> <span class="fu">which.max</span>(verosim)</span>
-<span id="cb25-4"><a href=""></a>posizione_massimo</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a aria-label="1"></a><span class="co"># which.max() ci dice DOVE si trova il massimo</span></span>
+<span id="cb25-2"><a aria-label="2"></a><span class="co"># Pensa: "which" = "quale", "max" = "massimo"</span></span>
+<span id="cb25-3"><a aria-label="3"></a>posizione_massimo <span class="ot">&lt;-</span> <span class="fu">which.max</span>(verosim)</span>
+<span id="cb25-4"><a aria-label="4"></a>posizione_massimo</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 76</code></pre>
 </div>
@@ -475,9 +481,9 @@ P(Y = y \mid \theta) = \binom{n}{y} \theta^y (1-\theta)^{n-y}.
 <section id="troviamo-il-vero-valore-di-theta" class="slide level2">
 <h2>Troviamo il vero valore di <span class="math inline">\(\theta\)</span></h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a><span class="co"># Prendiamo il θ che corrisponde a quella posizione</span></span>
-<span id="cb27-2"><a href=""></a>theta_massimo <span class="ot">&lt;-</span> theta[posizione_massimo]</span>
-<span id="cb27-3"><a href=""></a>theta_massimo</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a aria-label="1"></a><span class="co"># Prendiamo il θ che corrisponde a quella posizione</span></span>
+<span id="cb27-2"><a aria-label="2"></a>theta_massimo <span class="ot">&lt;-</span> theta[posizione_massimo]</span>
+<span id="cb27-3"><a aria-label="3"></a>theta_massimo</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.75</code></pre>
 </div>
@@ -521,21 +527,21 @@ Poi prendiamo il 76° valore da <code>theta</code>: è 0.75.</p>
 <section id="aggiungiamo-la-mle-al-grafico" class="slide level2">
 <h2>Aggiungiamo la MLE al grafico</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a><span class="co"># Creiamo un dataframe con i dati</span></span>
-<span id="cb29-2"><a href=""></a>dati <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">theta =</span> theta, <span class="at">verosim =</span> verosim)</span>
-<span id="cb29-3"><a href=""></a></span>
-<span id="cb29-4"><a href=""></a>g2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dati, <span class="fu">aes</span>(<span class="at">x =</span> theta, <span class="at">y =</span> verosim)) <span class="sc">+</span></span>
-<span id="cb29-5"><a href=""></a>  <span class="co"># Linea della curva di verosimiglianza</span></span>
-<span id="cb29-6"><a href=""></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb29-7"><a href=""></a>  <span class="co"># Linea verticale rossa tratteggiata alla MLE</span></span>
-<span id="cb29-8"><a href=""></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fl">0.75</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">size =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb29-9"><a href=""></a>  <span class="co"># Etichetta del testo</span></span>
-<span id="cb29-10"><a href=""></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fl">0.82</span>, <span class="at">y =</span> <span class="fl">0.2</span>, </span>
-<span id="cb29-11"><a href=""></a>           <span class="at">label =</span> <span class="st">"MLE = 0.75"</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb29-12"><a href=""></a>  <span class="co"># Titoli degli assi</span></span>
-<span id="cb29-13"><a href=""></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Theta"</span>, </span>
-<span id="cb29-14"><a href=""></a>       <span class="at">y =</span> <span class="st">"Verosimiglianza"</span>,</span>
-<span id="cb29-15"><a href=""></a>       <span class="at">title =</span> <span class="st">"Verosimiglianza con MLE evidenziata"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a aria-label="1"></a><span class="co"># Creiamo un dataframe con i dati</span></span>
+<span id="cb29-2"><a aria-label="2"></a>dati <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">theta =</span> theta, <span class="at">verosim =</span> verosim)</span>
+<span id="cb29-3"><a aria-label="3"></a></span>
+<span id="cb29-4"><a aria-label="4"></a>g2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dati, <span class="fu">aes</span>(<span class="at">x =</span> theta, <span class="at">y =</span> verosim)) <span class="sc">+</span></span>
+<span id="cb29-5"><a aria-label="5"></a>  <span class="co"># Linea della curva di verosimiglianza</span></span>
+<span id="cb29-6"><a aria-label="6"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb29-7"><a aria-label="7"></a>  <span class="co"># Linea verticale rossa tratteggiata alla MLE</span></span>
+<span id="cb29-8"><a aria-label="8"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fl">0.75</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">size =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb29-9"><a aria-label="9"></a>  <span class="co"># Etichetta del testo</span></span>
+<span id="cb29-10"><a aria-label="10"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fl">0.82</span>, <span class="at">y =</span> <span class="fl">0.2</span>, </span>
+<span id="cb29-11"><a aria-label="11"></a>           <span class="at">label =</span> <span class="st">"MLE = 0.75"</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb29-12"><a aria-label="12"></a>  <span class="co"># Titoli degli assi</span></span>
+<span id="cb29-13"><a aria-label="13"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Theta"</span>, </span>
+<span id="cb29-14"><a aria-label="14"></a>       <span class="at">y =</span> <span class="st">"Verosimiglianza"</span>,</span>
+<span id="cb29-15"><a aria-label="15"></a>       <span class="at">title =</span> <span class="st">"Verosimiglianza con MLE evidenziata"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
@@ -568,29 +574,29 @@ Poi prendiamo il 76° valore da <code>theta</code>: è 0.75.</p>
 <section id="calcolo" class="slide level2">
 <h2>Calcolo</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href=""></a><span class="co"># Caso 1: n = 12</span></span>
-<span id="cb30-2"><a href=""></a>verosim_12 <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">9</span>, <span class="dv">12</span>, <span class="at">prob =</span> theta)</span>
-<span id="cb30-3"><a href=""></a></span>
-<span id="cb30-4"><a href=""></a><span class="co"># Caso 2: n = 120</span></span>
-<span id="cb30-5"><a href=""></a>verosim_120 <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">90</span>, <span class="dv">120</span>, <span class="at">prob =</span> theta)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a aria-label="1"></a><span class="co"># Caso 1: n = 12</span></span>
+<span id="cb30-2"><a aria-label="2"></a>verosim_12 <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">9</span>, <span class="dv">12</span>, <span class="at">prob =</span> theta)</span>
+<span id="cb30-3"><a aria-label="3"></a></span>
+<span id="cb30-4"><a aria-label="4"></a><span class="co"># Caso 2: n = 120</span></span>
+<span id="cb30-5"><a aria-label="5"></a>verosim_120 <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">90</span>, <span class="dv">120</span>, <span class="at">prob =</span> theta)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="normalizziamo-per-confrontare" class="slide level2">
 <h2>Normalizziamo per confrontare</h2>
 <p>Dividiamo per il massimo (così entrambe hanno picco = 1):</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href=""></a>verosim_12_norm <span class="ot">&lt;-</span> verosim_12 <span class="sc">/</span> <span class="fu">max</span>(verosim_12)</span>
-<span id="cb31-2"><a href=""></a>verosim_120_norm <span class="ot">&lt;-</span> verosim_120 <span class="sc">/</span> <span class="fu">max</span>(verosim_120)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a aria-label="1"></a>verosim_12_norm <span class="ot">&lt;-</span> verosim_12 <span class="sc">/</span> <span class="fu">max</span>(verosim_12)</span>
+<span id="cb31-2"><a aria-label="2"></a>verosim_120_norm <span class="ot">&lt;-</span> verosim_120 <span class="sc">/</span> <span class="fu">max</span>(verosim_120)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="grafico-comparativo" class="slide level2">
 <h2>Grafico comparativo</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href=""></a><span class="fu">plot</span>(theta, verosim_12_norm, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
-<span id="cb32-2"><a href=""></a>     <span class="at">xlab =</span> <span class="st">"Theta"</span>, <span class="at">ylab =</span> <span class="st">"Verosimiglianza normalizzata"</span>,</span>
-<span id="cb32-3"><a href=""></a>     <span class="at">main =</span> <span class="st">"Effetto della dimensione del campione"</span>)</span>
-<span id="cb32-4"><a href=""></a><span class="fu">lines</span>(theta, verosim_120_norm, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb32-5"><a href=""></a><span class="fu">legend</span>(<span class="st">"topleft"</span>, <span class="fu">c</span>(<span class="st">"n = 12"</span>, <span class="st">"n = 120"</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"blue"</span>), <span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a aria-label="1"></a><span class="fu">plot</span>(theta, verosim_12_norm, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb32-2"><a aria-label="2"></a>     <span class="at">xlab =</span> <span class="st">"Theta"</span>, <span class="at">ylab =</span> <span class="st">"Verosimiglianza normalizzata"</span>,</span>
+<span id="cb32-3"><a aria-label="3"></a>     <span class="at">main =</span> <span class="st">"Effetto della dimensione del campione"</span>)</span>
+<span id="cb32-4"><a aria-label="4"></a><span class="fu">lines</span>(theta, verosim_120_norm, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb32-5"><a aria-label="5"></a><span class="fu">legend</span>(<span class="st">"topleft"</span>, <span class="fu">c</span>(<span class="st">"n = 12"</span>, <span class="st">"n = 120"</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"blue"</span>), <span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 
 </div>
 <img data-src="verosimiglianza_2_files/figure-revealjs/unnamed-chunk-21-1.png" width="960" class="r-stretch"></section>
@@ -653,20 +659,20 @@ Poi prendiamo il 76° valore da <code>theta</code>: è 0.75.</p>
 <section id="soluzione-esercizio-1-passo-1" class="slide level2">
 <h2>Soluzione Esercizio 1 — Passo 1</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a><span class="co"># Dati</span></span>
-<span id="cb33-2"><a href=""></a>n <span class="ot">&lt;-</span> <span class="dv">15</span></span>
-<span id="cb33-3"><a href=""></a>y <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb33-4"><a href=""></a></span>
-<span id="cb33-5"><a href=""></a><span class="co"># Verosimiglianze puntuali</span></span>
-<span id="cb33-6"><a href=""></a><span class="fu">dbinom</span>(y, n, <span class="at">prob =</span> <span class="fl">0.5</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a aria-label="1"></a><span class="co"># Dati</span></span>
+<span id="cb33-2"><a aria-label="2"></a>n <span class="ot">&lt;-</span> <span class="dv">15</span></span>
+<span id="cb33-3"><a aria-label="3"></a>y <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb33-4"><a aria-label="4"></a></span>
+<span id="cb33-5"><a aria-label="5"></a><span class="co"># Verosimiglianze puntuali</span></span>
+<span id="cb33-6"><a aria-label="6"></a><span class="fu">dbinom</span>(y, n, <span class="at">prob =</span> <span class="fl">0.5</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.09164429</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a><span class="fu">dbinom</span>(y, n, <span class="at">prob =</span> <span class="fl">0.6</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a aria-label="1"></a><span class="fu">dbinom</span>(y, n, <span class="at">prob =</span> <span class="fl">0.6</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.1859378</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href=""></a><span class="fu">dbinom</span>(y, n, <span class="at">prob =</span> <span class="fl">0.7</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a aria-label="1"></a><span class="fu">dbinom</span>(y, n, <span class="at">prob =</span> <span class="fl">0.7</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.2061304</code></pre>
 </div>
@@ -676,20 +682,20 @@ Poi prendiamo il 76° valore da <code>theta</code>: è 0.75.</p>
 <section id="soluzione-esercizio-1-passo-2" class="slide level2">
 <h2>Soluzione Esercizio 1 — Passo 2</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href=""></a>theta <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">by =</span> <span class="fl">0.01</span>)</span>
-<span id="cb39-2"><a href=""></a>verosim <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(y, n, <span class="at">prob =</span> theta)</span>
-<span id="cb39-3"><a href=""></a></span>
-<span id="cb39-4"><a href=""></a><span class="co"># Creazione del dataframe per ggplot</span></span>
-<span id="cb39-5"><a href=""></a>dati <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">theta =</span> theta, <span class="at">verosim =</span> verosim)</span>
-<span id="cb39-6"><a href=""></a></span>
-<span id="cb39-7"><a href=""></a><span class="co"># Grafico con ggplot2</span></span>
-<span id="cb39-8"><a href=""></a>g3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dati, <span class="fu">aes</span>(<span class="at">x =</span> theta, <span class="at">y =</span> verosim)) <span class="sc">+</span></span>
-<span id="cb39-9"><a href=""></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="dv">1</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
-<span id="cb39-10"><a href=""></a>  <span class="fu">labs</span>(</span>
-<span id="cb39-11"><a href=""></a>    <span class="at">x =</span> <span class="st">"Theta (probabilità di successo)"</span>,</span>
-<span id="cb39-12"><a href=""></a>    <span class="at">y =</span> <span class="st">"Verosimiglianza"</span>,</span>
-<span id="cb39-13"><a href=""></a>    <span class="at">title =</span> <span class="st">"Esercizio 1: 10 successi su 15"</span></span>
-<span id="cb39-14"><a href=""></a>  ) </span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a aria-label="1"></a>theta <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">by =</span> <span class="fl">0.01</span>)</span>
+<span id="cb39-2"><a aria-label="2"></a>verosim <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(y, n, <span class="at">prob =</span> theta)</span>
+<span id="cb39-3"><a aria-label="3"></a></span>
+<span id="cb39-4"><a aria-label="4"></a><span class="co"># Creazione del dataframe per ggplot</span></span>
+<span id="cb39-5"><a aria-label="5"></a>dati <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">theta =</span> theta, <span class="at">verosim =</span> verosim)</span>
+<span id="cb39-6"><a aria-label="6"></a></span>
+<span id="cb39-7"><a aria-label="7"></a><span class="co"># Grafico con ggplot2</span></span>
+<span id="cb39-8"><a aria-label="8"></a>g3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dati, <span class="fu">aes</span>(<span class="at">x =</span> theta, <span class="at">y =</span> verosim)) <span class="sc">+</span></span>
+<span id="cb39-9"><a aria-label="9"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="dv">1</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb39-10"><a aria-label="10"></a>  <span class="fu">labs</span>(</span>
+<span id="cb39-11"><a aria-label="11"></a>    <span class="at">x =</span> <span class="st">"Theta (probabilità di successo)"</span>,</span>
+<span id="cb39-12"><a aria-label="12"></a>    <span class="at">y =</span> <span class="st">"Verosimiglianza"</span>,</span>
+<span id="cb39-13"><a aria-label="13"></a>    <span class="at">title =</span> <span class="st">"Esercizio 1: 10 successi su 15"</span></span>
+<span id="cb39-14"><a aria-label="14"></a>  ) </span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
@@ -699,13 +705,13 @@ Poi prendiamo il 76° valore da <code>theta</code>: è 0.75.</p>
 <section id="soluzione-esercizio-1-passo-3" class="slide level2">
 <h2>Soluzione Esercizio 1 — Passo 3</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href=""></a><span class="co"># MLE</span></span>
-<span id="cb40-2"><a href=""></a>theta[<span class="fu">which.max</span>(verosim)]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a aria-label="1"></a><span class="co"># MLE</span></span>
+<span id="cb40-2"><a aria-label="2"></a>theta[<span class="fu">which.max</span>(verosim)]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.67</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href=""></a><span class="co"># Verifica</span></span>
-<span id="cb42-2"><a href=""></a>y <span class="sc">/</span> n</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a aria-label="1"></a><span class="co"># Verifica</span></span>
+<span id="cb42-2"><a aria-label="2"></a>y <span class="sc">/</span> n</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.6666667</code></pre>
 </div>
@@ -724,33 +730,33 @@ Poi prendiamo il 76° valore da <code>theta</code>: è 0.75.</p>
 <section id="soluzione-esercizio-2" class="slide level2">
 <h2>Soluzione Esercizio 2</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href=""></a>theta <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">by =</span> <span class="fl">0.01</span>)</span>
-<span id="cb44-2"><a href=""></a>verosim_A <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">8</span>, <span class="dv">20</span>, <span class="at">prob =</span> theta)</span>
-<span id="cb44-3"><a href=""></a>verosim_B <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">12</span>, <span class="dv">20</span>, <span class="at">prob =</span> theta)</span>
-<span id="cb44-4"><a href=""></a></span>
-<span id="cb44-5"><a href=""></a><span class="co"># Normalizzazione</span></span>
-<span id="cb44-6"><a href=""></a>verosim_A_norm <span class="ot">&lt;-</span> verosim_A <span class="sc">/</span> <span class="fu">max</span>(verosim_A)</span>
-<span id="cb44-7"><a href=""></a>verosim_B_norm <span class="ot">&lt;-</span> verosim_B <span class="sc">/</span> <span class="fu">max</span>(verosim_B)</span>
-<span id="cb44-8"><a href=""></a></span>
-<span id="cb44-9"><a href=""></a><span class="co"># Creazione del dataframe per ggplot</span></span>
-<span id="cb44-10"><a href=""></a>dati <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb44-11"><a href=""></a>  <span class="at">theta =</span> <span class="fu">rep</span>(theta, <span class="dv">2</span>),</span>
-<span id="cb44-12"><a href=""></a>  <span class="at">verosim =</span> <span class="fu">c</span>(verosim_A_norm, verosim_B_norm),</span>
-<span id="cb44-13"><a href=""></a>  <span class="at">gruppo =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"Gruppo A (8/20)"</span>, <span class="st">"Gruppo B (12/20)"</span>), <span class="at">each =</span> <span class="fu">length</span>(theta))</span>
-<span id="cb44-14"><a href=""></a>)</span>
-<span id="cb44-15"><a href=""></a></span>
-<span id="cb44-16"><a href=""></a><span class="co"># Grafico con ggplot2</span></span>
-<span id="cb44-17"><a href=""></a>g4 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dati, <span class="fu">aes</span>(<span class="at">x =</span> theta, <span class="at">y =</span> verosim, <span class="at">color =</span> gruppo)) <span class="sc">+</span></span>
-<span id="cb44-18"><a href=""></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
-<span id="cb44-19"><a href=""></a>  <span class="fu">scale_color_manual</span>(</span>
-<span id="cb44-20"><a href=""></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Gruppo A (8/20)"</span> <span class="ot">=</span> <span class="st">"black"</span>, <span class="st">"Gruppo B (12/20)"</span> <span class="ot">=</span> <span class="st">"blue"</span>)</span>
-<span id="cb44-21"><a href=""></a>  ) <span class="sc">+</span></span>
-<span id="cb44-22"><a href=""></a>  <span class="fu">labs</span>(</span>
-<span id="cb44-23"><a href=""></a>    <span class="at">x =</span> <span class="st">"Theta (probabilità di successo)"</span>,</span>
-<span id="cb44-24"><a href=""></a>    <span class="at">y =</span> <span class="st">"Verosimiglianza normalizzata"</span>,</span>
-<span id="cb44-25"><a href=""></a>    <span class="at">color =</span> <span class="st">"Gruppo"</span>,</span>
-<span id="cb44-26"><a href=""></a>    <span class="at">title =</span> <span class="st">"Confronto delle verosimiglianze normalizzate"</span></span>
-<span id="cb44-27"><a href=""></a>  ) </span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a aria-label="1"></a>theta <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">by =</span> <span class="fl">0.01</span>)</span>
+<span id="cb44-2"><a aria-label="2"></a>verosim_A <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">8</span>, <span class="dv">20</span>, <span class="at">prob =</span> theta)</span>
+<span id="cb44-3"><a aria-label="3"></a>verosim_B <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">12</span>, <span class="dv">20</span>, <span class="at">prob =</span> theta)</span>
+<span id="cb44-4"><a aria-label="4"></a></span>
+<span id="cb44-5"><a aria-label="5"></a><span class="co"># Normalizzazione</span></span>
+<span id="cb44-6"><a aria-label="6"></a>verosim_A_norm <span class="ot">&lt;-</span> verosim_A <span class="sc">/</span> <span class="fu">max</span>(verosim_A)</span>
+<span id="cb44-7"><a aria-label="7"></a>verosim_B_norm <span class="ot">&lt;-</span> verosim_B <span class="sc">/</span> <span class="fu">max</span>(verosim_B)</span>
+<span id="cb44-8"><a aria-label="8"></a></span>
+<span id="cb44-9"><a aria-label="9"></a><span class="co"># Creazione del dataframe per ggplot</span></span>
+<span id="cb44-10"><a aria-label="10"></a>dati <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb44-11"><a aria-label="11"></a>  <span class="at">theta =</span> <span class="fu">rep</span>(theta, <span class="dv">2</span>),</span>
+<span id="cb44-12"><a aria-label="12"></a>  <span class="at">verosim =</span> <span class="fu">c</span>(verosim_A_norm, verosim_B_norm),</span>
+<span id="cb44-13"><a aria-label="13"></a>  <span class="at">gruppo =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"Gruppo A (8/20)"</span>, <span class="st">"Gruppo B (12/20)"</span>), <span class="at">each =</span> <span class="fu">length</span>(theta))</span>
+<span id="cb44-14"><a aria-label="14"></a>)</span>
+<span id="cb44-15"><a aria-label="15"></a></span>
+<span id="cb44-16"><a aria-label="16"></a><span class="co"># Grafico con ggplot2</span></span>
+<span id="cb44-17"><a aria-label="17"></a>g4 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dati, <span class="fu">aes</span>(<span class="at">x =</span> theta, <span class="at">y =</span> verosim, <span class="at">color =</span> gruppo)) <span class="sc">+</span></span>
+<span id="cb44-18"><a aria-label="18"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb44-19"><a aria-label="19"></a>  <span class="fu">scale_color_manual</span>(</span>
+<span id="cb44-20"><a aria-label="20"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Gruppo A (8/20)"</span> <span class="ot">=</span> <span class="st">"black"</span>, <span class="st">"Gruppo B (12/20)"</span> <span class="ot">=</span> <span class="st">"blue"</span>)</span>
+<span id="cb44-21"><a aria-label="21"></a>  ) <span class="sc">+</span></span>
+<span id="cb44-22"><a aria-label="22"></a>  <span class="fu">labs</span>(</span>
+<span id="cb44-23"><a aria-label="23"></a>    <span class="at">x =</span> <span class="st">"Theta (probabilità di successo)"</span>,</span>
+<span id="cb44-24"><a aria-label="24"></a>    <span class="at">y =</span> <span class="st">"Verosimiglianza normalizzata"</span>,</span>
+<span id="cb44-25"><a aria-label="25"></a>    <span class="at">color =</span> <span class="st">"Gruppo"</span>,</span>
+<span id="cb44-26"><a aria-label="26"></a>    <span class="at">title =</span> <span class="st">"Confronto delle verosimiglianze normalizzate"</span></span>
+<span id="cb44-27"><a aria-label="27"></a>  ) </span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
@@ -777,32 +783,32 @@ Poi prendiamo il 76° valore da <code>theta</code>: è 0.75.</p>
 <section id="soluzione-esercizio-3" class="slide level2">
 <h2>Soluzione Esercizio 3</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href=""></a>verosim_T1 <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">4</span>, <span class="dv">10</span>, <span class="at">prob =</span> theta)</span>
-<span id="cb45-2"><a href=""></a>verosim_T2 <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">7</span>, <span class="dv">10</span>, <span class="at">prob =</span> theta)</span>
-<span id="cb45-3"><a href=""></a></span>
-<span id="cb45-4"><a href=""></a><span class="co"># Normalizzazione</span></span>
-<span id="cb45-5"><a href=""></a>verosim_T1_norm <span class="ot">&lt;-</span> verosim_T1 <span class="sc">/</span> <span class="fu">max</span>(verosim_T1)</span>
-<span id="cb45-6"><a href=""></a>verosim_T2_norm <span class="ot">&lt;-</span> verosim_T2 <span class="sc">/</span> <span class="fu">max</span>(verosim_T2)</span>
-<span id="cb45-7"><a href=""></a></span>
-<span id="cb45-8"><a href=""></a><span class="co"># Creazione del dataframe per ggplot</span></span>
-<span id="cb45-9"><a href=""></a>dati <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb45-10"><a href=""></a>  <span class="at">theta =</span> <span class="fu">rep</span>(theta, <span class="dv">2</span>),</span>
-<span id="cb45-11"><a href=""></a>  <span class="at">verosim =</span> <span class="fu">c</span>(verosim_T1_norm, verosim_T2_norm),</span>
-<span id="cb45-12"><a href=""></a>  <span class="at">gruppo =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"T1 (4/10)"</span>, <span class="st">"T2 (7/10)"</span>), <span class="at">each =</span> <span class="fu">length</span>(theta))</span>
-<span id="cb45-13"><a href=""></a>)</span>
-<span id="cb45-14"><a href=""></a></span>
-<span id="cb45-15"><a href=""></a><span class="co"># Grafico con ggplot2</span></span>
-<span id="cb45-16"><a href=""></a>g5 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dati, <span class="fu">aes</span>(<span class="at">x =</span> theta, <span class="at">y =</span> verosim, <span class="at">color =</span> gruppo)) <span class="sc">+</span></span>
-<span id="cb45-17"><a href=""></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
-<span id="cb45-18"><a href=""></a>  <span class="fu">scale_color_manual</span>(</span>
-<span id="cb45-19"><a href=""></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"T1 (4/10)"</span> <span class="ot">=</span> <span class="st">"black"</span>, <span class="st">"T2 (7/10)"</span> <span class="ot">=</span> <span class="st">"blue"</span>)</span>
-<span id="cb45-20"><a href=""></a>  ) <span class="sc">+</span></span>
-<span id="cb45-21"><a href=""></a>  <span class="fu">labs</span>(</span>
-<span id="cb45-22"><a href=""></a>    <span class="at">x =</span> <span class="st">"Theta (probabilità di successo)"</span>,</span>
-<span id="cb45-23"><a href=""></a>    <span class="at">y =</span> <span class="st">"Verosimiglianza normalizzata"</span>,</span>
-<span id="cb45-24"><a href=""></a>    <span class="at">color =</span> <span class="st">"Gruppo"</span>,</span>
-<span id="cb45-25"><a href=""></a>    <span class="at">title =</span> <span class="st">"Prima e dopo l'intervento"</span></span>
-<span id="cb45-26"><a href=""></a>  )</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a aria-label="1"></a>verosim_T1 <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">4</span>, <span class="dv">10</span>, <span class="at">prob =</span> theta)</span>
+<span id="cb45-2"><a aria-label="2"></a>verosim_T2 <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">7</span>, <span class="dv">10</span>, <span class="at">prob =</span> theta)</span>
+<span id="cb45-3"><a aria-label="3"></a></span>
+<span id="cb45-4"><a aria-label="4"></a><span class="co"># Normalizzazione</span></span>
+<span id="cb45-5"><a aria-label="5"></a>verosim_T1_norm <span class="ot">&lt;-</span> verosim_T1 <span class="sc">/</span> <span class="fu">max</span>(verosim_T1)</span>
+<span id="cb45-6"><a aria-label="6"></a>verosim_T2_norm <span class="ot">&lt;-</span> verosim_T2 <span class="sc">/</span> <span class="fu">max</span>(verosim_T2)</span>
+<span id="cb45-7"><a aria-label="7"></a></span>
+<span id="cb45-8"><a aria-label="8"></a><span class="co"># Creazione del dataframe per ggplot</span></span>
+<span id="cb45-9"><a aria-label="9"></a>dati <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb45-10"><a aria-label="10"></a>  <span class="at">theta =</span> <span class="fu">rep</span>(theta, <span class="dv">2</span>),</span>
+<span id="cb45-11"><a aria-label="11"></a>  <span class="at">verosim =</span> <span class="fu">c</span>(verosim_T1_norm, verosim_T2_norm),</span>
+<span id="cb45-12"><a aria-label="12"></a>  <span class="at">gruppo =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"T1 (4/10)"</span>, <span class="st">"T2 (7/10)"</span>), <span class="at">each =</span> <span class="fu">length</span>(theta))</span>
+<span id="cb45-13"><a aria-label="13"></a>)</span>
+<span id="cb45-14"><a aria-label="14"></a></span>
+<span id="cb45-15"><a aria-label="15"></a><span class="co"># Grafico con ggplot2</span></span>
+<span id="cb45-16"><a aria-label="16"></a>g5 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dati, <span class="fu">aes</span>(<span class="at">x =</span> theta, <span class="at">y =</span> verosim, <span class="at">color =</span> gruppo)) <span class="sc">+</span></span>
+<span id="cb45-17"><a aria-label="17"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb45-18"><a aria-label="18"></a>  <span class="fu">scale_color_manual</span>(</span>
+<span id="cb45-19"><a aria-label="19"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"T1 (4/10)"</span> <span class="ot">=</span> <span class="st">"black"</span>, <span class="st">"T2 (7/10)"</span> <span class="ot">=</span> <span class="st">"blue"</span>)</span>
+<span id="cb45-20"><a aria-label="20"></a>  ) <span class="sc">+</span></span>
+<span id="cb45-21"><a aria-label="21"></a>  <span class="fu">labs</span>(</span>
+<span id="cb45-22"><a aria-label="22"></a>    <span class="at">x =</span> <span class="st">"Theta (probabilità di successo)"</span>,</span>
+<span id="cb45-23"><a aria-label="23"></a>    <span class="at">y =</span> <span class="st">"Verosimiglianza normalizzata"</span>,</span>
+<span id="cb45-24"><a aria-label="24"></a>    <span class="at">color =</span> <span class="st">"Gruppo"</span>,</span>
+<span id="cb45-25"><a aria-label="25"></a>    <span class="at">title =</span> <span class="st">"Prima e dopo l'intervento"</span></span>
+<span id="cb45-26"><a aria-label="26"></a>  )</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
@@ -827,15 +833,15 @@ Poi prendiamo il 76° valore da <code>theta</code>: è 0.75.</p>
 <h2>Perché il logaritmo?</h2>
 <p>Quando i campioni sono grandi, la verosimiglianza diventa un numero <strong>molto piccolo</strong>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href=""></a><span class="co"># Con n = 100</span></span>
-<span id="cb46-2"><a href=""></a><span class="fu">dbinom</span>(<span class="dv">75</span>, <span class="dv">100</span>, <span class="at">prob =</span> <span class="fl">0.75</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a aria-label="1"></a><span class="co"># Con n = 100</span></span>
+<span id="cb46-2"><a aria-label="2"></a><span class="fu">dbinom</span>(<span class="dv">75</span>, <span class="dv">100</span>, <span class="at">prob =</span> <span class="fl">0.75</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.09179969</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href=""></a><span class="co"># Con n = 10000</span></span>
-<span id="cb48-2"><a href=""></a><span class="fu">dbinom</span>(<span class="dv">7500</span>, <span class="dv">10000</span>, <span class="at">prob =</span> <span class="fl">0.75</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a aria-label="1"></a><span class="co"># Con n = 10000</span></span>
+<span id="cb48-2"><a aria-label="2"></a><span class="fu">dbinom</span>(<span class="dv">7500</span>, <span class="dv">10000</span>, <span class="at">prob =</span> <span class="fl">0.75</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.009212845</code></pre>
 </div>
@@ -845,15 +851,15 @@ Poi prendiamo il 76° valore da <code>theta</code>: è 0.75.</p>
 <section id="la-soluzione-log-verosimiglianza" class="slide level2">
 <h2>La soluzione: log-verosimiglianza</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href=""></a><span class="co"># Log-verosimiglianza</span></span>
-<span id="cb50-2"><a href=""></a><span class="fu">log</span>(<span class="fu">dbinom</span>(<span class="dv">7500</span>, <span class="dv">10000</span>, <span class="at">prob =</span> <span class="fl">0.75</span>))</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a aria-label="1"></a><span class="co"># Log-verosimiglianza</span></span>
+<span id="cb50-2"><a aria-label="2"></a><span class="fu">log</span>(<span class="fu">dbinom</span>(<span class="dv">7500</span>, <span class="dv">10000</span>, <span class="at">prob =</span> <span class="fl">0.75</span>))</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -4.687157</code></pre>
 </div>
 </div>
 <p>Oppure direttamente con <code>log = TRUE</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href=""></a><span class="fu">dbinom</span>(<span class="dv">7500</span>, <span class="dv">10000</span>, <span class="at">prob =</span> <span class="fl">0.75</span>, <span class="at">log =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a aria-label="1"></a><span class="fu">dbinom</span>(<span class="dv">7500</span>, <span class="dv">10000</span>, <span class="at">prob =</span> <span class="fl">0.75</span>, <span class="at">log =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -4.687157</code></pre>
 </div>
@@ -863,28 +869,28 @@ Poi prendiamo il 76° valore da <code>theta</code>: è 0.75.</p>
 <section id="grafico-della-log-verosimiglianza" class="slide level2">
 <h2>Grafico della log-verosimiglianza</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href=""></a>theta <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">0.01</span>, <span class="fl">0.99</span>, <span class="at">by =</span> <span class="fl">0.01</span>)  <span class="co"># Evita log(0)</span></span>
-<span id="cb54-2"><a href=""></a>loglik <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">9</span>, <span class="dv">12</span>, <span class="at">prob =</span> theta, <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb54-3"><a href=""></a></span>
-<span id="cb54-4"><a href=""></a><span class="co"># Creazione del dataframe per ggplot</span></span>
-<span id="cb54-5"><a href=""></a>dati <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">theta =</span> theta, <span class="at">loglik =</span> loglik)</span>
-<span id="cb54-6"><a href=""></a></span>
-<span id="cb54-7"><a href=""></a><span class="co"># Calcolo della MLE (massima log-verosimiglianza)</span></span>
-<span id="cb54-8"><a href=""></a>mle_theta <span class="ot">&lt;-</span> theta[<span class="fu">which.max</span>(loglik)]</span>
-<span id="cb54-9"><a href=""></a></span>
-<span id="cb54-10"><a href=""></a><span class="co"># Grafico base</span></span>
-<span id="cb54-11"><a href=""></a>g6 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dati, <span class="fu">aes</span>(<span class="at">x =</span> theta, <span class="at">y =</span> loglik)) <span class="sc">+</span></span>
-<span id="cb54-12"><a href=""></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">1.2</span>, <span class="at">color =</span> <span class="st">"darkgreen"</span>) <span class="sc">+</span></span>
-<span id="cb54-13"><a href=""></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> mle_theta, <span class="at">linetype =</span> <span class="st">"dashed"</span>, </span>
-<span id="cb54-14"><a href=""></a>             <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb54-15"><a href=""></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> mle_theta <span class="sc">+</span> <span class="fl">0.07</span>, <span class="at">y =</span> <span class="fu">max</span>(loglik) <span class="sc">-</span> <span class="fl">1.75</span>,</span>
-<span id="cb54-16"><a href=""></a>           <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"MLE = "</span>, <span class="fu">round</span>(mle_theta, <span class="dv">3</span>)),</span>
-<span id="cb54-17"><a href=""></a>           <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb54-18"><a href=""></a>  <span class="fu">labs</span>(</span>
-<span id="cb54-19"><a href=""></a>    <span class="at">x =</span> <span class="st">"Theta (probabilità di successo)"</span>,</span>
-<span id="cb54-20"><a href=""></a>    <span class="at">y =</span> <span class="st">"Log-verosimiglianza"</span>,</span>
-<span id="cb54-21"><a href=""></a>    <span class="at">title =</span> <span class="st">"Log-verosimiglianza per 9 successi su 12"</span></span>
-<span id="cb54-22"><a href=""></a>  )</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a aria-label="1"></a>theta <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">0.01</span>, <span class="fl">0.99</span>, <span class="at">by =</span> <span class="fl">0.01</span>)  <span class="co"># Evita log(0)</span></span>
+<span id="cb54-2"><a aria-label="2"></a>loglik <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">9</span>, <span class="dv">12</span>, <span class="at">prob =</span> theta, <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb54-3"><a aria-label="3"></a></span>
+<span id="cb54-4"><a aria-label="4"></a><span class="co"># Creazione del dataframe per ggplot</span></span>
+<span id="cb54-5"><a aria-label="5"></a>dati <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">theta =</span> theta, <span class="at">loglik =</span> loglik)</span>
+<span id="cb54-6"><a aria-label="6"></a></span>
+<span id="cb54-7"><a aria-label="7"></a><span class="co"># Calcolo della MLE (massima log-verosimiglianza)</span></span>
+<span id="cb54-8"><a aria-label="8"></a>mle_theta <span class="ot">&lt;-</span> theta[<span class="fu">which.max</span>(loglik)]</span>
+<span id="cb54-9"><a aria-label="9"></a></span>
+<span id="cb54-10"><a aria-label="10"></a><span class="co"># Grafico base</span></span>
+<span id="cb54-11"><a aria-label="11"></a>g6 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dati, <span class="fu">aes</span>(<span class="at">x =</span> theta, <span class="at">y =</span> loglik)) <span class="sc">+</span></span>
+<span id="cb54-12"><a aria-label="12"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">1.2</span>, <span class="at">color =</span> <span class="st">"darkgreen"</span>) <span class="sc">+</span></span>
+<span id="cb54-13"><a aria-label="13"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> mle_theta, <span class="at">linetype =</span> <span class="st">"dashed"</span>, </span>
+<span id="cb54-14"><a aria-label="14"></a>             <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb54-15"><a aria-label="15"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> mle_theta <span class="sc">+</span> <span class="fl">0.07</span>, <span class="at">y =</span> <span class="fu">max</span>(loglik) <span class="sc">-</span> <span class="fl">1.75</span>,</span>
+<span id="cb54-16"><a aria-label="16"></a>           <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"MLE = "</span>, <span class="fu">round</span>(mle_theta, <span class="dv">3</span>)),</span>
+<span id="cb54-17"><a aria-label="17"></a>           <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb54-18"><a aria-label="18"></a>  <span class="fu">labs</span>(</span>
+<span id="cb54-19"><a aria-label="19"></a>    <span class="at">x =</span> <span class="st">"Theta (probabilità di successo)"</span>,</span>
+<span id="cb54-20"><a aria-label="20"></a>    <span class="at">y =</span> <span class="st">"Log-verosimiglianza"</span>,</span>
+<span id="cb54-21"><a aria-label="21"></a>    <span class="at">title =</span> <span class="st">"Log-verosimiglianza per 9 successi su 12"</span></span>
+<span id="cb54-22"><a aria-label="22"></a>  )</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
@@ -895,7 +901,7 @@ Poi prendiamo il 76° valore da <code>theta</code>: è 0.75.</p>
 <h2>Proprietà importante</h2>
 <p>Il <strong>massimo</strong> della log-verosimiglianza è nello stesso punto del massimo della verosimiglianza.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href=""></a>theta[<span class="fu">which.max</span>(loglik)]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a aria-label="1"></a>theta[<span class="fu">which.max</span>(loglik)]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.75</code></pre>
 </div>
@@ -978,6 +984,7 @@ Poi prendiamo il 76° valore da <code>theta</code>: è 0.75.</p>
 <p>Prior, verosimiglianza e posterior: come combinare conoscenze pregresse con i dati.</p>
 
 
+
 </section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
@@ -987,19 +994,19 @@ Poi prendiamo il 76° valore da <code>theta</code>: è 0.75.</p>
 </div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="verosimiglianza_2_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="verosimiglianza_2_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="verosimiglianza_2_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="verosimiglianza_2_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="verosimiglianza_2_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="verosimiglianza_2_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="verosimiglianza_2_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="verosimiglianza_2_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="verosimiglianza_2_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="verosimiglianza_2_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -1302,7 +1309,7 @@ Poi prendiamo il 76° valore da <code>theta</code>: è 0.75.</p>
         }
           var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
           var mailtoRegex = new RegExp(/^mailto:/);
-            var filterRegex = new RegExp('/' + window.location.host + '/');
+            var filterRegex = new RegExp("https:\/\/ccaudek\.github\.io\/psicometria_2026\/");
           var isInternal = (href) => {
               return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
           }

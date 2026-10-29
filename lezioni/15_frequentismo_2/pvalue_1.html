@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html lang="it"><head>
-<script src="pvalue_1_files/libs/clipboard/clipboard.min.js"></script>
-<script src="pvalue_1_files/libs/quarto-html/tabby.min.js"></script>
-<script src="pvalue_1_files/libs/quarto-html/popper.min.js"></script>
-<script src="pvalue_1_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="pvalue_1_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="pvalue_1_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="pvalue_1_files/libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.27">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-5c1318cf63eba56dbef7ba16bc7d56f5.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
 
   <meta name="author" content="Corrado Caudek">
-  <title>Il valore-p e l’intervallo di confidenza</title>
+  <title>Psicometria 2025-26 – Il valore-p e l’intervallo di confidenza</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="pvalue_1_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="pvalue_1_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
   <style>
-    code{white-space: pre-wrap;}
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -95,11 +101,11 @@
     code span.vs { color: #032f62; } /* VerbatimString */
     code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="pvalue_1_files/libs/revealjs/dist/theme/quarto-32eda4d62c2e25823ebe39cba2bb0a8e.css">
-  <link href="pvalue_1_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="pvalue_1_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="pvalue_1_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="pvalue_1_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-172e614ca6238f6067b3ffab71e7e169.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -199,7 +205,7 @@
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
+Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid" aria-label="ORCID profile for Corrado Caudek"> <img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
 </div>
 <div class="quarto-title-author-email">
 <a href="mailto:corrado.caudek@unifi.it">corrado.caudek@unifi.it</a>
@@ -210,7 +216,7 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
     </div>
 </div>
 
-  <p class="date">12 febbraio 2026</p>
+  <p class="date">29 ottobre 2026</p>
 </section>
 <section>
 <section id="il-numero-più-frainteso-della-scienza" class="title-slide slide level1 center" data-background-color="#e74c3c" style="color: white;">
@@ -279,17 +285,17 @@ p = P(\text{dati così estremi o più} \mid \text{H}_0 \text{ vera})
 <h2>Un esempio concreto</h2>
 <p><strong>Studio:</strong> confrontiamo l’efficacia di un nuovo training per la regolazione emotiva rispetto a un gruppo di controllo in 60 studenti con ansia (30 partecipanti per gruppo).</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="co"># Simuliamo i dati</span></span>
-<span id="cb1-2"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb1-3"><a href=""></a>n <span class="ot">&lt;-</span> <span class="dv">30</span></span>
-<span id="cb1-4"><a href=""></a></span>
-<span id="cb1-5"><a href=""></a><span class="co"># Supponiamo che il training abbia un effetto reale di 5 punti</span></span>
-<span id="cb1-6"><a href=""></a>controllo <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> <span class="dv">50</span>, <span class="at">sd =</span> <span class="dv">10</span>)  <span class="co"># Media ansia gruppo controllo</span></span>
-<span id="cb1-7"><a href=""></a>training <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> <span class="dv">45</span>, <span class="at">sd =</span> <span class="dv">10</span>)   <span class="co"># Media ansia gruppo training</span></span>
-<span id="cb1-8"><a href=""></a></span>
-<span id="cb1-9"><a href=""></a><span class="co"># Differenza osservata</span></span>
-<span id="cb1-10"><a href=""></a>diff_osservata <span class="ot">&lt;-</span> <span class="fu">mean</span>(controllo) <span class="sc">-</span> <span class="fu">mean</span>(training)</span>
-<span id="cb1-11"><a href=""></a><span class="fu">cat</span>(<span class="st">"Differenza osservata:"</span>, <span class="fu">round</span>(diff_osservata, <span class="dv">2</span>), <span class="st">"punti</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-label="1"></a><span class="co"># Simuliamo i dati</span></span>
+<span id="cb1-2"><a aria-label="2"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb1-3"><a aria-label="3"></a>n <span class="ot">&lt;-</span> <span class="dv">30</span></span>
+<span id="cb1-4"><a aria-label="4"></a></span>
+<span id="cb1-5"><a aria-label="5"></a><span class="co"># Supponiamo che il training abbia un effetto reale di 5 punti</span></span>
+<span id="cb1-6"><a aria-label="6"></a>controllo <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> <span class="dv">50</span>, <span class="at">sd =</span> <span class="dv">10</span>)  <span class="co"># Media ansia gruppo controllo</span></span>
+<span id="cb1-7"><a aria-label="7"></a>training <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> <span class="dv">45</span>, <span class="at">sd =</span> <span class="dv">10</span>)   <span class="co"># Media ansia gruppo training</span></span>
+<span id="cb1-8"><a aria-label="8"></a></span>
+<span id="cb1-9"><a aria-label="9"></a><span class="co"># Differenza osservata</span></span>
+<span id="cb1-10"><a aria-label="10"></a>diff_osservata <span class="ot">&lt;-</span> <span class="fu">mean</span>(controllo) <span class="sc">-</span> <span class="fu">mean</span>(training)</span>
+<span id="cb1-11"><a aria-label="11"></a><span class="fu">cat</span>(<span class="st">"Differenza osservata:"</span>, <span class="fu">round</span>(diff_osservata, <span class="dv">2</span>), <span class="st">"punti</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Differenza osservata: 2.75 punti</code></pre>
 </div>
@@ -298,9 +304,9 @@ p = P(\text{dati così estremi o più} \mid \text{H}_0 \text{ vera})
 <section id="calcoliamo-il-valore-p" class="slide level2">
 <h2>Calcoliamo il valore-<span class="math inline">\(p\)</span></h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="co"># Test t per campioni indipendenti</span></span>
-<span id="cb3-2"><a href=""></a>risultato <span class="ot">&lt;-</span> <span class="fu">t.test</span>(controllo, training)</span>
-<span id="cb3-3"><a href=""></a>risultato</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a aria-label="1"></a><span class="co"># Test t per campioni indipendenti</span></span>
+<span id="cb3-2"><a aria-label="2"></a>risultato <span class="ot">&lt;-</span> <span class="fu">t.test</span>(controllo, training)</span>
+<span id="cb3-3"><a aria-label="3"></a>risultato</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Welch Two Sample t-test
@@ -448,20 +454,20 @@ p = P(|T| \ge |t_{\text{osservato}}| \mid H_0).
 <section class="slide level2">
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="co"># Due studi con lo stesso effetto, diversa numerosità</span></span>
-<span id="cb5-2"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
-<span id="cb5-3"><a href=""></a></span>
-<span id="cb5-4"><a href=""></a><span class="co"># Studio piccolo: n = 20</span></span>
-<span id="cb5-5"><a href=""></a>piccolo <span class="ot">&lt;-</span> <span class="fu">t.test</span>(<span class="fu">rnorm</span>(<span class="dv">20</span>, <span class="fl">0.3</span>, <span class="dv">1</span>), <span class="at">mu =</span> <span class="dv">0</span>)</span>
-<span id="cb5-6"><a href=""></a></span>
-<span id="cb5-7"><a href=""></a><span class="co"># Studio grande: n = 200  </span></span>
-<span id="cb5-8"><a href=""></a>grande <span class="ot">&lt;-</span> <span class="fu">t.test</span>(<span class="fu">rnorm</span>(<span class="dv">200</span>, <span class="fl">0.3</span>, <span class="dv">1</span>), <span class="at">mu =</span> <span class="dv">0</span>)</span>
-<span id="cb5-9"><a href=""></a></span>
-<span id="cb5-10"><a href=""></a><span class="fu">cat</span>(<span class="st">"Studio piccolo (n=20): p ="</span>, <span class="fu">round</span>(piccolo<span class="sc">$</span>p.value, <span class="dv">4</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a aria-label="1"></a><span class="co"># Due studi con lo stesso effetto, diversa numerosità</span></span>
+<span id="cb5-2"><a aria-label="2"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb5-3"><a aria-label="3"></a></span>
+<span id="cb5-4"><a aria-label="4"></a><span class="co"># Studio piccolo: n = 20</span></span>
+<span id="cb5-5"><a aria-label="5"></a>piccolo <span class="ot">&lt;-</span> <span class="fu">t.test</span>(<span class="fu">rnorm</span>(<span class="dv">20</span>, <span class="fl">0.3</span>, <span class="dv">1</span>), <span class="at">mu =</span> <span class="dv">0</span>)</span>
+<span id="cb5-6"><a aria-label="6"></a></span>
+<span id="cb5-7"><a aria-label="7"></a><span class="co"># Studio grande: n = 200  </span></span>
+<span id="cb5-8"><a aria-label="8"></a>grande <span class="ot">&lt;-</span> <span class="fu">t.test</span>(<span class="fu">rnorm</span>(<span class="dv">200</span>, <span class="fl">0.3</span>, <span class="dv">1</span>), <span class="at">mu =</span> <span class="dv">0</span>)</span>
+<span id="cb5-9"><a aria-label="9"></a></span>
+<span id="cb5-10"><a aria-label="10"></a><span class="fu">cat</span>(<span class="st">"Studio piccolo (n=20): p ="</span>, <span class="fu">round</span>(piccolo<span class="sc">$</span>p.value, <span class="dv">4</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Studio piccolo (n=20): p = 0.1101 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Studio grande (n=200): p ="</span>, <span class="fu">round</span>(grande<span class="sc">$</span>p.value, <span class="dv">6</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Studio grande (n=200): p ="</span>, <span class="fu">round</span>(grande<span class="sc">$</span>p.value, <span class="dv">6</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Studio grande (n=200): p = 0.000406 </code></pre>
 </div>
@@ -656,18 +662,18 @@ p = P(|T| \ge |t_{\text{osservato}}| \mid H_0).
 <section id="esempio-un-effetto-minuscolo-ma-significativo" class="slide level2">
 <h2>Esempio: un effetto minuscolo ma “significativo”</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
-<span id="cb9-2"><a href=""></a></span>
-<span id="cb9-3"><a href=""></a><span class="co"># Effetto minuscolo: 0.1 punti su una scala 0-100</span></span>
-<span id="cb9-4"><a href=""></a>n_grande <span class="ot">&lt;-</span> <span class="dv">100000</span></span>
-<span id="cb9-5"><a href=""></a>gruppo_a <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_grande, <span class="at">mean =</span> <span class="fl">50.0</span>, <span class="at">sd =</span> <span class="dv">10</span>)</span>
-<span id="cb9-6"><a href=""></a>gruppo_b <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_grande, <span class="at">mean =</span> <span class="fl">50.1</span>, <span class="at">sd =</span> <span class="dv">10</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a aria-label="1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb9-2"><a aria-label="2"></a></span>
+<span id="cb9-3"><a aria-label="3"></a><span class="co"># Effetto minuscolo: 0.1 punti su una scala 0-100</span></span>
+<span id="cb9-4"><a aria-label="4"></a>n_grande <span class="ot">&lt;-</span> <span class="dv">100000</span></span>
+<span id="cb9-5"><a aria-label="5"></a>gruppo_a <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_grande, <span class="at">mean =</span> <span class="fl">50.0</span>, <span class="at">sd =</span> <span class="dv">10</span>)</span>
+<span id="cb9-6"><a aria-label="6"></a>gruppo_b <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_grande, <span class="at">mean =</span> <span class="fl">50.1</span>, <span class="at">sd =</span> <span class="dv">10</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="fu">t.test</span>(gruppo_a, gruppo_b)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a aria-label="1"></a><span class="fu">t.test</span>(gruppo_a, gruppo_b)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Welch Two Sample t-test
@@ -801,17 +807,17 @@ mean of x mean of y
 <h2>La potenza statistica</h2>
 <p>La <strong>potenza</strong> = 1 - <span class="math inline">\(\beta\)</span> = probabilità di rilevare un effetto <strong>quando è presente</strong>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="co"># Calcoliamo la potenza per diversi n</span></span>
-<span id="cb12-2"><a href=""></a><span class="fu">library</span>(pwr)</span>
-<span id="cb12-3"><a href=""></a></span>
-<span id="cb12-4"><a href=""></a>potenze <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="fu">c</span>(<span class="dv">20</span>, <span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">200</span>), <span class="cf">function</span>(n) {</span>
-<span id="cb12-5"><a href=""></a>  <span class="fu">pwr.t.test</span>(<span class="at">n =</span> n, <span class="at">d =</span> <span class="fl">0.5</span>, <span class="at">sig.level =</span> <span class="fl">0.05</span>, <span class="at">type =</span> <span class="st">"two.sample"</span>)<span class="sc">$</span>power</span>
-<span id="cb12-6"><a href=""></a>})</span>
-<span id="cb12-7"><a href=""></a></span>
-<span id="cb12-8"><a href=""></a><span class="fu">data.frame</span>(</span>
-<span id="cb12-9"><a href=""></a>  <span class="at">n_per_gruppo =</span> <span class="fu">c</span>(<span class="dv">20</span>, <span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">200</span>),</span>
-<span id="cb12-10"><a href=""></a>  <span class="at">potenza =</span> <span class="fu">round</span>(potenze, <span class="dv">2</span>)</span>
-<span id="cb12-11"><a href=""></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a aria-label="1"></a><span class="co"># Calcoliamo la potenza per diversi n</span></span>
+<span id="cb12-2"><a aria-label="2"></a><span class="fu">library</span>(pwr)</span>
+<span id="cb12-3"><a aria-label="3"></a></span>
+<span id="cb12-4"><a aria-label="4"></a>potenze <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="fu">c</span>(<span class="dv">20</span>, <span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">200</span>), <span class="cf">function</span>(n) {</span>
+<span id="cb12-5"><a aria-label="5"></a>  <span class="fu">pwr.t.test</span>(<span class="at">n =</span> n, <span class="at">d =</span> <span class="fl">0.5</span>, <span class="at">sig.level =</span> <span class="fl">0.05</span>, <span class="at">type =</span> <span class="st">"two.sample"</span>)<span class="sc">$</span>power</span>
+<span id="cb12-6"><a aria-label="6"></a>})</span>
+<span id="cb12-7"><a aria-label="7"></a></span>
+<span id="cb12-8"><a aria-label="8"></a><span class="fu">data.frame</span>(</span>
+<span id="cb12-9"><a aria-label="9"></a>  <span class="at">n_per_gruppo =</span> <span class="fu">c</span>(<span class="dv">20</span>, <span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">200</span>),</span>
+<span id="cb12-10"><a aria-label="10"></a>  <span class="at">potenza =</span> <span class="fu">round</span>(potenze, <span class="dv">2</span>)</span>
+<span id="cb12-11"><a aria-label="11"></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  n_per_gruppo potenza
 1           20    0.34
@@ -867,6 +873,7 @@ mean of x mean of y
 </ul>
 
 
+
 </section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
@@ -876,19 +883,19 @@ mean of x mean of y
 </div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="pvalue_1_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="pvalue_1_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="pvalue_1_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="pvalue_1_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="pvalue_1_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="pvalue_1_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="pvalue_1_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="pvalue_1_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="pvalue_1_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="pvalue_1_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -1191,7 +1198,7 @@ mean of x mean of y
         }
           var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
           var mailtoRegex = new RegExp(/^mailto:/);
-            var filterRegex = new RegExp('/' + window.location.host + '/');
+            var filterRegex = new RegExp("https:\/\/ccaudek\.github\.io\/psicometria_2026\/");
           var isInternal = (href) => {
               return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
           }

@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html lang="it"><head>
-<script src="frequentismo_1_files/libs/clipboard/clipboard.min.js"></script>
-<script src="frequentismo_1_files/libs/quarto-html/tabby.min.js"></script>
-<script src="frequentismo_1_files/libs/quarto-html/popper.min.js"></script>
-<script src="frequentismo_1_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="frequentismo_1_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="frequentismo_1_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="frequentismo_1_files/libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.27">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-5c1318cf63eba56dbef7ba16bc7d56f5.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
 
   <meta name="author" content="Corrado Caudek">
-  <title>La domanda del ricercatore</title>
+  <title>Psicometria 2025-26 – La domanda del ricercatore</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="frequentismo_1_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="frequentismo_1_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
   <style>
-    code{white-space: pre-wrap;}
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -95,11 +101,11 @@
     code span.vs { color: #032f62; } /* VerbatimString */
     code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="frequentismo_1_files/libs/revealjs/dist/theme/quarto-32eda4d62c2e25823ebe39cba2bb0a8e.css">
-  <link href="frequentismo_1_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="frequentismo_1_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="frequentismo_1_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="frequentismo_1_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-172e614ca6238f6067b3ffab71e7e169.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -199,7 +205,7 @@
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
+Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid" aria-label="ORCID profile for Corrado Caudek"> <img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
 </div>
 <div class="quarto-title-author-email">
 <a href="mailto:corrado.caudek@unifi.it">corrado.caudek@unifi.it</a>
@@ -210,7 +216,7 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
     </div>
 </div>
 
-  <p class="date">12 febbraio 2026</p>
+  <p class="date">29 ottobre 2026</p>
 </section>
 <section>
 <section id="perché-studiare-il-frequentismo" class="title-slide slide level1 center" data-background-color="#e74c3c" style="color: white;">
@@ -878,64 +884,64 @@ P(\text{film adatto a te} \mid \text{impressione dell'amico}).
 <section id="simuliamo-in-r" class="slide level2">
 <h2>Simuliamo in R</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="co"># -----------------------------</span></span>
-<span id="cb1-2"><a href=""></a><span class="co"># 1. Parametri della popolazione</span></span>
-<span id="cb1-3"><a href=""></a><span class="co"># (nella realtà sono sconosciuti)</span></span>
-<span id="cb1-4"><a href=""></a><span class="co"># -----------------------------</span></span>
-<span id="cb1-5"><a href=""></a></span>
-<span id="cb1-6"><a href=""></a>media_controllo <span class="ot">&lt;-</span> <span class="dv">55</span>   <span class="co"># media BDI gruppo controllo</span></span>
-<span id="cb1-7"><a href=""></a>media_cbt <span class="ot">&lt;-</span> <span class="dv">47</span>         <span class="co"># media BDI gruppo CBT</span></span>
-<span id="cb1-8"><a href=""></a>dev_standard <span class="ot">&lt;-</span> <span class="dv">12</span>      <span class="co"># variabilità individuale</span></span>
-<span id="cb1-9"><a href=""></a></span>
-<span id="cb1-10"><a href=""></a><span class="co"># -----------------------------</span></span>
-<span id="cb1-11"><a href=""></a><span class="co"># 2. Parametri dello studio</span></span>
-<span id="cb1-12"><a href=""></a><span class="co"># -----------------------------</span></span>
-<span id="cb1-13"><a href=""></a></span>
-<span id="cb1-14"><a href=""></a>n_per_gruppo <span class="ot">&lt;-</span> <span class="dv">25</span>      <span class="co"># pazienti per gruppo</span></span>
-<span id="cb1-15"><a href=""></a>n_studi <span class="ot">&lt;-</span> <span class="dv">1000</span>         <span class="co"># quante volte ripetiamo lo studio</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-label="1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb1-2"><a aria-label="2"></a><span class="co"># 1. Parametri della popolazione</span></span>
+<span id="cb1-3"><a aria-label="3"></a><span class="co"># (nella realtà sono sconosciuti)</span></span>
+<span id="cb1-4"><a aria-label="4"></a><span class="co"># -----------------------------</span></span>
+<span id="cb1-5"><a aria-label="5"></a></span>
+<span id="cb1-6"><a aria-label="6"></a>media_controllo <span class="ot">&lt;-</span> <span class="dv">55</span>   <span class="co"># media BDI gruppo controllo</span></span>
+<span id="cb1-7"><a aria-label="7"></a>media_cbt <span class="ot">&lt;-</span> <span class="dv">47</span>         <span class="co"># media BDI gruppo CBT</span></span>
+<span id="cb1-8"><a aria-label="8"></a>dev_standard <span class="ot">&lt;-</span> <span class="dv">12</span>      <span class="co"># variabilità individuale</span></span>
+<span id="cb1-9"><a aria-label="9"></a></span>
+<span id="cb1-10"><a aria-label="10"></a><span class="co"># -----------------------------</span></span>
+<span id="cb1-11"><a aria-label="11"></a><span class="co"># 2. Parametri dello studio</span></span>
+<span id="cb1-12"><a aria-label="12"></a><span class="co"># -----------------------------</span></span>
+<span id="cb1-13"><a aria-label="13"></a></span>
+<span id="cb1-14"><a aria-label="14"></a>n_per_gruppo <span class="ot">&lt;-</span> <span class="dv">25</span>      <span class="co"># pazienti per gruppo</span></span>
+<span id="cb1-15"><a aria-label="15"></a>n_studi <span class="ot">&lt;-</span> <span class="dv">1000</span>         <span class="co"># quante volte ripetiamo lo studio</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="ripetiamo-lo-studio-molte-volte" class="slide level2">
 <h2>Ripetiamo lo studio molte volte</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="co"># Creiamo un contenitore vuoto</span></span>
-<span id="cb2-2"><a href=""></a><span class="co"># Qui salveremo il risultato di ogni studio</span></span>
-<span id="cb2-3"><a href=""></a>differenze_medie <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n_studi)</span>
-<span id="cb2-4"><a href=""></a></span>
-<span id="cb2-5"><a href=""></a><span class="co"># Ripetiamo lo studio 1000 volte</span></span>
-<span id="cb2-6"><a href=""></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_studi) {</span>
-<span id="cb2-7"><a href=""></a></span>
-<span id="cb2-8"><a href=""></a>  <span class="co"># 1) Estraiamo un campione dal gruppo di controllo</span></span>
-<span id="cb2-9"><a href=""></a>  gruppo_controllo <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(</span>
-<span id="cb2-10"><a href=""></a>    <span class="at">n =</span> n_per_gruppo,</span>
-<span id="cb2-11"><a href=""></a>    <span class="at">mean =</span> media_controllo,</span>
-<span id="cb2-12"><a href=""></a>    <span class="at">sd =</span> dev_standard</span>
-<span id="cb2-13"><a href=""></a>  )</span>
-<span id="cb2-14"><a href=""></a></span>
-<span id="cb2-15"><a href=""></a>  <span class="co"># 2) Estraiamo un campione dal gruppo CBT</span></span>
-<span id="cb2-16"><a href=""></a>  gruppo_cbt <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(</span>
-<span id="cb2-17"><a href=""></a>    <span class="at">n =</span> n_per_gruppo,</span>
-<span id="cb2-18"><a href=""></a>    <span class="at">mean =</span> media_cbt,</span>
-<span id="cb2-19"><a href=""></a>    <span class="at">sd =</span> dev_standard</span>
-<span id="cb2-20"><a href=""></a>  )</span>
-<span id="cb2-21"><a href=""></a></span>
-<span id="cb2-22"><a href=""></a>  <span class="co"># 3) Calcoliamo la media in ciascun gruppo</span></span>
-<span id="cb2-23"><a href=""></a>  media_controllo_studio <span class="ot">&lt;-</span> <span class="fu">mean</span>(gruppo_controllo)</span>
-<span id="cb2-24"><a href=""></a>  media_cbt_studio <span class="ot">&lt;-</span> <span class="fu">mean</span>(gruppo_cbt)</span>
-<span id="cb2-25"><a href=""></a></span>
-<span id="cb2-26"><a href=""></a>  <span class="co"># 4) Calcoliamo la differenza tra le due medie</span></span>
-<span id="cb2-27"><a href=""></a>  differenza <span class="ot">&lt;-</span> media_controllo_studio <span class="sc">-</span> media_cbt_studio</span>
-<span id="cb2-28"><a href=""></a></span>
-<span id="cb2-29"><a href=""></a>  <span class="co"># 5) Salviamo il risultato di QUESTO studio</span></span>
-<span id="cb2-30"><a href=""></a>  differenze_medie[i] <span class="ot">&lt;-</span> differenza</span>
-<span id="cb2-31"><a href=""></a>}</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a aria-label="1"></a><span class="co"># Creiamo un contenitore vuoto</span></span>
+<span id="cb2-2"><a aria-label="2"></a><span class="co"># Qui salveremo il risultato di ogni studio</span></span>
+<span id="cb2-3"><a aria-label="3"></a>differenze_medie <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n_studi)</span>
+<span id="cb2-4"><a aria-label="4"></a></span>
+<span id="cb2-5"><a aria-label="5"></a><span class="co"># Ripetiamo lo studio 1000 volte</span></span>
+<span id="cb2-6"><a aria-label="6"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_studi) {</span>
+<span id="cb2-7"><a aria-label="7"></a></span>
+<span id="cb2-8"><a aria-label="8"></a>  <span class="co"># 1) Estraiamo un campione dal gruppo di controllo</span></span>
+<span id="cb2-9"><a aria-label="9"></a>  gruppo_controllo <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(</span>
+<span id="cb2-10"><a aria-label="10"></a>    <span class="at">n =</span> n_per_gruppo,</span>
+<span id="cb2-11"><a aria-label="11"></a>    <span class="at">mean =</span> media_controllo,</span>
+<span id="cb2-12"><a aria-label="12"></a>    <span class="at">sd =</span> dev_standard</span>
+<span id="cb2-13"><a aria-label="13"></a>  )</span>
+<span id="cb2-14"><a aria-label="14"></a></span>
+<span id="cb2-15"><a aria-label="15"></a>  <span class="co"># 2) Estraiamo un campione dal gruppo CBT</span></span>
+<span id="cb2-16"><a aria-label="16"></a>  gruppo_cbt <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(</span>
+<span id="cb2-17"><a aria-label="17"></a>    <span class="at">n =</span> n_per_gruppo,</span>
+<span id="cb2-18"><a aria-label="18"></a>    <span class="at">mean =</span> media_cbt,</span>
+<span id="cb2-19"><a aria-label="19"></a>    <span class="at">sd =</span> dev_standard</span>
+<span id="cb2-20"><a aria-label="20"></a>  )</span>
+<span id="cb2-21"><a aria-label="21"></a></span>
+<span id="cb2-22"><a aria-label="22"></a>  <span class="co"># 3) Calcoliamo la media in ciascun gruppo</span></span>
+<span id="cb2-23"><a aria-label="23"></a>  media_controllo_studio <span class="ot">&lt;-</span> <span class="fu">mean</span>(gruppo_controllo)</span>
+<span id="cb2-24"><a aria-label="24"></a>  media_cbt_studio <span class="ot">&lt;-</span> <span class="fu">mean</span>(gruppo_cbt)</span>
+<span id="cb2-25"><a aria-label="25"></a></span>
+<span id="cb2-26"><a aria-label="26"></a>  <span class="co"># 4) Calcoliamo la differenza tra le due medie</span></span>
+<span id="cb2-27"><a aria-label="27"></a>  differenza <span class="ot">&lt;-</span> media_controllo_studio <span class="sc">-</span> media_cbt_studio</span>
+<span id="cb2-28"><a aria-label="28"></a></span>
+<span id="cb2-29"><a aria-label="29"></a>  <span class="co"># 5) Salviamo il risultato di QUESTO studio</span></span>
+<span id="cb2-30"><a aria-label="30"></a>  differenze_medie[i] <span class="ot">&lt;-</span> differenza</span>
+<span id="cb2-31"><a aria-label="31"></a>}</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
 
 <p>Esaminiamo i primi risultati:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a>differenze_medie[<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a aria-label="1"></a>differenze_medie[<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] 13.356991  9.008991  8.240202  8.545538  4.501387  5.132638  9.427682
  [8]  4.175022  4.083584 10.521498 11.505802  5.236283 11.683297 14.373231
@@ -948,7 +954,7 @@ P(\text{film adatto a te} \mid \text{impressione dell'amico}).
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">length</span>(differenze_medie)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a aria-label="1"></a><span class="fu">length</span>(differenze_medie)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1000</code></pre>
 </div>
@@ -975,11 +981,11 @@ P(\text{film adatto a te} \mid \text{impressione dell'amico}).
 <section id="cosa-osserviamo" class="slide level2">
 <h2>Cosa osserviamo?</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Media delle differenze:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(differenze_medie), <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Media delle differenze:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(differenze_medie), <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Media delle differenze: 8.1 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Deviazione standard (errore standard):"</span>, <span class="fu">round</span>(<span class="fu">sd</span>(differenze_medie), <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Deviazione standard (errore standard):"</span>, <span class="fu">round</span>(<span class="fu">sd</span>(differenze_medie), <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Deviazione standard (errore standard): 3.42 </code></pre>
 </div>
@@ -1080,17 +1086,17 @@ SE = 12 \times \sqrt{\frac{2}{25}} = 12 \times 0.283 \approx 3.4.
 <section id="verifichiamo-con-la-simulazione" class="slide level2">
 <h2>Verifichiamo con la simulazione</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="co"># ERRORE STANDARD TEORICO</span></span>
-<span id="cb11-2"><a href=""></a>se_teorico <span class="ot">&lt;-</span> dev_standard <span class="sc">*</span> <span class="fu">sqrt</span>(<span class="dv">2</span> <span class="sc">/</span> n_per_gruppo)</span>
-<span id="cb11-3"><a href=""></a></span>
-<span id="cb11-4"><a href=""></a><span class="co"># Errore standard dalla simulazione</span></span>
-<span id="cb11-5"><a href=""></a>se_simulato <span class="ot">&lt;-</span> <span class="fu">sd</span>(differenze_medie)  </span>
-<span id="cb11-6"><a href=""></a></span>
-<span id="cb11-7"><a href=""></a><span class="fu">cat</span>(<span class="st">"SE teorico:"</span>, <span class="fu">round</span>(se_teorico, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a aria-label="1"></a><span class="co"># ERRORE STANDARD TEORICO</span></span>
+<span id="cb11-2"><a aria-label="2"></a>se_teorico <span class="ot">&lt;-</span> dev_standard <span class="sc">*</span> <span class="fu">sqrt</span>(<span class="dv">2</span> <span class="sc">/</span> n_per_gruppo)</span>
+<span id="cb11-3"><a aria-label="3"></a></span>
+<span id="cb11-4"><a aria-label="4"></a><span class="co"># Errore standard dalla simulazione</span></span>
+<span id="cb11-5"><a aria-label="5"></a>se_simulato <span class="ot">&lt;-</span> <span class="fu">sd</span>(differenze_medie)  </span>
+<span id="cb11-6"><a aria-label="6"></a></span>
+<span id="cb11-7"><a aria-label="7"></a><span class="fu">cat</span>(<span class="st">"SE teorico:"</span>, <span class="fu">round</span>(se_teorico, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>SE teorico: 3.39 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"SE dalla simulazione:"</span>, <span class="fu">round</span>(se_simulato, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"SE dalla simulazione:"</span>, <span class="fu">round</span>(se_simulato, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>SE dalla simulazione: 3.42 </code></pre>
 </div>
@@ -1216,6 +1222,7 @@ SE = 12 \times \sqrt{\frac{2}{25}} = 12 \times 0.283 \approx 3.4.
 </ul>
 
 
+
 </section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
@@ -1225,19 +1232,19 @@ SE = 12 \times \sqrt{\frac{2}{25}} = 12 \times 0.283 \approx 3.4.
 </div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="frequentismo_1_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="frequentismo_1_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="frequentismo_1_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="frequentismo_1_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="frequentismo_1_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="frequentismo_1_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="frequentismo_1_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="frequentismo_1_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="frequentismo_1_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="frequentismo_1_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -1540,7 +1547,7 @@ SE = 12 \times \sqrt{\frac{2}{25}} = 12 \times 0.283 \approx 3.4.
         }
           var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
           var mailtoRegex = new RegExp(/^mailto:/);
-            var filterRegex = new RegExp('/' + window.location.host + '/');
+            var filterRegex = new RegExp("https:\/\/ccaudek\.github\.io\/psicometria_2026\/");
           var isInternal = (href) => {
               return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
           }

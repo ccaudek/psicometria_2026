@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html lang="it"><head>
-<script src="esercitazione_part2_files/libs/clipboard/clipboard.min.js"></script>
-<script src="esercitazione_part2_files/libs/quarto-html/tabby.min.js"></script>
-<script src="esercitazione_part2_files/libs/quarto-html/popper.min.js"></script>
-<script src="esercitazione_part2_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="esercitazione_part2_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="esercitazione_part2_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="esercitazione_part2_files/libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.27">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-5c1318cf63eba56dbef7ba16bc7d56f5.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
 
   <meta name="author" content="Corrado Caudek">
-  <title>Esercitazione pratica</title>
+  <title>Psicometria 2025-26 – Esercitazione pratica</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="esercitazione_part2_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="esercitazione_part2_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
   <style>
-    code{white-space: pre-wrap;}
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -95,11 +101,11 @@
     code span.vs { color: #032f62; } /* VerbatimString */
     code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="esercitazione_part2_files/libs/revealjs/dist/theme/quarto-32eda4d62c2e25823ebe39cba2bb0a8e.css">
-  <link href="esercitazione_part2_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="esercitazione_part2_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="esercitazione_part2_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="esercitazione_part2_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-172e614ca6238f6067b3ffab71e7e169.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -187,8 +193,8 @@
       margin-right: 0; 
     }
   </style>
-  <script src="esercitazione_part2_files/libs/kePrint-0.0.1/kePrint.js"></script>
-  <link href="esercitazione_part2_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+  <script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script>
+  <link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -201,7 +207,7 @@
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
+Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid" aria-label="ORCID profile for Corrado Caudek"> <img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
 </div>
 <div class="quarto-title-author-email">
 <a href="mailto:corrado.caudek@unifi.it">corrado.caudek@unifi.it</a>
@@ -212,7 +218,7 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
     </div>
 </div>
 
-  <p class="date">17 febbraio 2026</p>
+  <p class="date">29 ottobre 2026</p>
 </section>
 <section>
 <section id="cambiare-la-domanda-non-i-dati" class="title-slide slide level1 center">
@@ -353,22 +359,22 @@ y_i \sim \text{Normal}(\mu, \sigma)
 <section id="implementazione-con-brms" class="slide level2">
 <h2>Implementazione con <code>brms</code></h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="co"># Modello bayesiano</span></span>
-<span id="cb1-2"><a href=""></a>fit <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
-<span id="cb1-3"><a href=""></a>  <span class="at">formula =</span> y <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb1-4"><a href=""></a>  <span class="at">family =</span> <span class="fu">gaussian</span>(),</span>
-<span id="cb1-5"><a href=""></a>  <span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">y =</span> y),</span>
-<span id="cb1-6"><a href=""></a>  <span class="at">prior =</span> <span class="fu">c</span>(</span>
-<span id="cb1-7"><a href=""></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="fl">0.5</span>, <span class="fl">0.25</span>), <span class="at">class =</span> <span class="st">"Intercept"</span>),</span>
-<span id="cb1-8"><a href=""></a>    <span class="fu">prior</span>(<span class="fu">cauchy</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">class =</span> <span class="st">"sigma"</span>)</span>
-<span id="cb1-9"><a href=""></a>  ),</span>
-<span id="cb1-10"><a href=""></a>  <span class="at">iter =</span> <span class="dv">4000</span>,</span>
-<span id="cb1-11"><a href=""></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb1-12"><a href=""></a>  <span class="at">seed =</span> <span class="dv">123</span>,</span>
-<span id="cb1-13"><a href=""></a>  <span class="at">backend =</span> <span class="st">"cmdstanr"</span>,</span>
-<span id="cb1-14"><a href=""></a>  <span class="at">silent =</span> <span class="dv">2</span>,</span>
-<span id="cb1-15"><a href=""></a>  <span class="at">refresh =</span> <span class="dv">0</span></span>
-<span id="cb1-16"><a href=""></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-label="1"></a><span class="co"># Modello bayesiano</span></span>
+<span id="cb1-2"><a aria-label="2"></a>fit <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb1-3"><a aria-label="3"></a>  <span class="at">formula =</span> y <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb1-4"><a aria-label="4"></a>  <span class="at">family =</span> <span class="fu">gaussian</span>(),</span>
+<span id="cb1-5"><a aria-label="5"></a>  <span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">y =</span> y),</span>
+<span id="cb1-6"><a aria-label="6"></a>  <span class="at">prior =</span> <span class="fu">c</span>(</span>
+<span id="cb1-7"><a aria-label="7"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="fl">0.5</span>, <span class="fl">0.25</span>), <span class="at">class =</span> <span class="st">"Intercept"</span>),</span>
+<span id="cb1-8"><a aria-label="8"></a>    <span class="fu">prior</span>(<span class="fu">cauchy</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">class =</span> <span class="st">"sigma"</span>)</span>
+<span id="cb1-9"><a aria-label="9"></a>  ),</span>
+<span id="cb1-10"><a aria-label="10"></a>  <span class="at">iter =</span> <span class="dv">4000</span>,</span>
+<span id="cb1-11"><a aria-label="11"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb1-12"><a aria-label="12"></a>  <span class="at">seed =</span> <span class="dv">123</span>,</span>
+<span id="cb1-13"><a aria-label="13"></a>  <span class="at">backend =</span> <span class="st">"cmdstanr"</span>,</span>
+<span id="cb1-14"><a aria-label="14"></a>  <span class="at">silent =</span> <span class="dv">2</span>,</span>
+<span id="cb1-15"><a aria-label="15"></a>  <span class="at">refresh =</span> <span class="dv">0</span></span>
+<span id="cb1-16"><a aria-label="16"></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
@@ -390,21 +396,21 @@ possiamo considerare i campioni rappresentativi della distribuzione a posteriori
 <section id="la-distribuzione-a-posteriori-di-mu" class="slide level2">
 <h2>La distribuzione a posteriori di <span class="math inline">\(\mu\)</span></h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="co"># Estraiamo i campioni a posteriori</span></span>
-<span id="cb2-2"><a href=""></a>post <span class="ot">&lt;-</span> <span class="fu">as_draws_df</span>(fit)</span>
-<span id="cb2-3"><a href=""></a>mu_samples <span class="ot">&lt;-</span> post<span class="sc">$</span>b_Intercept</span>
-<span id="cb2-4"><a href=""></a></span>
-<span id="cb2-5"><a href=""></a><span class="co"># Statistiche a posteriori</span></span>
-<span id="cb2-6"><a href=""></a><span class="fu">cat</span>(<span class="st">"Media a posteriori:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(mu_samples), <span class="dv">3</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a aria-label="1"></a><span class="co"># Estraiamo i campioni a posteriori</span></span>
+<span id="cb2-2"><a aria-label="2"></a>post <span class="ot">&lt;-</span> <span class="fu">as_draws_df</span>(fit)</span>
+<span id="cb2-3"><a aria-label="3"></a>mu_samples <span class="ot">&lt;-</span> post<span class="sc">$</span>b_Intercept</span>
+<span id="cb2-4"><a aria-label="4"></a></span>
+<span id="cb2-5"><a aria-label="5"></a><span class="co"># Statistiche a posteriori</span></span>
+<span id="cb2-6"><a aria-label="6"></a><span class="fu">cat</span>(<span class="st">"Media a posteriori:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(mu_samples), <span class="dv">3</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Media a posteriori: 0.592 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"DS a posteriori:"</span>, <span class="fu">round</span>(<span class="fu">sd</span>(mu_samples), <span class="dv">3</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"DS a posteriori:"</span>, <span class="fu">round</span>(<span class="fu">sd</span>(mu_samples), <span class="dv">3</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>DS a posteriori: 0.032 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"CrI 95%:"</span>, <span class="fu">round</span>(<span class="fu">quantile</span>(mu_samples, <span class="fl">0.025</span>), <span class="dv">3</span>), <span class="st">"-"</span>, </span>
-<span id="cb6-2"><a href=""></a>    <span class="fu">round</span>(<span class="fu">quantile</span>(mu_samples, <span class="fl">0.975</span>), <span class="dv">3</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"CrI 95%:"</span>, <span class="fu">round</span>(<span class="fu">quantile</span>(mu_samples, <span class="fl">0.025</span>), <span class="dv">3</span>), <span class="st">"-"</span>, </span>
+<span id="cb6-2"><a aria-label="2"></a>    <span class="fu">round</span>(<span class="fu">quantile</span>(mu_samples, <span class="fl">0.975</span>), <span class="dv">3</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>CrI 95%: 0.527 - 0.656 </code></pre>
 </div>
@@ -437,22 +443,22 @@ se le conclusioni restano simili, il risultato è più convincente.</p>
 <section class="slide level2">
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="co"># "squeeze" per evitare problemi se ci sono valori 0 o 1</span></span>
-<span id="cb8-2"><a href=""></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(y)</span>
-<span id="cb8-3"><a href=""></a>y_beta <span class="ot">&lt;-</span> (y<span class="sc">*</span>(n <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">+</span> <span class="fl">0.5</span>) <span class="sc">/</span> n</span>
-<span id="cb8-4"><a href=""></a></span>
-<span id="cb8-5"><a href=""></a>fit_beta <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
-<span id="cb8-6"><a href=""></a>  y_beta <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb8-7"><a href=""></a>  <span class="at">family =</span> <span class="fu">Beta</span>(<span class="at">link =</span> <span class="st">"logit"</span>),</span>
-<span id="cb8-8"><a href=""></a>  <span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">y_beta =</span> y_beta),</span>
-<span id="cb8-9"><a href=""></a>  <span class="at">prior =</span> <span class="fu">c</span>(</span>
-<span id="cb8-10"><a href=""></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">class =</span> <span class="st">"Intercept"</span>),  <span class="co"># logit scale: 0 =&gt; mu=0.5</span></span>
-<span id="cb8-11"><a href=""></a>    <span class="fu">prior</span>(<span class="fu">exponential</span>(<span class="dv">1</span>), <span class="at">class =</span> <span class="st">"phi"</span>)</span>
-<span id="cb8-12"><a href=""></a>  ),</span>
-<span id="cb8-13"><a href=""></a>  <span class="at">iter =</span> <span class="dv">4000</span>, <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">seed =</span> <span class="dv">123</span>,</span>
-<span id="cb8-14"><a href=""></a>  <span class="at">backend =</span> <span class="st">"cmdstanr"</span>,</span>
-<span id="cb8-15"><a href=""></a>  <span class="at">silent =</span> <span class="dv">2</span>, <span class="at">refresh =</span> <span class="dv">0</span></span>
-<span id="cb8-16"><a href=""></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a aria-label="1"></a><span class="co"># "squeeze" per evitare problemi se ci sono valori 0 o 1</span></span>
+<span id="cb8-2"><a aria-label="2"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(y)</span>
+<span id="cb8-3"><a aria-label="3"></a>y_beta <span class="ot">&lt;-</span> (y<span class="sc">*</span>(n <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">+</span> <span class="fl">0.5</span>) <span class="sc">/</span> n</span>
+<span id="cb8-4"><a aria-label="4"></a></span>
+<span id="cb8-5"><a aria-label="5"></a>fit_beta <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb8-6"><a aria-label="6"></a>  y_beta <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb8-7"><a aria-label="7"></a>  <span class="at">family =</span> <span class="fu">Beta</span>(<span class="at">link =</span> <span class="st">"logit"</span>),</span>
+<span id="cb8-8"><a aria-label="8"></a>  <span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">y_beta =</span> y_beta),</span>
+<span id="cb8-9"><a aria-label="9"></a>  <span class="at">prior =</span> <span class="fu">c</span>(</span>
+<span id="cb8-10"><a aria-label="10"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">class =</span> <span class="st">"Intercept"</span>),  <span class="co"># logit scale: 0 =&gt; mu=0.5</span></span>
+<span id="cb8-11"><a aria-label="11"></a>    <span class="fu">prior</span>(<span class="fu">exponential</span>(<span class="dv">1</span>), <span class="at">class =</span> <span class="st">"phi"</span>)</span>
+<span id="cb8-12"><a aria-label="12"></a>  ),</span>
+<span id="cb8-13"><a aria-label="13"></a>  <span class="at">iter =</span> <span class="dv">4000</span>, <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">seed =</span> <span class="dv">123</span>,</span>
+<span id="cb8-14"><a aria-label="14"></a>  <span class="at">backend =</span> <span class="st">"cmdstanr"</span>,</span>
+<span id="cb8-15"><a aria-label="15"></a>  <span class="at">silent =</span> <span class="dv">2</span>, <span class="at">refresh =</span> <span class="dv">0</span></span>
+<span id="cb8-16"><a aria-label="16"></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
@@ -460,7 +466,7 @@ se le conclusioni restano simili, il risultato è più convincente.</p>
 <h3 id="esaminare-i-risultati">Esaminare i risultati</h3>
 <p>Dato che il coefficiente del modello (in questo caso, l’intercetta) si trova su una scala logit <span class="math inline">\([-\infty, + \infty]\)</span>, dobbiamo convertire il risultato sulla scala delle probabilità (da 0 a 1).</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>post_beta <span class="ot">&lt;-</span> <span class="fu">as_draws_df</span>(fit_beta)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a aria-label="1"></a>post_beta <span class="ot">&lt;-</span> <span class="fu">as_draws_df</span>(fit_beta)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="fragment">
 <p>Per fare questo usiamo la funzione R <code>plogis()</code>, ovvero</p>
@@ -472,22 +478,22 @@ se le conclusioni restano simili, il risultato è più convincente.</p>
 <section class="slide level2">
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="co"># Calcola la probabilità media dalla distribuzione a posteriori</span></span>
-<span id="cb10-2"><a href=""></a>prob_media <span class="ot">&lt;-</span> <span class="fu">plogis</span>(post_beta<span class="sc">$</span>b_Intercept) <span class="sc">|&gt;</span> <span class="fu">mean</span>()</span>
-<span id="cb10-3"><a href=""></a>prob_media</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a aria-label="1"></a><span class="co"># Calcola la probabilità media dalla distribuzione a posteriori</span></span>
+<span id="cb10-2"><a aria-label="2"></a>prob_media <span class="ot">&lt;-</span> <span class="fu">plogis</span>(post_beta<span class="sc">$</span>b_Intercept) <span class="sc">|&gt;</span> <span class="fu">mean</span>()</span>
+<span id="cb10-3"><a aria-label="3"></a>prob_media</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.588984</code></pre>
+<pre><code>[1] 0.5890933</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="co"># Oppure, per vedere l'intera distribuzione delle probabilità</span></span>
-<span id="cb12-2"><a href=""></a>prob_post <span class="ot">&lt;-</span> <span class="fu">plogis</span>(post_beta<span class="sc">$</span>b_Intercept)</span>
-<span id="cb12-3"><a href=""></a><span class="fu">quantile</span>(prob_post, <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.5</span>, <span class="fl">0.975</span>))</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a aria-label="1"></a><span class="co"># Oppure, per vedere l'intera distribuzione delle probabilità</span></span>
+<span id="cb12-2"><a aria-label="2"></a>prob_post <span class="ot">&lt;-</span> <span class="fu">plogis</span>(post_beta<span class="sc">$</span>b_Intercept)</span>
+<span id="cb12-3"><a aria-label="3"></a><span class="fu">quantile</span>(prob_post, <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.5</span>, <span class="fl">0.975</span>))</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     2.5%       50%     97.5% 
-0.5186981 0.5892510 0.6556112 </code></pre>
+0.5182766 0.5896419 0.6555131 </code></pre>
 </div>
 </div>
 <div class="fragment">
-<p><strong>Risultato:</strong> la probabilità a posteriori media è 0.589, con un intervallo di credibilità al 95% che va da 0.519 a 0.656.</p>
+<p><strong>Risultato:</strong> la probabilità a posteriori media è 0.589, con un intervallo di credibilità al 95% che va da 0.518 a 0.656.</p>
 </div>
 </section>
 <section id="risultato-modello-beta-mu-sulla-scala-originale" class="slide level2">
@@ -495,7 +501,7 @@ se le conclusioni restano simili, il risultato è più convincente.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>           mean   CrI 2.5%.2.5% CrI 97.5%.97.5%       P(mu&gt;0.5) 
-      0.5889840       0.5186981       0.6556112       0.9932500 </code></pre>
+      0.5890933       0.5182766       0.6555131       0.9921250 </code></pre>
 </div>
 </div>
 <p>Il modello Beta verifica (o mette in crisi) la robustezza delle conclusioni rispetto alle assunzioni distributive.</p>
@@ -535,9 +541,9 @@ se le conclusioni restano simili, il risultato è più convincente.</p>
 <h2>Domanda 1: “I bambini preferiscono la melodia familiare?”</h2>
 <p>Con l’approccio bayesiano possiamo calcolare <strong>direttamente</strong> questa probabilità:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a><span class="co"># Probabilità che μ &gt; 0.5</span></span>
-<span id="cb15-2"><a href=""></a>prob_preferenza <span class="ot">&lt;-</span> <span class="fu">mean</span>(mu_samples <span class="sc">&gt;</span> <span class="fl">0.5</span>)</span>
-<span id="cb15-3"><a href=""></a><span class="fu">cat</span>(<span class="st">"P(μ &gt; 0.5 | dati) ="</span>, <span class="fu">round</span>(prob_preferenza, <span class="dv">4</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a aria-label="1"></a><span class="co"># Probabilità che μ &gt; 0.5</span></span>
+<span id="cb15-2"><a aria-label="2"></a>prob_preferenza <span class="ot">&lt;-</span> <span class="fu">mean</span>(mu_samples <span class="sc">&gt;</span> <span class="fl">0.5</span>)</span>
+<span id="cb15-3"><a aria-label="3"></a><span class="fu">cat</span>(<span class="st">"P(μ &gt; 0.5 | dati) ="</span>, <span class="fu">round</span>(prob_preferenza, <span class="dv">4</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>P(μ &gt; 0.5 | dati) = 0.9978 </code></pre>
 </div>
@@ -566,16 +572,16 @@ se le conclusioni restano simili, il risultato è più convincente.</p>
 <table class="table table-striped table-hover table-condensed caption-top" style="font-size: 30px; width: auto !important; margin-left: auto; margin-right: auto;border-bottom: 0;">
 <thead>
 <tr class="header">
-<th data-quarto-table-cell-role="th" style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(44, 62, 80, 255) !important;">Domanda</th>
-<th data-quarto-table-cell-role="th" style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(44, 62, 80, 255) !important;">Frequentista</th>
-<th data-quarto-table-cell-role="th" style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(44, 62, 80, 255) !important;">Bayesiano</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(44, 62, 80, 1) !important;">Domanda</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(44, 62, 80, 1) !important;">Frequentista</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(44, 62, 80, 1) !important;">Bayesiano</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left; width: 18em; font-weight: bold; background-color: rgba(248, 249, 250, 255) !important;">I bambini preferiscono la melodia?</td>
-<td style="text-align: left; width: 18em; background-color: rgba(248, 215, 218, 255) !important;">p = 0.06 (NON è questa probabilità!)</td>
-<td style="text-align: left; width: 20em; background-color: rgba(212, 237, 218, 255) !important;">P(μ &gt; 0.5 | dati) = 82% (è esattamente questa la probabilità!)</td>
+<td style="text-align: left; width: 18em; font-weight: bold; background-color: rgba(248, 249, 250, 1) !important;">I bambini preferiscono la melodia?</td>
+<td style="text-align: left; width: 18em; background-color: rgba(248, 215, 218, 1) !important;">p = 0.06 (NON è questa probabilità!)</td>
+<td style="text-align: left; width: 20em; background-color: rgba(212, 237, 218, 1) !important;">P(μ &gt; 0.5 | dati) = 82% (è esattamente questa la probabilità!)</td>
 </tr>
 </tbody><tfoot>
 <tr class="odd">
@@ -695,9 +701,9 @@ se le conclusioni restano simili, il risultato è più convincente.</p>
 <h2>Domanda 3: “Quanto siamo sicuri?”</h2>
 <p>L’<strong>intervallo di credibilità</strong> bayesiano ha un’interpretazione <strong>diretta</strong> (Lezione 20):</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a><span class="co"># Intervallo di credibilità al 95%</span></span>
-<span id="cb17-2"><a href=""></a>ic_bayes <span class="ot">&lt;-</span> <span class="fu">quantile</span>(mu_samples, <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
-<span id="cb17-3"><a href=""></a><span class="fu">cat</span>(<span class="st">"CrI 95%:"</span>, <span class="fu">round</span>(ic_bayes[<span class="dv">1</span>], <span class="dv">3</span>), <span class="st">"-"</span>, <span class="fu">round</span>(ic_bayes[<span class="dv">2</span>], <span class="dv">3</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a aria-label="1"></a><span class="co"># Intervallo di credibilità al 95%</span></span>
+<span id="cb17-2"><a aria-label="2"></a>ic_bayes <span class="ot">&lt;-</span> <span class="fu">quantile</span>(mu_samples, <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
+<span id="cb17-3"><a aria-label="3"></a><span class="fu">cat</span>(<span class="st">"CrI 95%:"</span>, <span class="fu">round</span>(ic_bayes[<span class="dv">1</span>], <span class="dv">3</span>), <span class="st">"-"</span>, <span class="fu">round</span>(ic_bayes[<span class="dv">2</span>], <span class="dv">3</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>CrI 95%: 0.527 - 0.656 </code></pre>
 </div>
@@ -752,9 +758,9 @@ se le conclusioni restano simili, il risultato è più convincente.</p>
 <h2>Domanda 4: “L’effetto è clinicamente rilevante?”</h2>
 <p>Supponiamo che una preferenza di almeno 5 punti percentuali (<span class="math inline">\(\mu\)</span> &gt; 0.55) sia “clinicamente rilevante”:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a><span class="co"># Probabilità di effetto rilevante</span></span>
-<span id="cb19-2"><a href=""></a>prob_rilevante <span class="ot">&lt;-</span> <span class="fu">mean</span>(mu_samples <span class="sc">&gt;</span> <span class="fl">0.55</span>)</span>
-<span id="cb19-3"><a href=""></a><span class="fu">cat</span>(<span class="st">"P(μ &gt; 0.55 | dati) ="</span>, <span class="fu">round</span>(prob_rilevante, <span class="dv">4</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a aria-label="1"></a><span class="co"># Probabilità di effetto rilevante</span></span>
+<span id="cb19-2"><a aria-label="2"></a>prob_rilevante <span class="ot">&lt;-</span> <span class="fu">mean</span>(mu_samples <span class="sc">&gt;</span> <span class="fl">0.55</span>)</span>
+<span id="cb19-3"><a aria-label="3"></a><span class="fu">cat</span>(<span class="st">"P(μ &gt; 0.55 | dati) ="</span>, <span class="fu">round</span>(prob_rilevante, <span class="dv">4</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>P(μ &gt; 0.55 | dati) = 0.906 </code></pre>
 </div>
@@ -794,8 +800,8 @@ se le conclusioni restano simili, il risultato è più convincente.</p>
 <li>Un <strong>intervallo predittivo (PI)</strong> è quindi più largo del CrI su <span class="math inline">\(\mu\)</span>, perché deve coprire anche la variabilità individuale.</li>
 <li>Per decisioni cliniche o comunicazione ai genitori è spesso più utile riportare il PI che l’intervallo sul parametro di gruppo.</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href=""></a><span class="co"># Distribuzione predittiva</span></span>
-<span id="cb21-2"><a href=""></a><span class="fu">pp_check</span>(fit, <span class="at">type =</span> <span class="st">"dens_overlay"</span>, <span class="at">ndraws =</span> <span class="dv">100</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a aria-label="1"></a><span class="co"># Distribuzione predittiva</span></span>
+<span id="cb21-2"><a aria-label="2"></a><span class="fu">pp_check</span>(fit, <span class="at">type =</span> <span class="st">"dens_overlay"</span>, <span class="at">ndraws =</span> <span class="dv">100</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section class="slide level2">
 
@@ -896,7 +902,7 @@ P(y_new &gt; 0.55) = 59 %</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>=== PREDIZIONI PER UN NUOVO BAMBINO (modello Beta) ===
 
-PI 90% (Beta): [ 0.23 , 0.901 ]
+PI 90% (Beta): [ 0.229 , 0.901 ]
 P(y_new &gt; 0.5) (Beta) = 66.8 %
 P(y_new &gt; 0.55) (Beta) = 58.8 %</code></pre>
 </div>
@@ -1025,15 +1031,15 @@ P(y_new &gt; 0.55) (Beta) = 58.8 %</code></pre>
 <li>σ simile a quello osservato.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb36-2"><a href=""></a></span>
-<span id="cb36-3"><a href=""></a>n_sim <span class="ot">&lt;-</span> <span class="dv">20</span></span>
-<span id="cb36-4"><a href=""></a>mu_true <span class="ot">&lt;-</span> <span class="fl">0.55</span></span>
-<span id="cb36-5"><a href=""></a>sigma_true <span class="ot">&lt;-</span> <span class="fu">sd</span>(y)   <span class="co"># usiamo la variabilità reale come riferimento</span></span>
-<span id="cb36-6"><a href=""></a></span>
-<span id="cb36-7"><a href=""></a>y_sim <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_sim, <span class="at">mean =</span> mu_true, <span class="at">sd =</span> sigma_true)</span>
-<span id="cb36-8"><a href=""></a></span>
-<span id="cb36-9"><a href=""></a><span class="fu">cat</span>(<span class="st">"Media simulata:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(y_sim), <span class="dv">3</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a aria-label="1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb36-2"><a aria-label="2"></a></span>
+<span id="cb36-3"><a aria-label="3"></a>n_sim <span class="ot">&lt;-</span> <span class="dv">20</span></span>
+<span id="cb36-4"><a aria-label="4"></a>mu_true <span class="ot">&lt;-</span> <span class="fl">0.55</span></span>
+<span id="cb36-5"><a aria-label="5"></a>sigma_true <span class="ot">&lt;-</span> <span class="fu">sd</span>(y)   <span class="co"># usiamo la variabilità reale come riferimento</span></span>
+<span id="cb36-6"><a aria-label="6"></a></span>
+<span id="cb36-7"><a aria-label="7"></a>y_sim <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_sim, <span class="at">mean =</span> mu_true, <span class="at">sd =</span> sigma_true)</span>
+<span id="cb36-8"><a aria-label="8"></a></span>
+<span id="cb36-9"><a aria-label="9"></a><span class="fu">cat</span>(<span class="st">"Media simulata:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(y_sim), <span class="dv">3</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Media simulata: 0.575 </code></pre>
 </div>
@@ -1042,9 +1048,9 @@ P(y_new &gt; 0.55) (Beta) = 58.8 %</code></pre>
 <section id="analisi-frequentista-sul-dataset-simulato" class="slide level2">
 <h2>Analisi frequentista sul dataset simulato</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href=""></a><span class="co"># Test t frequentista</span></span>
-<span id="cb38-2"><a href=""></a>t_sim <span class="ot">&lt;-</span> <span class="fu">t.test</span>(y_sim, <span class="at">mu =</span> <span class="fl">0.5</span>)</span>
-<span id="cb38-3"><a href=""></a><span class="fu">cat</span>(<span class="st">"p-value:"</span>, <span class="fu">round</span>(t_sim<span class="sc">$</span>p.value, <span class="dv">3</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a aria-label="1"></a><span class="co"># Test t frequentista</span></span>
+<span id="cb38-2"><a aria-label="2"></a>t_sim <span class="ot">&lt;-</span> <span class="fu">t.test</span>(y_sim, <span class="at">mu =</span> <span class="fl">0.5</span>)</span>
+<span id="cb38-3"><a aria-label="3"></a><span class="fu">cat</span>(<span class="st">"p-value:"</span>, <span class="fu">round</span>(t_sim<span class="sc">$</span>p.value, <span class="dv">3</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>p-value: 0.068 </code></pre>
 </div>
@@ -1062,33 +1068,33 @@ P(y_new &gt; 0.55) (Beta) = 58.8 %</code></pre>
 <h2>Analisi bayesiana sullo stesso dataset</h2>
 <p>Usiamo <strong>lo stesso modello di prima</strong>, con lo stesso prior.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href=""></a>fit_sim <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
-<span id="cb40-2"><a href=""></a>  y_sim <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb40-3"><a href=""></a>  <span class="at">family =</span> <span class="fu">gaussian</span>(),</span>
-<span id="cb40-4"><a href=""></a>  <span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">y_sim =</span> y_sim),</span>
-<span id="cb40-5"><a href=""></a>  <span class="at">prior =</span> <span class="fu">c</span>(</span>
-<span id="cb40-6"><a href=""></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="fl">0.5</span>, <span class="fl">0.25</span>), <span class="at">class =</span> <span class="st">"Intercept"</span>),</span>
-<span id="cb40-7"><a href=""></a>    <span class="fu">prior</span>(<span class="fu">cauchy</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">class =</span> <span class="st">"sigma"</span>)</span>
-<span id="cb40-8"><a href=""></a>  ),</span>
-<span id="cb40-9"><a href=""></a>  <span class="at">iter =</span> <span class="dv">4000</span>,</span>
-<span id="cb40-10"><a href=""></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb40-11"><a href=""></a>  <span class="at">seed =</span> <span class="dv">2026</span>,</span>
-<span id="cb40-12"><a href=""></a>  <span class="at">backend =</span> <span class="st">"cmdstanr"</span>,</span>
-<span id="cb40-13"><a href=""></a>  <span class="at">silent =</span> <span class="dv">2</span>,</span>
-<span id="cb40-14"><a href=""></a>  <span class="at">refresh =</span> <span class="dv">0</span></span>
-<span id="cb40-15"><a href=""></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a aria-label="1"></a>fit_sim <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb40-2"><a aria-label="2"></a>  y_sim <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb40-3"><a aria-label="3"></a>  <span class="at">family =</span> <span class="fu">gaussian</span>(),</span>
+<span id="cb40-4"><a aria-label="4"></a>  <span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">y_sim =</span> y_sim),</span>
+<span id="cb40-5"><a aria-label="5"></a>  <span class="at">prior =</span> <span class="fu">c</span>(</span>
+<span id="cb40-6"><a aria-label="6"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="fl">0.5</span>, <span class="fl">0.25</span>), <span class="at">class =</span> <span class="st">"Intercept"</span>),</span>
+<span id="cb40-7"><a aria-label="7"></a>    <span class="fu">prior</span>(<span class="fu">cauchy</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">class =</span> <span class="st">"sigma"</span>)</span>
+<span id="cb40-8"><a aria-label="8"></a>  ),</span>
+<span id="cb40-9"><a aria-label="9"></a>  <span class="at">iter =</span> <span class="dv">4000</span>,</span>
+<span id="cb40-10"><a aria-label="10"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb40-11"><a aria-label="11"></a>  <span class="at">seed =</span> <span class="dv">2026</span>,</span>
+<span id="cb40-12"><a aria-label="12"></a>  <span class="at">backend =</span> <span class="st">"cmdstanr"</span>,</span>
+<span id="cb40-13"><a aria-label="13"></a>  <span class="at">silent =</span> <span class="dv">2</span>,</span>
+<span id="cb40-14"><a aria-label="14"></a>  <span class="at">refresh =</span> <span class="dv">0</span></span>
+<span id="cb40-15"><a aria-label="15"></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="la-quantità-chiave-pmu-0.5-dati" class="slide level2">
 <h2>La quantità chiave: P(<span class="math inline">\(\mu\)</span> &gt; 0.5 | dati)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href=""></a>post_sim <span class="ot">&lt;-</span> <span class="fu">as_draws_df</span>(fit_sim)</span>
-<span id="cb41-2"><a href=""></a>mu_sim <span class="ot">&lt;-</span> post_sim<span class="sc">$</span>b_Intercept</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a aria-label="1"></a>post_sim <span class="ot">&lt;-</span> <span class="fu">as_draws_df</span>(fit_sim)</span>
+<span id="cb41-2"><a aria-label="2"></a>mu_sim <span class="ot">&lt;-</span> post_sim<span class="sc">$</span>b_Intercept</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Calcoliamo la quantità di interesse:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href=""></a>prob_sim <span class="ot">&lt;-</span> <span class="fu">mean</span>(mu_sim <span class="sc">&gt;</span> <span class="fl">0.5</span>)</span>
-<span id="cb42-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"P(μ &gt; 0.5 | dati) ="</span>, <span class="fu">round</span>(prob_sim, <span class="dv">4</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a aria-label="1"></a>prob_sim <span class="ot">&lt;-</span> <span class="fu">mean</span>(mu_sim <span class="sc">&gt;</span> <span class="fl">0.5</span>)</span>
+<span id="cb42-2"><a aria-label="2"></a><span class="fu">cat</span>(<span class="st">"P(μ &gt; 0.5 | dati) ="</span>, <span class="fu">round</span>(prob_sim, <span class="dv">4</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>P(μ &gt; 0.5 | dati) = 0.9611 </code></pre>
 </div>
@@ -1561,6 +1567,7 @@ Cambiamo solo le assunzioni iniziali su <span class="math inline">\(\mu\)</span>
 <p>Nella Lezione 29 faremo un passo ulteriore: i <strong>modelli multilivello</strong>, che permettono di stimare effetti a livello di gruppo e di individuo simultaneamente. Vedremo anche come <strong>confrontare modelli</strong> diversi per capire quale si adatta meglio ai dati — il tema naturale quando si hanno scelte modellistiche da giustificare.</p>
 
 
+
 </section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
@@ -1570,19 +1577,19 @@ Cambiamo solo le assunzioni iniziali su <span class="math inline">\(\mu\)</span>
 </div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="esercitazione_part2_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="esercitazione_part2_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="esercitazione_part2_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="esercitazione_part2_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="esercitazione_part2_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="esercitazione_part2_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="esercitazione_part2_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="esercitazione_part2_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="esercitazione_part2_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="esercitazione_part2_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -1885,7 +1892,7 @@ Cambiamo solo le assunzioni iniziali su <span class="math inline">\(\mu\)</span>
         }
           var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
           var mailtoRegex = new RegExp(/^mailto:/);
-            var filterRegex = new RegExp('/' + window.location.host + '/');
+            var filterRegex = new RegExp("https:\/\/ccaudek\.github\.io\/psicometria_2026\/");
           var isInternal = (href) => {
               return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
           }

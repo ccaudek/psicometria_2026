@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html lang="it"><head>
-<script src="posterior_predictive_2_files/libs/clipboard/clipboard.min.js"></script>
-<script src="posterior_predictive_2_files/libs/quarto-html/tabby.min.js"></script>
-<script src="posterior_predictive_2_files/libs/quarto-html/popper.min.js"></script>
-<script src="posterior_predictive_2_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="posterior_predictive_2_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="posterior_predictive_2_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="posterior_predictive_2_files/libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.27">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-5c1318cf63eba56dbef7ba16bc7d56f5.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
 
   <meta name="author" content="Corrado Caudek">
-  <title>Distribuzione predittiva a posteriori</title>
+  <title>Psicometria 2025-26 – Distribuzione predittiva a posteriori</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="posterior_predictive_2_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="posterior_predictive_2_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
   <style>
-    code{white-space: pre-wrap;}
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -95,11 +101,11 @@
     code span.vs { color: #032f62; } /* VerbatimString */
     code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="posterior_predictive_2_files/libs/revealjs/dist/theme/quarto-32eda4d62c2e25823ebe39cba2bb0a8e.css">
-  <link href="posterior_predictive_2_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="posterior_predictive_2_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="posterior_predictive_2_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="posterior_predictive_2_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-172e614ca6238f6067b3ffab71e7e169.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -199,7 +205,7 @@
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
+Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid" aria-label="ORCID profile for Corrado Caudek"> <img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
 </div>
 <div class="quarto-title-author-email">
 <a href="mailto:corrado.caudek@unifi.it">corrado.caudek@unifi.it</a>
@@ -210,7 +216,7 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
     </div>
 </div>
 
-  <p class="date">27 febbraio 2026</p>
+  <p class="date">29 ottobre 2026</p>
 </section>
 <section id="obiettivi" class="slide level2 unnumbered unlisted">
 <h2>Obiettivi</h2>
@@ -259,30 +265,30 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
 <p>Uno studio valuta l’efficacia di un intervento CBT. Misuriamo i punteggi <strong>BDI-II</strong> post-trattamento in 20 pazienti.</p>
 <p>Ricordate la Lezione 22: abbiamo usato il BDI-II per il prior predictive check. Ora usiamo lo stesso strumento, ma con <strong>dati reali</strong> e un modello stimato.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="co"># Dati osservati</span></span>
-<span id="cb1-2"><a href=""></a>dati <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb1-3"><a href=""></a>  <span class="at">paziente =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>,</span>
-<span id="cb1-4"><a href=""></a>  <span class="at">bdi =</span> <span class="fu">c</span>(<span class="dv">18</span>, <span class="dv">22</span>, <span class="dv">15</span>, <span class="dv">28</span>, <span class="dv">19</span>, <span class="dv">24</span>, <span class="dv">21</span>, <span class="dv">17</span>, <span class="dv">25</span>, <span class="dv">20</span>,</span>
-<span id="cb1-5"><a href=""></a>          <span class="dv">23</span>, <span class="dv">16</span>, <span class="dv">27</span>, <span class="dv">19</span>, <span class="dv">22</span>, <span class="dv">18</span>, <span class="dv">26</span>, <span class="dv">21</span>, <span class="dv">24</span>, <span class="dv">20</span>)</span>
-<span id="cb1-6"><a href=""></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-label="1"></a><span class="co"># Dati osservati</span></span>
+<span id="cb1-2"><a aria-label="2"></a>dati <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-3"><a aria-label="3"></a>  <span class="at">paziente =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>,</span>
+<span id="cb1-4"><a aria-label="4"></a>  <span class="at">bdi =</span> <span class="fu">c</span>(<span class="dv">18</span>, <span class="dv">22</span>, <span class="dv">15</span>, <span class="dv">28</span>, <span class="dv">19</span>, <span class="dv">24</span>, <span class="dv">21</span>, <span class="dv">17</span>, <span class="dv">25</span>, <span class="dv">20</span>,</span>
+<span id="cb1-5"><a aria-label="5"></a>          <span class="dv">23</span>, <span class="dv">16</span>, <span class="dv">27</span>, <span class="dv">19</span>, <span class="dv">22</span>, <span class="dv">18</span>, <span class="dv">26</span>, <span class="dv">21</span>, <span class="dv">24</span>, <span class="dv">20</span>)</span>
+<span id="cb1-6"><a aria-label="6"></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"n ="</span>, <span class="fu">nrow</span>(dati), <span class="st">"pazienti</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"n ="</span>, <span class="fu">nrow</span>(dati), <span class="st">"pazienti</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>n = 20 pazienti</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Media:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(dati<span class="sc">$</span>bdi), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Media:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(dati<span class="sc">$</span>bdi), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Media: 21.2 </code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"SD:"</span>, <span class="fu">round</span>(<span class="fu">sd</span>(dati<span class="sc">$</span>bdi), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"SD:"</span>, <span class="fu">round</span>(<span class="fu">sd</span>(dati<span class="sc">$</span>bdi), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>SD: 3.7 </code></pre>
 </div>
@@ -291,16 +297,16 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
 <section id="stimiamo-il-modello-con-brms" class="slide level2">
 <h2>Stimiamo il modello con brms</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="co"># Modello: i punteggi BDI seguono una distribuzione Normale</span></span>
-<span id="cb8-2"><a href=""></a>fit <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
-<span id="cb8-3"><a href=""></a>  <span class="at">formula =</span> bdi <span class="sc">~</span> <span class="dv">1</span>,           <span class="co"># solo intercetta (stimiamo la media)</span></span>
-<span id="cb8-4"><a href=""></a>  <span class="at">data =</span> dati,</span>
-<span id="cb8-5"><a href=""></a>  <span class="at">family =</span> <span class="fu">gaussian</span>(),         <span class="co"># distribuzione Normale</span></span>
-<span id="cb8-6"><a href=""></a>  <span class="at">seed =</span> <span class="dv">42</span>,</span>
-<span id="cb8-7"><a href=""></a>  <span class="at">backend =</span> <span class="st">"cmdstanr"</span>,</span>
-<span id="cb8-8"><a href=""></a>  <span class="at">silent =</span> <span class="dv">2</span>,</span>
-<span id="cb8-9"><a href=""></a>  <span class="at">refresh =</span> <span class="dv">0</span></span>
-<span id="cb8-10"><a href=""></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a aria-label="1"></a><span class="co"># Modello: i punteggi BDI seguono una distribuzione Normale</span></span>
+<span id="cb8-2"><a aria-label="2"></a>fit <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb8-3"><a aria-label="3"></a>  <span class="at">formula =</span> bdi <span class="sc">~</span> <span class="dv">1</span>,           <span class="co"># solo intercetta (stimiamo la media)</span></span>
+<span id="cb8-4"><a aria-label="4"></a>  <span class="at">data =</span> dati,</span>
+<span id="cb8-5"><a aria-label="5"></a>  <span class="at">family =</span> <span class="fu">gaussian</span>(),         <span class="co"># distribuzione Normale</span></span>
+<span id="cb8-6"><a aria-label="6"></a>  <span class="at">seed =</span> <span class="dv">42</span>,</span>
+<span id="cb8-7"><a aria-label="7"></a>  <span class="at">backend =</span> <span class="st">"cmdstanr"</span>,</span>
+<span id="cb8-8"><a aria-label="8"></a>  <span class="at">silent =</span> <span class="dv">2</span>,</span>
+<span id="cb8-9"><a aria-label="9"></a>  <span class="at">refresh =</span> <span class="dv">0</span></span>
+<span id="cb8-10"><a aria-label="10"></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Il modello è: <span class="math display">\[
 \text{BDI}_i \sim \text{Normale}(\mu, \sigma).
@@ -309,7 +315,7 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
 <section id="vediamo-i-risultati" class="slide level2">
 <h2>Vediamo i risultati</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="fu">summary</span>(fit)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a aria-label="1"></a><span class="fu">summary</span>(fit)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> Family: gaussian 
   Links: mu = identity 
@@ -349,11 +355,11 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <h2>La funzione <code>posterior_predict()</code></h2>
 <p><code>brms</code> genera automaticamente previsioni dalla distribuzione predittiva a posteriori:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="co"># Generiamo previsioni per i dati osservati</span></span>
-<span id="cb11-2"><a href=""></a>pred <span class="ot">&lt;-</span> <span class="fu">posterior_predict</span>(fit)</span>
-<span id="cb11-3"><a href=""></a></span>
-<span id="cb11-4"><a href=""></a><span class="co"># Cosa otteniamo?</span></span>
-<span id="cb11-5"><a href=""></a><span class="fu">cat</span>(<span class="st">"Dimensioni:"</span>, <span class="fu">nrow</span>(pred), <span class="st">"simulazioni ×"</span>, <span class="fu">ncol</span>(pred), <span class="st">"pazienti</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a aria-label="1"></a><span class="co"># Generiamo previsioni per i dati osservati</span></span>
+<span id="cb11-2"><a aria-label="2"></a>pred <span class="ot">&lt;-</span> <span class="fu">posterior_predict</span>(fit)</span>
+<span id="cb11-3"><a aria-label="3"></a></span>
+<span id="cb11-4"><a aria-label="4"></a><span class="co"># Cosa otteniamo?</span></span>
+<span id="cb11-5"><a aria-label="5"></a><span class="fu">cat</span>(<span class="st">"Dimensioni:"</span>, <span class="fu">nrow</span>(pred), <span class="st">"simulazioni ×"</span>, <span class="fu">ncol</span>(pred), <span class="st">"pazienti</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Dimensioni: 4000 simulazioni × 20 pazienti</code></pre>
 </div>
@@ -363,8 +369,8 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <section id="esaminiamo-le-previsioni" class="slide level2">
 <h2>Esaminiamo le previsioni</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a><span class="co"># Prime 5 simulazioni, primi 6 pazienti</span></span>
-<span id="cb13-2"><a href=""></a>pred[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a aria-label="1"></a><span class="co"># Prime 5 simulazioni, primi 6 pazienti</span></span>
+<span id="cb13-2"><a aria-label="2"></a>pred[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         [,1]     [,2]     [,3]     [,4]     [,5]     [,6]
 [1,] 21.28585 19.42088 24.97599 25.97949 19.66229 23.90891
@@ -380,19 +386,19 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <h2>Previsioni per un singolo paziente</h2>
 <p>Focalizziamoci sul <strong>paziente 1</strong> (BDI osservato = 18):</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a><span class="co"># Tutte le 4000 previsioni per il paziente 1</span></span>
-<span id="cb15-2"><a href=""></a>previsioni_paz1 <span class="ot">&lt;-</span> pred[, <span class="dv">1</span>]</span>
-<span id="cb15-3"><a href=""></a></span>
-<span id="cb15-4"><a href=""></a><span class="fu">cat</span>(<span class="st">"Previsioni per paziente 1:</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a aria-label="1"></a><span class="co"># Tutte le 4000 previsioni per il paziente 1</span></span>
+<span id="cb15-2"><a aria-label="2"></a>previsioni_paz1 <span class="ot">&lt;-</span> pred[, <span class="dv">1</span>]</span>
+<span id="cb15-3"><a aria-label="3"></a></span>
+<span id="cb15-4"><a aria-label="4"></a><span class="fu">cat</span>(<span class="st">"Previsioni per paziente 1:</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Previsioni per paziente 1:</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"  Media:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(previsioni_paz1), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"  Media:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(previsioni_paz1), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Media: 21.2 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"  Intervallo 95%:"</span>, <span class="fu">round</span>(<span class="fu">quantile</span>(previsioni_paz1, <span class="fl">0.025</span>), <span class="dv">1</span>), <span class="st">"-"</span>,</span>
-<span id="cb19-2"><a href=""></a>    <span class="fu">round</span>(<span class="fu">quantile</span>(previsioni_paz1, <span class="fl">0.975</span>), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"  Intervallo 95%:"</span>, <span class="fu">round</span>(<span class="fu">quantile</span>(previsioni_paz1, <span class="fl">0.025</span>), <span class="dv">1</span>), <span class="st">"-"</span>,</span>
+<span id="cb19-2"><a aria-label="2"></a>    <span class="fu">round</span>(<span class="fu">quantile</span>(previsioni_paz1, <span class="fl">0.975</span>), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Intervallo 95%: 13.4 - 29 </code></pre>
 </div>
@@ -401,7 +407,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <section class="slide level2">
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href=""></a>previsioni_paz1[<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a aria-label="1"></a>previsioni_paz1[<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  [1] 21.285849 19.022415 16.927138 18.538850 21.380207 24.034025 21.969007
   [8] 16.405442 18.550032 15.370574 23.878816 21.550907 15.743145 16.304015
@@ -424,7 +430,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <section id="visualizziamo" class="slide level2">
 <h2>Visualizziamo</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a>df_paz1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">bdi =</span> previsioni_paz1)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a aria-label="1"></a>df_paz1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">bdi =</span> previsioni_paz1)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 <img data-src="posterior_predictive_2_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"></section>
@@ -508,26 +514,26 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <h2>Prevedere il prossimo paziente</h2>
 <p>La domanda clinica più importante: <strong>cosa mi aspetto per un nuovo paziente?</strong></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a><span class="co"># Creiamo un "nuovo paziente"</span></span>
-<span id="cb24-2"><a href=""></a>nuovo_paziente <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">paziente =</span> <span class="dv">21</span>)</span>
-<span id="cb24-3"><a href=""></a></span>
-<span id="cb24-4"><a href=""></a><span class="co"># Generiamo previsioni</span></span>
-<span id="cb24-5"><a href=""></a>pred_nuovo <span class="ot">&lt;-</span> <span class="fu">posterior_predict</span>(fit, <span class="at">newdata =</span> nuovo_paziente)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a aria-label="1"></a><span class="co"># Creiamo un "nuovo paziente"</span></span>
+<span id="cb24-2"><a aria-label="2"></a>nuovo_paziente <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">paziente =</span> <span class="dv">21</span>)</span>
+<span id="cb24-3"><a aria-label="3"></a></span>
+<span id="cb24-4"><a aria-label="4"></a><span class="co"># Generiamo previsioni</span></span>
+<span id="cb24-5"><a aria-label="5"></a>pred_nuovo <span class="ot">&lt;-</span> <span class="fu">posterior_predict</span>(fit, <span class="at">newdata =</span> nuovo_paziente)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Previsione per un nuovo paziente:</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Previsione per un nuovo paziente:</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Previsione per un nuovo paziente:</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"  Media:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(pred_nuovo), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"  Media:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(pred_nuovo), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Media: 21.3 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"  Intervallo 95%:"</span>, <span class="fu">round</span>(<span class="fu">quantile</span>(pred_nuovo, <span class="fl">0.025</span>), <span class="dv">1</span>), <span class="st">"-"</span>,</span>
-<span id="cb29-2"><a href=""></a>    <span class="fu">round</span>(<span class="fu">quantile</span>(pred_nuovo, <span class="fl">0.975</span>), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"  Intervallo 95%:"</span>, <span class="fu">round</span>(<span class="fu">quantile</span>(pred_nuovo, <span class="fl">0.025</span>), <span class="dv">1</span>), <span class="st">"-"</span>,</span>
+<span id="cb29-2"><a aria-label="2"></a>    <span class="fu">round</span>(<span class="fu">quantile</span>(pred_nuovo, <span class="fl">0.975</span>), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Intervallo 95%: 13.1 - 29.1 </code></pre>
 </div>
@@ -546,10 +552,10 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <h2>Domanda 1: probabilità di remissione</h2>
 <p>Un punteggio BDI-II &lt; 14 indica <strong>remissione</strong>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href=""></a><span class="co"># Calcoliamo dalla posterior predictive</span></span>
-<span id="cb31-2"><a href=""></a>prob_remissione <span class="ot">&lt;-</span> <span class="fu">mean</span>(pred_nuovo <span class="sc">&lt;</span> <span class="dv">14</span>)</span>
-<span id="cb31-3"><a href=""></a></span>
-<span id="cb31-4"><a href=""></a><span class="fu">cat</span>(<span class="st">"P(BDI &lt; 14) ="</span>, <span class="fu">round</span>(prob_remissione <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a aria-label="1"></a><span class="co"># Calcoliamo dalla posterior predictive</span></span>
+<span id="cb31-2"><a aria-label="2"></a>prob_remissione <span class="ot">&lt;-</span> <span class="fu">mean</span>(pred_nuovo <span class="sc">&lt;</span> <span class="dv">14</span>)</span>
+<span id="cb31-3"><a aria-label="3"></a></span>
+<span id="cb31-4"><a aria-label="4"></a><span class="fu">cat</span>(<span class="st">"P(BDI &lt; 14) ="</span>, <span class="fu">round</span>(prob_remissione <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>P(BDI &lt; 14) = 3.9 %</code></pre>
 </div>
@@ -562,9 +568,9 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <h2>Domanda 2: probabilità di miglioramento clinico</h2>
 <p>Un punteggio BDI-II &lt; 20 indica <strong>miglioramento clinicamente rilevante</strong>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a>prob_miglioramento <span class="ot">&lt;-</span> <span class="fu">mean</span>(pred_nuovo <span class="sc">&lt;</span> <span class="dv">20</span>)</span>
-<span id="cb33-2"><a href=""></a></span>
-<span id="cb33-3"><a href=""></a><span class="fu">cat</span>(<span class="st">"P(BDI &lt; 20) ="</span>, <span class="fu">round</span>(prob_miglioramento <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a aria-label="1"></a>prob_miglioramento <span class="ot">&lt;-</span> <span class="fu">mean</span>(pred_nuovo <span class="sc">&lt;</span> <span class="dv">20</span>)</span>
+<span id="cb33-2"><a aria-label="2"></a></span>
+<span id="cb33-3"><a aria-label="3"></a><span class="fu">cat</span>(<span class="st">"P(BDI &lt; 20) ="</span>, <span class="fu">round</span>(prob_miglioramento <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>P(BDI &lt; 20) = 37.8 %</code></pre>
 </div>
@@ -577,9 +583,9 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <h2>Domanda 3: probabilità di depressione grave</h2>
 <p>Un punteggio BDI-II &gt; 28 indica <strong>depressione grave</strong>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a>prob_grave <span class="ot">&lt;-</span> <span class="fu">mean</span>(pred_nuovo <span class="sc">&gt;</span> <span class="dv">28</span>)</span>
-<span id="cb35-2"><a href=""></a></span>
-<span id="cb35-3"><a href=""></a><span class="fu">cat</span>(<span class="st">"P(BDI &gt; 28) ="</span>, <span class="fu">round</span>(prob_grave <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a aria-label="1"></a>prob_grave <span class="ot">&lt;-</span> <span class="fu">mean</span>(pred_nuovo <span class="sc">&gt;</span> <span class="dv">28</span>)</span>
+<span id="cb35-2"><a aria-label="2"></a></span>
+<span id="cb35-3"><a aria-label="3"></a><span class="fu">cat</span>(<span class="st">"P(BDI &gt; 28) ="</span>, <span class="fu">round</span>(prob_grave <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>P(BDI &gt; 28) = 4.7 %</code></pre>
 </div>
@@ -592,10 +598,10 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <h2>Domanda 4: intervallo “tipico”</h2>
 <p>Qual è il range di punteggi che osserveremo nel <strong>80% dei casi</strong>?</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href=""></a>intervallo_80 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(pred_nuovo, <span class="fu">c</span>(<span class="fl">0.10</span>, <span class="fl">0.90</span>))</span>
-<span id="cb37-2"><a href=""></a></span>
-<span id="cb37-3"><a href=""></a><span class="fu">cat</span>(<span class="st">"Intervallo 80%:"</span>, <span class="fu">round</span>(intervallo_80[<span class="dv">1</span>], <span class="dv">1</span>), <span class="st">"-"</span>,</span>
-<span id="cb37-4"><a href=""></a>    <span class="fu">round</span>(intervallo_80[<span class="dv">2</span>], <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a aria-label="1"></a>intervallo_80 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(pred_nuovo, <span class="fu">c</span>(<span class="fl">0.10</span>, <span class="fl">0.90</span>))</span>
+<span id="cb37-2"><a aria-label="2"></a></span>
+<span id="cb37-3"><a aria-label="3"></a><span class="fu">cat</span>(<span class="st">"Intervallo 80%:"</span>, <span class="fu">round</span>(intervallo_80[<span class="dv">1</span>], <span class="dv">1</span>), <span class="st">"-"</span>,</span>
+<span id="cb37-4"><a aria-label="4"></a>    <span class="fu">round</span>(intervallo_80[<span class="dv">2</span>], <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Intervallo 80%: 16.2 - 26.4 </code></pre>
 </div>
@@ -631,7 +637,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <section class="slide level2">
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href=""></a><span class="fu">pp_check</span>(fit, <span class="at">type =</span> <span class="st">"dens_overlay"</span>, <span class="at">ndraws =</span> <span class="dv">100</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a aria-label="1"></a><span class="fu">pp_check</span>(fit, <span class="at">type =</span> <span class="st">"dens_overlay"</span>, <span class="at">ndraws =</span> <span class="dv">100</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 
 </div>
 <img data-src="posterior_predictive_2_files/figure-revealjs/unnamed-chunk-22-1.png" width="960" class="r-stretch"></section>
@@ -664,7 +670,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 
 <h3 id="check-sulla-media">Check sulla media</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href=""></a><span class="fu">pp_check</span>(fit, <span class="at">type =</span> <span class="st">"stat"</span>, <span class="at">stat =</span> <span class="st">"mean"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a aria-label="1"></a><span class="fu">pp_check</span>(fit, <span class="at">type =</span> <span class="st">"stat"</span>, <span class="at">stat =</span> <span class="st">"mean"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 
 </div>
 <img data-src="posterior_predictive_2_files/figure-revealjs/unnamed-chunk-23-1.png" width="960" class="r-stretch"></section>
@@ -681,7 +687,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 
 <h3 id="check-sulla-variabilità">Check sulla variabilità</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href=""></a><span class="fu">pp_check</span>(fit, <span class="at">type =</span> <span class="st">"stat"</span>, <span class="at">stat =</span> <span class="st">"sd"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a aria-label="1"></a><span class="fu">pp_check</span>(fit, <span class="at">type =</span> <span class="st">"stat"</span>, <span class="at">stat =</span> <span class="st">"sd"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 
 </div>
 <img data-src="posterior_predictive_2_files/figure-revealjs/unnamed-chunk-24-1.png" width="960" class="r-stretch"></section>
@@ -693,7 +699,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <section id="check-congiunto-su-media-e-variabilità" class="slide level2">
 <h2>Check congiunto su media e variabilità</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href=""></a><span class="fu">pp_check</span>(fit, <span class="at">type =</span> <span class="st">"stat_2d"</span>, <span class="at">stat =</span> <span class="fu">c</span>(<span class="st">"mean"</span>, <span class="st">"sd"</span>))</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a aria-label="1"></a><span class="fu">pp_check</span>(fit, <span class="at">type =</span> <span class="st">"stat_2d"</span>, <span class="at">stat =</span> <span class="fu">c</span>(<span class="st">"mean"</span>, <span class="st">"sd"</span>))</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 
 </div>
 <img data-src="posterior_predictive_2_files/figure-revealjs/unnamed-chunk-25-1.png" width="960" class="r-stretch"></section>
@@ -791,6 +797,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <p>Vedremo come le nostre credenze iniziali influenzano le conclusioni — e quando possiamo fidarci dei risultati.</p>
 
 
+
 </section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
@@ -800,19 +807,19 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 </div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="posterior_predictive_2_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="posterior_predictive_2_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="posterior_predictive_2_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="posterior_predictive_2_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="posterior_predictive_2_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="posterior_predictive_2_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="posterior_predictive_2_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="posterior_predictive_2_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="posterior_predictive_2_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="posterior_predictive_2_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -1115,7 +1122,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
         }
           var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
           var mailtoRegex = new RegExp(/^mailto:/);
-            var filterRegex = new RegExp('/' + window.location.host + '/');
+            var filterRegex = new RegExp("https:\/\/ccaudek\.github\.io\/psicometria_2026\/");
           var isInternal = (href) => {
               return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
           }

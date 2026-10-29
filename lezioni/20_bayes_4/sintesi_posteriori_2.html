@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html lang="it"><head>
-<script src="sintesi_posteriori_2_files/libs/clipboard/clipboard.min.js"></script>
-<script src="sintesi_posteriori_2_files/libs/quarto-html/tabby.min.js"></script>
-<script src="sintesi_posteriori_2_files/libs/quarto-html/popper.min.js"></script>
-<script src="sintesi_posteriori_2_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="sintesi_posteriori_2_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="sintesi_posteriori_2_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="sintesi_posteriori_2_files/libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.27">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-5c1318cf63eba56dbef7ba16bc7d56f5.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
 
   <meta name="author" content="Corrado Caudek">
-  <title>Sintesi della distribuzione a posteriori</title>
+  <title>Psicometria 2025-26 – Sintesi della distribuzione a posteriori</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="sintesi_posteriori_2_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="sintesi_posteriori_2_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
   <style>
-    code{white-space: pre-wrap;}
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -95,11 +101,11 @@
     code span.vs { color: #032f62; } /* VerbatimString */
     code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="sintesi_posteriori_2_files/libs/revealjs/dist/theme/quarto-32eda4d62c2e25823ebe39cba2bb0a8e.css">
-  <link href="sintesi_posteriori_2_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="sintesi_posteriori_2_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="sintesi_posteriori_2_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="sintesi_posteriori_2_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-172e614ca6238f6067b3ffab71e7e169.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -199,7 +205,7 @@
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
+Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid" aria-label="ORCID profile for Corrado Caudek"> <img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
 </div>
 <div class="quarto-title-author-email">
 <a href="mailto:corrado.caudek@unifi.it">corrado.caudek@unifi.it</a>
@@ -210,7 +216,7 @@ Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-tit
     </div>
 </div>
 
-  <p class="date">15 febbraio 2026</p>
+  <p class="date">29 ottobre 2026</p>
 </section>
 <section id="obiettivi" class="slide level2 unnumbered unlisted">
 <h2>Obiettivi</h2>
@@ -303,14 +309,14 @@ P(\theta \in [a,b] \mid \text{dati}) = 0.95.
 <h2>Calcolare l’ETI</h2>
 <p>Riprendiamo l’esempio CBT: Beta(27, 13).</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>alpha_post_cbt <span class="ot">&lt;-</span> <span class="dv">27</span></span>
-<span id="cb1-2"><a href=""></a>beta_post_cbt <span class="ot">&lt;-</span> <span class="dv">13</span></span>
-<span id="cb1-3"><a href=""></a></span>
-<span id="cb1-4"><a href=""></a><span class="co"># Intervallo di credibilità al 95% (ETI)</span></span>
-<span id="cb1-5"><a href=""></a>eti_lower <span class="ot">&lt;-</span> <span class="fu">qbeta</span>(<span class="fl">0.025</span>, alpha_post_cbt, beta_post_cbt)</span>
-<span id="cb1-6"><a href=""></a>eti_upper <span class="ot">&lt;-</span> <span class="fu">qbeta</span>(<span class="fl">0.975</span>, alpha_post_cbt, beta_post_cbt)</span>
-<span id="cb1-7"><a href=""></a></span>
-<span id="cb1-8"><a href=""></a><span class="fu">cat</span>(<span class="st">"ETI 95%: ["</span>, <span class="fu">round</span>(eti_lower, <span class="dv">3</span>), <span class="st">","</span>, <span class="fu">round</span>(eti_upper, <span class="dv">3</span>), <span class="st">"]</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-label="1"></a>alpha_post_cbt <span class="ot">&lt;-</span> <span class="dv">27</span></span>
+<span id="cb1-2"><a aria-label="2"></a>beta_post_cbt <span class="ot">&lt;-</span> <span class="dv">13</span></span>
+<span id="cb1-3"><a aria-label="3"></a></span>
+<span id="cb1-4"><a aria-label="4"></a><span class="co"># Intervallo di credibilità al 95% (ETI)</span></span>
+<span id="cb1-5"><a aria-label="5"></a>eti_lower <span class="ot">&lt;-</span> <span class="fu">qbeta</span>(<span class="fl">0.025</span>, alpha_post_cbt, beta_post_cbt)</span>
+<span id="cb1-6"><a aria-label="6"></a>eti_upper <span class="ot">&lt;-</span> <span class="fu">qbeta</span>(<span class="fl">0.975</span>, alpha_post_cbt, beta_post_cbt)</span>
+<span id="cb1-7"><a aria-label="7"></a></span>
+<span id="cb1-8"><a aria-label="8"></a><span class="fu">cat</span>(<span class="st">"ETI 95%: ["</span>, <span class="fu">round</span>(eti_lower, <span class="dv">3</span>), <span class="st">","</span>, <span class="fu">round</span>(eti_upper, <span class="dv">3</span>), <span class="st">"]</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>ETI 95%: [ 0.524 , 0.809 ]</code></pre>
 </div>
@@ -348,32 +354,32 @@ P(\theta \in [a,b] \mid \text{dati}) = 0.95.
 <h2>Calcolare l’HDI</h2>
 <p>Per calcolare l’HDI servono metodi numerici. Con i campioni MCMC:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="co"># Funzione per calcolare l'HDI dai campioni</span></span>
-<span id="cb3-2"><a href=""></a>calcola_hdi <span class="ot">&lt;-</span> <span class="cf">function</span>(campioni, <span class="at">prob =</span> <span class="fl">0.95</span>) {</span>
-<span id="cb3-3"><a href=""></a>  campioni_ordinati <span class="ot">&lt;-</span> <span class="fu">sort</span>(campioni)</span>
-<span id="cb3-4"><a href=""></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(campioni)</span>
-<span id="cb3-5"><a href=""></a>  n_inclusi <span class="ot">&lt;-</span> <span class="fu">ceiling</span>(prob <span class="sc">*</span> n)</span>
-<span id="cb3-6"><a href=""></a>  </span>
-<span id="cb3-7"><a href=""></a>  <span class="co"># Trova l'intervallo più stretto che contiene n_inclusi valori</span></span>
-<span id="cb3-8"><a href=""></a>  ampiezze <span class="ot">&lt;-</span> campioni_ordinati[(n_inclusi <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span>n] <span class="sc">-</span> campioni_ordinati[<span class="dv">1</span><span class="sc">:</span>(n <span class="sc">-</span> n_inclusi)]</span>
-<span id="cb3-9"><a href=""></a>  idx_min <span class="ot">&lt;-</span> <span class="fu">which.min</span>(ampiezze)</span>
-<span id="cb3-10"><a href=""></a>  </span>
-<span id="cb3-11"><a href=""></a>  <span class="fu">c</span>(<span class="at">lower =</span> campioni_ordinati[idx_min], </span>
-<span id="cb3-12"><a href=""></a>    <span class="at">upper =</span> campioni_ordinati[idx_min <span class="sc">+</span> n_inclusi])</span>
-<span id="cb3-13"><a href=""></a>}</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a aria-label="1"></a><span class="co"># Funzione per calcolare l'HDI dai campioni</span></span>
+<span id="cb3-2"><a aria-label="2"></a>calcola_hdi <span class="ot">&lt;-</span> <span class="cf">function</span>(campioni, <span class="at">prob =</span> <span class="fl">0.95</span>) {</span>
+<span id="cb3-3"><a aria-label="3"></a>  campioni_ordinati <span class="ot">&lt;-</span> <span class="fu">sort</span>(campioni)</span>
+<span id="cb3-4"><a aria-label="4"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(campioni)</span>
+<span id="cb3-5"><a aria-label="5"></a>  n_inclusi <span class="ot">&lt;-</span> <span class="fu">ceiling</span>(prob <span class="sc">*</span> n)</span>
+<span id="cb3-6"><a aria-label="6"></a>  </span>
+<span id="cb3-7"><a aria-label="7"></a>  <span class="co"># Trova l'intervallo più stretto che contiene n_inclusi valori</span></span>
+<span id="cb3-8"><a aria-label="8"></a>  ampiezze <span class="ot">&lt;-</span> campioni_ordinati[(n_inclusi <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span>n] <span class="sc">-</span> campioni_ordinati[<span class="dv">1</span><span class="sc">:</span>(n <span class="sc">-</span> n_inclusi)]</span>
+<span id="cb3-9"><a aria-label="9"></a>  idx_min <span class="ot">&lt;-</span> <span class="fu">which.min</span>(ampiezze)</span>
+<span id="cb3-10"><a aria-label="10"></a>  </span>
+<span id="cb3-11"><a aria-label="11"></a>  <span class="fu">c</span>(<span class="at">lower =</span> campioni_ordinati[idx_min], </span>
+<span id="cb3-12"><a aria-label="12"></a>    <span class="at">upper =</span> campioni_ordinati[idx_min <span class="sc">+</span> n_inclusi])</span>
+<span id="cb3-13"><a aria-label="13"></a>}</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section class="slide level2">
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="co"># Generiamo campioni</span></span>
-<span id="cb4-2"><a href=""></a>campioni <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="dv">10000</span>, alpha_post_cbt, beta_post_cbt)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a aria-label="1"></a><span class="co"># Generiamo campioni</span></span>
+<span id="cb4-2"><a aria-label="2"></a>campioni <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="dv">10000</span>, alpha_post_cbt, beta_post_cbt)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="co"># Calcoliamo HDI</span></span>
-<span id="cb5-2"><a href=""></a>hdi <span class="ot">&lt;-</span> <span class="fu">calcola_hdi</span>(campioni, <span class="fl">0.95</span>)</span>
-<span id="cb5-3"><a href=""></a><span class="fu">cat</span>(<span class="st">"HDI al 95%: ["</span>, <span class="fu">round</span>(hdi[<span class="st">"lower"</span>], <span class="dv">3</span>), <span class="st">","</span>, <span class="fu">round</span>(hdi[<span class="st">"upper"</span>], <span class="dv">3</span>), <span class="st">"]</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a aria-label="1"></a><span class="co"># Calcoliamo HDI</span></span>
+<span id="cb5-2"><a aria-label="2"></a>hdi <span class="ot">&lt;-</span> <span class="fu">calcola_hdi</span>(campioni, <span class="fl">0.95</span>)</span>
+<span id="cb5-3"><a aria-label="3"></a><span class="fu">cat</span>(<span class="st">"HDI al 95%: ["</span>, <span class="fu">round</span>(hdi[<span class="st">"lower"</span>], <span class="dv">3</span>), <span class="st">","</span>, <span class="fu">round</span>(hdi[<span class="st">"upper"</span>], <span class="dv">3</span>), <span class="st">"]</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>HDI al 95%: [ 0.528 , 0.814 ]</code></pre>
 </div>
@@ -450,27 +456,27 @@ P(\theta \in [a,b] \mid \text{dati}) = 0.95.
 <section id="setup-del-modello" class="slide level2">
 <h2>Setup del modello</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="co"># Dati</span></span>
-<span id="cb11-2"><a href=""></a>veri_positivi <span class="ot">&lt;-</span> <span class="dv">42</span></span>
-<span id="cb11-3"><a href=""></a>totale_adhd <span class="ot">&lt;-</span> <span class="dv">50</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a aria-label="1"></a><span class="co"># Dati</span></span>
+<span id="cb11-2"><a aria-label="2"></a>veri_positivi <span class="ot">&lt;-</span> <span class="dv">42</span></span>
+<span id="cb11-3"><a aria-label="3"></a>totale_adhd <span class="ot">&lt;-</span> <span class="dv">50</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="co"># Prior: Beta(15, 5) - centrata su 0.75, moderata incertezza</span></span>
-<span id="cb12-2"><a href=""></a>alpha_prior_adhd <span class="ot">&lt;-</span> <span class="dv">15</span></span>
-<span id="cb12-3"><a href=""></a>beta_prior_adhd <span class="ot">&lt;-</span> <span class="dv">5</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a><span class="co"># Posterior</span></span>
-<span id="cb13-2"><a href=""></a>alpha_post_adhd <span class="ot">&lt;-</span> alpha_prior_adhd <span class="sc">+</span> veri_positivi</span>
-<span id="cb13-3"><a href=""></a>beta_post_adhd <span class="ot">&lt;-</span> beta_prior_adhd <span class="sc">+</span> (totale_adhd <span class="sc">-</span> veri_positivi)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a aria-label="1"></a><span class="co"># Prior: Beta(15, 5) - centrata su 0.75, moderata incertezza</span></span>
+<span id="cb12-2"><a aria-label="2"></a>alpha_prior_adhd <span class="ot">&lt;-</span> <span class="dv">15</span></span>
+<span id="cb12-3"><a aria-label="3"></a>beta_prior_adhd <span class="ot">&lt;-</span> <span class="dv">5</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Posterior: Beta("</span>, alpha_post_adhd, <span class="st">","</span>, beta_post_adhd, <span class="st">")</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a aria-label="1"></a><span class="co"># Posterior</span></span>
+<span id="cb13-2"><a aria-label="2"></a>alpha_post_adhd <span class="ot">&lt;-</span> alpha_prior_adhd <span class="sc">+</span> veri_positivi</span>
+<span id="cb13-3"><a aria-label="3"></a>beta_post_adhd <span class="ot">&lt;-</span> beta_prior_adhd <span class="sc">+</span> (totale_adhd <span class="sc">-</span> veri_positivi)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Posterior: Beta("</span>, alpha_post_adhd, <span class="st">","</span>, beta_post_adhd, <span class="st">")</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Posterior: Beta( 57 , 13 )</code></pre>
 </div>
@@ -480,21 +486,21 @@ P(\theta \in [a,b] \mid \text{dati}) = 0.95.
 <section id="calcolo-delle-statistiche-riassuntive" class="slide level2">
 <h2>Calcolo delle statistiche riassuntive</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="co"># Generiamo campioni</span></span>
-<span id="cb16-2"><a href=""></a>campioni_adhd <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="dv">10000</span>, alpha_post_adhd, beta_post_adhd)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a aria-label="1"></a><span class="co"># Generiamo campioni</span></span>
+<span id="cb16-2"><a aria-label="2"></a>campioni_adhd <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="dv">10000</span>, alpha_post_adhd, beta_post_adhd)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a><span class="co"># Stime puntuali</span></span>
-<span id="cb17-2"><a href=""></a>media_adhd <span class="ot">&lt;-</span> <span class="fu">mean</span>(campioni_adhd)</span>
-<span id="cb17-3"><a href=""></a>mediana_adhd <span class="ot">&lt;-</span> <span class="fu">median</span>(campioni_adhd)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a aria-label="1"></a><span class="co"># Stime puntuali</span></span>
+<span id="cb17-2"><a aria-label="2"></a>media_adhd <span class="ot">&lt;-</span> <span class="fu">mean</span>(campioni_adhd)</span>
+<span id="cb17-3"><a aria-label="3"></a>mediana_adhd <span class="ot">&lt;-</span> <span class="fu">median</span>(campioni_adhd)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="co"># Intervalli di credibilità</span></span>
-<span id="cb18-2"><a href=""></a>eti_adhd <span class="ot">&lt;-</span> <span class="fu">quantile</span>(campioni_adhd, <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
-<span id="cb18-3"><a href=""></a>hdi_adhd <span class="ot">&lt;-</span> <span class="fu">calcola_hdi</span>(campioni_adhd, <span class="fl">0.95</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a aria-label="1"></a><span class="co"># Intervalli di credibilità</span></span>
+<span id="cb18-2"><a aria-label="2"></a>eti_adhd <span class="ot">&lt;-</span> <span class="fu">quantile</span>(campioni_adhd, <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
+<span id="cb18-3"><a aria-label="3"></a>hdi_adhd <span class="ot">&lt;-</span> <span class="fu">calcola_hdi</span>(campioni_adhd, <span class="fl">0.95</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
@@ -502,14 +508,14 @@ P(\theta \in [a,b] \mid \text{dati}) = 0.95.
 
 <p>Sensibilità stimata:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Media:"</span>, <span class="fu">round</span>(media_adhd, <span class="dv">3</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Media:"</span>, <span class="fu">round</span>(media_adhd, <span class="dv">3</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Media: 0.814 </code></pre>
 </div>
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"ETI 95%: ["</span>, <span class="fu">round</span>(eti_adhd[<span class="dv">1</span>], <span class="dv">3</span>), <span class="st">","</span>, <span class="fu">round</span>(eti_adhd[<span class="dv">2</span>], <span class="dv">3</span>), <span class="st">"]</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"ETI 95%: ["</span>, <span class="fu">round</span>(eti_adhd[<span class="dv">1</span>], <span class="dv">3</span>), <span class="st">","</span>, <span class="fu">round</span>(eti_adhd[<span class="dv">2</span>], <span class="dv">3</span>), <span class="st">"]</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>ETI 95%: [ 0.713 , 0.895 ]</code></pre>
 </div>
@@ -517,7 +523,7 @@ P(\theta \in [a,b] \mid \text{dati}) = 0.95.
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"HDI 95%: ["</span>, <span class="fu">round</span>(hdi_adhd[<span class="st">"lower"</span>], <span class="dv">3</span>), <span class="st">","</span>, <span class="fu">round</span>(hdi_adhd[<span class="st">"upper"</span>], <span class="dv">3</span>), <span class="st">"]</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"HDI 95%: ["</span>, <span class="fu">round</span>(hdi_adhd[<span class="st">"lower"</span>], <span class="dv">3</span>), <span class="st">","</span>, <span class="fu">round</span>(hdi_adhd[<span class="st">"upper"</span>], <span class="dv">3</span>), <span class="st">"]</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>HDI 95%: [ 0.726 , 0.904 ]</code></pre>
 </div>
@@ -553,8 +559,8 @@ P(\theta \in [a,b] \mid \text{dati}) = 0.95.
 <h2>Rispondere con i campioni</h2>
 <p>P(sensibilità &gt; 0.80):</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a>prob_gt_80 <span class="ot">&lt;-</span> <span class="fu">mean</span>(campioni_adhd <span class="sc">&gt;</span> <span class="fl">0.80</span>)</span>
-<span id="cb25-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"P(sensibilità &gt; 80%) ="</span>, <span class="fu">round</span>(prob_gt_80 <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a aria-label="1"></a>prob_gt_80 <span class="ot">&lt;-</span> <span class="fu">mean</span>(campioni_adhd <span class="sc">&gt;</span> <span class="fl">0.80</span>)</span>
+<span id="cb25-2"><a aria-label="2"></a><span class="fu">cat</span>(<span class="st">"P(sensibilità &gt; 80%) ="</span>, <span class="fu">round</span>(prob_gt_80 <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>P(sensibilità &gt; 80%) = 63.7 %</code></pre>
 </div>
@@ -562,8 +568,8 @@ P(\theta \in [a,b] \mid \text{dati}) = 0.95.
 <div class="fragment">
 <p>P(sensibilità tra 0.75 e 0.85):</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a>prob_75_85 <span class="ot">&lt;-</span> <span class="fu">mean</span>(campioni_adhd <span class="sc">&gt;</span> <span class="fl">0.75</span> <span class="sc">&amp;</span> campioni_adhd <span class="sc">&lt;</span> <span class="fl">0.85</span>)</span>
-<span id="cb27-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"P(75% &lt; sensibilità &lt; 85%) ="</span>, <span class="fu">round</span>(prob_75_85 <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a aria-label="1"></a>prob_75_85 <span class="ot">&lt;-</span> <span class="fu">mean</span>(campioni_adhd <span class="sc">&gt;</span> <span class="fl">0.75</span> <span class="sc">&amp;</span> campioni_adhd <span class="sc">&lt;</span> <span class="fl">0.85</span>)</span>
+<span id="cb27-2"><a aria-label="2"></a><span class="fu">cat</span>(<span class="st">"P(75% &lt; sensibilità &lt; 85%) ="</span>, <span class="fu">round</span>(prob_75_85 <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>P(75% &lt; sensibilità &lt; 85%) = 67.9 %</code></pre>
 </div>
@@ -572,8 +578,8 @@ P(\theta \in [a,b] \mid \text{dati}) = 0.95.
 <div class="fragment">
 <p>P(sensibilità &lt; 0.70) - sotto lo standard:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a>prob_lt_70 <span class="ot">&lt;-</span> <span class="fu">mean</span>(campioni_adhd <span class="sc">&lt;</span> <span class="fl">0.70</span>)</span>
-<span id="cb29-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"P(sensibilità &lt; 70%) ="</span>, <span class="fu">round</span>(prob_lt_70 <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a aria-label="1"></a>prob_lt_70 <span class="ot">&lt;-</span> <span class="fu">mean</span>(campioni_adhd <span class="sc">&lt;</span> <span class="fl">0.70</span>)</span>
+<span id="cb29-2"><a aria-label="2"></a><span class="fu">cat</span>(<span class="st">"P(sensibilità &lt; 70%) ="</span>, <span class="fu">round</span>(prob_lt_70 <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>P(sensibilità &lt; 70%) = 1.3 %</code></pre>
 </div>
@@ -656,7 +662,7 @@ P(\theta \in [a,b] \mid \text{dati}) = 0.95.
 <div class="fragment">
 <p>Intervallo di credibilità bayesiano (HDI 95%):</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"["</span>, <span class="fu">round</span>(hdi_adhd[<span class="st">"lower"</span>], <span class="dv">3</span>), <span class="st">","</span>, <span class="fu">round</span>(hdi_adhd[<span class="st">"upper"</span>], <span class="dv">3</span>), <span class="st">"]</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"["</span>, <span class="fu">round</span>(hdi_adhd[<span class="st">"lower"</span>], <span class="dv">3</span>), <span class="st">","</span>, <span class="fu">round</span>(hdi_adhd[<span class="st">"upper"</span>], <span class="dv">3</span>), <span class="st">"]</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[ 0.726 , 0.904 ]</code></pre>
 </div>
@@ -665,7 +671,7 @@ P(\theta \in [a,b] \mid \text{dati}) = 0.95.
 <div class="fragment">
 <p>Intervallo di confidenza frequentista (Wald 95%):</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"["</span>, <span class="fu">round</span>(ci_lower, <span class="dv">3</span>), <span class="st">","</span>, <span class="fu">round</span>(ci_upper, <span class="dv">3</span>), <span class="st">"]</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"["</span>, <span class="fu">round</span>(ci_lower, <span class="dv">3</span>), <span class="st">","</span>, <span class="fu">round</span>(ci_upper, <span class="dv">3</span>), <span class="st">"]</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[ 0.738 , 0.942 ]</code></pre>
 </div>
@@ -711,12 +717,12 @@ P(\theta \in [a,b] \mid \text{dati}) = 0.95.
 <div class="fragment">
 <p>Possiamo calcolare intervalli a <strong>qualsiasi livello</strong>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a>livelli <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.50</span>, <span class="fl">0.80</span>, <span class="fl">0.95</span>, <span class="fl">0.99</span>)</span>
-<span id="cb35-2"><a href=""></a></span>
-<span id="cb35-3"><a href=""></a><span class="cf">for</span> (liv <span class="cf">in</span> livelli) {</span>
-<span id="cb35-4"><a href=""></a>  int <span class="ot">&lt;-</span> <span class="fu">quantile</span>(campioni_adhd, <span class="fu">c</span>((<span class="dv">1</span><span class="sc">-</span>liv)<span class="sc">/</span><span class="dv">2</span>, (<span class="dv">1</span><span class="sc">+</span>liv)<span class="sc">/</span><span class="dv">2</span>))</span>
-<span id="cb35-5"><a href=""></a>  <span class="fu">cat</span>(<span class="st">"ETI"</span>, liv<span class="sc">*</span><span class="dv">100</span>, <span class="st">"%: ["</span>, <span class="fu">round</span>(int[<span class="dv">1</span>], <span class="dv">3</span>), <span class="st">","</span>, <span class="fu">round</span>(int[<span class="dv">2</span>], <span class="dv">3</span>), <span class="st">"]</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb35-6"><a href=""></a>}</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a aria-label="1"></a>livelli <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.50</span>, <span class="fl">0.80</span>, <span class="fl">0.95</span>, <span class="fl">0.99</span>)</span>
+<span id="cb35-2"><a aria-label="2"></a></span>
+<span id="cb35-3"><a aria-label="3"></a><span class="cf">for</span> (liv <span class="cf">in</span> livelli) {</span>
+<span id="cb35-4"><a aria-label="4"></a>  int <span class="ot">&lt;-</span> <span class="fu">quantile</span>(campioni_adhd, <span class="fu">c</span>((<span class="dv">1</span><span class="sc">-</span>liv)<span class="sc">/</span><span class="dv">2</span>, (<span class="dv">1</span><span class="sc">+</span>liv)<span class="sc">/</span><span class="dv">2</span>))</span>
+<span id="cb35-5"><a aria-label="5"></a>  <span class="fu">cat</span>(<span class="st">"ETI"</span>, liv<span class="sc">*</span><span class="dv">100</span>, <span class="st">"%: ["</span>, <span class="fu">round</span>(int[<span class="dv">1</span>], <span class="dv">3</span>), <span class="st">","</span>, <span class="fu">round</span>(int[<span class="dv">2</span>], <span class="dv">3</span>), <span class="st">"]</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb35-6"><a aria-label="6"></a>}</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>ETI 50 %: [ 0.784 , 0.847 ]
 ETI 80 %: [ 0.753 , 0.872 ]
@@ -793,19 +799,19 @@ ETI 99 %: [ 0.68 , 0.915 ]</code></pre>
 <section id="soluzione-setup-e-aggiornamento" class="slide level2">
 <h2>Soluzione — Setup e aggiornamento</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href=""></a><span class="co"># Dati</span></span>
-<span id="cb37-2"><a href=""></a>miglioramenti <span class="ot">&lt;-</span> <span class="dv">18</span></span>
-<span id="cb37-3"><a href=""></a>coppie <span class="ot">&lt;-</span> <span class="dv">25</span></span>
-<span id="cb37-4"><a href=""></a></span>
-<span id="cb37-5"><a href=""></a><span class="co"># Prior: Beta(6, 4) - centrata su 0.60</span></span>
-<span id="cb37-6"><a href=""></a>alpha_prior_coppia <span class="ot">&lt;-</span> <span class="dv">6</span></span>
-<span id="cb37-7"><a href=""></a>beta_prior_coppia <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb37-8"><a href=""></a></span>
-<span id="cb37-9"><a href=""></a><span class="co"># Posterior</span></span>
-<span id="cb37-10"><a href=""></a>alpha_post_coppia <span class="ot">&lt;-</span> alpha_prior_coppia <span class="sc">+</span> miglioramenti</span>
-<span id="cb37-11"><a href=""></a>beta_post_coppia <span class="ot">&lt;-</span> beta_prior_coppia <span class="sc">+</span> (coppie <span class="sc">-</span> miglioramenti)</span>
-<span id="cb37-12"><a href=""></a></span>
-<span id="cb37-13"><a href=""></a><span class="fu">cat</span>(<span class="st">"Posterior: Beta("</span>, alpha_post_coppia, <span class="st">","</span>, beta_post_coppia, <span class="st">")</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a aria-label="1"></a><span class="co"># Dati</span></span>
+<span id="cb37-2"><a aria-label="2"></a>miglioramenti <span class="ot">&lt;-</span> <span class="dv">18</span></span>
+<span id="cb37-3"><a aria-label="3"></a>coppie <span class="ot">&lt;-</span> <span class="dv">25</span></span>
+<span id="cb37-4"><a aria-label="4"></a></span>
+<span id="cb37-5"><a aria-label="5"></a><span class="co"># Prior: Beta(6, 4) - centrata su 0.60</span></span>
+<span id="cb37-6"><a aria-label="6"></a>alpha_prior_coppia <span class="ot">&lt;-</span> <span class="dv">6</span></span>
+<span id="cb37-7"><a aria-label="7"></a>beta_prior_coppia <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb37-8"><a aria-label="8"></a></span>
+<span id="cb37-9"><a aria-label="9"></a><span class="co"># Posterior</span></span>
+<span id="cb37-10"><a aria-label="10"></a>alpha_post_coppia <span class="ot">&lt;-</span> alpha_prior_coppia <span class="sc">+</span> miglioramenti</span>
+<span id="cb37-11"><a aria-label="11"></a>beta_post_coppia <span class="ot">&lt;-</span> beta_prior_coppia <span class="sc">+</span> (coppie <span class="sc">-</span> miglioramenti)</span>
+<span id="cb37-12"><a aria-label="12"></a></span>
+<span id="cb37-13"><a aria-label="13"></a><span class="fu">cat</span>(<span class="st">"Posterior: Beta("</span>, alpha_post_coppia, <span class="st">","</span>, beta_post_coppia, <span class="st">")</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Posterior: Beta( 24 , 11 )</code></pre>
 </div>
@@ -814,26 +820,26 @@ ETI 99 %: [ 0.68 , 0.915 ]</code></pre>
 <section id="soluzione-statistiche" class="slide level2">
 <h2>Soluzione — Statistiche</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href=""></a><span class="co"># Campioni</span></span>
-<span id="cb39-2"><a href=""></a>campioni_coppia <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="dv">10000</span>, alpha_post_coppia, beta_post_coppia)</span>
-<span id="cb39-3"><a href=""></a></span>
-<span id="cb39-4"><a href=""></a><span class="co"># Stime puntuali</span></span>
-<span id="cb39-5"><a href=""></a>media_coppia <span class="ot">&lt;-</span> <span class="fu">mean</span>(campioni_coppia)</span>
-<span id="cb39-6"><a href=""></a>mediana_coppia <span class="ot">&lt;-</span> <span class="fu">median</span>(campioni_coppia)</span>
-<span id="cb39-7"><a href=""></a></span>
-<span id="cb39-8"><a href=""></a><span class="co"># Intervalli</span></span>
-<span id="cb39-9"><a href=""></a>eti_coppia <span class="ot">&lt;-</span> <span class="fu">quantile</span>(campioni_coppia, <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
-<span id="cb39-10"><a href=""></a>hdi_coppia <span class="ot">&lt;-</span> <span class="fu">calcola_hdi</span>(campioni_coppia, <span class="fl">0.95</span>)</span>
-<span id="cb39-11"><a href=""></a></span>
-<span id="cb39-12"><a href=""></a><span class="fu">cat</span>(<span class="st">"Media a posteriori:"</span>, <span class="fu">round</span>(media_coppia, <span class="dv">3</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a aria-label="1"></a><span class="co"># Campioni</span></span>
+<span id="cb39-2"><a aria-label="2"></a>campioni_coppia <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="dv">10000</span>, alpha_post_coppia, beta_post_coppia)</span>
+<span id="cb39-3"><a aria-label="3"></a></span>
+<span id="cb39-4"><a aria-label="4"></a><span class="co"># Stime puntuali</span></span>
+<span id="cb39-5"><a aria-label="5"></a>media_coppia <span class="ot">&lt;-</span> <span class="fu">mean</span>(campioni_coppia)</span>
+<span id="cb39-6"><a aria-label="6"></a>mediana_coppia <span class="ot">&lt;-</span> <span class="fu">median</span>(campioni_coppia)</span>
+<span id="cb39-7"><a aria-label="7"></a></span>
+<span id="cb39-8"><a aria-label="8"></a><span class="co"># Intervalli</span></span>
+<span id="cb39-9"><a aria-label="9"></a>eti_coppia <span class="ot">&lt;-</span> <span class="fu">quantile</span>(campioni_coppia, <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
+<span id="cb39-10"><a aria-label="10"></a>hdi_coppia <span class="ot">&lt;-</span> <span class="fu">calcola_hdi</span>(campioni_coppia, <span class="fl">0.95</span>)</span>
+<span id="cb39-11"><a aria-label="11"></a></span>
+<span id="cb39-12"><a aria-label="12"></a><span class="fu">cat</span>(<span class="st">"Media a posteriori:"</span>, <span class="fu">round</span>(media_coppia, <span class="dv">3</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Media a posteriori: 0.686 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"ETI 95%: ["</span>, <span class="fu">round</span>(eti_coppia[<span class="dv">1</span>], <span class="dv">3</span>), <span class="st">","</span>, <span class="fu">round</span>(eti_coppia[<span class="dv">2</span>], <span class="dv">3</span>), <span class="st">"]</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"ETI 95%: ["</span>, <span class="fu">round</span>(eti_coppia[<span class="dv">1</span>], <span class="dv">3</span>), <span class="st">","</span>, <span class="fu">round</span>(eti_coppia[<span class="dv">2</span>], <span class="dv">3</span>), <span class="st">"]</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>ETI 95%: [ 0.527 , 0.826 ]</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"HDI 95%: ["</span>, <span class="fu">round</span>(hdi_coppia[<span class="st">"lower"</span>], <span class="dv">3</span>), <span class="st">","</span>, <span class="fu">round</span>(hdi_coppia[<span class="st">"upper"</span>], <span class="dv">3</span>), <span class="st">"]</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"HDI 95%: ["</span>, <span class="fu">round</span>(hdi_coppia[<span class="st">"lower"</span>], <span class="dv">3</span>), <span class="st">","</span>, <span class="fu">round</span>(hdi_coppia[<span class="st">"upper"</span>], <span class="dv">3</span>), <span class="st">"]</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>HDI 95%: [ 0.53 , 0.827 ]</code></pre>
 </div>
@@ -842,19 +848,19 @@ ETI 99 %: [ 0.68 , 0.915 ]</code></pre>
 <section id="soluzione-domande-cliniche" class="slide level2">
 <h2>Soluzione — Domande cliniche</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href=""></a>prob_gt_60 <span class="ot">&lt;-</span> <span class="fu">mean</span>(campioni_coppia <span class="sc">&gt;</span> <span class="fl">0.60</span>)</span>
-<span id="cb45-2"><a href=""></a>prob_gt_75 <span class="ot">&lt;-</span> <span class="fu">mean</span>(campioni_coppia <span class="sc">&gt;</span> <span class="fl">0.75</span>)</span>
-<span id="cb45-3"><a href=""></a>prob_lt_50 <span class="ot">&lt;-</span> <span class="fu">mean</span>(campioni_coppia <span class="sc">&lt;</span> <span class="fl">0.50</span>)</span>
-<span id="cb45-4"><a href=""></a></span>
-<span id="cb45-5"><a href=""></a><span class="fu">cat</span>(<span class="st">"P(efficacia &gt; 60%) ="</span>, <span class="fu">round</span>(prob_gt_60 <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a aria-label="1"></a>prob_gt_60 <span class="ot">&lt;-</span> <span class="fu">mean</span>(campioni_coppia <span class="sc">&gt;</span> <span class="fl">0.60</span>)</span>
+<span id="cb45-2"><a aria-label="2"></a>prob_gt_75 <span class="ot">&lt;-</span> <span class="fu">mean</span>(campioni_coppia <span class="sc">&gt;</span> <span class="fl">0.75</span>)</span>
+<span id="cb45-3"><a aria-label="3"></a>prob_lt_50 <span class="ot">&lt;-</span> <span class="fu">mean</span>(campioni_coppia <span class="sc">&lt;</span> <span class="fl">0.50</span>)</span>
+<span id="cb45-4"><a aria-label="4"></a></span>
+<span id="cb45-5"><a aria-label="5"></a><span class="fu">cat</span>(<span class="st">"P(efficacia &gt; 60%) ="</span>, <span class="fu">round</span>(prob_gt_60 <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>P(efficacia &gt; 60%) = 85.9 %</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"P(efficacia &gt; 75%) ="</span>, <span class="fu">round</span>(prob_gt_75 <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"P(efficacia &gt; 75%) ="</span>, <span class="fu">round</span>(prob_gt_75 <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>P(efficacia &gt; 75%) = 21.4 %</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"P(efficacia &lt; 50%) ="</span>, <span class="fu">round</span>(prob_lt_50 <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a aria-label="1"></a><span class="fu">cat</span>(<span class="st">"P(efficacia &lt; 50%) ="</span>, <span class="fu">round</span>(prob_lt_50 <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>P(efficacia &lt; 50%) = 1.2 %</code></pre>
 </div>
@@ -927,6 +933,7 @@ ETI 99 %: [ 0.68 , 0.915 ]</code></pre>
 <p>Vedremo come le nostre credenze iniziali influenzano le conclusioni — e quando possiamo fidarci dei risultati.</p>
 
 
+
 </section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
@@ -936,19 +943,19 @@ ETI 99 %: [ 0.68 , 0.915 ]</code></pre>
 </div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="sintesi_posteriori_2_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="sintesi_posteriori_2_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="sintesi_posteriori_2_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="sintesi_posteriori_2_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="sintesi_posteriori_2_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="sintesi_posteriori_2_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="sintesi_posteriori_2_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="sintesi_posteriori_2_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="sintesi_posteriori_2_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="sintesi_posteriori_2_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -1251,7 +1258,7 @@ ETI 99 %: [ 0.68 , 0.915 ]</code></pre>
         }
           var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
           var mailtoRegex = new RegExp(/^mailto:/);
-            var filterRegex = new RegExp('/' + window.location.host + '/');
+            var filterRegex = new RegExp("https:\/\/ccaudek\.github\.io\/psicometria_2026\/");
           var isInternal = (href) => {
               return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
           }

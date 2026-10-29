@@ -1,12 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/30_ripasso/esercitazione_ripasso_seg2.html</loc>
+    <lastmod>2026-02-18T07:12:27.099Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/29_multilevel_model_comparison/2_confronto_modelli.html</loc>
+    <lastmod>2026-02-18T04:54:28.918Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/28_esercitazione/esercitazione_part2.html</loc>
+    <lastmod>2026-02-17T06:09:14.242Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/27_workflow/3_gradi_liberta.html</loc>
+    <lastmod>2026-02-16T15:21:30.987Z</lastmod>
+  </url>
+  <url>
     <loc>https://ccaudek.github.io/psicometria_2026/lezioni/27_workflow/1_workflow_riproducibile_1.html</loc>
     <lastmod>2026-02-16T11:52:37.700Z</lastmod>
   </url>
   <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/26_regressione_3/confronto_due_gruppi_1.html</loc>
+    <lastmod>2026-02-16T09:35:55.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/25_regressione_2/inferenza_media_1.html</loc>
+    <lastmod>2026-02-16T06:44:23.296Z</lastmod>
+  </url>
+  <url>
     <loc>https://ccaudek.github.io/psicometria_2026/lezioni/24_regressione_1/regressione_bayesiana_1.html</loc>
     <lastmod>2026-02-16T05:47:18.259Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/23_bayes_6/posterior_predictive_1.html</loc>
+    <lastmod>2026-02-15T09:27:40.195Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/22_bayes_5/prior_predictive_1.html</loc>
+    <lastmod>2026-02-15T06:01:51.211Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/20_bayes_4/sintesi_posteriori_1.html</loc>
+    <lastmod>2026-02-15T04:26:44.123Z</lastmod>
   </url>
   <url>
     <loc>https://ccaudek.github.io/psicometria_2026/lezioni/19_bayes_3/coniugate_beta_binomiale.html</loc>
@@ -17,36 +53,176 @@
     <lastmod>2026-02-14T04:43:36.761Z</lastmod>
   </url>
   <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/17_bayes_1/prior_post_1.html</loc>
+    <lastmod>2026-02-13T12:08:03.559Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/16_frequentismo_3/crisi_1.html</loc>
+    <lastmod>2026-02-13T08:23:20.955Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/15_frequentismo_2/pvalue_1.html</loc>
+    <lastmod>2026-02-12T08:41:16.173Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/14_frequentismo_1/frequentismo_1.html</loc>
+    <lastmod>2026-02-12T07:12:05.405Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/13_probabilita_9_esercitazione/verosimiglianza_esercitazione_seg1.html</loc>
+    <lastmod>2026-01-26T13:21:50.046Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/12_probabilita_8/verosimiglianza_1.html</loc>
+    <lastmod>2026-02-11T10:05:10.945Z</lastmod>
+  </url>
+  <url>
     <loc>https://ccaudek.github.io/psicometria_2026/lezioni/11_probabilita_7/1_probabilita_congiunta.html</loc>
     <lastmod>2026-02-11T10:33:46.775Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/10_probabilita_6/1_variabili_casuali.html</loc>
+    <lastmod>2026-02-10T10:22:00.863Z</lastmod>
   </url>
   <url>
     <loc>https://ccaudek.github.io/psicometria_2026/lezioni/09_probabilita_5/1_distribuzioni_continue.html</loc>
     <lastmod>2026-02-10T07:59:43.724Z</lastmod>
   </url>
   <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/08_probabilita_4/distribuzioni_discrete_1.html</loc>
+    <lastmod>2026-02-10T05:40:57.955Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/07_probabilita_3_esercitazione/esercitazione_probabilita_1.html</loc>
+    <lastmod>2026-01-24T12:48:01.929Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/06_probabilita_2/1_prob_condizionata_aggiornamento.html</loc>
+    <lastmod>2026-02-09T07:59:36.552Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/05_probabilita_1/1_spazio_campionario.html</loc>
+    <lastmod>2026-02-09T03:45:51.130Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/03_descrittiva/02_statistica_descrittiva.html</loc>
+    <lastmod>2026-02-08T08:55:57.497Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/02_distribuzioni/02_istogramma/istogramma.html</loc>
+    <lastmod>2026-02-08T07:08:22.223Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/01_replicabilita/02_motivazione.html</loc>
+    <lastmod>2026-02-23T06:38:35.877Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/index.html</loc>
+    <lastmod>2026-10-29T06:10:23.915Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/02_distribuzioni/01_storia_1.html</loc>
+    <lastmod>2026-02-23T09:52:33.816Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/03_descrittiva/01_primi_passi_R.html</loc>
+    <lastmod>2026-02-08T08:09:06.063Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/04_syntax_r/04_sintassi_R.html</loc>
+    <lastmod>2026-02-08T13:05:10.685Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/05_probabilita_1/2_combinatoria.html</loc>
+    <lastmod>2026-02-09T05:57:47.279Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/06_probabilita_2/2_teorema_bayes.html</loc>
+    <lastmod>2026-02-10T05:05:27.886Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/07_probabilita_3_esercitazione/esercitazione_probabilita_2_R.html</loc>
+    <lastmod>2026-01-25T04:51:14.964Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/08_probabilita_4/distribuzioni_discrete_2_R.html</loc>
+    <lastmod>2026-02-10T06:22:25.569Z</lastmod>
+  </url>
+  <url>
     <loc>https://ccaudek.github.io/psicometria_2026/lezioni/09_probabilita_5/2_distribuzioni_continue.html</loc>
     <lastmod>2026-02-10T09:10:40.495Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/10_probabilita_6/2_variabili_casuali.html</loc>
+    <lastmod>2026-02-11T07:12:44.385Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/11_probabilita_7/2_probabilita_congiunta.html</loc>
+    <lastmod>2026-02-11T09:26:59.781Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/12_probabilita_8/verosimiglianza_2.html</loc>
+    <lastmod>2026-02-11T10:58:39.659Z</lastmod>
   </url>
   <url>
     <loc>https://ccaudek.github.io/psicometria_2026/lezioni/13_probabilita_9_esercitazione/verosimiglianza_esercitazione_seg2.html</loc>
     <lastmod>2026-01-26T16:43:18.517Z</lastmod>
   </url>
   <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/14_frequentismo_1/frequentismo_2.html</loc>
+    <lastmod>2026-02-12T08:13:34.853Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/15_frequentismo_2/pvalue_2.html</loc>
+    <lastmod>2026-02-13T07:32:34.156Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/16_frequentismo_3/crisi_2.html</loc>
+    <lastmod>2026-02-13T09:26:37.010Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/17_bayes_1/prior_post_2.html</loc>
+    <lastmod>2026-02-13T14:00:37.058Z</lastmod>
+  </url>
+  <url>
     <loc>https://ccaudek.github.io/psicometria_2026/lezioni/18_bayes_2/apprendimento_sequenziale_2.html</loc>
     <lastmod>2026-02-14T05:03:14.352Z</lastmod>
   </url>
   <url>
-    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/20_bayes_4/sintesi_posteriori_1.html</loc>
-    <lastmod>2026-02-15T04:26:44.123Z</lastmod>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/19_bayes_3/coniugate_normale_normale.html</loc>
+    <lastmod>2026-02-14T06:20:45.171Z</lastmod>
   </url>
   <url>
-    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/26_regressione_3/confronto_due_gruppi_1.html</loc>
-    <lastmod>2026-02-16T09:35:55.000Z</lastmod>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/20_bayes_4/sintesi_posteriori_2.html</loc>
+    <lastmod>2026-02-15T05:02:31.995Z</lastmod>
   </url>
   <url>
-    <loc>https://ccaudek.github.io/psicometria_2026/index.html</loc>
-    <lastmod>2026-10-29T06:10:23.915Z</lastmod>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/22_bayes_5/prior_predictive_2.html</loc>
+    <lastmod>2026-02-15T08:08:17.040Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/23_bayes_6/posterior_predictive_2.html</loc>
+    <lastmod>2026-02-16T05:20:27.078Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/24_regressione_1/regressione_bayesiana_2.html</loc>
+    <lastmod>2026-02-16T05:58:54.027Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/25_regressione_2/inferenza_media_2.html</loc>
+    <lastmod>2026-02-16T07:32:05.989Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/26_regressione_3/confronto_due_gruppi_2.html</loc>
+    <lastmod>2026-02-21T19:43:22.764Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/27_workflow/2_dall_analisi_al_report.html</loc>
+    <lastmod>2026-02-16T13:39:13.641Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ccaudek.github.io/psicometria_2026/lezioni/28_esercitazione/esercitazione_part1.html</loc>
+    <lastmod>2026-02-17T03:19:00.570Z</lastmod>
   </url>
   <url>
     <loc>https://ccaudek.github.io/psicometria_2026/lezioni/29_multilevel_model_comparison/1_multilivello_modellazione.html</loc>
