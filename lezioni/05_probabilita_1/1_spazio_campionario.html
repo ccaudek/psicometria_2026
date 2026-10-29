@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="it"><head>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-5c1318cf63eba56dbef7ba16bc7d56f5.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
+
+  <meta name="author" content="Corrado Caudek">
+  <title>Psicometria 2025-26 – Fondamenti della probabilità</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+      margin-bottom: 0em;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-172e614ca6238f6067b3ffab71e7e169.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" data-background-color="#0072bc" class="quarto-title-block center">
+  <h1 class="title">Fondamenti della probabilità</h1>
+  <p class="subtitle">Eventi, spazi campionari e assiomi</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid" aria-label="ORCID profile for Corrado Caudek"> <img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
+</div>
+<div class="quarto-title-author-email">
+<a href="mailto:corrado.caudek@unifi.it">corrado.caudek@unifi.it</a>
+</div>
+        <p class="quarto-title-affiliation">
+            Università degli Studi di Firenze
+          </p>
+    </div>
+</div>
+
+  <p class="date">29 ottobre 2026</p>
+</section>
+<section>
+<section id="un-puzzle-per-cominciare" class="title-slide slide level1 center" data-background-color="#e74c3c" style="color: white;">
+<h1>Un puzzle per cominciare</h1>
+
+</section>
+<section id="un-test-diagnostico" class="slide level2">
+<h2>Un test diagnostico</h2>
+<p>Immaginate di essere psicologi in un servizio di screening. Usate un test per un disturbo specifico. Ecco le caratteristiche del test:</p>
+<div class="fragment">
+<ul>
+<li>se una persona <strong>ha</strong> il disturbo, il test è positivo nel <strong>90% dei casi</strong>;</li>
+<li>se una persona <strong>non</strong> ha il disturbo, il test è positivo nel <strong>10% dei casi</strong>;</li>
+<li>il disturbo colpisce l’<strong>1%</strong> della popolazione.</li>
+</ul>
+</div>
+<div class="fragment">
+<p><strong>Domanda:</strong> Un paziente risulta positivo. Qual è la probabilità che abbia davvero il disturbo?</p>
+<p><em>(Scrivetevi la vostra stima intuitiva — ci torneremo.)</em></p>
+</div>
+</section>
+<section id="la-risposta-che-la-maggior-parte-delle-persone-dà" class="slide level2">
+<h2>La risposta che la maggior parte delle persone dà</h2>
+<p>La stima più comune è intorno all’<strong>80-90%</strong>.</p>
+<div class="fragment">
+<p>La risposta corretta è circa l’<strong>8%</strong>.</p>
+</div>
+<div class="fragment">
+<p>Questo errore non è un’eccezione isolata, né riguarda solo la capacità di ragionamento di pochi. È un <strong>pattern sistematico</strong>, ampiamente documentato da decenni di ricerca: dal <em>base rate neglect</em> identificato da Kahneman e Tversky alla vasta letteratura sulla <em>statistical literacy</em> — o sulla sua carenza — tra i professionisti della salute, clinici compresi.</p>
+</div>
+</section>
+<section class="slide level2">
+
+<p>Per capire <strong>dove</strong> l’intuizione sbaglia e <strong>come</strong> correggerla, abbiamo bisogno di un linguaggio preciso per ragionare sull’incertezza.</p>
+<p>Questo linguaggio è la <strong>teoria della probabilità</strong>.</p>
+</section>
+<section id="obiettivo-della-lezione" class="slide level2 unnumbered unlisted">
+<h2>Obiettivo della lezione</h2>
+<p>In questa prima parte:</p>
+<ul>
+<li>comprenderemo <strong>perché</strong> la probabilità è essenziale in psicologia;</li>
+<li>definiremo <strong>spazio campionario</strong> ed <strong>eventi</strong>;</li>
+<li>introdurremo gli <strong>assiomi della probabilità</strong>;</li>
+<li>metteremo in luce il <strong>divario tra intuizione e calcolo formale</strong>.</li>
+</ul>
+<blockquote>
+<p>Riferimento: https://ccaudek.github.io/utet-prob/ — Capitoli 1-3</p>
+</blockquote>
+</section>
+<section id="dalla-lettura-al-ragionamento-attivo" class="slide level2 unnumbered unlisted">
+<h2>Dalla lettura al ragionamento attivo</h2>
+<p>Avete già letto il materiale sui fondamenti della probabilità.</p>
+<div class="fragment">
+<p><strong>Obiettivo di oggi:</strong></p>
+<ul>
+<li>riattivare i concetti chiave;</li>
+<li>applicarli a situazioni psicologicamente rilevanti;</li>
+<li>scoprire dove l’intuizione fallisce.</li>
+</ul>
+</div>
+</section></section>
+<section>
+<section id="il-linguaggio-della-probabilità" class="title-slide slide level1 center" data-background-color="#2c3e50" style="color: white;">
+<h1>Il linguaggio della probabilità</h1>
+
+</section>
+<section id="perché-la-probabilità-in-psicologia" class="slide level2">
+<h2>Perché la probabilità in Psicologia?</h2>
+<p>La probabilità è uno strumento per ragionare in modo coerente sull’<strong>incertezza</strong>.</p>
+<div class="fragment">
+<p><strong>Punto chiave:</strong> la probabilità non descrive il mondo, ma ciò che noi <em>sappiamo</em> (o non sappiamo) sul mondo.</p>
+</div>
+<div class="fragment">
+<p>In psicologia, l’<strong>incertezza</strong> è ovunque:</p>
+<ul>
+<li>Come reagirà una persona a uno stimolo?</li>
+<li>Un trattamento funzionerà?</li>
+<li>Una differenza osservata è reale o casuale?</li>
+</ul>
+</div>
+</section>
+<section id="parlare-di-probabilità-richiede-una-rappresentazione" class="slide level2">
+<h2>Parlare di probabilità richiede una <em>rappresentazione</em></h2>
+<p>Quando diciamo che qualcosa è “probabile”, stiamo già facendo una scelta importante: stiamo decidendo <strong>come rappresentare il problema</strong>.</p>
+<div class="fragment">
+<ul>
+<li>Questa scelta, spesso implicita, è una delle principali <strong>fonti di errore</strong> nel ragionamento umano.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Nella teoria della probabilità, questa rappresentazione prende il nome di <strong>spazio campionario</strong>.</li>
+</ul>
+</div>
+</section>
+<section id="lo-spazio-campionario-definizione" class="slide level2">
+<h2>Lo spazio campionario: definizione</h2>
+<p>Lo <strong>spazio campionario</strong> <span class="math inline">\(\Omega\)</span> è l’insieme di tutti gli esiti possibili di un esperimento casuale:</p>
+<p><span class="math display">\[
+\Omega = \{\omega_1, \omega_2, \ldots, \omega_n\}.
+\]</span></p>
+<div class="fragment">
+<p><strong>Punto cruciale:</strong> non esiste uno spazio campionario “giusto” in assoluto. Esiste solo uno spazio campionario <em>coerente</em> con la domanda che ci stiamo ponendo.</p>
+</div>
+</section>
+<section id="esempio-lincertezza-dello-studente" class="slide level2">
+<h2>Esempio: l’incertezza dello studente</h2>
+<blockquote>
+<p>“È molto improbabile che io superi questo esame.”</p>
+</blockquote>
+<p>Questa frase sembra sensata, ma dal punto di vista probabilistico è <strong>incompleta</strong>.</p>
+</section>
+<section id="quale-spazio-campionario" class="slide level2">
+<h2>Quale spazio campionario?</h2>
+<div class="fragment">
+<p>La stessa situazione può essere rappresentata in molti modi diversi:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 48%">
+<col style="width: 51%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Rappresentazione</th>
+<th>Spazio campionario</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Binaria</td>
+<td><span class="math inline">\(\Omega = \{\text{supero}, \text{non supero}\}\)</span></td>
+</tr>
+<tr class="even">
+<td>Per voto</td>
+<td><span class="math inline">\(\Omega = \{18, 19, 20, \ldots, 30, \text{bocciato}\}\)</span></td>
+</tr>
+<tr class="odd">
+<td>Per impegno</td>
+<td><span class="math inline">\(\Omega = \{\text{poco}, \text{abbastanza}, \text{molto}\}\)</span></td>
+</tr>
+<tr class="even">
+<td>Per comprensione</td>
+<td><span class="math inline">\(\Omega = \{\text{poco}, \text{abbastanza}, \text{molto}\}\)</span></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Senza specificare <span class="math inline">\(\Omega\)</span>, parlare di probabilità è ambiguo.</p>
+</blockquote>
+</div>
+</section>
+<section id="esercizio-1-identificare-lo-spazio-campionario" class="slide level2">
+<h2>Esercizio 1 — Identificare lo spazio campionario</h2>
+<p>Un ricercatore studia i tempi di reazione in un compito di decisione lessicale (parola vs non-parola).</p>
+<p><strong>Domanda:</strong> Quali sono possibili spazi campionari per questo esperimento?</p>
+<p><em>(2 minuti per riflettere)</em></p>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-esercizio-1">Soluzione Esercizio 1</h3>
+<p>Possibili spazi campionari:</p>
+<ol type="1">
+<li><p><strong>Risposta:</strong> <span class="math inline">\(\Omega = \{\text{corretta}, \text{errata}\}\)</span></p></li>
+<li><p><strong>Tempo discretizzato:</strong> <span class="math inline">\(\Omega = \{\text{veloce}, \text{medio}, \text{lento}\}\)</span></p></li>
+<li><p><strong>Tempo continuo:</strong> <span class="math inline">\(\Omega = [0, +\infty)\)</span> millisecondi</p></li>
+<li><p><strong>Risposta × Tempo:</strong> <span class="math inline">\(\Omega = \{(\text{corretta, veloce}), (\text{corretta, lento}), \ldots\}\)</span></p></li>
+</ol>
+<blockquote>
+<p>La scelta dipende dalla <strong>domanda di ricerca</strong>.</p>
+</blockquote>
+</section>
+<section id="perché-questo-conta-nella-pratica" class="slide level2">
+<h2>Perché questo conta nella pratica</h2>
+<p>La scelta dello spazio campionario non è un tecnicismo. Pensate al puzzle iniziale: nel test diagnostico, lo spazio campionario non è semplicemente {positivo, negativo}. È il prodotto di due variabili: <strong>stato reale</strong> (ha/non ha il disturbo) × <strong>risultato del test</strong> (positivo/negativo).</p>
+<div class="fragment">
+<p>Gran parte degli errori di ragionamento probabilistico nascono dal rappresentare il problema con lo spazio campionario <em>sbagliato</em> — cioè troppo semplice, o che confonde livelli diversi.</p>
+</div>
+</section></section>
+<section>
+<section id="eventi-e-operazioni-sugli-eventi" class="title-slide slide level1 center" data-background-color="#2c3e50" style="color: white;">
+<h1>Eventi e operazioni sugli eventi</h1>
+
+</section>
+<section id="eventi-non-singoli-esiti-ma-insiemi" class="slide level2">
+<h2>Eventi: non singoli esiti, ma insiemi</h2>
+<p>Un <strong>evento</strong> non è un singolo risultato, ma un <strong>sottoinsieme</strong> dello spazio campionario:</p>
+<p><span class="math display">\[
+A \subseteq \Omega.
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p><strong>Esempio:</strong> “il partecipante risponde correttamente” può includere:</p>
+<ul>
+<li>risposte corrette veloci;</li>
+<li>risposte corrette lente;</li>
+<li>risposte corrette dopo un’esitazione.</li>
+</ul>
+<p>Tutti questi esiti appartengono allo stesso evento.</p>
+</section>
+<section id="notazione-degli-eventi" class="slide level2">
+<h2>Notazione degli eventi</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Simbolo</th>
+<th>Significato</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\Omega\)</span></td>
+<td>Evento certo (qualcosa accade)</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\emptyset\)</span></td>
+<td>Evento impossibile (nulla accade)</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(A^c\)</span> o <span class="math inline">\(\bar{A}\)</span></td>
+<td>Complemento di <span class="math inline">\(A\)</span> (non-<span class="math inline">\(A\)</span>)</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(A \cup B\)</span></td>
+<td><span class="math inline">\(A\)</span> oppure <span class="math inline">\(B\)</span> (o entrambi)</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(A \cap B\)</span></td>
+<td><span class="math inline">\(A\)</span> e <span class="math inline">\(B\)</span> insieme</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="eventi-incompatibili-disgiunti" class="slide level2">
+<h2>Eventi incompatibili (disgiunti)</h2>
+<p>Due eventi sono <strong>incompatibili</strong> se non possono verificarsi contemporaneamente:</p>
+<p><span class="math display">\[
+A \cap B = \emptyset
+\]</span></p>
+<div class="fragment">
+<p><strong>Esempio:</strong></p>
+<ul>
+<li><span class="math inline">\(A\)</span> = “risposta corretta”.</li>
+<li><span class="math inline">\(B\)</span> = “risposta errata”.</li>
+</ul>
+<p><span class="math inline">\(A\)</span> e <span class="math inline">\(B\)</span> sono incompatibili: non possono accadere entrambi nello stesso trial.</p>
+</div>
+</section>
+<section id="eventi-compatibili" class="slide level2">
+<h2>Eventi compatibili</h2>
+<p><strong>Esempio:</strong></p>
+<ul>
+<li><span class="math inline">\(A\)</span> = “il partecipante è ansioso”.</li>
+<li><span class="math inline">\(B\)</span> = “il partecipante sbaglia”.</li>
+</ul>
+<div class="fragment">
+<p>Questi eventi <strong>non</strong> sono incompatibili.</p>
+<p>Una persona può essere ansiosa e sbagliare, oppure essere ansiosa e rispondere correttamente.</p>
+<blockquote>
+<p>Questa distinzione è essenziale per interpretare i risultati sperimentali.</p>
+</blockquote>
+</div>
+</section>
+<section id="esercizio-2-compatibilità-degli-eventi" class="slide level2">
+<h2>Esercizio 2 — Compatibilità degli eventi</h2>
+<p>In uno studio sulla memoria, definiamo:</p>
+<ul>
+<li><span class="math inline">\(A\)</span> = “il partecipante ricorda almeno 5 parole”.</li>
+<li><span class="math inline">\(B\)</span> = “il partecipante ricorda meno di 3 parole”.</li>
+<li><span class="math inline">\(C\)</span> = “il partecipante è nella condizione sperimentale”.</li>
+</ul>
+<p><strong>Domanda:</strong> quali coppie di eventi sono incompatibili?</p>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-esercizio-2">Soluzione Esercizio 2</h3>
+<ul>
+<li><p><span class="math inline">\(A\)</span> e <span class="math inline">\(B\)</span> sono <strong>incompatibili</strong>: non si può ricordare ≥5 e &lt;3 parole contemporaneamente.</p></li>
+<li><p><span class="math inline">\(A\)</span> e <span class="math inline">\(C\)</span> sono <strong>compatibili</strong>: si può ricordare ≥5 parole ed essere nella condizione sperimentale.</p></li>
+<li><p><span class="math inline">\(B\)</span> e <span class="math inline">\(C\)</span> sono <strong>compatibili</strong>: si può ricordare &lt;3 parole ed essere nella condizione sperimentale.</p></li>
+</ul>
+</section></section>
+<section>
+<section id="la-probabilità-come-grado-di-credenza" class="title-slide slide level1 center" data-background-color="#2c3e50" style="color: white;">
+<h1>La probabilità come grado di credenza</h1>
+
+</section>
+<section id="probabilità-come-grado-di-credenza" class="slide level2">
+<h2>Probabilità come grado di credenza</h2>
+<ul>
+<li>Nella vita quotidiana usiamo la probabilità per esprimere <strong>incertezza</strong>.</li>
+<li>Non parliamo di esperimenti ripetuti o frequenze osservate.</li>
+</ul>
+<p><strong>Esempi</strong></p>
+<ul>
+<li>“Domani pioverà con probabilità 0.7”.</li>
+<li>“Questa ipotesi mi sembra molto plausibile”.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>In questi casi, la probabilità:</p>
+<ul>
+<li><strong>non è</strong> una frequenza a lungo termine;</li>
+<li>è una misura della <strong>fiducia</strong> in una proposizione.</li>
+</ul>
+</section>
+<section id="linterpretazione-bayesiana" class="slide level2">
+<h2>L’interpretazione bayesiana</h2>
+<p>Secondo l’approccio bayesiano:</p>
+<blockquote>
+<p><strong>la probabilità misura un grado di credenza razionale</strong>.</p>
+</blockquote>
+<div class="fragment">
+<ul>
+<li>È una valutazione soggettiva,</li>
+<li>ma <strong>non arbitraria</strong>;</li>
+<li>deve rispettare <strong>regole di coerenza logica</strong>.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Persone diverse possono assegnare probabilità diverse → perché dispongono di <strong>informazioni diverse</strong>.</p>
+</div>
+</section>
+<section id="probabilità-di-proposizioni" class="slide level2">
+<h2>Probabilità di proposizioni</h2>
+<p>Nell’approccio bayesiano assegniamo probabilità a <strong>enunciati</strong>.</p>
+<div class="fragment">
+<p><strong>Esempi</strong></p>
+<ul>
+<li>“Il paziente ha la malattia”.</li>
+<li>“Il modello è corretto”.</li>
+<li>“La moneta è truccata”.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>La probabilità esprime:</p>
+<ul>
+<li>quanto siamo convinti che l’enunciato sia vero <strong>dato ciò che sappiamo</strong>.</li>
+</ul>
+</div>
+</section>
+<section id="informazione-e-credenze" class="slide level2">
+<h2>Informazione e credenze</h2>
+<ul>
+<li><p>Le probabilità rappresentano il nostro <strong>stato di incertezza</strong>.</p></li>
+<li><p>Non sono fisse: dipendono dalle informazioni disponibili.</p></li>
+<li><p>Quando otteniamo nuovi dati:</p>
+<ul>
+<li>le nostre credenze <strong>devono cambiare</strong>.</li>
+</ul></li>
+</ul>
+<div class="fragment">
+<p><strong>Apprendere</strong> significa aggiornare le probabilità in modo razionale.</p>
+</div>
+</section>
+<section id="la-legge-fondamentale-dellaggiornamento" class="slide level2">
+<h2>La legge fondamentale dell’aggiornamento</h2>
+<p>Questo processo è governato dal <strong>teorema di Bayes</strong>:</p>
+<blockquote>
+<p>Probabilità aggiornata <span class="math inline">\(\propto\)</span> Probabilità iniziale × Evidenza dei dati</p>
+</blockquote>
+<p>È una trasformazione</p>
+<ul>
+<li>da ciò che <strong>credevamo prima</strong> (a priori);</li>
+<li>a ciò che <strong>dovremmo credere ora</strong> (a posteriori);</li>
+<li>alla luce delle nuove informazioni.</li>
+</ul>
+</section>
+<section id="coerenza-delle-credenze" class="slide level2">
+<h2>Coerenza delle credenze</h2>
+<blockquote>
+<p><strong>Se le probabilità esprimono credenze razionali, devono essere coerenti tra loro.</strong></p>
+</blockquote>
+<ul>
+<li>Non tutte le assegnazioni di probabilità sono accettabili.</li>
+<li>Alcune portano a contraddizioni interne.</li>
+<li>La coerenza è un requisito di <strong>razionalità</strong>.</li>
+</ul>
+</section>
+<section id="le-regole-della-probabilità" class="slide level2">
+<h2>Le regole della probabilità</h2>
+<p>Le regole della probabilità:</p>
+<ul>
+<li>non sono scelte arbitrarie;</li>
+<li>sono <strong>vincoli di coerenza logica</strong>;</li>
+<li>rendono le nostre credenze mutuamente compatibili.</li>
+</ul>
+<p>Senza queste regole:</p>
+<ul>
+<li>le credenze diventano auto-contraddittorie.</li>
+</ul>
+</section>
+<section id="largomento-della-scommessa-olandese" class="slide level2">
+<h2>L’argomento della scommessa olandese</h2>
+<p>Un sistema incoerente di credenze consente di costruire:</p>
+<ul>
+<li>una serie di scommesse;</li>
+<li>ciascuna apparentemente ragionevole;</li>
+<li>che <strong>nel complesso garantisce una perdita certa</strong>.</li>
+</ul>
+<p>Le regole della probabilità:</p>
+<ul>
+<li>impediscono questa forma di incoerenza;</li>
+<li>proteggono la razionalità delle nostre decisioni.</li>
+</ul>
+</section>
+<section id="verso-una-teoria-formale" class="slide level2">
+<h2>Verso una teoria formale</h2>
+<p>Domanda centrale:</p>
+<blockquote>
+<p>Quali regole devono soddisfare i gradi di credenza per essere coerenti?</p>
+</blockquote>
+<p>Risposta:</p>
+<ul>
+<li>queste regole conducono naturalmente agli <strong>assiomi della probabilità</strong>.</li>
+</ul>
+<p>Gli assiomi di Kolmogorov forniscono una formalizzazione matematica rigorosa compatibile con l’interpretazione bayesiana.</p>
+</section></section>
+<section>
+<section id="gli-assiomi-di-kolmogorov" class="title-slide slide level1 center" data-background-color="#2c3e50" style="color: white;">
+<h1>Gli assiomi di Kolmogorov</h1>
+
+</section>
+<section id="gli-assiomi-della-probabilità" class="slide level2">
+<h2>Gli assiomi della probabilità</h2>
+<p>Gli assiomi di Kolmogorov non descrivono leggi empiriche del mondo, ma costituiscono le <strong>regole di coerenza</strong> del nostro ragionamento probabilistico.</p>
+</section>
+<section id="primo-assioma-non-negatività" class="slide level2">
+<h2>Primo assioma: non-negatività</h2>
+<p><span class="math display">\[
+P(A) \geq 0 \quad \text{per ogni evento } A
+\]</span></p>
+<p>Una probabilità non può essere negativa.</p>
+<blockquote>
+<p>Non ha senso dire “c’è una probabilità di -0.3 che piova”.</p>
+</blockquote>
+</section>
+<section id="secondo-assioma-normalizzazione" class="slide level2">
+<h2>Secondo assioma: normalizzazione</h2>
+<p><span class="math display">\[
+P(\Omega) = 1
+\]</span></p>
+<p>La probabilità dell’intero spazio campionario è 1.</p>
+<blockquote>
+<p>Qualcosa deve pur accadere.</p>
+</blockquote>
+</section>
+<section id="terzo-assioma-additività" class="slide level2">
+<h2>Terzo assioma: additività</h2>
+<p>Per eventi <strong>incompatibili</strong> <span class="math inline">\(A\)</span> e <span class="math inline">\(B\)</span>:</p>
+<p><span class="math display">\[
+P(A \cup B) = P(A) + P(B)
+\]</span></p>
+<p>La probabilità che accada <span class="math inline">\(A\)</span> <strong>oppure</strong> <span class="math inline">\(B\)</span> è la somma delle probabilità singole.</p>
+<blockquote>
+<p>Questo vale <strong>solo</strong> se <span class="math inline">\(A \cap B = \emptyset\)</span>.</p>
+</blockquote>
+</section>
+<section id="conseguenza-regola-del-complemento" class="slide level2">
+<h2>Conseguenza: regola del complemento</h2>
+<p>Dagli assiomi segue che:</p>
+<p><span class="math display">\[
+P(A^c) = 1 - P(A)
+\]</span></p>
+<p><strong>Esempio:</strong> Se <span class="math inline">\(P(\text{successo}) = 0.7\)</span>, allora <span class="math inline">\(P(\text{insuccesso}) = 0.3\)</span>.</p>
+</section>
+<section id="tre-regole-semplici-conseguenze-profonde" class="slide level2">
+<h2>Tre regole semplici, conseguenze profonde</h2>
+<p>Questi tre assiomi sembrano quasi banali: le probabilità non sono negative, qualcosa deve succedere e gli eventi disgiunti si sommano.</p>
+<div class="fragment">
+<p>Eppure le persone li violano sistematicamente — e questo ha <strong>conseguenze cliniche</strong>. Pensate a quante volte, leggendo un articolo, vedrete frasi come “il trattamento ha il 70% di probabilità di successo”. Senza specificare lo spazio campionario, senza chiarire cosa si intende per “successo”, e spesso con stime incoerenti tra loro.</p>
+</div>
+<div class="fragment">
+<p>La formalizzazione non è un esercizio accademico: è una <strong>protezione contro l’autoillusione</strong>.</p>
+</div>
+</section>
+<section id="esercizio-3-applicare-gli-assiomi" class="slide level2">
+<h2>Esercizio 3 — Applicare gli assiomi</h2>
+<p>In un esperimento, la probabilità che un partecipante risponda correttamente è 0.75.</p>
+<p><strong>Calcola:</strong></p>
+<ol type="a">
+<li><span class="math inline">\(P(\text{risposta errata})\)</span></li>
+<li>Se <span class="math inline">\(P(\text{risposta veloce}) = 0.40\)</span> e <span class="math inline">\(P(\text{risposta lenta}) = 0.35\)</span>, qual è <span class="math inline">\(P(\text{risposta a tempo medio})\)</span>, assumendo che le tre categorie siano esaustive e incompatibili?</li>
+</ol>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-esercizio-3">Soluzione Esercizio 3</h3>
+<p><strong>a)</strong> Regola del complemento:</p>
+<p><span class="math display">\[
+P(\text{errata}) = 1 - P(\text{corretta}) = 1 - 0.75 = 0.25
+\]</span></p>
+<p><strong>b)</strong> Le tre categorie formano una partizione di <span class="math inline">\(\Omega\)</span>:</p>
+<p><span class="math display">\[
+P(\text{veloce}) + P(\text{media}) + P(\text{lenta}) = 1
+\]</span></p>
+<p><span class="math display">\[
+P(\text{media}) = 1 - 0.40 - 0.35 = 0.25
+\]</span></p>
+</section></section>
+<section>
+<section id="lintuizione-sotto-esame" class="title-slide slide level1 center" data-background-color="#e74c3c" style="color: white;">
+<h1>L’intuizione sotto esame</h1>
+
+</section>
+<section id="probabilità-intuitiva-vs-formale" class="slide level2">
+<h2>Probabilità intuitiva vs formale</h2>
+<p>La ricerca ha mostrato che l’intuizione umana della probabilità spesso <strong>viola gli assiomi di Kolmogorov</strong>.</p>
+<ul>
+<li>Piaget: i bambini faticano a distinguere caso, intenzione e necessità <span class="citation" data-cites="piaget1952origins">(<a href="#/bibliografia" role="doc-biblioref" onclick="">Piaget, 1952</a>)</span>.</li>
+<li>Kahneman e Tversky: errori sistematici negli adulti <span class="citation" data-cites="kahneman2011thinking">(<a href="#/bibliografia" role="doc-biblioref" onclick="">Kahneman, 2011</a>)</span>.</li>
+<li>Le euristiche funzionano in molti contesti, ma falliscono in altri <span class="citation" data-cites="tversky1974judgment">(<a href="#/bibliografia" role="doc-biblioref" onclick="">Tversky &amp; Kahneman, 1974</a>)</span>.</li>
+</ul>
+</section>
+<section id="esercizio-4-sequenze-casuali" class="slide level2">
+<h2>Esercizio 4 — Sequenze casuali</h2>
+<p>Immaginiamo di lanciare una moneta dieci volte.</p>
+<p><strong>Sequenza A:</strong> TTTTTTTTTT</p>
+<p><strong>Sequenza B:</strong> TCTTCTHTHC</p>
+<p><strong>Domanda:</strong> Quale sequenza è “più casuale”? Quale ha probabilità maggiore?</p>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-esercizio-4">Soluzione Esercizio 4</h3>
+<p><strong>Intuizione comune:</strong> la sequenza B sembra “più casuale”.</p>
+<p><strong>Calcolo formale:</strong> entrambe le sequenze hanno <strong>esattamente la stessa probabilità</strong>.</p>
+<p>Se la moneta è equilibrata: <span class="math display">\[
+P(\text{sequenza specifica}) = \left(\frac{1}{2}\right)^{10} = \frac{1}{1024}
+\]</span></p>
+<p>per <strong>qualsiasi</strong> sequenza di 10 lanci.</p>
+</section>
+<section id="la-fallacia-della-rappresentatività" class="slide level2">
+<h2>La fallacia della rappresentatività</h2>
+<p>L’errore nasce dal confondere:</p>
+<ul>
+<li>la <strong>casualità</strong> di un processo,</li>
+<li>la <strong>somiglianza</strong> rispetto a ciò che ci aspettiamo da una sequenza casuale.</li>
+</ul>
+<p>Tendiamo a pensare che le sequenze “disordinate” siano più probabili, ma questo è un errore.</p>
+<blockquote>
+<p>Questo è un esempio classico di <strong>fallacia della rappresentatività</strong> <span class="citation" data-cites="tversky1974judgment">(<a href="#/bibliografia" role="doc-biblioref" onclick="">Tversky &amp; Kahneman, 1974</a>)</span>.</p>
+</blockquote>
+</section>
+<section id="torniamo-al-nostro-puzzle" class="slide level2">
+<h2>Torniamo al nostro puzzle</h2>
+<p>Ricordate il test diagnostico dell’inizio? L’errore che la maggior parte delle persone commette ha lo stesso tipo di origine: si <strong>ignora la struttura dello spazio campionario</strong> e ci si concentra solo su un pezzo dell’informazione.</p>
+<div class="fragment">
+<p>Nel caso del test: ci si concentra sull’accuratezza del test (90%) e si dimentica la frequenza di base del disturbo (1%). Questo si chiama <strong>base rate neglect</strong>.</p>
+</div>
+<div class="fragment">
+<p>Nella prossima lezione, il <strong>teorema di Bayes</strong> ci darà lo strumento per fare questo calcolo in modo corretto. Per ora, il messaggio è: senza un linguaggio formale, la nostra intuizione ci porta fuori strada — e le conseguenze per i pazienti possono essere serie.</p>
+</div>
+</section>
+<section id="perché-questi-errori-sono-importanti" class="slide level2">
+<h2>Perché questi errori sono importanti?</h2>
+<p>Gli errori nel ragionamento probabilistico <strong>non sono solo teorici</strong> → hanno conseguenze concrete:</p>
+<ul>
+<li>interpretazione di <strong>diagnosi psicologiche</strong>;</li>
+<li>valutazione di <strong>evidenze sperimentali</strong>;</li>
+<li><strong>decisioni</strong> nella vita quotidiana;</li>
+<li>lettura critica della <strong>letteratura scientifica</strong>.</li>
+</ul>
+<blockquote>
+<p>Comprendere la distanza tra <strong>probabilità intuitiva</strong> e <strong>probabilità formalizzata</strong> è un obiettivo centrale di questo insegnamento.</p>
+</blockquote>
+</section></section>
+<section>
+<section id="esercizi-di-consolidamento" class="title-slide slide level1 center" data-background-color="#2c3e50" style="color: white;">
+<h1>Esercizi di consolidamento</h1>
+
+</section>
+<section id="esercizio-5-costruire-uno-spazio-campionario" class="slide level2">
+<h2>Esercizio 5 — Costruire uno spazio campionario</h2>
+<p>Un ricercatore vuole studiare l’effetto dell’ansia sulle prestazioni cognitive. I partecipanti sono classificati per:</p>
+<ul>
+<li>Livello di ansia: Basso, Medio, Alto;</li>
+<li>Prestazione: Sotto la media, Nella media, Sopra la media.</li>
+</ul>
+<p><strong>Compito:</strong> Scrivi lo spazio campionario completo e conta quanti esiti contiene.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-esercizio-5">Soluzione Esercizio 5</h3>
+<p>Lo spazio campionario è il prodotto cartesiano:</p>
+<p><span class="math display">\[
+\Omega = \{(\text{B, Sotto}), (\text{B, Nella}), (\text{B, Sopra}), (\text{M, Sotto}), \ldots\}
+\]</span></p>
+<p><strong>Conteggio:</strong> <span class="math inline">\(3 \times 3 = 9\)</span> esiti possibili.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th>Sotto</th>
+<th>Nella</th>
+<th>Sopra</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Basso</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr class="even">
+<td>Medio</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr class="odd">
+<td>Alto</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="esercizio-6-definire-eventi" class="slide level2">
+<h2>Esercizio 6 — Definire eventi</h2>
+<p>Usando lo spazio campionario dell’Esercizio 5, definisci i seguenti eventi:</p>
+<ol type="a">
+<li><span class="math inline">\(A\)</span> = “il partecipante ha un livello d’ansia alto”;</li>
+<li><span class="math inline">\(B\)</span> = “la prestazione è sopra la media”;</li>
+<li><span class="math inline">\(A \cap B\)</span> = ?</li>
+<li><span class="math inline">\(A \cup B\)</span> = ?</li>
+</ol>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-esercizio-6">Soluzione Esercizio 6</h3>
+<p><strong>a)</strong> <span class="math display">\[
+A = {(\text{Alto, Sotto}), (\text{Alto, Nella}), (\text{Alto, Sopra})}
+\]</span></p>
+<p>L’evento <span class="math inline">\(A\)</span> contiene <strong>3 esiti</strong>.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-esercizio-6-1">Soluzione Esercizio 6</h3>
+<p><strong>b)</strong> <span class="math display">\[
+B = {(\text{Basso, Sopra}), (\text{Medio, Sopra}), (\text{Alto, Sopra})}
+\]</span></p>
+<p>L’evento <span class="math inline">\(B\)</span> contiene <strong>3 esiti</strong>.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-esercizio-6-2">Soluzione Esercizio 6</h3>
+<p><strong>c)</strong> <span class="math display">\[
+A \cap B = {(\text{Alto, Sopra})}
+\]</span></p>
+<p>Ansia alta <strong>e</strong> prestazione sopra la media: <strong>1 solo esito</strong>.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-esercizio-6-3">Soluzione Esercizio 6</h3>
+<p><strong>d)</strong> L’unione <span class="math inline">\(A \cup B\)</span> è l’insieme di <strong>tutti gli esiti che appartengono ad <span class="math inline">\(A\)</span> oppure a <span class="math inline">\(B\)</span></strong>:</p>
+<p><span class="math display">\[
+\begin{align}
+A \cup B = \{&amp;
+(\text{Alto, Sotto}), \\
+&amp;(\text{Alto, Nella}), \\
+&amp;(\text{Alto, Sopra}), \\
+&amp;(\text{Medio, Sopra}), \\
+&amp;(\text{Basso, Sopra})
+\}
+\end{align}
+\]</span></p>
+<p>Quindi <span class="math inline">\(A \cup B\)</span> contiene <strong>5 esiti</strong>.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-esercizio-6-4">Soluzione Esercizio 6</h3>
+<p><strong>Perché non sono 6?</strong></p>
+<p>Perché l’esito <span class="math inline">\((\text{Alto, Sopra})\)</span> appartiene <strong>sia ad <span class="math inline">\(A\)</span> sia a <span class="math inline">\(B\)</span></strong> e va contato <strong>una sola volta</strong>.</p>
+<p><span class="math display">\[
+|A \cup B| = |A| + |B| - |A \cap B| = 3 + 3 - 1 = 5.
+\]</span></p>
+</section></section>
+<section>
+<section id="lo-spazio-campionario-in-r" class="title-slide slide level1 center" data-background-color="#2c3e50" style="color: white;">
+<h1>Lo spazio campionario in R</h1>
+
+</section>
+<section id="spazio-campionario-due-lanci-di-moneta" class="slide level2">
+<h2>Spazio campionario: due lanci di moneta</h2>
+<p>Per due lanci, lo spazio campionario contiene tutte le sequenze possibili:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-label="1"></a>S2 <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">lancio1 =</span> <span class="fu">c</span>(<span class="st">"T"</span>,<span class="st">"C"</span>),</span>
+<span id="cb1-2"><a aria-label="2"></a>                  <span class="at">lancio2 =</span> <span class="fu">c</span>(<span class="st">"T"</span>,<span class="st">"C"</span>))</span>
+<span id="cb1-3"><a aria-label="3"></a>S2</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  lancio1 lancio2
+1       T       T
+2       C       T
+3       T       C
+4       C       C</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<p>Possiamo anche rappresentare le sequenze possibili come stringhe:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a aria-label="1"></a>S2<span class="sc">$</span>outcome <span class="ot">&lt;-</span> <span class="fu">paste0</span>(S2<span class="sc">$</span>lancio1, S2<span class="sc">$</span>lancio2)</span>
+<span id="cb3-2"><a aria-label="2"></a>S2</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  lancio1 lancio2 outcome
+1       T       T      TT
+2       C       T      CT
+3       T       C      TC
+4       C       C      CC</code></pre>
+</div>
+</div>
+</section>
+<section id="spazio-campionario-n-lanci-di-moneta" class="slide level2">
+<h2>Spazio campionario: <span class="math inline">\(n\)</span> lanci di moneta</h2>
+<p>Per <span class="math inline">\(n\)</span> lanci, il numero di sequenze è <span class="math inline">\(2^n\)</span>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a aria-label="1"></a>n <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb5-2"><a aria-label="2"></a></span>
+<span id="cb5-3"><a aria-label="3"></a>S <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="fu">replicate</span>(n, <span class="fu">c</span>(<span class="st">"T"</span>,<span class="st">"C"</span>), <span class="at">simplify =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb5-4"><a aria-label="4"></a><span class="fu">names</span>(S) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"lancio"</span>, <span class="dv">1</span><span class="sc">:</span>n)</span>
+<span id="cb5-5"><a aria-label="5"></a></span>
+<span id="cb5-6"><a aria-label="6"></a>S<span class="sc">$</span>outcome <span class="ot">&lt;-</span> <span class="fu">apply</span>(S, <span class="dv">1</span>, paste0, <span class="at">collapse =</span> <span class="st">""</span>)</span>
+<span id="cb5-7"><a aria-label="7"></a>S</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  lancio1 lancio2 lancio3 outcome
+1       T       T       T     TTT
+2       C       T       T     CTT
+3       T       C       T     TCT
+4       C       C       T     CCT
+5       T       T       C     TTC
+6       C       T       C     CTC
+7       T       C       C     TCC
+8       C       C       C     CCC</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<p>Verifica del conteggio:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a aria-label="1"></a><span class="fu">nrow</span>(S)        <span class="co"># deve essere 2^n</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 8</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a aria-label="1"></a><span class="dv">2</span><span class="sc">^</span>n</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 8</code></pre>
+</div>
+</div>
+</section>
+<section id="spazio-campionario-due-dadi" class="slide level2">
+<h2>Spazio campionario: due dadi</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a aria-label="1"></a>Sdadi <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">dado1 =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">dado2 =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>)</span>
+<span id="cb11-2"><a aria-label="2"></a>Sdadi<span class="sc">$</span>somma <span class="ot">&lt;-</span> Sdadi<span class="sc">$</span>dado1 <span class="sc">+</span> Sdadi<span class="sc">$</span>dado2</span>
+<span id="cb11-3"><a aria-label="3"></a></span>
+<span id="cb11-4"><a aria-label="4"></a><span class="fu">head</span>(Sdadi, <span class="dv">10</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   dado1 dado2 somma
+1      1     1     2
+2      2     1     3
+3      3     1     4
+4      4     1     5
+5      5     1     6
+6      6     1     7
+7      1     2     3
+8      2     2     4
+9      3     2     5
+10     4     2     6</code></pre>
+</div>
+</div>
+<div class="fragment">
+<p>Lo spazio campionario ha:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a aria-label="1"></a><span class="fu">nrow</span>(Sdadi)    <span class="co"># 6 × 6</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 36</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="eventi-come-sottoinsiemi-dello-spazio-campionario" class="slide level2">
+<h2>Eventi come sottoinsiemi dello spazio campionario</h2>
+<p>Un <strong>evento</strong> è un sottoinsieme di <span class="math inline">\(S\)</span>.<br>
+Esempio: <em>“la somma è 7”</em>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a aria-label="1"></a>A <span class="ot">&lt;-</span> <span class="fu">subset</span>(Sdadi, somma <span class="sc">==</span> <span class="dv">7</span>)</span>
+<span id="cb15-2"><a aria-label="2"></a>A</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   dado1 dado2 somma
+6      6     1     7
+11     5     2     7
+16     4     3     7
+21     3     4     7
+26     2     5     7
+31     1     6     7</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<p>Quanti esiti realizzano l’evento?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a aria-label="1"></a><span class="fu">nrow</span>(A)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6</code></pre>
+</div>
+</div>
+</section>
+<section id="un-altro-evento-somma-almeno-10" class="slide level2">
+<h2>Un altro evento: somma almeno 10</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a aria-label="1"></a>B <span class="ot">&lt;-</span> <span class="fu">subset</span>(Sdadi, somma <span class="sc">&gt;=</span> <span class="dv">10</span>)</span>
+<span id="cb19-2"><a aria-label="2"></a>B</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   dado1 dado2 somma
+24     6     4    10
+29     5     5    10
+30     6     5    11
+34     4     6    10
+35     5     6    11
+36     6     6    12</code></pre>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a aria-label="1"></a><span class="fu">nrow</span>(B)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="idea-chiave-per-dopo" class="slide level2">
+<h2>Idea chiave (per dopo)</h2>
+<p>Oggi ci basta questo:</p>
+<ul>
+<li>costruiamo <strong><span class="math inline">\(S\)</span></strong> in modo esplicito (tutte le possibilità);</li>
+<li>descriviamo un evento come <strong>sottoinsieme</strong> di <span class="math inline">\(S\)</span>.</li>
+</ul>
+<p>Nelle prossime lezioni useremo questi oggetti per assegnare <strong>numeri</strong> agli eventi (in modo coerente).</p>
+</section>
+<section id="riepilogo-concettuale" class="slide level2">
+<h2>Riepilogo concettuale</h2>
+<ol type="1">
+<li><p>La <strong>probabilità</strong> è un linguaggio per rappresentare l’incertezza, non una proprietà del mondo.</p></li>
+<li><p>Non si può parlare di probabilità senza definire lo <strong>spazio campionario</strong>.</p></li>
+<li><p>Gli <strong>eventi</strong> sono sottoinsiemi dello spazio campionario.</p></li>
+<li><p>Gli <strong>assiomi</strong> sono regole di coerenza, non leggi empiriche.</p></li>
+<li><p>Le nostre <strong>intuizioni</strong> sulla probabilità sono spesso in conflitto con le regole formali.</p></li>
+</ol>
+</section>
+<section id="prossima-parte" class="slide level2">
+<h2>Prossima parte</h2>
+<p>Nel secondo segmento:</p>
+<ul>
+<li>Introdurremo il <strong>calcolo combinatorio</strong>.</li>
+<li>Applicheremo la formula classica della probabilità.</li>
+<li>Esploreremo il <strong>bias dell’equiprobabilità</strong>.</li>
+<li>Collegheremo questi concetti all’<strong>approccio bayesiano</strong>.</li>
+</ul>
+</section>
+<section id="bibliografia" class="slide level2 smaller scrollable">
+<h2>Bibliografia</h2>
+
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-kahneman2011thinking" class="csl-entry" role="listitem">
+Kahneman, D. (2011). <em>Thinking, Fast and Slow</em>. Farrar, Straus; Giroux.
+</div>
+<div id="ref-piaget1952origins" class="csl-entry" role="listitem">
+Piaget, J. (1952). <em>The Origins of Intelligence in Children</em>. International Universities Press.
+</div>
+<div id="ref-tversky1974judgment" class="csl-entry" role="listitem">
+Tversky, A., &amp; Kahneman, D. (1974). Judgment under Uncertainty: Heuristics and Biases. <em>Science</em>, <em>185</em>(4157), 1124–1131.
+</div>
+</div>
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'print',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copiato!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copiato!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp("https:\/\/ccaudek\.github\.io\/psicometria_2026\/");
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

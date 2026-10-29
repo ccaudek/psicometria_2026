@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="it"><head>
+<script src="prior_post_2_files/libs/clipboard/clipboard.min.js"></script>
+<script src="prior_post_2_files/libs/quarto-html/tabby.min.js"></script>
+<script src="prior_post_2_files/libs/quarto-html/popper.min.js"></script>
+<script src="prior_post_2_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="prior_post_2_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="prior_post_2_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="prior_post_2_files/libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.27">
+
+  <meta name="author" content="Corrado Caudek">
+  <title>Prior, verosimiglianza e posterior</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="prior_post_2_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="prior_post_2_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="prior_post_2_files/libs/revealjs/dist/theme/quarto-32eda4d62c2e25823ebe39cba2bb0a8e.css">
+  <link href="prior_post_2_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="prior_post_2_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="prior_post_2_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="prior_post_2_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" data-background-color="#0072bc" class="quarto-title-block center">
+  <h1 class="title">Prior, verosimiglianza e posterior</h1>
+  <p class="subtitle">L’architettura dell’inferenza bayesiana — Segmento 2</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
+</div>
+<div class="quarto-title-author-email">
+<a href="mailto:corrado.caudek@unifi.it">corrado.caudek@unifi.it</a>
+</div>
+        <p class="quarto-title-affiliation">
+            Università degli Studi di Firenze
+          </p>
+    </div>
+</div>
+
+  <p class="date">27 febbraio 2026</p>
+</section>
+<section id="obiettivi" class="slide level2 unnumbered unlisted">
+<h2>Obiettivi</h2>
+<ol type="1">
+<li>Passare da valori discreti a <strong>distribuzioni continue</strong>.</li>
+<li>Usare l’<strong>approssimazione su griglia</strong> in R.</li>
+<li><strong>Visualizzare</strong> come prior e dati si combinano.</li>
+<li>Esplorare l’<strong>effetto del prior</strong> e della quantità di dati.</li>
+</ol>
+</section>
+<section id="ripasso-la-formula" class="slide level2">
+<h2>Ripasso: la formula</h2>
+<p>Nel segmento precedente abbiamo visto:</p>
+<p><span class="math display">\[
+\text{Posterior} \propto \text{Verosimiglianza} \times \text{Prior}.
+\]</span></p>
+<p>Abbiamo calcolato il posterior per <strong>5 valori</strong> di <span class="math inline">\(\theta\)</span>.</p>
+<p>Ma nella realtà, <span class="math inline">\(\theta\)</span> può assumere <strong>infiniti valori</strong> tra 0 e 1. Come procedere?</p>
+</section>
+<section id="lapprossimazione-numerica-a-griglia" class="slide level2">
+<h2>L’approssimazione numerica a griglia</h2>
+<p>Anziché considerare infiniti valori del parametro <span class="math inline">\(\theta\)</span>, se ne valutano un insieme finito e discreto, distribuito su una <strong>griglia regolare</strong>.</p>
+<div class="fragment">
+<p>Se la griglia è sufficientemente densa (ad esempio 101 punti ben spaziati), l’approssimazione risulta molto accurata e computazionalmente immediata. L’algoritmo è esattamente lo stesso che abbiamo usato con 5 valori — solo con più punti.</p>
+</div>
+</section>
+<section>
+<section id="parte-1-lalgoritmo-passo-per-passo" class="title-slide slide level1 center">
+<h1>Parte 1: l’algoritmo passo per passo</h1>
+
+</section>
+<section id="i-quattro-passi-dellalgoritmo" class="slide level2">
+<h2>I quattro passi dell’algoritmo</h2>
+<ol type="1">
+<li><strong>Definire la griglia</strong> di valori possibili per <span class="math inline">\(\theta\)</span>.<br>
+</li>
+<li><strong>Calcolare il prior</strong> <span class="math inline">\(p(\theta)\)</span> per ogni punto della griglia.<br>
+</li>
+<li><strong>Calcolare la verosimiglianza</strong> <span class="math inline">\(p(D \mid \theta)\)</span> per ogni punto della griglia.<br>
+</li>
+<li><strong>Calcolare il posterior</strong> come prodotto normalizzato di prior e verosimiglianza.</li>
+</ol>
+<p>Vediamo ciascun passo nel dettaglio.</p>
+</section>
+<section id="il-nostro-problema" class="slide level2">
+<h2>Il nostro problema</h2>
+<p>Riprendiamo l’esempio del training per l’ansia sociale:</p>
+<ul>
+<li><strong>Prior:</strong> lo psicologo crede che <span class="math inline">\(\theta\)</span> sia probabilmente intorno a 0.5.</li>
+<li><strong>Dati:</strong> 7 successi su 10 pazienti.</li>
+</ul>
+</section>
+<section id="passo-1-definire-la-griglia" class="slide level2">
+<h2>Passo 1: definire la griglia</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="co"># 101 valori da 0 a 1</span></span>
+<span id="cb1-2"><a href=""></a>theta <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">101</span>)</span>
+<span id="cb1-3"><a href=""></a></span>
+<span id="cb1-4"><a href=""></a><span class="co"># Quanti valori?</span></span>
+<span id="cb1-5"><a href=""></a><span class="fu">length</span>(theta)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 101</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="co"># Primi e ultimi valori</span></span>
+<span id="cb3-2"><a href=""></a><span class="fu">head</span>(theta)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.00 0.01 0.02 0.03 0.04 0.05</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">tail</span>(theta)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.95 0.96 0.97 0.98 0.99 1.00</code></pre>
+</div>
+</div>
+</section>
+<section id="passo-2-definire-il-prior" class="slide level2">
+<h2>Passo 2: definire il prior</h2>
+<p>Vogliamo un prior che esprima la convinzione che il parametro <span class="math inline">\(\theta\)</span> sia verosimilmente vicino a 0.5, pur con un certo grado di incertezza.</p>
+<p>Una scelta adatta è una distribuzione <strong>Beta</strong>, simmetrica e concentrata attorno a 0.5. Ad esempio:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="co"># Prior: distribuzione Beta(5, 5) - centrata su 0.5</span></span>
+<span id="cb7-2"><a href=""></a>prior <span class="ot">&lt;-</span> <span class="fu">dbeta</span>(theta, <span class="at">shape1 =</span> <span class="dv">5</span>, <span class="at">shape2 =</span> <span class="dv">5</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="visualizziamo-il-prior" class="slide level2">
+<h2>Visualizziamo il prior</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a>g1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(</span>
+<span id="cb8-2"><a href=""></a>  <span class="fu">data.frame</span>(<span class="at">theta =</span> theta, <span class="at">prior =</span> prior), </span>
+<span id="cb8-3"><a href=""></a>  <span class="fu">aes</span>(<span class="at">x =</span> theta, <span class="at">y =</span> prior)</span>
+<span id="cb8-4"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb8-5"><a href=""></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">1.2</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb8-6"><a href=""></a>  <span class="fu">labs</span>(</span>
+<span id="cb8-7"><a href=""></a>    <span class="at">x =</span> <span class="fu">expression</span>(theta),</span>
+<span id="cb8-8"><a href=""></a>    <span class="at">y =</span> <span class="st">"Densità"</span>,</span>
+<span id="cb8-9"><a href=""></a>    <span class="at">title =</span> <span class="st">"Prior: Beta(5, 5)"</span></span>
+<span id="cb8-10"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb8-11"><a href=""></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section class="slide level2">
+
+
+<img data-src="prior_post_2_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section>
+<section class="slide level2">
+
+<p>Il prior esprime la nostra conoscenza iniziale sul parametro <span class="math inline">\(\theta\)</span> prima di osservare i dati.</p>
+<p>Nello specifico, assegna maggiore probabilità ai valori centrali, suggerendo che ci aspettiamo che <span class="math inline">\(\theta\)</span> sia con buona probabilità compreso tra 0.3 e 0.7.</p>
+</section>
+<section id="passo-3-calcolare-la-verosimiglianza" class="slide level2">
+<h2>Passo 3: calcolare la verosimiglianza</h2>
+<p>Abbiamo osservato 7 successi su 10 prove:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>verosim <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">7</span>, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">prob =</span> theta)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="visualizziamo-la-verosimiglianza" class="slide level2">
+<h2>Visualizziamo la verosimiglianza</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>g2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(</span>
+<span id="cb10-2"><a href=""></a>  <span class="fu">data.frame</span>(<span class="at">theta =</span> theta, <span class="at">verosim =</span> verosim), </span>
+<span id="cb10-3"><a href=""></a>  <span class="fu">aes</span>(<span class="at">x =</span> theta, <span class="at">y =</span> verosim)</span>
+<span id="cb10-4"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb10-5"><a href=""></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">1.2</span>, <span class="at">color =</span> <span class="st">"forestgreen"</span>) <span class="sc">+</span></span>
+<span id="cb10-6"><a href=""></a>  <span class="fu">labs</span>(</span>
+<span id="cb10-7"><a href=""></a>    <span class="at">x =</span> <span class="fu">expression</span>(theta),</span>
+<span id="cb10-8"><a href=""></a>    <span class="at">y =</span> <span class="st">"Verosimiglianza"</span>,</span>
+<span id="cb10-9"><a href=""></a>    <span class="at">title =</span> <span class="st">"Verosimiglianza: 7 successi su 10 prove"</span></span>
+<span id="cb10-10"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb10-11"><a href=""></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section class="slide level2">
+
+
+<img data-src="prior_post_2_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"><p>I dati suggeriscono valori di <span class="math inline">\(\theta\)</span> intorno a 0.7.</p>
+</section>
+<section id="passo-4-calcolare-il-posterior" class="slide level2">
+<h2>Passo 4: calcolare il posterior</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="co"># Prodotto (non normalizzato)</span></span>
+<span id="cb11-2"><a href=""></a>prodotto <span class="ot">&lt;-</span> verosim <span class="sc">*</span> prior</span>
+<span id="cb11-3"><a href=""></a></span>
+<span id="cb11-4"><a href=""></a><span class="co"># Normalizzazione</span></span>
+<span id="cb11-5"><a href=""></a>posterior <span class="ot">&lt;-</span> prodotto <span class="sc">/</span> <span class="fu">sum</span>(prodotto)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="visualizziamo-il-posterior" class="slide level2">
+<h2>Visualizziamo il posterior</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a>g3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(</span>
+<span id="cb12-2"><a href=""></a>  <span class="fu">data.frame</span>(<span class="at">theta =</span> theta, <span class="at">posterior =</span> posterior), </span>
+<span id="cb12-3"><a href=""></a>  <span class="fu">aes</span>(<span class="at">x =</span> theta, <span class="at">y =</span> posterior)</span>
+<span id="cb12-4"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb12-5"><a href=""></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">1.2</span>, <span class="at">color =</span> <span class="st">"coral"</span>) <span class="sc">+</span></span>
+<span id="cb12-6"><a href=""></a>  <span class="fu">labs</span>(</span>
+<span id="cb12-7"><a href=""></a>    <span class="at">x =</span> <span class="fu">expression</span>(theta),</span>
+<span id="cb12-8"><a href=""></a>    <span class="at">y =</span> <span class="st">"Densità (normalizzata)"</span>,</span>
+<span id="cb12-9"><a href=""></a>    <span class="at">title =</span> <span class="st">"Posterior (normalizzato)"</span></span>
+<span id="cb12-10"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb12-11"><a href=""></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section class="slide level2">
+
+
+<img data-src="prior_post_2_files/figure-revealjs/unnamed-chunk-11-1.png" width="960" class="r-stretch"></section></section>
+<section>
+<section id="parte-2-confronto-visivo" class="title-slide slide level1 center">
+<h1>Parte 2: confronto visivo</h1>
+
+</section>
+<section id="i-tre-ingredienti-insieme" class="slide level2">
+<h2>I tre ingredienti insieme</h2>
+
+<img data-src="prior_post_2_files/figure-revealjs/unnamed-chunk-13-1.png" width="960" class="r-stretch"></section>
+<section id="cosa-osserviamo" class="slide level2">
+<h2>Cosa osserviamo?</h2>
+<ul>
+<li><strong>Prior</strong> (blu): rappresenta la nostra conoscenza iniziale, concentrata attorno a <span class="math inline">\(\theta \approx 0.5\)</span>.</li>
+<li><strong>Verosimiglianza</strong> (verde): riflette l’evidenza dei dati osservati (7 successi su 10), con picco a <span class="math inline">\(\theta \approx 0.7\)</span>.</li>
+<li><strong>Posterior</strong> (rosso): è il <strong>compromesso</strong> tra informazione a priori e evidenza empirica, risultando centrato attorno a <span class="math inline">\(\theta \approx 0.6\)</span>.</li>
+</ul>
+<p>Il posterior agisce come una sintesi pesata: viene “attratto” verso i dati, ma risente anche dell’effetto regolarizzante del prior.</p>
+</section></section>
+<section>
+<section id="parte-3-leffetto-della-quantità-di-dati" class="title-slide slide level1 center">
+<h1>Parte 3: l’effetto della quantità di dati</h1>
+
+</section>
+<section id="domanda-chiave" class="slide level2">
+<h2>Domanda chiave</h2>
+<p>Cosa succede se abbiamo <strong>più dati</strong>?</p>
+<p>Confrontiamo tre scenari (tutti con la stessa proporzione 70%):</p>
+<ul>
+<li>7 successi su 10;</li>
+<li>14 successi su 20;</li>
+<li>70 successi su 100.</li>
+</ul>
+</section>
+<section id="calcolo-per-i-tre-scenari" class="slide level2">
+<h2>Calcolo per i tre scenari</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a><span class="co"># Stesso prior per tutti</span></span>
+<span id="cb13-2"><a href=""></a>prior <span class="ot">&lt;-</span> <span class="fu">dbeta</span>(theta, <span class="dv">5</span>, <span class="dv">5</span>)</span>
+<span id="cb13-3"><a href=""></a></span>
+<span id="cb13-4"><a href=""></a><span class="co"># Tre verosimiglianze (stessa proporzione, n diversi)</span></span>
+<span id="cb13-5"><a href=""></a>verosim_10 <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">7</span>, <span class="dv">10</span>, theta)</span>
+<span id="cb13-6"><a href=""></a>verosim_20 <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">14</span>, <span class="dv">20</span>, theta)</span>
+<span id="cb13-7"><a href=""></a>verosim_100 <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">70</span>, <span class="dv">100</span>, theta)</span>
+<span id="cb13-8"><a href=""></a></span>
+<span id="cb13-9"><a href=""></a><span class="co"># Tre posterior</span></span>
+<span id="cb13-10"><a href=""></a>post_10 <span class="ot">&lt;-</span> (verosim_10 <span class="sc">*</span> prior) <span class="sc">/</span> <span class="fu">sum</span>(verosim_10 <span class="sc">*</span> prior)</span>
+<span id="cb13-11"><a href=""></a>post_20 <span class="ot">&lt;-</span> (verosim_20 <span class="sc">*</span> prior) <span class="sc">/</span> <span class="fu">sum</span>(verosim_20 <span class="sc">*</span> prior)</span>
+<span id="cb13-12"><a href=""></a>post_100 <span class="ot">&lt;-</span> (verosim_100 <span class="sc">*</span> prior) <span class="sc">/</span> <span class="fu">sum</span>(verosim_100 <span class="sc">*</span> prior)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="visualizzazione" class="slide level2">
+<h2>Visualizzazione</h2>
+
+<img data-src="prior_post_2_files/figure-revealjs/unnamed-chunk-15-1.png" width="960" class="r-stretch"></section>
+<section id="interpretazione" class="slide level2">
+<h2>Interpretazione</h2>
+<p>Con più dati:</p>
+<ul>
+<li>il posterior diventa più <strong>stretto</strong> (meno incertezza);</li>
+<li>il posterior si <strong>sposta</strong> verso i dati (0.7);</li>
+<li>l’influenza del prior <strong>diminuisce</strong>.</li>
+</ul>
+</section>
+<section id="un-principio-fondamentale" class="slide level2" data-background-color="#2c3e50" style="color: white;">
+<h2>Un principio fondamentale</h2>
+<div class="fragment">
+<blockquote>
+<p>“I dati vincono sempre, alla lunga.”</p>
+</blockquote>
+<p>Con pochi dati, il prior ha molta influenza. Con molti dati, il posterior è dominato dalla verosimiglianza.</p>
+</div>
+<div class="fragment">
+<p>Questo principio ha un nome tecnico: <strong>consistenza asintotica</strong> del posterior. All’aumentare dei dati, il posterior converge verso il valore vero del parametro, indipendentemente dal prior scelto (purché il prior assegni probabilità non nulla al valore vero).</p>
+</div>
+</section>
+<section id="un-principio-fondamentale-1" class="slide level2" data-background-color="#2c3e50" style="color: white;">
+<h2>Un principio fondamentale</h2>
+<p>Questo fatto risponde a un’obiezione comune: “Ma il prior non è soggettivo?”</p>
+<div class="fragment">
+<p>Sì, lo è — ma la sua influenza diminuisce con i dati.</p>
+</div>
+<div class="fragment">
+<p>Con un campione abbastanza grande, due ricercatori con prior diversi arriveranno essenzialmente allo stesso posterior. Con pochi dati, il prior conta — ma questo riflette la realtà: con poca informazione, le conclusioni dipendono inevitabilmente dalle assunzioni.</p>
+</div>
+<div class="fragment">
+<p>Il merito dell’approccio bayesiano è rendere queste assunzioni <strong>esplicite e trasparenti</strong>.</p>
+</div>
+</section></section>
+<section>
+<section id="parte-4-leffetto-del-prior" class="title-slide slide level1 center">
+<h1>Parte 4: l’effetto del prior</h1>
+
+</section>
+<section id="tre-prior-diversi" class="slide level2">
+<h2>Tre prior diversi</h2>
+<p>Confrontiamo tre prior per lo stesso problema (7/10):</p>
+<ol type="1">
+<li><strong>prior informativo</strong> (centrato su 0.5): Beta(5, 5);</li>
+<li><strong>prior scettico</strong> (centrato su 0.3): Beta(3, 7);</li>
+<li><strong>prior uniforme</strong> (nessuna preferenza): Beta(1, 1).</li>
+</ol>
+</section>
+<section id="calcolo" class="slide level2">
+<h2>Calcolo</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="co"># Tre prior</span></span>
+<span id="cb14-2"><a href=""></a>prior_info <span class="ot">&lt;-</span> <span class="fu">dbeta</span>(theta, <span class="dv">5</span>, <span class="dv">5</span>)</span>
+<span id="cb14-3"><a href=""></a>prior_scettico <span class="ot">&lt;-</span> <span class="fu">dbeta</span>(theta, <span class="dv">3</span>, <span class="dv">7</span>)</span>
+<span id="cb14-4"><a href=""></a>prior_uniforme <span class="ot">&lt;-</span> <span class="fu">dbeta</span>(theta, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb14-5"><a href=""></a></span>
+<span id="cb14-6"><a href=""></a><span class="co"># Stessa verosimiglianza</span></span>
+<span id="cb14-7"><a href=""></a>verosim <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">7</span>, <span class="dv">10</span>, theta)</span>
+<span id="cb14-8"><a href=""></a></span>
+<span id="cb14-9"><a href=""></a><span class="co"># Tre posterior</span></span>
+<span id="cb14-10"><a href=""></a>post_info <span class="ot">&lt;-</span> (verosim <span class="sc">*</span> prior_info) <span class="sc">/</span> <span class="fu">sum</span>(verosim <span class="sc">*</span> prior_info)</span>
+<span id="cb14-11"><a href=""></a>post_scettico <span class="ot">&lt;-</span> (verosim <span class="sc">*</span> prior_scettico) <span class="sc">/</span> <span class="fu">sum</span>(verosim <span class="sc">*</span> prior_scettico)</span>
+<span id="cb14-12"><a href=""></a>post_uniforme <span class="ot">&lt;-</span> (verosim <span class="sc">*</span> prior_uniforme) <span class="sc">/</span> <span class="fu">sum</span>(verosim <span class="sc">*</span> prior_uniforme)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="visualizzazione-dei-prior" class="slide level2">
+<h2>Visualizzazione dei prior</h2>
+
+<img data-src="prior_post_2_files/figure-revealjs/unnamed-chunk-17-1.png" width="960" class="r-stretch"></section>
+<section id="visualizzazione-dei-posterior" class="slide level2">
+<h2>Visualizzazione dei posterior</h2>
+
+<img data-src="prior_post_2_files/figure-revealjs/unnamed-chunk-18-1.png" width="960" class="r-stretch"></section>
+<section id="interpretazione-1" class="slide level2">
+<h2>Interpretazione</h2>
+<ul>
+<li>Con un <strong>prior uniforme</strong> (grigio), il posterior rispecchia fedelmente l’evidenza dei dati, concentrandosi attorno a <span class="math inline">\(\theta \approx 0.7\)</span>.</li>
+<li>Il <strong>prior informativo</strong> (blu) esercita un effetto regolarizzante, attirando la stima verso il suo centro (<span class="math inline">\(\theta \approx 0.5\)</span>) e attenuando l’influenza dei dati.</li>
+<li>Il <strong>prior scettico</strong> (rosso), pur opponendo una certa resistenza, viene comunque modificato dall’evidenza osservata, mostrando uno spostamento verso valori maggiori.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>Con soli 10 osservazioni, il prior mantiene ancora un peso considerevole nel determinare la distribuzione finale. Ma come abbiamo visto, con più dati le tre curve convergerebbero.</p>
+</section></section>
+<section>
+<section id="parte-5-applicazione-clinica" class="title-slide slide level1 center">
+<h1>Parte 5: applicazione clinica</h1>
+
+</section>
+<section id="scenario-validazione-di-un-test-diagnostico" class="slide level2">
+<h2>Scenario: validazione di un test diagnostico</h2>
+<p>Una psicologa clinica desidera valutare le prestazioni di un nuovo test diagnostico per la depressione.</p>
+<p><strong>Conoscenza a priori (prior):</strong></p>
+<ul>
+<li>Studi precedenti su test analoghi suggeriscono che la sensibilità si colloca solitamente nell’intervallo 0.70–0.90.</li>
+<li>Per formalizzare questa aspettativa, la ricercatrice imposta un <strong>prior Beta(7, 3)</strong>, che ha una moda attorno a 0.70.</li>
+</ul>
+</section>
+<section id="scenario-validazione-di-un-test-diagnostico-1" class="slide level2">
+<h2>Scenario: validazione di un test diagnostico</h2>
+<p><strong>Evidenza empirica (dati):</strong></p>
+<ul>
+<li>viene somministrato il test a un campione di 18 pazienti con diagnosi di depressione già accertata;</li>
+<li>di questi, 15 ottengono un risultato positivo al test.</li>
+</ul>
+</section>
+<section id="calcolo-del-posterior" class="slide level2">
+<h2>Calcolo del posterior</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a><span class="co"># Prior</span></span>
+<span id="cb15-2"><a href=""></a>prior_test <span class="ot">&lt;-</span> <span class="fu">dbeta</span>(theta, <span class="dv">7</span>, <span class="dv">3</span>)</span>
+<span id="cb15-3"><a href=""></a></span>
+<span id="cb15-4"><a href=""></a><span class="co"># Verosimiglianza</span></span>
+<span id="cb15-5"><a href=""></a>verosim_test <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">15</span>, <span class="dv">18</span>, theta)</span>
+<span id="cb15-6"><a href=""></a></span>
+<span id="cb15-7"><a href=""></a><span class="co"># Posterior</span></span>
+<span id="cb15-8"><a href=""></a>post_test <span class="ot">&lt;-</span> (verosim_test <span class="sc">*</span> prior_test) <span class="sc">/</span> <span class="fu">sum</span>(verosim_test <span class="sc">*</span> prior_test)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="visualizzazione-1" class="slide level2">
+<h2>Visualizzazione</h2>
+
+<img data-src="prior_post_2_files/figure-revealjs/unnamed-chunk-20-1.png" width="960" class="r-stretch"></section>
+<section id="domanda-clinica" class="slide level2" data-background-color="#2c3e50" style="color: white;">
+<h2>Domanda clinica</h2>
+<blockquote>
+<p><strong>“Qual è la probabilità che la sensibilità del test sia almeno 0.75?”</strong></p>
+</blockquote>
+<div class="fragment">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="co"># Probabilità che θ ≥ 0.75</span></span>
+<span id="cb16-2"><a href=""></a>prob_ge_075 <span class="ot">&lt;-</span> <span class="fu">sum</span>(post_test[theta <span class="sc">&gt;=</span> <span class="fl">0.75</span>])</span>
+<span id="cb16-3"><a href=""></a>prob_ge_075</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7214029</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Circa il <strong>72%</strong> di probabilità che la sensibilità sia almeno 0.75. Questa è una risposta diretta a una domanda clinicamente rilevante.</p>
+</div>
+</section>
+<section id="domanda-clinica-1" class="slide level2" data-background-color="#2c3e50" style="color: white;">
+<h2>Domanda clinica</h2>
+<p>Nel framework frequentista, la stessa domanda non avrebbe potuto essere formulata. Si sarebbe potuto calcolare un intervallo di confidenza, ma con l’avvertenza che <em>non</em> rappresenta la probabilità che il parametro sia nell’intervallo.</p>
+<div class="fragment">
+<p>L’approccio bayesiano fornisce esattamente il tipo di informazione che il clinico cerca per prendere decisioni.</p>
+</div>
+</section>
+<section id="fondamento-della-somma-dalla-griglia-allintegrale" class="slide level2">
+<h2>Fondamento della somma: dalla griglia all’integrale</h2>
+<p>Quando discretizziamo <span class="math inline">\(\theta\)</span> su una griglia di valori, il posterior è rappresentato da un insieme di probabilità puntuali. Per calcolare la probabilità su un intervallo, <strong>sommiamo le probabilità dei singoli punti</strong> in quell’intervallo:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="fu">sum</span>(post_test[theta <span class="sc">&gt;=</span> <span class="fl">0.75</span>])</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section class="slide level2">
+
+<p>Questa operazione approssima l’<strong>integrale</strong> della densità continua:</p>
+<p><span class="math display">\[
+P(\theta \geq 0.75) = \int_{0.75}^{1} p(\theta \mid D) \, d\theta.
+\]</span></p>
+<p>Poiché la griglia è fitta (101 punti) e le probabilità sono già normalizzate, la somma fornisce un’ottima approssimazione dell’area sotto la curva.</p>
+</section>
+<section id="confronto-con-il-limite-inferiore" class="slide level2">
+<h2>Confronto con il limite inferiore</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a><span class="co"># Probabilità che θ ≥ 0.70</span></span>
+<span id="cb19-2"><a href=""></a>prob_ge_070 <span class="ot">&lt;-</span> <span class="fu">sum</span>(post_test[theta <span class="sc">&gt;=</span> <span class="fl">0.70</span>])</span>
+<span id="cb19-3"><a href=""></a>prob_ge_070</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8759858</code></pre>
+</div>
+</div>
+<p>Circa l’88% di probabilità che la sensibilità sia almeno 0.70.</p>
+<div class="fragment">
+<p>Questa forma di inferenza probabilistica — che fornisce una <em>distribuzione completa</em> delle credenze anziché una singola stima puntuale — è direttamente utilizzabile per guidare le scelte cliniche e valutare l’appropriatezza del test in contesti reali.</p>
+</div>
+</section></section>
+<section>
+<section id="parte-6-esercizio-stimare-la-propria-competenza" class="title-slide slide level1 center">
+<h1>Parte 6: esercizio — stimare la propria competenza</h1>
+
+</section>
+<section id="il-contesto" class="slide level2">
+<h2>Il contesto</h2>
+<p>Questo esercizio usa l’inferenza bayesiana per rispondere a una domanda che vi interessa direttamente:</p>
+<blockquote>
+<p>“Sulla base della mia prestazione al test, qual è la probabilità che io abbia una competenza sufficiente per superare l’esame?”</p>
+</blockquote>
+<div class="fragment">
+<p>L’esame consiste in <strong>20 domande a scelta multipla</strong>, ciascuna con 5 alternative. Sistema di punteggio: risposta corretta +1 punto, risposta sbagliata −0.25 punti (penalizzazione per scoraggiare il guessing), risposta non data 0 punti.</p>
+</div>
+</section>
+<section id="la-prestazione-di-uno-studente" class="slide level2">
+<h2>La prestazione di uno studente</h2>
+<p>Marco ha completato il test:</p>
+<ul>
+<li><strong>12 risposte corrette</strong>;</li>
+<li><strong>5 risposte sbagliate</strong>;</li>
+<li><strong>3 risposte non date</strong>.</li>
+</ul>
+<div class="fragment">
+<p><strong>Punteggio grezzo:</strong> <span class="math inline">\(12 \times 1 + 5 \times (-0.25) + 3 \times 0 = 12 - 1.25 = 10.75\)</span>.</p>
+</div>
+</section>
+<section class="slide level2">
+
+<p>Ma a noi interessa stimare la sua <strong>vera competenza</strong> <span class="math inline">\(\theta\)</span> = probabilità che Marco risponda correttamente a una domanda quando decide di rispondere.</p>
+</section>
+<section id="il-modello-bayesiano" class="slide level2">
+<h2>Il modello bayesiano</h2>
+<p><strong>Passo 1 — Prior:</strong> dai dati degli anni passati sappiamo che molti studenti arrivano poco preparati, la competenza media si aggira intorno a 0.30, e solo una minoranza ha competenze elevate. Usiamo un <strong>prior Beta(3, 7)</strong>, con media <span class="math inline">\(\frac{3}{10} = 0.30\)</span>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href=""></a>theta <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">101</span>)</span>
+<span id="cb21-2"><a href=""></a>prior <span class="ot">&lt;-</span> <span class="fu">dbeta</span>(theta, <span class="dv">3</span>, <span class="dv">7</span>)</span>
+<span id="cb21-3"><a href=""></a></span>
+<span id="cb21-4"><a href=""></a><span class="fu">ggplot</span>(<span class="fu">data.frame</span>(<span class="at">theta =</span> theta, <span class="at">prior =</span> prior), <span class="fu">aes</span>(<span class="at">x =</span> theta, <span class="at">y =</span> prior)) <span class="sc">+</span></span>
+<span id="cb21-5"><a href=""></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">1.2</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb21-6"><a href=""></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fl">0.3</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb21-7"><a href=""></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Competenza (θ)"</span>, <span class="at">y =</span> <span class="st">"Densità"</span>,</span>
+<span id="cb21-8"><a href=""></a>       <span class="at">title =</span> <span class="st">"Prior Beta(3, 7): competenza media = 0.30"</span>) <span class="sc">+</span></span>
+<span id="cb21-9"><a href=""></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section class="slide level2">
+
+
+<img data-src="prior_post_2_files/figure-revealjs/unnamed-chunk-23-1.png" width="960" class="r-stretch"></section>
+<section id="passo-2-la-verosimiglianza" class="slide level2">
+<h2>Passo 2: la verosimiglianza</h2>
+<p>Marco ha risposto a 17 domande (12 + 5), lasciandone 3 in bianco. Delle 17 risposte date, <strong>12 corrette</strong> e <strong>5 sbagliate</strong>. Questo è un problema <strong>binomiale</strong>: 12 successi su 17 prove.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a>risposte_corrette <span class="ot">&lt;-</span> <span class="dv">12</span></span>
+<span id="cb22-2"><a href=""></a>risposte_date <span class="ot">&lt;-</span> <span class="dv">17</span></span>
+<span id="cb22-3"><a href=""></a></span>
+<span id="cb22-4"><a href=""></a>verosim <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(risposte_corrette, risposte_date, <span class="at">prob =</span> theta)</span>
+<span id="cb22-5"><a href=""></a></span>
+<span id="cb22-6"><a href=""></a><span class="fu">ggplot</span>(<span class="fu">data.frame</span>(<span class="at">theta =</span> theta, <span class="at">verosim =</span> verosim), <span class="fu">aes</span>(<span class="at">x =</span> theta, <span class="at">y =</span> verosim)) <span class="sc">+</span></span>
+<span id="cb22-7"><a href=""></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">1.2</span>, <span class="at">color =</span> <span class="st">"forestgreen"</span>) <span class="sc">+</span></span>
+<span id="cb22-8"><a href=""></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">12</span><span class="sc">/</span><span class="dv">17</span>, <span class="at">color =</span> <span class="st">"darkred"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb22-9"><a href=""></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fl">0.78</span>, <span class="at">y =</span> <span class="fu">max</span>(verosim) <span class="sc">*</span> <span class="fl">0.9</span>, </span>
+<span id="cb22-10"><a href=""></a>           <span class="at">label =</span> <span class="st">"MLE = 0.71"</span>, <span class="at">color =</span> <span class="st">"darkred"</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb22-11"><a href=""></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Competenza (θ)"</span>, <span class="at">y =</span> <span class="st">"Verosimiglianza"</span>,</span>
+<span id="cb22-12"><a href=""></a>       <span class="at">title =</span> <span class="st">"Verosimiglianza: 12 corrette su 17 risposte"</span>) <span class="sc">+</span></span>
+<span id="cb22-13"><a href=""></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section class="slide level2">
+
+
+<img data-src="prior_post_2_files/figure-revealjs/unnamed-chunk-24-1.png" width="960" class="r-stretch"></section>
+<section id="passo-3-la-distribuzione-a-posteriori" class="slide level2">
+<h2>Passo 3: la distribuzione a posteriori</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a><span class="co"># Posterior = Prior × Verosimiglianza (normalizzato)</span></span>
+<span id="cb23-2"><a href=""></a>prodotto <span class="ot">&lt;-</span> prior <span class="sc">*</span> verosim</span>
+<span id="cb23-3"><a href=""></a>posterior <span class="ot">&lt;-</span> prodotto <span class="sc">/</span> <span class="fu">sum</span>(prodotto)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="visualizziamo-i-tre-ingredienti" class="slide level2">
+<h2>Visualizziamo i tre ingredienti</h2>
+
+<img data-src="prior_post_2_files/figure-revealjs/unnamed-chunk-26-1.png" width="960" class="r-stretch"></section>
+<section id="interpretazione-2" class="slide level2">
+<h2>Interpretazione</h2>
+<ul>
+<li><strong>Prior</strong> (blu): prima del test, assumevamo che Marco fosse uno studente “tipico” (<span class="math inline">\(\theta \approx 0.30\)</span>).</li>
+<li><strong>Verosimiglianza</strong> (verde): i suoi dati (12/17 = 71%) suggeriscono una competenza molto più alta.</li>
+<li><strong>Posterior</strong> (rosso): la stima aggiornata è un compromesso, spostato verso i dati.</li>
+</ul>
+<p>I dati di Marco hanno <strong>aggiornato</strong> in maniera considerevole le nostre credenze.</p>
+</section>
+<section id="marco-passerà-lesame" class="slide level2">
+<h2>Marco passerà l’esame?</h2>
+<p>Per superare l’esame, la competenza stimata deve superare <span class="math inline">\(\theta = 0.50\)</span> (competenza “sufficiente”).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a>soglia <span class="ot">&lt;-</span> <span class="fl">0.50</span></span>
+<span id="cb24-2"><a href=""></a>prob_sufficiente <span class="ot">&lt;-</span> <span class="fu">sum</span>(posterior[theta <span class="sc">&gt;=</span> soglia])</span>
+<span id="cb24-3"><a href=""></a><span class="fu">round</span>(prob_sufficiente, <span class="dv">3</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.738</code></pre>
+</div>
+</div>
+<p>Marco ha circa il <strong>74%</strong> di probabilità di avere una competenza sufficiente.</p>
+</section>
+<section id="visualizziamo-la-soglia" class="slide level2">
+<h2>Visualizziamo la soglia</h2>
+
+<img data-src="prior_post_2_files/figure-revealjs/unnamed-chunk-28-1.png" width="960" class="r-stretch"></section>
+<section id="confronto-cosa-succede-con-prestazioni-diverse" class="slide level2">
+<h2>Confronto: cosa succede con prestazioni diverse?</h2>
+<p>Vediamo tre scenari (sempre su 17 risposte date):</p>
+<ul>
+<li><strong>Anna:</strong> 15 corrette (88%) — ottima prestazione.</li>
+<li><strong>Giovanni:</strong> 10 corrette (59%) — prestazione mediocre.</li>
+<li><strong>Luca:</strong> 7 corrette (41%) — prestazione scarsa.</li>
+</ul>
+</section>
+<section id="calcolo-per-i-tre-studenti" class="slide level2">
+<h2>Calcolo per i tre studenti</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a><span class="co"># Tre verosimiglianze</span></span>
+<span id="cb26-2"><a href=""></a>verosim_anna <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">15</span>, <span class="dv">17</span>, theta)</span>
+<span id="cb26-3"><a href=""></a>verosim_giovanni <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">10</span>, <span class="dv">17</span>, theta)</span>
+<span id="cb26-4"><a href=""></a>verosim_luca <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">7</span>, <span class="dv">17</span>, theta)</span>
+<span id="cb26-5"><a href=""></a></span>
+<span id="cb26-6"><a href=""></a><span class="co"># Tre posterior (stesso prior per tutti)</span></span>
+<span id="cb26-7"><a href=""></a>prior <span class="ot">&lt;-</span> <span class="fu">dbeta</span>(theta, <span class="dv">3</span>, <span class="dv">7</span>)</span>
+<span id="cb26-8"><a href=""></a>post_anna <span class="ot">&lt;-</span> (prior <span class="sc">*</span> verosim_anna) <span class="sc">/</span> <span class="fu">sum</span>(prior <span class="sc">*</span> verosim_anna)</span>
+<span id="cb26-9"><a href=""></a>post_giovanni <span class="ot">&lt;-</span> (prior <span class="sc">*</span> verosim_giovanni) <span class="sc">/</span> <span class="fu">sum</span>(prior <span class="sc">*</span> verosim_giovanni)</span>
+<span id="cb26-10"><a href=""></a>post_luca <span class="ot">&lt;-</span> (prior <span class="sc">*</span> verosim_luca) <span class="sc">/</span> <span class="fu">sum</span>(prior <span class="sc">*</span> verosim_luca)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="confronto-visivo" class="slide level2">
+<h2>Confronto visivo</h2>
+
+<img data-src="prior_post_2_files/figure-revealjs/unnamed-chunk-30-1.png" width="960" class="r-stretch"></section>
+<section id="probabilità-di-superare-la-soglia" class="slide level2">
+<h2>Probabilità di superare la soglia</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a>prob_anna <span class="ot">&lt;-</span> <span class="fu">sum</span>(post_anna[theta <span class="sc">&gt;=</span> soglia])</span>
+<span id="cb27-2"><a href=""></a>prob_giovanni <span class="ot">&lt;-</span> <span class="fu">sum</span>(post_giovanni[theta <span class="sc">&gt;=</span> soglia])</span>
+<span id="cb27-3"><a href=""></a>prob_luca <span class="ot">&lt;-</span> <span class="fu">sum</span>(post_luca[theta <span class="sc">&gt;=</span> soglia])</span>
+<span id="cb27-4"><a href=""></a></span>
+<span id="cb27-5"><a href=""></a><span class="fu">data.frame</span>(</span>
+<span id="cb27-6"><a href=""></a>  <span class="at">Studente =</span> <span class="fu">c</span>(<span class="st">"Anna"</span>, <span class="st">"Giovanni"</span>, <span class="st">"Luca"</span>),</span>
+<span id="cb27-7"><a href=""></a>  <span class="at">Corrette =</span> <span class="fu">c</span>(<span class="dv">15</span>, <span class="dv">10</span>, <span class="dv">7</span>),</span>
+<span id="cb27-8"><a href=""></a>  <span class="at">Percentuale =</span> <span class="fu">c</span>(<span class="st">"88%"</span>, <span class="st">"59%"</span>, <span class="st">"41%"</span>),</span>
+<span id="cb27-9"><a href=""></a>  <span class="at">P_supera_soglia =</span> <span class="fu">paste0</span>(<span class="fu">round</span>(<span class="fu">c</span>(prob_anna, prob_giovanni, prob_luca)<span class="sc">*</span><span class="dv">100</span>), <span class="st">"%"</span>)</span>
+<span id="cb27-10"><a href=""></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Studente Corrette Percentuale P_supera_soglia
+1     Anna       15         88%             97%
+2 Giovanni       10         59%             44%
+3     Luca        7         41%              9%</code></pre>
+</div>
+</div>
+</section>
+<section id="interpretazione-dei-risultati" class="slide level2">
+<h2>Interpretazione dei risultati</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Studente</th>
+<th>Prestazione</th>
+<th>Probabilità di passare</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Anna</td>
+<td>15/17 (88%)</td>
+<td><strong>97%</strong> — Passa sicuramente</td>
+</tr>
+<tr class="even">
+<td>Giovanni</td>
+<td>10/17 (59%)</td>
+<td><strong>44%</strong> — Situazione incerta</td>
+</tr>
+<tr class="odd">
+<td>Luca</td>
+<td>7/17 (41%)</td>
+<td><strong>9%</strong> — Non passa</td>
+</tr>
+</tbody>
+</table>
+<p>La prestazione di Giovanni (44%) è vicina alla soglia, quindi c’è molta incertezza — anche se la stima suggerisce che è più probabile che Giovanni non passi.</p>
+</section>
+<section id="il-ruolo-del-prior" class="slide level2">
+<h2>Il ruolo del prior</h2>
+<p>Il prior Beta(3, 7) riflette che <strong>la maggior parte degli studenti è poco preparata</strong>. Quando uno studente ottiene un buon risultato (come Anna), i dati “vincono” facilmente sul prior. Ma per Giovanni, la cui prestazione è modesta, il prior ha ancora influenza.</p>
+</section>
+<section id="il-messaggio" class="slide level2">
+<h2>Il messaggio</h2>
+<p>L’inferenza bayesiana permette di:</p>
+<ol type="1">
+<li><strong>quantificare l’incertezza</strong> sulla propria competenza;</li>
+<li><strong>combinare</strong> informazioni pregresse (prior) con i dati del test;</li>
+<li><strong>calcolare direttamente</strong> la probabilità di superare una soglia.</li>
+</ol>
+<p>Questo è molto più informativo di un semplice punteggio.</p>
+</section>
+<section id="nota-sulla-penalizzazione" class="slide level2">
+<h2>Nota sulla penalizzazione</h2>
+<p>La penalizzazione (−0.25 per le risposte sbagliate) scoraggia il guessing. Se uno studente tira a caso su 5 alternative, il guadagno atteso è: <span class="math inline">\(0.20 \times 1 + 0.80 \times (-0.25) = 0.20 - 0.20 = 0\)</span>.</p>
+<p>Rispondere a caso non conviene — la penalizzazione è calibrata esattamente per annullare il vantaggio del guessing.</p>
+</section></section>
+<section>
+<section id="riepilogo-e-percorso-del-corso" class="title-slide slide level1 center">
+<h1>Riepilogo e percorso del corso</h1>
+
+</section>
+<section id="il-percorso-fin-qui" class="slide level2" data-background-color="#27ae60" style="color: white;">
+<h2>Il percorso fin qui</h2>
+<div class="fragment">
+<p><strong>Lezioni 5-11</strong> — Probabilità, distribuzioni, verosimiglianza: gli strumenti matematici.</p>
+<p><strong>Lezioni 14-16</strong> — L’inferenza frequentista: cosa fa, come funziona, e perché ha generato una crisi di riproducibilità.</p>
+<p><strong>Lezione 17 (oggi)</strong> — L’inferenza bayesiana: prior, verosimiglianza, posterior. Il calcolo a mano e l’approssimazione a griglia. L’effetto dei dati e del prior.</p>
+</div>
+</section>
+<section id="in-sintesi" class="slide level2">
+<h2>In sintesi</h2>
+<p>Avete ora visto entrambi i paradigmi.</p>
+<p>Il <strong>frequentismo</strong> risponde a:<br>
+<span class="math inline">\(P(\text{dati} \mid H_0)\)</span> — probabilità dei dati <strong>assumendo vera</strong> l’ipotesi nulla.</p>
+<p>Il <strong>bayesianesimo</strong> risponde a:<br>
+<span class="math inline">\(P(\theta \mid \text{dati})\)</span> — probabilità dei parametri <strong>dopo aver osservato</strong> i dati.</p>
+<div class="fragment">
+<p>Il resto del corso sarà dedicato a sviluppare gli strumenti bayesiani che vi permetteranno di porre — e rispondere — domande più dirette e rilevanti per la ricerca.</p>
+</div>
+</section>
+<section id="riepilogo-del-segmento" class="slide level2">
+<h2>Riepilogo del segmento</h2>
+<ol type="1">
+<li><p>L’<strong>approssimazione a griglia</strong> permette calcoli bayesiani con una semplice moltiplicazione.</p></li>
+<li><p>Il <strong>posterior è un compromesso</strong> tra prior e verosimiglianza.</p></li>
+<li><p>Con <strong>più dati</strong>, il posterior è dominato dalla verosimiglianza.</p></li>
+<li><p>Il <strong>prior è esplicito e trasparente</strong> — a differenza delle assunzioni nascoste nel frequentismo.</p></li>
+<li><p>L’inferenza bayesiana fornisce <strong>risposte dirette</strong> alle domande cliniche e di ricerca.</p></li>
+</ol>
+</section>
+<section id="schema-riassuntivo" class="slide level2">
+<h2>Schema riassuntivo</h2>
+<pre><code>Conoscenza pregressa     Dati osservati
+         ↓                    ↓
+       PRIOR          VEROSIMIGLIANZA
+         ↓                    ↓
+         └──────→ × ←────────┘
+                 ↓
+            POSTERIOR
+                 ↓
+        Decisioni informate</code></pre>
+</section>
+<section id="per-la-prossima-lezione" class="slide level2">
+<h2>Per la prossima lezione</h2>
+<p>Materiale di studio: https://ccaudek.github.io/utet-companion/</p>
+<p><strong>Prossimo argomento:</strong></p>
+<p>“Quantificare e aggiornare l’incertezza. L’apprendimento sequenziale.”</p>
+<p>Vedremo come il posterior di oggi diventa il prior di domani — il meccanismo che rende l’inferenza bayesiana un sistema di <strong>apprendimento cumulativo</strong>.</p>
+
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="prior_post_2_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="prior_post_2_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="prior_post_2_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="prior_post_2_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="prior_post_2_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="prior_post_2_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="prior_post_2_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="prior_post_2_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="prior_post_2_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="prior_post_2_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'print',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copiato!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copiato!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

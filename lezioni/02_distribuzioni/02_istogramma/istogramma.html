@@ -1,0 +1,2107 @@
+<!DOCTYPE html>
+<html lang="it"><head>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-5c1318cf63eba56dbef7ba16bc7d56f5.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
+
+  <meta name="author" content="Corrado Caudek">
+  <title>Psicometria 2025-26 – Istogramma</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../../../site_libs/revealjs/dist/theme/quarto-172e614ca6238f6067b3ffab71e7e169.css">
+  <link href="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" data-background-color="#0072bc" class="quarto-title-block center">
+  <h1 class="title">Istogramma</h1>
+  <p class="subtitle">Dalla tabella di frequenze alla densità</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid" aria-label="ORCID profile for Corrado Caudek"> <img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
+</div>
+<div class="quarto-title-author-email">
+<a href="mailto:corrado.caudek@unifi.it">corrado.caudek@unifi.it</a>
+</div>
+        <p class="quarto-title-affiliation">
+            Università degli Studi di Firenze
+          </p>
+    </div>
+</div>
+
+  <p class="date">29 ottobre 2026</p>
+</section>
+<section>
+<section id="parte-i-concetti-e-calcoli" class="title-slide slide level1 center" data-background-color="#2c3e50" style="color: white;">
+<h1>Parte I: concetti e calcoli</h1>
+
+</section>
+<section id="di-che-cosa-parliamo" class="slide level2">
+<h2>Di che cosa parliamo</h2>
+<p>Immaginiamo di avere dei <strong>dati</strong> — ad esempio, un elenco di numeri — e di voler capire “come sono fatti”.</p>
+<p>Invece di guardare un lungo elenco, ci conviene <strong>riassumere</strong>:</p>
+<ul>
+<li>quanti valori cadono in ciascun intervallo;</li>
+<li>quale quota del totale rappresentano;</li>
+<li>disegnare un grafico che mostri a colpo d’occhio dove si concentrano i dati.</li>
+</ul>
+<p>Questo grafico si chiama <strong>istogramma</strong>.</p>
+</section>
+<section id="il-nostro-esempio" class="slide level2">
+<h2>Il nostro esempio</h2>
+<p>Consideriamo 10 studenti. Per ciascuno conosciamo il numero di esami superati nel primo semestre.</p>
+<p>I dati (ordinati) sono: <strong>0, 0, 1, 1, 1, 2, 2, 2, 3, 3</strong>.</p>
+<div class="fragment">
+<p>Osservazione immediata:</p>
+<ul>
+<li>il valore più piccolo è <strong>0</strong>, il più grande è <strong>3</strong>;</li>
+<li>totale osservazioni: <span class="math inline">\(n = 10\)</span>.</li>
+</ul>
+<p>Come facciamo a riassumere questa lista in modo più compatto?</p>
+</div>
+</section>
+<section id="passo-1-definire-le-classi" class="slide level2">
+<h2>Passo 1: definire le “classi”</h2>
+<p>L’idea è <strong>raggruppare</strong> i valori in <strong>intervalli</strong> (classi) e poi contare quante osservazioni cadono in ciascun intervallo.</p>
+<div class="fragment">
+<p>Per i nostri dati (da 0 a 3) possiamo scegliere tre classi di ampiezza 1:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Classe</th>
+<th style="text-align: center;">Da …</th>
+<th style="text-align: center;">… a …</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">prima</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">seconda</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">terza</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">3</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="fragment">
+<p>Ma c’è un <strong>problema</strong>: uno studente con esattamente <strong>1</strong> esame va nella prima o nella seconda classe?</p>
+</div>
+</section>
+<section id="il-problema-dei-confini-delle-classi" class="slide level2">
+<h2>Il problema dei confini delle classi</h2>
+<p>Spesso le classi sono definite con estremi in comune (es. “0-1” e “1-2”). In questo caso, il valore <strong>1</strong> potrebbe teoricamente appartenere a entrambe.</p>
+<div class="fragment">
+<p>Questa ambiguità viola un principio fondamentale dell’organizzazione dei dati: ogni osservazione deve ricadere in <strong>una, e una sola</strong>, classe.</p>
+</div>
+<div class="fragment">
+<p>Per eliminare ogni dubbio, servono regole di classificazione non ambigue. <mark>La soluzione è utilizzare la notazione degli <strong>intervalli aperti e chiusi</strong>.</mark></p>
+</div>
+</section>
+<section id="intervalli-aperti-e-chiusi" class="slide level2">
+<h2>Intervalli aperti e chiusi</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Notazione</th>
+<th style="text-align: left;">Significato</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\([a, b]\)</span></td>
+<td style="text-align: left;">include sia <span class="math inline">\(a\)</span> sia <span class="math inline">\(b\)</span> (chiuso da entrambi i lati)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\((a, b)\)</span></td>
+<td style="text-align: left;">esclude sia <span class="math inline">\(a\)</span> sia <span class="math inline">\(b\)</span> (aperto da entrambi i lati)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\([a, b)\)</span></td>
+<td style="text-align: left;">include <span class="math inline">\(a\)</span>, esclude <span class="math inline">\(b\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\((a, b]\)</span></td>
+<td style="text-align: left;">esclude <span class="math inline">\(a\)</span>, include <span class="math inline">\(b\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>Esempio: <span class="math inline">\([1, 2)\)</span> contiene <span class="math inline">\(1\)</span>, <span class="math inline">\(1.5\)</span>, <span class="math inline">\(1.99\)</span>… ma <strong>non</strong> contiene <span class="math inline">\(2\)</span>.</p>
+<p>Esempio: <span class="math inline">\((1, 2]\)</span> contiene <span class="math inline">\(1.01\)</span>, <span class="math inline">\(1.5\)</span>, <span class="math inline">\(2\)</span> … ma <strong>non</strong> contiene <span class="math inline">\(1\)</span>.</p>
+</div>
+</section>
+<section id="che-cosè-una-partizione" class="slide level2">
+<h2>Che cos’è una “partizione”</h2>
+<p>Le classi devono formare una <strong>partizione</strong> dell’intervallo dei dati, cioè rispettare tre regole:</p>
+<div class="fragment">
+<ol type="1">
+<li><strong>Ogni osservazione</strong> cade in almeno una classe (copertura).</li>
+</ol>
+</div>
+<div class="fragment">
+<ol start="2" type="1">
+<li><strong>Nessuna osservazione</strong> cade in due classi contemporaneamente (disgiunzione).</li>
+</ol>
+</div>
+<div class="fragment">
+<ol start="3" type="1">
+<li>L’<strong>unione</strong> di tutte le classi copre l’intero intervallo dei dati.</li>
+</ol>
+</div>
+<div class="fragment">
+<p>Usando gli intervalli aperti/chiusi possiamo garantire tutte e tre le regole.</p>
+</div>
+</section>
+<section id="due-convenzioni-entrambe-corrette" class="slide level2">
+<h2>Due convenzioni (entrambe corrette)</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="convenzione-a">Convenzione A</h3>
+<p><strong>Chiuso a sinistra, aperto a destra</strong>:</p>
+<p><span class="math display">\[[0,\, 1), \quad [1,\, 2), \quad [2,\, 3]\]</span></p>
+<p>I confini delle classi 1 e 2 vengono assegnati alla classe che li ha come <strong>estremo inferiore</strong>.</p>
+</div><div class="column" style="width:50%;">
+<h3 id="convenzione-b">Convenzione B</h3>
+<p><strong>Chiuso a destra, aperto a sinistra</strong>:</p>
+<p><span class="math display">\[[0,\, 1], \quad (1,\, 2], \quad (2,\, 3]\]</span></p>
+<p>I confini delle classi 1 e 2 vengono assegnati alla classe che li ha come <strong>estremo superiore</strong>.</p>
+</div></div>
+<div class="fragment">
+<p>Non c’è una convenzione “giusta”: basta <strong>dichiarare</strong> quale si usa.</p>
+</div>
+</section>
+<section id="contiamo-a-mano-convenzione-a" class="slide level2">
+<h2>Contiamo “a mano” — Convenzione A</h2>
+<p>Classi: <span class="math inline">\([0, 1)\)</span>, <span class="math inline">\([1, 2)\)</span>, <span class="math inline">\([2, 3]\)</span></p>
+<p>Dati: 0, 0, 1, 1, 1, 2, 2, 2, 3, 3</p>
+<div class="fragment">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Classe</th>
+<th style="text-align: center;">Quali valori contiene?</th>
+<th style="text-align: center;">Osservazioni</th>
+<th style="text-align: center;">Conteggio</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\([0, 1)\)</span></td>
+<td style="text-align: center;">0 sì, 1 no</td>
+<td style="text-align: center;">0, 0</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\([1, 2)\)</span></td>
+<td style="text-align: center;">1 sì, 2 no</td>
+<td style="text-align: center;">1, 1, 1</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\([2, 3]\)</span></td>
+<td style="text-align: center;">2 sì, 3 sì</td>
+<td style="text-align: center;">2, 2, 2, 3, 3</td>
+<td style="text-align: center;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>Totale</strong></td>
+<td style="text-align: center;"><strong>10</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="contiamo-a-mano-convenzione-b" class="slide level2">
+<h2>Contiamo “a mano” — Convenzione B</h2>
+<p>Classi: <span class="math inline">\([0, 1]\)</span>, <span class="math inline">\((1, 2]\)</span>, <span class="math inline">\((2, 3]\)</span></p>
+<p>Dati: 0, 0, 1, 1, 1, 2, 2, 2, 3, 3</p>
+<div class="fragment">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Classe</th>
+<th style="text-align: center;">Quali valori contiene?</th>
+<th style="text-align: center;">Osservazioni</th>
+<th style="text-align: center;">Conteggio</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\([0, 1]\)</span></td>
+<td style="text-align: center;">0 sì, 1 sì</td>
+<td style="text-align: center;">0, 0, 1, 1, 1</td>
+<td style="text-align: center;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\((1, 2]\)</span></td>
+<td style="text-align: center;">1 no, 2 sì</td>
+<td style="text-align: center;">2, 2, 2</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\((2, 3]\)</span></td>
+<td style="text-align: center;">2 no, 3 sì</td>
+<td style="text-align: center;">3, 3</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>Totale</strong></td>
+<td style="text-align: center;"><strong>10</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="fragment">
+<p><strong>Osservazione</strong>: i conteggi <em>cambiano</em>. Non è un errore — è una conseguenza della convenzione scelta.</p>
+</div>
+</section>
+<section id="perché-cambiano-i-conteggi" class="slide level2">
+<h2>Perché cambiano i conteggi?</h2>
+<p>La differenza è determinata esclusivamente da come gestiamo i <strong>valori di confine di classe</strong> (1 e 2). La loro collocazione cambia a seconda della convenzione scelta.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Valore</th>
+<th style="text-align: center;">Convenzione A</th>
+<th style="text-align: center;">Convenzione B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align: center;">Appartiene a <span class="math inline">\([1, 2)\)</span> <strong>(seconda classe)</strong></td>
+<td style="text-align: center;">Appartiene a <span class="math inline">\([0, 1]\)</span> <strong>(prima classe)</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>2</strong></td>
+<td style="text-align: center;">Appartiene a <span class="math inline">\([2, 3]\)</span> <strong>(terza classe)</strong></td>
+<td style="text-align: center;">Appartiene a <span class="math inline">\((1, 2]\)</span> <strong>(seconda classe)</strong></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="slide level2">
+
+<h3 id="spostamenti-e-stabilità">Spostamenti e stabilità</h3>
+<p>I valori agli estremi (0 e 3) finiscono sempre nella stessa classe. Sono i <strong>confini di classe interni</strong> (i punti di “giuntura”) che si spostano, alterando i conteggi delle frequenze.</p>
+<p>Con dati continui (es. altezza, peso) il problema è concettualmente presente ma <strong>praticamente irrilevante</strong>: la probabilità di osservare un valore <em>esattamente</em> sul confine di un intervallo è <strong>praticamente zero</strong>.</p>
+</section>
+<section id="passo-2-frequenze-relative" class="slide level2">
+<h2>Passo 2: frequenze relative</h2>
+<p>Le <strong>frequenze assolute</strong> sono i conteggi. Le <strong>frequenze relative</strong> sono le quote sul totale:</p>
+<p><span class="math display">\[f_j = \frac{\text{conteggio della classe } j}{n}.\]</span></p>
+</section>
+<section class="slide level2">
+
+<p>Convenzione A (<span class="math inline">\(n = 10\)</span>):</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Classe</th>
+<th style="text-align: center;">Freq. assoluta</th>
+<th style="text-align: center;">Freq. relativa</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\([0, 1)\)</span></td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;"><span class="math inline">\(2/10 = 0.20\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\([1, 2)\)</span></td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;"><span class="math inline">\(3/10 = 0.30\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\([2, 3]\)</span></td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;"><span class="math inline">\(5/10 = 0.50\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Totale</strong></td>
+<td style="text-align: center;"><strong>10</strong></td>
+<td style="text-align: center;"><strong>1.00</strong></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="proprietà-delle-frequenze-relative" class="slide level2">
+<h2>Proprietà delle frequenze relative</h2>
+<p>Le frequenze relative hanno due proprietà importanti:</p>
+<div class="fragment">
+<ol type="1">
+<li>Ciascuna è compresa tra 0 e 1: <span class="math inline">\(\quad 0 \le f_j \le 1\)</span>.</li>
+</ol>
+</div>
+<div class="fragment">
+<ol start="2" type="1">
+<li>La <strong>somma</strong> fa sempre 1: <span class="math inline">\(\quad \sum_j f_j = 1\)</span>.</li>
+</ol>
+</div>
+<div class="fragment">
+<p>Nel nostro esempio: <span class="math inline">\(0.20 + 0.30 + 0.50 = 1.00\)</span> ✓</p>
+</div>
+<div class="fragment">
+<p>Le frequenze relative ci dicono <strong>quale quota</strong> dei dati cade in ciascuna classe. Sono un primo passo verso il concetto di <strong>probabilità</strong>.</p>
+</div>
+</section>
+<section id="passo-3-listogramma" class="slide level2">
+<h2>Passo 3: l’istogramma</h2>
+<p>Un istogramma è un grafico a barre in cui:</p>
+<ul>
+<li>l’<strong>asse orizzontale</strong> <span class="math inline">\(x\)</span> mostra le classi;</li>
+<li>per ogni classe si disegna una <strong>barra</strong> (un rettangolo);</li>
+<li>il significato della barra dipende da cosa mettiamo sull’asse verticale.</li>
+</ul>
+<div class="fragment">
+<p><strong>Domanda chiave</strong>: cosa mettiamo sull’asse verticale?</p>
+<ul>
+<li>Frequenze assolute? (conteggi)</li>
+<li>Frequenze relative? (quote)</li>
+<li>Qualcos’altro?</li>
+</ul>
+</div>
+</section>
+<section id="il-problema-delle-classi-di-ampiezza-diversa" class="slide level2">
+<h2>Il problema delle classi di ampiezza diversa</h2>
+<p>Immaginiamo di raggruppare i dati (arbitrari) in tre classi aventi <strong>ampiezze diverse</strong>. In questa tabella, l’ultima classe copre un intervallo più ampio.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Classe</th>
+<th style="text-align: center;">Ampiezza</th>
+<th style="text-align: center;">Frequenza Relativa</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\([0, 1)\)</span></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0.20</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\([1, 2)\)</span></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0.30</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\([2, 5)\)</span></td>
+<td style="text-align: center;"><strong>3</strong></td>
+<td style="text-align: center;"><strong>0.50</strong></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="slide level2">
+
+<ul>
+<li><p>Se usiamo la frequenza relativa come altezza, la terza barra sarà alta 0.50 e larga 3. La sua <strong>area</strong> è <span class="math inline">\(0.50 \times 3 = 1.50\)</span>.</p></li>
+<li><p>Ma la prima barra ha area <span class="math inline">\(0.20 \times 1 = 0.20\)</span>.</p></li>
+<li><p><strong>Il confronto visivo è ingannevole</strong>: la terza barra sembra dominare, mentre la sua grande area deriva principalmente dalla maggiore ampiezza dell’intervallo, non da una densità di dati eccezionalmente elevata.</p></li>
+</ul>
+</section>
+<section id="la-soluzione-usare-la-densità" class="slide level2">
+<h2>La soluzione: usare la densità</h2>
+<p>Per ottenere un confronto visivo corretto tra classi di diversa ampiezza, non usiamo più la frequenza relativa come altezza della barra, ma la sua <strong>densità</strong>.</p>
+<p>La <strong>densità</strong> <span class="math inline">\(d_j\)</span> di una classe si calcola come:</p>
+<p><span class="math display">\[\boxed{d_j = \frac{f_j}{w_j}}\]</span> dove:</p>
+<ul>
+<li><span class="math inline">\(f_j\)</span> è la <strong>frequenza relativa</strong> della classe,</li>
+<li><span class="math inline">\(w_j\)</span> è la sua <strong>ampiezza</strong>.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="perché-funziona">Perché funziona?</h3>
+<p>Usando la densità come altezza, l’<strong>area</strong> di ogni barra diventa:</p>
+<p><span class="math display">\[\text{Area}_j = \underbrace{d_j}_{\text{altezza}} \times \underbrace{w_j}_{\text{larghezza}} = \frac{f_j}{w_j} \times w_j = f_j.\]</span></p>
+<p><mark>L’<strong>area</strong> della barra rappresenta quindi esattamente la sua <strong>frequenza relativa</strong>.</mark> Questa relazione vale per <strong>tutte</strong> le classi, indipendentemente dalla loro ampiezza, permettendo un confronto visivo corretto e coerente.</p>
+</section>
+<section id="calcoliamo-la-densità-nel-nostro-esempio" class="slide level2">
+<h2>Calcoliamo la densità nel nostro esempio</h2>
+<p>Convenzione A, tutte le classi hanno ampiezza <span class="math inline">\(w = 1\)</span>:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 27%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Classe</th>
+<th style="text-align: center;"><span class="math inline">\(f_j\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(w_j\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(d_j = f_j / w_j\)</span></th>
+<th style="text-align: center;">Area = <span class="math inline">\(d_j \times w_j\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\([0,1)\)</span></td>
+<td style="text-align: center;">0.20</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0.20</td>
+<td style="text-align: center;">0.20 ✓</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\([1,2)\)</span></td>
+<td style="text-align: center;">0.30</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0.30</td>
+<td style="text-align: center;">0.30 ✓</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\([2,3]\)</span></td>
+<td style="text-align: center;">0.50</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0.50</td>
+<td style="text-align: center;">0.50 ✓</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>Σ = 1.00</strong> ✓</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>Quando le classi sono <strong>tutte uguali</strong>, la densità coincide con la frequenza relativa.</p>
+<p>Ma la formula della densità funziona <strong>sempre</strong>, anche con classi di ampiezza diversa.</p>
+</div>
+</section>
+<section id="esempio-classi-di-ampiezza-diversa" class="slide level2">
+<h2>Esempio: classi di ampiezza diversa</h2>
+<p>Osserviamo un nuovo insieme di dati, suddiviso in classi di ampiezza diversa.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Classe</th>
+<th style="text-align: center;"><span class="math inline">\(f_j\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(w_j\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(d_j = f_j / w_j\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\([0, 2)\)</span></td>
+<td style="text-align: center;">0.25</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;"><strong>0.125</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\([2, 3)\)</span></td>
+<td style="text-align: center;">0.30</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;"><strong>0.30</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\([3, 6)\)</span></td>
+<td style="text-align: center;">0.45</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;"><strong>0.15</strong></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="slide level2">
+
+<h3 id="osservazioni-chiave">Osservazioni chiave</h3>
+<ul>
+<li><strong>Le densità (<span class="math inline">\(d_j\)</span>) sono diverse dalle frequenze (<span class="math inline">\(f_j\)</span>)</strong> perché l’ampiezza (<span class="math inline">\(w_j\)</span>) non è costante.</li>
+<li>La classe <span class="math inline">\([2, 3)\)</span>, pur avendo una <strong>frequenza relativa (0.30)</strong> simile a quella di <span class="math inline">\([3, 6)\)</span> (0.45), ha la <strong>densità più alta (0.30)</strong>: significa che i dati sono molto “concentrati” in quel breve intervallo.</li>
+<li>La classe <span class="math inline">\([0, 2)\)</span> ha una frequenza (0.25), ma, a causa dell’intervallo ampio, la sua densità (0.125) è la più bassa, indicando una minore concentrazione di dati.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>Usando la <strong>densità</strong> come altezza,</p>
+<ul>
+<li>l’istogramma rifletterà correttamente la <em>concentrazione</em> dei dati in ogni intervallo,</li>
+<li>permettendo confronti visivi non distorti dall’ampiezza diversa delle classi.</li>
+</ul>
+</section>
+<section id="come-si-interpreta-un-istogramma" class="slide level2">
+<h2>Come si interpreta un istogramma?</h2>
+<p>Nell’istogramma, dove sull’asse <span class="math inline">\(y\)</span> troviamo la <strong>densità</strong>, la lettura si basa su tre principi chiave.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="altezza-concentrazione">1️⃣ Altezza = Concentrazione</h3>
+<p>L’<strong>altezza</strong> di una barra indica quanto sono <strong>concentrati</strong> i dati in quell’intervallo, per unità della variabile <span class="math inline">\(x\)</span>.</p>
+<p>Un’altezza maggiore mostra una maggiore densità di osservazioni.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="area-proporzione">2️⃣ Area = Proporzione</h3>
+<p>L’<strong>area</strong> della barra rappresenta la <strong>proporzione</strong> (frequenza relativa) dei dati che cadono in quella classe.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="area-totale-100">3️⃣ Area Totale = 100%</h3>
+<p>La <strong>somma delle aree</strong> di tutte le barre è sempre uguale a <strong>1</strong> (o al 100% dei dati).</p>
+</section>
+<section class="slide level2">
+
+<h3 id="regola-pratica-per-linterpretazione">Regola pratica per l’interpretazione</h3>
+<p>In un istogramma, <strong>conta l’area</strong>, non l’altezza.</p>
+</section>
+<section id="come-disegnare-un-istogramma-a-mano" class="slide level2">
+<h2>Come disegnare un istogramma “a mano”</h2>
+<p>Finora abbiamo parlato di concetti e calcoli.<br>
+Ora fermiamoci un momento e chiediamoci:</p>
+<blockquote>
+<p><strong>come si costruisce concretamente un istogramma, passo per passo, senza il computer?</strong></p>
+</blockquote>
+</section>
+<section id="passo-1-disegnare-gli-assi" class="slide level2">
+<h2>Passo 1: disegnare gli assi</h2>
+<p>Per prima cosa tracciamo due assi cartesiani:</p>
+<div class="fragment">
+<ul>
+<li><strong>Asse orizzontale <span class="math inline">\(x\)</span></strong><br>
+rappresenta la variabile osservata<br>
+(qui: <em>numero di esami superati</em>)</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><strong>Asse verticale <span class="math inline">\(y\)</span></strong><br>
+rappresenta la <strong>densità</strong><br>
+(non i conteggi, non le frequenze relative)</li>
+</ul>
+</div>
+<div class="fragment">
+<p>È importante decidere <em>prima</em> cosa mettiamo sugli assi: questo determina come si leggerà il grafico.</p>
+</div>
+</section>
+<section id="passo-2-suddividere-lasse-x-in-classi" class="slide level2">
+<h2>Passo 2: suddividere l’asse <span class="math inline">\(x\)</span> in classi</h2>
+<p>Sull’asse <span class="math inline">\(x\)</span>:</p>
+<div class="fragment">
+<ul>
+<li>scegliamo le <strong>classi</strong> (intervalli),</li>
+<li>specifichiamo chiaramente i <strong>confini</strong> (aperti/chiusi),</li>
+<li>dobbiamo verificare che le classi formino una <strong>partizione</strong>.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Nel nostro esempio (Convenzione A):</p>
+<p><span class="math display">\[[0,1), \quad [1,2), \quad [2,3]\]</span></p>
+</div>
+<div class="fragment">
+<p>Queste classi coprono tutto l’intervallo dei dati e non si sovrappongono.</p>
+</div>
+</section>
+<section id="passo-3-calcolare-la-densità-di-ogni-classe" class="slide level2">
+<h2>Passo 3: calcolare la densità di ogni classe</h2>
+<p>Per ciascuna classe:</p>
+<div class="fragment">
+<ol type="1">
+<li>contiamo quante osservazioni cadono nella classe,<br>
+</li>
+<li>dividiamo per il totale → <strong>frequenza relativa</strong> <span class="math inline">\(f_j\)</span>,</li>
+<li>dividiamo per l’ampiezza della classe <span class="math inline">\(w_j\)</span>.</li>
+</ol>
+</div>
+<div class="fragment">
+<p>Otteniamo la <strong>densità</strong>:</p>
+<p><span class="math display">\[
+d_j = \frac{f_j}{w_j}.
+\]</span></p>
+</div>
+<div class="fragment">
+<p>La densità ci dice <em>quanti</em> dati abbiamo <strong>per unità dell’asse <span class="math inline">\(x\)</span></strong>.</p>
+</div>
+</section>
+<section id="passo-4-disegnare-le-barre" class="slide level2">
+<h2>Passo 4: disegnare le barre</h2>
+<p>Ora possiamo disegnare l’istogramma vero e proprio:</p>
+<div class="fragment">
+<ul>
+<li>per ogni classe, disegniamo un <strong>rettangolo</strong>,</li>
+<li>la <strong>base</strong> del rettangolo coincide con la classe sull’asse <span class="math inline">\(x\)</span>,</li>
+<li>l’<strong>altezza</strong> del rettangolo è la <strong>densità</strong> <span class="math inline">\(d_j\)</span>.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Il risultato è una serie di barre <strong>adiacenti</strong>, senza spazi.</p>
+</div>
+</section>
+<section id="come-interpretare-il-disegno" class="slide level2">
+<h2>Come interpretare il disegno</h2>
+<p>In un istogramma costruito correttamente:</p>
+<div class="fragment">
+<ul>
+<li>l’<strong>altezza</strong> della barra indica la densità,</li>
+<li>l’<strong>area</strong> della barra indica la <strong>frequenza relativa</strong> della classe,</li>
+<li>la <strong>somma delle aree</strong> di tutte le barre è <strong>1</strong>.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Regola fondamentale (da ricordare sempre):</p>
+<blockquote>
+<p><strong>Nell’istogramma conta l’area, non l’altezza.</strong></p>
+</blockquote>
+</div>
+</section>
+<section id="perché-questo-passaggio-è-importante" class="slide level2">
+<h2>Perché questo passaggio è importante</h2>
+<p>Capire come disegnare un istogramma “a mano” serve a:</p>
+<div class="fragment">
+<ul>
+<li>evitare interpretazioni sbagliate dei grafici prodotti dal computer,</li>
+<li>capire perché l’asse <span class="math inline">\(y\)</span> <strong>non è sempre</strong> una frequenza,</li>
+<li>prepararsi al passaggio alle <strong>densità continue</strong>.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Adesso siamo pronti a vedere come <strong>R automatizza questi passaggi</strong>.</p>
+</div>
+</section></section>
+<section>
+<section id="parte-ii-listogramma-in-r" class="title-slide slide level1 center" data-background-color="#2c3e50" style="color: white;">
+<h1>Parte II: l’istogramma in R</h1>
+
+</section>
+<section id="che-cosa-faremo" class="slide level2">
+<h2>Che cosa faremo</h2>
+<p>Nella Parte I abbiamo fatto tutto “a mano”: classi, conteggi, frequenze relative e densità.</p>
+<div class="fragment">
+<p>Adesso ripetiamo <strong>gli stessi passaggi</strong> usando R.</p>
+</div>
+<div class="fragment">
+<p>L’obiettivo <strong>non è introdurre nuovi concetti</strong>, ma verificare che il computer produca <strong>gli stessi numeri</strong> che abbiamo calcolato noi.</p>
+</div>
+</section>
+<section id="i-dati-in-r" class="slide level2">
+<h2>I dati in R</h2>
+<p>In R, un elenco di numeri si chiama <strong>vettore</strong> e si crea con la funzione <code>c()</code> (<em>combine</em>):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-label="1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="fragment">
+<p>La freccia <code>&lt;-</code> significa “assegna”: stiamo dando il nome <code>x</code> a questo insieme di dati.</p>
+</div>
+<div class="fragment">
+<p>Per visualizzarne il contenuto di <code>x</code>, basta scrivere il nome:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a aria-label="1"></a>x</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 0 0 1 1 1 2 2 2 3 3</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="quante-osservazioni" class="slide level2">
+<h2>Quante osservazioni?</h2>
+<p>La funzione <code>length()</code> restituisce il numero di elementi di un vettore:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a aria-label="1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb4-2"><a aria-label="2"></a>n</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 10</code></pre>
+</div>
+</div>
+<p>Abbiamo quindi <span class="math inline">\(n = 10\)</span> osservazioni — esattamente come nella Parte I.</p>
+</section>
+<section id="creare-le-classi-con-cut" class="slide level2">
+<h2>Creare le classi con <code>cut()</code></h2>
+<p>La funzione <code>cut()</code> svolge il lavoro che, nella Parte I, abbiamo fatto manualmente con le tabelle:</p>
+<blockquote>
+<p>assegna <strong>ogni osservazione</strong> a una <strong>classe</strong>.</p>
+</blockquote>
+<div class="fragment">
+<p>Per usarla dobbiamo specificare:</p>
+<ol type="1">
+<li><strong>i confini</strong> delle classi (<code>breaks</code>);</li>
+<li><strong>come trattare i confini</strong>: chiusi a sinistra o a destra (<code>right</code>).</li>
+</ol>
+</div>
+</section>
+<section id="convenzione-a-in-r" class="slide level2">
+<h2>Convenzione A in R</h2>
+<p>Nella Parte I abbiamo usato le classi <span class="math inline">\([0,1),\ [1,2),\ [2,3]\)</span>.</p>
+<p>In R:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a aria-label="1"></a>classi_A <span class="ot">&lt;-</span> <span class="fu">cut</span>(x,</span>
+<span id="cb6-2"><a aria-label="2"></a>  <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>),   <span class="co"># i confini delle classi</span></span>
+<span id="cb6-3"><a aria-label="3"></a>  <span class="at">right =</span> <span class="cn">FALSE</span>,             <span class="co"># intervalli chiusi a sinistra: [a, b)</span></span>
+<span id="cb6-4"><a aria-label="4"></a>  <span class="at">include.lowest =</span> <span class="cn">TRUE</span>      <span class="co"># eccezione: l’ultimo intervallo diventa [2,3]</span></span>
+<span id="cb6-5"><a aria-label="5"></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="fragment">
+<ul>
+<li><code>breaks = c(0, 1, 2, 3)</code> — quattro confini che delimitano tre classi;</li>
+<li><code>right = FALSE</code> — convenzione <span class="math inline">\([a, b)\)</span>;</li>
+<li><code>include.lowest = TRUE</code> — evita che il valore massimo resti escluso.</li>
+</ul>
+</div>
+</section>
+<section id="cosa-ha-fatto-cut" class="slide level2">
+<h2>Cosa ha fatto <code>cut()</code>?</h2>
+<p>Guardiamo il risultato:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a aria-label="1"></a>classi_A</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] [0,1) [0,1) [1,2) [1,2) [1,2) [2,3] [2,3] [2,3] [2,3] [2,3]
+Levels: [0,1) [1,2) [2,3]</code></pre>
+</div>
+</div>
+<p>Per ciascuna delle 10 osservazioni, R indica <strong>la classe di appartenenza</strong>.</p>
+</section>
+<section class="slide level2">
+
+<p>Confronto con la Parte I:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Osservazione</th>
+<th style="text-align: center;">Valore</th>
+<th style="text-align: center;">Classe (a mano)</th>
+<th style="text-align: center;">Classe (R)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1ª, 2ª</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;"><span class="math inline">\([0, 1)\)</span></td>
+<td style="text-align: center;"><code>[0,1)</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">3ª, 4ª, 5ª</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;"><span class="math inline">\([1, 2)\)</span></td>
+<td style="text-align: center;"><code>[1,2)</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">6ª, 7ª, 8ª</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;"><span class="math inline">\([2, 3]\)</span></td>
+<td style="text-align: center;"><code>[2,3]</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">9ª, 10ª</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;"><span class="math inline">\([2, 3]\)</span></td>
+<td style="text-align: center;"><code>[2,3]</code></td>
+</tr>
+</tbody>
+</table>
+<p>I risultati coincidono perfettamente. ✓</p>
+</section>
+<section id="contare-table" class="slide level2">
+<h2>Contare: <code>table()</code></h2>
+<p>La funzione <code>table()</code> conta quante osservazioni cadono in ciascuna classe — cioè calcola le <strong>frequenze assolute</strong>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a aria-label="1"></a><span class="fu">table</span>(classi_A)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>classi_A
+[0,1) [1,2) [2,3] 
+    2     3     5 </code></pre>
+</div>
+</div>
+<div class="fragment">
+<p>Nella Parte I avevamo ottenuto: 2, 3, 5. Stesso risultato. ✓</p>
+</div>
+</section>
+<section id="costruire-la-tabella-di-frequenze" class="slide level2">
+<h2>Costruire la tabella di frequenze</h2>
+<p>Usiamo il vettore <code>classi_A</code> e procediamo per passi:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a aria-label="1"></a><span class="co"># 1. Trasforma i conteggi in un data frame </span></span>
+<span id="cb11-2"><a aria-label="2"></a>tab_A <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">table</span>(classi_A))</span>
+<span id="cb11-3"><a aria-label="3"></a>tab_A</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  classi_A Freq
+1    [0,1)    2
+2    [1,2)    3
+3    [2,3]    5</code></pre>
+</div>
+</div>
+</section>
+<section id="cosè-un-data-frame-in-r" class="slide level2">
+<h2>Cos’è un <em>data frame</em> in R</h2>
+<p>Un <strong>data frame</strong> è la struttura standard di R per lavorare con <strong>dati tabellari</strong>.</p>
+<p>Puoi pensarlo come:</p>
+<ul>
+<li>una <strong>tabella</strong>,</li>
+<li>con <strong>righe = osservazioni</strong>,</li>
+<li>e <strong>colonne = variabili</strong>.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>Caratteristiche principali:</p>
+<ul>
+<li>ogni colonna può avere un <strong>nome</strong>;</li>
+<li>tutte le colonne hanno la <strong>stessa lunghezza</strong>;</li>
+<li>colonne diverse possono avere <strong>tipi diversi</strong> (numeri, fattori, caratteri).</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a aria-label="1"></a><span class="co"># 2. Rinominiamo le colonne per chiarezza</span></span>
+<span id="cb13-2"><a aria-label="2"></a><span class="fu">names</span>(tab_A) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Classe"</span>, <span class="st">"Freq_assoluta"</span>)</span>
+<span id="cb13-3"><a aria-label="3"></a>tab_A</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Classe Freq_assoluta
+1  [0,1)             2
+2  [1,2)             3
+3  [2,3]             5</code></pre>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Punto chiave</strong>: <code>table(classi_A)</code> calcola automaticamente le <strong>frequenze assolute</strong> delle classi.</p>
+</div>
+</section>
+<section class="slide level2">
+
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a aria-label="1"></a><span class="co"># 3. Aggiungiamo le frequenze relative</span></span>
+<span id="cb15-2"><a aria-label="2"></a>tab_A<span class="sc">$</span>Freq_relativa <span class="ot">&lt;-</span> tab_A<span class="sc">$</span>Freq_assoluta <span class="sc">/</span> n</span>
+<span id="cb15-3"><a aria-label="3"></a>tab_A</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Classe Freq_assoluta Freq_relativa
+1  [0,1)             2           0.2
+2  [1,2)             3           0.3
+3  [2,3]             5           0.5</code></pre>
+</div>
+</div>
+<ul>
+<li><strong><code>tab_A$Freq_relativa</code></strong> → crea una nuova colonna;</li>
+<li>dividiamo ogni frequenza assoluta per il totale <code>n</code>.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="verifica-finale">Verifica finale</h3>
+<p>Le frequenze relative devono sommare a 1:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a aria-label="1"></a><span class="fu">sum</span>(tab_A<span class="sc">$</span>Freq_relativa)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+</div>
+<p>Se il risultato è <code>1</code>, la ripartizione è corretta.</p>
+</section>
+<section id="convenzione-b-in-r" class="slide level2">
+<h2>Convenzione B in R</h2>
+<p>Nella Parte I, la Convenzione B era: <span class="math inline">\([0,1],\ (1,2],\ (2,3]\)</span>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a aria-label="1"></a>classi_B <span class="ot">&lt;-</span> <span class="fu">cut</span>(x,</span>
+<span id="cb19-2"><a aria-label="2"></a>  <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>),</span>
+<span id="cb19-3"><a aria-label="3"></a>  <span class="at">right =</span> <span class="cn">TRUE</span>,      <span class="co"># intervalli (a, b]</span></span>
+<span id="cb19-4"><a aria-label="4"></a>  <span class="at">include.lowest =</span> <span class="cn">TRUE</span>   <span class="co"># eccezione: il primo intervallo è [0,1]</span></span>
+<span id="cb19-5"><a aria-label="5"></a>)</span>
+<span id="cb19-6"><a aria-label="6"></a></span>
+<span id="cb19-7"><a aria-label="7"></a>tab_B <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">table</span>(classi_B))</span>
+<span id="cb19-8"><a aria-label="8"></a><span class="fu">names</span>(tab_B) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Classe"</span>, <span class="st">"Freq_assoluta"</span>)</span>
+<span id="cb19-9"><a aria-label="9"></a>tab_B<span class="sc">$</span>Freq_relativa <span class="ot">&lt;-</span> tab_B<span class="sc">$</span>Freq_assoluta <span class="sc">/</span> n</span>
+<span id="cb19-10"><a aria-label="10"></a></span>
+<span id="cb19-11"><a aria-label="11"></a>tab_B</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Classe Freq_assoluta Freq_relativa
+1  [0,1]             5           0.5
+2  (1,2]             3           0.3
+3  (2,3]             2           0.2</code></pre>
+</div>
+</div>
+<div class="fragment">
+<p>Nella Parte I avevamo trovato: 5, 3, 2. Ancora una volta, stesso risultato. ✓</p>
+</div>
+</section>
+<section class="slide level2">
+
+<h3 id="confronto-tra-le-due-convenzioni">Confronto tra le due convenzioni</h3>
+<table class="caption-top">
+<colgroup>
+<col style="width: 52%">
+<col style="width: 23%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parametro</th>
+<th style="text-align: center;">Convenzione A</th>
+<th style="text-align: center;">Convenzione B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>right</code></td>
+<td style="text-align: center;"><code>FALSE</code> → <span class="math inline">\([a, b)\)</span></td>
+<td style="text-align: center;"><code>TRUE</code> → <span class="math inline">\((a, b]\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>include.lowest</code></td>
+<td style="text-align: center;">chiude l’<strong>ultimo</strong> intervallo → <span class="math inline">\([2,3]\)</span></td>
+<td style="text-align: center;">chiude il <strong>primo</strong> intervallo → <span class="math inline">\([0,1]\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Breaks</td>
+<td style="text-align: center;"><code>c(0, 1, 2, 3)</code></td>
+<td style="text-align: center;"><code>c(0, 1, 2, 3)</code></td>
+</tr>
+</tbody>
+</table>
+<p>I <code>breaks</code> sono identici; cambia solo come R tratta i confini.</p>
+</section>
+<section id="listogramma-hist" class="slide level2">
+<h2>L’istogramma: <code>hist()</code></h2>
+<ul>
+<li><p>La funzione <code>hist()</code> disegna l’istogramma.</p></li>
+<li><p>Con <code>freq = FALSE</code>, l’asse verticale mostra la <strong>densità</strong> (non i conteggi).</p></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a aria-label="1"></a><span class="fu">hist</span>(x,</span>
+<span id="cb21-2"><a aria-label="2"></a>  <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>),</span>
+<span id="cb21-3"><a aria-label="3"></a>  <span class="at">right =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb21-4"><a aria-label="4"></a>  <span class="at">freq =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb21-5"><a aria-label="5"></a>  <span class="at">col =</span> <span class="st">"steelblue"</span>,</span>
+<span id="cb21-6"><a aria-label="6"></a>  <span class="at">border =</span> <span class="st">"white"</span>,</span>
+<span id="cb21-7"><a aria-label="7"></a>  <span class="at">main =</span> <span class="st">"Istogramma (Convenzione A)"</span>,</span>
+<span id="cb21-8"><a aria-label="8"></a>  <span class="at">xlab =</span> <span class="st">"Esami superati"</span>,</span>
+<span id="cb21-9"><a aria-label="9"></a>  <span class="at">ylab =</span> <span class="st">"Densità"</span></span>
+<span id="cb21-10"><a aria-label="10"></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="istogramma_files/figure-revealjs/unnamed-chunk-13-1.png" width="960" class="r-stretch"></section>
+<section id="che-cosa-ha-disegnato-r" class="slide level2">
+<h2>Che cosa ha disegnato R?</h2>
+<p>Le tre barre hanno altezze <strong>0.20, 0.30 e 0.50</strong>.</p>
+<p>Sono esattamente le <strong>densità</strong> che avevamo calcolato a mano nella Parte I (e in questo caso coincidono con le frequenze relative, perché tutte le classi hanno ampiezza 1).</p>
+<div class="fragment">
+<p>Parametri grafici principali:</p>
+<ul>
+<li><code>col = "steelblue"</code> — colore delle barre;</li>
+<li><code>border = "white"</code> — bordo bianco tra le barre (migliora la leggibilità);</li>
+<li><code>main</code>, <code>xlab</code>, <code>ylab</code> — titolo e etichette degli assi.</li>
+</ul>
+</div>
+</section>
+<section id="confronto-tra-le-due-convenzioni-1" class="slide level2">
+<h2>Confronto tra le due convenzioni</h2>
+<p>Ora disegniamo l’istogramma con la <strong>Convenzione B</strong>, mantenendo la <strong>stessa scala verticale</strong>:</p>
+</section>
+<section class="slide level2">
+
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a aria-label="1"></a><span class="fu">hist</span>(x,</span>
+<span id="cb22-2"><a aria-label="2"></a>  <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>),</span>
+<span id="cb22-3"><a aria-label="3"></a>  <span class="at">right =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb22-4"><a aria-label="4"></a>  <span class="at">include.lowest =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb22-5"><a aria-label="5"></a>  <span class="at">freq =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb22-6"><a aria-label="6"></a>  <span class="at">col =</span> <span class="st">"coral"</span>,</span>
+<span id="cb22-7"><a aria-label="7"></a>  <span class="at">border =</span> <span class="st">"white"</span>,</span>
+<span id="cb22-8"><a aria-label="8"></a>  <span class="at">main =</span> <span class="st">"Istogramma (Convenzione B)"</span>, <span class="at">xlab =</span> <span class="st">"Esami superati"</span>, <span class="at">ylab =</span> <span class="st">"Densità"</span></span>
+<span id="cb22-9"><a aria-label="9"></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="istogramma_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"></section>
+<section class="slide level2">
+
+<p>Stessi dati. Stessa scala verticale. <strong>Forma diversa</strong>.</p>
+<p>La differenza nasce dal fatto che i valori <strong>1 e 2</strong>, che stanno sui confini, vengono assegnati a classi diverse.</p>
+</section>
+<section id="verifica-la-somma-delle-aree-è-1" class="slide level2">
+<h2>Verifica: la somma delle aree è 1?</h2>
+<p>Usiamo <code>hist()</code> con <code>plot = FALSE</code> per ottenere solo i numeri, senza disegnare il grafico:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a aria-label="1"></a>h <span class="ot">&lt;-</span> <span class="fu">hist</span>(x,</span>
+<span id="cb23-2"><a aria-label="2"></a>  <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>),</span>
+<span id="cb23-3"><a aria-label="3"></a>  <span class="at">right =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb23-4"><a aria-label="4"></a>  <span class="at">plot =</span> <span class="cn">FALSE</span></span>
+<span id="cb23-5"><a aria-label="5"></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section class="slide level2">
+
+<p>L’oggetto <code>h</code> contiene tutte le informazioni dell’istogramma:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a aria-label="1"></a>h</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$breaks
+[1] 0 1 2 3
+
+$counts
+[1] 2 3 5
+
+$density
+[1] 0.2 0.3 0.5
+
+$mids
+[1] 0.5 1.5 2.5
+
+$xname
+[1] "x"
+
+$equidist
+[1] TRUE
+
+attr(,"class")
+[1] "histogram"</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a aria-label="1"></a>h<span class="sc">$</span>density    <span class="co"># altezze delle barre (densità)</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2 0.3 0.5</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a aria-label="1"></a>h<span class="sc">$</span>counts     <span class="co"># frequenze assolute</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2 3 5</code></pre>
+</div>
+</div>
+</section>
+<section id="il-calcolo-dellarea" class="slide level2">
+<h2>Il calcolo dell’area</h2>
+<p>L’area di ciascuna barra è:</p>
+<p><span class="math display">\[
+\text{area} = \text{densità} \times \text{ampiezza}.
+\]</span></p>
+<p>Le ampiezze si ottengono come differenze tra i confini:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a aria-label="1"></a>ampiezze <span class="ot">&lt;-</span> <span class="fu">diff</span>(h<span class="sc">$</span>breaks)</span>
+<span id="cb30-2"><a aria-label="2"></a>ampiezze</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1 1 1</code></pre>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a aria-label="1"></a>aree <span class="ot">&lt;-</span> h<span class="sc">$</span>density <span class="sc">*</span> ampiezze</span>
+<span id="cb32-2"><a aria-label="2"></a>aree</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2 0.3 0.5</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a aria-label="1"></a><span class="fu">sum</span>(aree)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+</div>
+<p>La somma delle aree è <strong>1</strong> — come deve essere ✓</p>
+</div>
+</section>
+<section id="r-parte-i-corrispondenza-completa" class="slide level2">
+<h2>R ↔︎ Parte I: corrispondenza completa</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 30%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Operazione</th>
+<th style="text-align: left;">In R</th>
+<th style="text-align: left;">Nella Parte I</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Definire le classi</td>
+<td style="text-align: left;"><code>cut()</code></td>
+<td style="text-align: left;">Scelta degli intervalli</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Contare</td>
+<td style="text-align: left;"><code>table()</code></td>
+<td style="text-align: left;">Conteggi manuali</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Frequenze relative</td>
+<td style="text-align: left;"><code>freq / n</code></td>
+<td style="text-align: left;"><span class="math inline">\(f_j = n_j / n\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Istogramma (densità)</td>
+<td style="text-align: left;"><code>hist(freq = FALSE)</code></td>
+<td style="text-align: left;">Barre con altezza <span class="math inline">\(d_j\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Area delle barre</td>
+<td style="text-align: left;"><code>density × width</code></td>
+<td style="text-align: left;"><span class="math inline">\(d_j \times w_j = f_j\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Somma delle aree</td>
+<td style="text-align: left;"><code>sum()</code></td>
+<td style="text-align: left;"><span class="math inline">\(\sum f_j = 1\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ma-allora-dove-si-concentrano-davvero-i-dati" class="slide level2">
+<h2>Ma allora: dove si concentrano davvero i dati?</h2>
+<p>Abbiamo detto che l’istogramma mostra <em>dove si concentrano le osservazioni</em>.</p>
+<div class="fragment">
+<p>Eppure, usando due convenzioni diverse, otteniamo risposte <strong>opposte</strong>:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: center;">Convenzione A</th>
+<th style="text-align: center;">Convenzione B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Barra più alta</td>
+<td style="text-align: center;"><span class="math inline">\([2,3]\)</span> — a destra</td>
+<td style="text-align: center;"><span class="math inline">\([0,1]\)</span> — a sinistra</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Barra più bassa</td>
+<td style="text-align: center;"><span class="math inline">\([0,1)\)</span> — a sinistra</td>
+<td style="text-align: center;"><span class="math inline">\((2,3]\)</span> — a destra</td>
+</tr>
+</tbody>
+</table>
+<p>Chi ha ragione?</p>
+</div>
+</section>
+<section id="la-risposta" class="slide level2">
+<h2>La risposta</h2>
+<p><strong>Nessuna delle due.</strong> Il risultato è un <strong>artefatto della discretizzazione</strong>.</p>
+<p>Il problema <strong>non è nei dati</strong>. Il problema è che qui abbiamo:</p>
+<ul>
+<li><strong>solo 10 osservazioni</strong>;</li>
+<li>valori <strong>interi</strong>;</li>
+<li><strong>tutte</strong> le osservazioni cadono <em>esattamente</em> sui confini delle classi.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>Questa è la situazione peggiore possibile per un istogramma.</p>
+<p>Ogni osservazione può essere assegnata alla classe di sinistra <em>oppure</em> a quella di destra, e la scelta della convenzione cambia completamente il risultato.</p>
+<div class="fragment">
+<p>In questo esempio, <strong>nessun dato cade davvero “dentro” una classe</strong>: tutti sono “sul bordo”. Il profilo dell’istogramma è quindi determinato interamente dalla convenzione.</p>
+</div>
+</section>
+<section id="con-molti-dati-il-problema-scompare" class="slide level2">
+<h2>Con molti dati il problema scompare</h2>
+<p>Con molte osservazioni (per esempio, altezze di persone):</p>
+<ul>
+<li>i valori sono continui (167.3, 172.8, 155.1, …);</li>
+<li>la probabilità di cadere <em>esattamente</em> su un confine è praticamente zero;</li>
+<li>le diverse convenzioni producono istogrammi <strong>quasi indistinguibili</strong>.</li>
+</ul>
+<div class="fragment">
+<p>Il nostro esempio è un <strong>caso estremo</strong>, costruito apposta per rendere visibile un effetto che, nei dati reali, è quasi sempre trascurabile.</p>
+</div>
+</section>
+<section id="la-lezione-da-portare-a-casa" class="slide level2">
+<h2>La lezione da portare a casa</h2>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Ogni discretizzazione è una scelta</strong></p>
+</div>
+<div class="callout-content">
+<p>Raggruppare dati in classi significa fare un’<strong>approssimazione</strong>. Un istogramma non è “la verità” sui dati, ma una rappresentazione che dipende da:</p>
+<ul>
+<li>numero delle classi,</li>
+<li>ampiezza delle classi,</li>
+<li>convenzione sui confini.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Con molti dati e scelte ragionevoli, le rappresentazioni <strong>convergono</strong>. Con pochi dati, le differenze possono diventare <strong>ingannevolmente grandi</strong>.</p>
+</div>
+</section>
+<section id="verso-le-curve-di-densità-continue" class="slide level2">
+<h2>Verso le curve di densità continue</h2>
+<p>Se avessimo <strong>molte osservazioni</strong> e classi <strong>sempre più strette</strong>, l’istogramma perderebbe l’aspetto “a gradini” e assumerebbe un profilo sempre più <strong>regolare</strong>.</p>
+<div class="fragment">
+<p>Nel limite, questo profilo converge a una <strong>curva liscia</strong> chiamata <strong>funzione di densità</strong>.</p>
+</div>
+<div class="fragment">
+<p><mark>La funzione di densità è un oggetto matematico continuo e, a differenza dell’istogramma, non dipende da scelte arbitrarie come il numero delle classi o la convenzione dei confini.</mark></p>
+</div>
+</section>
+<section class="slide level2">
+
+
+<img data-src="istogramma_files/figure-revealjs/unnamed-chunk-21-1.png" width="960" class="r-stretch"></section>
+<section id="un-punto-di-vista-utile" class="slide level2">
+<h2>Un punto di vista utile</h2>
+<p>La funzione di densità può essere vista come:</p>
+<ul>
+<li>il <strong>limite ideale</strong> dell’istogramma quando rendiamo le classi sempre più strette;</li>
+<li>una descrizione continua di <strong>come i valori si concentrano lungo l’asse dei possibili risultati</strong>.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>In altre parole:</p>
+<blockquote>
+<p>l’istogramma è qualcosa facile da capire e che sappiamo costruire <em>a mano</em>; la densità è l’oggetto astratto a cui questo procedimento tende.</p>
+</blockquote>
+<p>L’istogramma è quindi il nostro <strong>ancoraggio intuitivo</strong>: ci permette di collegare calcoli concreti a concetti continui più generali.</p>
+</section>
+<section id="dalla-descrizione-dei-dati-allincertezza" class="slide level2">
+<h2>Dalla descrizione dei dati all’incertezza</h2>
+<p>Una curva di densità non serve solo a riassumere dati già osservati.</p>
+<div class="fragment">
+<p>Può anche essere usata <mark>per rappresentare la nostra <strong>incertezza</strong></mark> rispetto a una quantità non ancora nota, per esempio:</p>
+<ul>
+<li>“Quale potrebbe essere il mio voto al prossimo esame?”</li>
+<li>“Quanto tempo potrebbe richiedere questo progetto?”</li>
+<li>“Qual è un valore plausibile di un parametro che voglio stimare?”</li>
+</ul>
+</div>
+<div class="fragment">
+<p>In tutti questi casi, la densità fornisce una rappresentazione continua di <strong>quanto ciascun valore è più o meno compatibile con ciò che sappiamo</strong>.</p>
+</div>
+</section>
+<section id="verso-lapproccio-bayesiano" class="slide level2">
+<h2>Verso l’approccio bayesiano</h2>
+<p>Nella statistica bayesiana useremo le densità in due momenti distinti:</p>
+<div class="fragment">
+<p><strong>Prima di osservare nuovi dati</strong> (<em>prior</em>): una densità che rappresenta ciò che sappiamo — o assumiamo — su una quantità incerta.</p>
+</div>
+<div class="fragment">
+<p><strong>Dopo aver osservato i dati</strong> (<em>posterior</em>): una densità aggiornata che tiene conto sia delle informazioni iniziali sia dei dati osservati.</p>
+</div>
+<div class="fragment">
+<p>L’idea chiave è questa:</p>
+<blockquote>
+<p>le stesse densità che oggi nascono come <em>limite degli istogrammi</em> diventeranno lo strumento centrale per <strong>quantificare e aggiornare l’incertezza</strong>.</p>
+</blockquote>
+</div>
+</section>
+<section id="riepilogo" class="slide level2">
+<h2>Riepilogo</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 46%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Concetto</th>
+<th style="text-align: left;">Significato</th>
+<th style="text-align: center;">Formula</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Frequenza assoluta</td>
+<td style="text-align: left;">conteggio per classe</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Frequenza relativa</td>
+<td style="text-align: left;">quota sul totale</td>
+<td style="text-align: center;"><span class="math inline">\(f_j = n_j / n\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Densità</td>
+<td style="text-align: left;">freq. relativa per unità di ampiezza</td>
+<td style="text-align: center;"><span class="math inline">\(d_j = f_j / w_j\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Area della barra</td>
+<td style="text-align: left;">quota complessiva della classe</td>
+<td style="text-align: center;"><span class="math inline">\(d_j \times w_j = f_j\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="punti-chiave" class="slide level2">
+<h2>Punti chiave</h2>
+<ul>
+<li>Le classi devono formare una <strong>partizione</strong> (serve una convenzione sui confini).</li>
+<li>Nell’istogramma conta l’<strong>area</strong> delle barre, non l’altezza in sé.</li>
+<li>La <strong>somma delle aree</strong> è sempre 1.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>La discretizzazione è una scelta: con pochi dati può essere fuorviante.</li>
+<li>Con molti dati, le differenze tra convenzioni diventano trascurabili.</li>
+<li>La <strong>densità continua</strong> è il limite ideale dell’istogramma.</li>
+<li>Le densità sono il <strong>ponte concettuale</strong> tra ciò che sappiamo calcolare a mano e il linguaggio che useremo per descrivere e gestire l’incertezza (Bayes).</li>
+</ul>
+</section>
+<section class="slide level2">
+
+
+<img data-src="istogramma_files/figure-revealjs/unnamed-chunk-22-1.png" width="960" class="r-stretch"></section>
+<section id="come-leggere-una-funzione-di-densità" class="slide level2">
+<h2>Come “leggere” una funzione di densità</h2>
+<p>Una funzione di densità <strong>non si legge punto per punto</strong>.</p>
+<div class="fragment">
+<p>Il valore della curva in un punto <strong>non è qualcosa di interpretabile da solo</strong>.</p>
+</div>
+<div class="fragment">
+<p>Quello che conta è <strong>come la curva si distribuisce lungo l’asse dei valori</strong>.</p>
+</div>
+</section>
+<section id="dove-la-curva-è-alta" class="slide level2">
+<h2>Dove la curva è alta</h2>
+<p>Dove la densità è <strong>più alta</strong>:</p>
+<ul>
+<li>i valori sono <strong>più concentrati</strong>;</li>
+<li>troviamo una <strong>maggiore accumulazione</strong> lungo l’asse;</li>
+<li>quei valori sono <strong>più compatibili</strong> con ciò che la curva rappresenta.</li>
+</ul>
+<div class="fragment">
+<p>Non significa che “quel valore è il più importante”, ma che <strong>quella regione dell’asse conta di più</strong> rispetto ad altre.</p>
+</div>
+</section>
+<section id="dove-la-curva-è-bassa" class="slide level2">
+<h2>Dove la curva è bassa</h2>
+<p>Dove la densità è <strong>bassa</strong>:</p>
+<ul>
+<li>i valori sono <strong>meno concentrati</strong>;</li>
+<li>quella regione contribuisce <strong>poco</strong> alla descrizione complessiva;</li>
+<li>quei valori sono <strong>meno compatibili</strong>, ma non impossibili.</li>
+</ul>
+<div class="fragment">
+<p>Una densità <strong>non esclude</strong> valori: li <strong>pesa</strong> in modo diverso lungo l’asse.</p>
+</div>
+</section>
+<section id="lidea-fondamentale-le-aree" class="slide level2">
+<h2>L’idea fondamentale: le aree</h2>
+<p>Il significato della densità non sta nell’altezza della curva, ma nelle <strong>aree sotto la curva</strong>.</p>
+<div class="fragment">
+<p>Pensatela come l’istogramma:</p>
+<ul>
+<li>nell’istogramma conta l’<strong>area delle barre</strong>;</li>
+<li>nella densità conta l’<strong>area sotto la curva</strong>.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>È lo stesso principio, portato al limite continuo.</p>
+</div>
+</section>
+<section id="confrontare-regioni-non-punti" class="slide level2">
+<h2>Confrontare regioni, non punti</h2>
+<p>Una funzione di densità si usa per confrontare <strong>intervalli di valori</strong>:</p>
+<ul>
+<li>questa regione dell’asse è più rilevante o meno rilevante?</li>
+<li>dove si concentra la maggior parte della massa?</li>
+<li>quanto “spazio” occupa una certa fascia di valori?</li>
+</ul>
+<div class="fragment">
+<p>Il linguaggio è geometrico, non puntuale.</p>
+</div>
+</section>
+<section id="uninterpretazione-intuitiva" class="slide level2">
+<h2>Un’interpretazione intuitiva</h2>
+<p>Potete leggere una densità come una <strong>mappa di concentrazione</strong>:</p>
+<ul>
+<li>zone “ad alta contentrazione” → zone dense;</li>
+<li>zone “a bassa concentrazione” → zone rade;</li>
+<li>l’area totale sotto la curva è sempre la stessa.</li>
+</ul>
+<div class="fragment">
+<p>È una generalizzazione continua di ciò che già sapete fare con un istogramma.</p>
+</div>
+</section>
+<section id="perché-partire-dallistogramma" class="slide level2">
+<h2>Perché partire dall’istogramma</h2>
+<p>L’istogramma è importante perché:</p>
+<ul>
+<li><strong>può essere costruito a mano</strong>;</li>
+<li>rende visibile il ruolo delle <strong>aree</strong>;</li>
+<li>permette di capire la densità <strong>senza formule nuove</strong>.</li>
+</ul>
+<div class="fragment">
+<p>La funzione di densità non introduce un’idea nuova: rende <strong>continua</strong> un’idea che già conosciamo.</p>
+</div>
+</section>
+<section id="messaggio-finale-della-lezione" class="slide level2">
+<h2>Messaggio finale della lezione</h2>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Stesso oggetto, ruoli diversi</strong></p>
+</div>
+<div class="callout-content">
+<p>Una funzione di densità è uno stesso oggetto matematico che può:</p>
+<ul>
+<li>descrivere dati osservati;</li>
+<li>rappresentare incertezza;</li>
+<li><strong>essere aggiornata quando arrivano nuove informazioni</strong>.</li>
+</ul>
+<p>Il linguaggio è lo stesso. Cambierà l’interpretazione.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="da-qui-in-avanti" class="slide level2">
+<h2>Da qui in avanti</h2>
+<p>Abbiamo costruito il <strong>vocabolario visivo e concettuale</strong>:</p>
+<ul>
+<li>istogrammi;</li>
+<li>aree;</li>
+<li>densità.</li>
+</ul>
+<div class="fragment">
+<p>Nelle prossime lezioni useremo questo linguaggio per parlare in modo rigoroso di <strong>incertezza</strong>, <strong>aggiornamento</strong> e <strong>inferenza</strong>.</p>
+</div>
+<div class="fragment">
+<p>Ma l’intuizione di base è già tutta qui.</p>
+
+
+
+</div>
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'print',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copiato!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copiato!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp("https:\/\/ccaudek\.github\.io\/psicometria_2026\/");
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

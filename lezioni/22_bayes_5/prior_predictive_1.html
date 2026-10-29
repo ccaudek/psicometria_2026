@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="it"><head>
+<script src="prior_predictive_1_files/libs/clipboard/clipboard.min.js"></script>
+<script src="prior_predictive_1_files/libs/quarto-html/tabby.min.js"></script>
+<script src="prior_predictive_1_files/libs/quarto-html/popper.min.js"></script>
+<script src="prior_predictive_1_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="prior_predictive_1_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="prior_predictive_1_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="prior_predictive_1_files/libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.27">
+
+  <meta name="author" content="Corrado Caudek">
+  <title>Distribuzione predittiva a priori</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="prior_predictive_1_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="prior_predictive_1_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="prior_predictive_1_files/libs/revealjs/dist/theme/quarto-32eda4d62c2e25823ebe39cba2bb0a8e.css">
+  <link href="prior_predictive_1_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="prior_predictive_1_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="prior_predictive_1_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="prior_predictive_1_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" data-background-color="#0072bc" class="quarto-title-block center">
+  <h1 class="title">Distribuzione predittiva a priori</h1>
+  <p class="subtitle">Cosa ci aspettiamo prima di vedere i dati — Segmento 1</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
+</div>
+<div class="quarto-title-author-email">
+<a href="mailto:corrado.caudek@unifi.it">corrado.caudek@unifi.it</a>
+</div>
+        <p class="quarto-title-affiliation">
+            Università degli Studi di Firenze
+          </p>
+    </div>
+</div>
+
+  <p class="date">15 febbraio 2026</p>
+</section>
+<section id="bentornati-dove-eravamo-rimasti" class="slide level2" data-background-color="#2c3e50" style="color: white;">
+<h2>Bentornati — dove eravamo rimasti?</h2>
+<p>Nella prima metà del corso abbiamo costruito, passo dopo passo, la macchina dell’inferenza bayesiana:</p>
+<div class="fragment">
+<p><strong>Lezioni 17–18:</strong> prior, verosimiglianza e posterior. L’aggiornamento sequenziale.</p>
+<p><strong>Lezione 19:</strong> le famiglie coniugate — Beta-Binomiale e Normale-Normale.</p>
+<p><strong>Lezione 20:</strong> sintetizzare il posterior — stime puntuali, ETI, HDI e le domande probabilistiche dirette.</p>
+</div>
+<div class="fragment">
+<p>Oggi ci chiediamo: <em>come facciamo a sapere se il modello ha senso <strong>prima</strong> ancora di raccogliere i dati?</em></p>
+</div>
+</section>
+<section id="obiettivi" class="slide level2 unnumbered unlisted">
+<h2>Obiettivi</h2>
+<ol type="1">
+<li>Comprendere cos’è la <strong>distribuzione predittiva a priori</strong>.</li>
+<li>Capire <strong>perché</strong> è uno strumento fondamentale nel flusso di lavoro bayesiano.</li>
+<li>Imparare a <strong>simulare</strong> dalla distribuzione predittiva a priori.</li>
+<li>Usarla per <strong>verificare</strong> se il modello ha senso <strong>prima</strong> di vedere i dati.</li>
+</ol>
+</section>
+<section>
+<section id="parte-1-lidea-centrale" class="title-slide slide level1 center">
+<h1>Parte 1: l’idea centrale</h1>
+
+</section>
+<section id="una-domanda-fondamentale" class="slide level2">
+<h2>Una domanda fondamentale</h2>
+<p>Prima di raccogliere dati, ogni ricercatore dovrebbe chiedersi:</p>
+<blockquote>
+<p>“Se il mio modello fosse vero, che tipo di dati mi aspetterei di osservare?”</p>
+</blockquote>
+<div class="fragment">
+<p>Questa domanda apparentemente semplice è <strong>potentissima</strong>:</p>
+<ul>
+<li>ci costringe a rendere esplicite le nostre assunzioni;</li>
+<li>ci permette di verificare se il modello ha senso;</li>
+<li>ci aiuta a scegliere prior ragionevoli.</li>
+</ul>
+</div>
+</section>
+<section id="il-problema-delle-prior-al-buio" class="slide level2">
+<h2>Il problema delle prior “al buio”</h2>
+<p>Finora abbiamo scelto le distribuzioni a priori ragionando sui <strong>parametri</strong> del modello:</p>
+<ul>
+<li>“la probabilità di successo è probabilmente tra 0.5 e 0.8”;</li>
+<li>“la media del punteggio BDI è circa 25”.</li>
+</ul>
+<p>Questo approccio è corretto, ma spesso <strong>non è il più naturale</strong>.</p>
+</section>
+<section class="slide level2">
+
+<p>Molto più spesso, infatti, abbiamo intuizioni sui <strong>dati osservabili</strong>:</p>
+<ul>
+<li>“mi aspetto di vedere circa 15–25 successi su 30 prove”;</li>
+<li>“i punteggi BDI saranno probabilmente tra 15 e 45”.</li>
+</ul>
+<p>La domanda allora diventa: <em>la prior che ho scelto sui parametri è coerente con ciò che mi aspetto di osservare nei dati?</em></p>
+</section>
+<section id="la-distribuzione-predittiva-a-priori" class="slide level2">
+<h2>La distribuzione predittiva a priori</h2>
+<p>La <strong>distribuzione predittiva a priori</strong> risponde proprio a questa domanda:</p>
+<blockquote>
+<p><em>“Quali dati potrei osservare, <strong>prima</strong> di aver visto alcun dato, se il mio modello fosse corretto?”</em></p>
+</blockquote>
+</section>
+<section class="slide level2">
+
+<p>Formalmente:</p>
+<p><span class="math display">\[
+p(y) = \int p(y \mid \theta)\, p(\theta)\, d\theta,
+\]</span></p>
+<p>cioè, la distribuzione dei dati ottenuta <strong>mediando</strong> il modello sui possibili valori del parametro, pesati dalla distribuzione a priori.</p>
+</section>
+<section id="lintuizione-operativa-il-meccanismo-di-simulazione" class="slide level2">
+<h2>L’intuizione operativa: il meccanismo di simulazione</h2>
+<p>Possiamo pensare la <strong>distribuzione predittiva a priori</strong> con la seguente simulazione mentale:</p>
+<ol type="1">
+<li><strong>estrai</strong> un valore del parametro dalla distribuzione a priori;</li>
+<li><strong>genera un dato</strong> dal modello <span class="math inline">\(p(y \mid \theta)\)</span> usando quel valore del parametro;</li>
+<li><strong>ripeti</strong> il procedimento moltissime volte.</li>
+</ol>
+</section>
+<section class="slide level2">
+
+<p>La distribuzione dei dati così generati è la <strong>distribuzione predittiva a priori</strong>.</p>
+<p>È ciò che il modello <em>si aspetta di osservare</em> prima di vedere i dati reali.</p>
+</section>
+<section id="lintuizione-operativa-due-fonti-di-variabilità" class="slide level2">
+<h2>L’intuizione operativa: due fonti di variabilità</h2>
+<p>Si noti che:</p>
+<ul>
+<li>i valori del parametro con densità più alta nella distribuzione a priori vengono estratti <strong>più frequentemente</strong>;</li>
+<li>fissato un valore del parametro <span class="math inline">\(\theta\)</span> in uno step della simulazione, i dati non sono generati uniformemente: la distribuzione <span class="math inline">\(p(y \mid \theta)\)</span> assegna <strong>probabilità diverse a valori diversi</strong> della variabile casuale.</li>
+</ul>
+</section>
+<section id="lintuizione-operativa-combinare-incertezze" class="slide level2">
+<h2>L’intuizione operativa: combinare incertezze</h2>
+<p>In altre parole, la distribuzione predittiva a priori combina:</p>
+<ul>
+<li>la nostra incertezza sui parametri (prior),</li>
+<li>la variabilità dei dati data una scelta del parametro (modello).</li>
+</ul>
+<blockquote>
+<p>L’integrale nella definizione di <span class="math inline">\(p(y)\)</span> formalizza esattamente questo processo di simulazione ripetuta:</p>
+</blockquote>
+<p><span class="math display">\[
+p(y) = \int p(y \mid \theta)\, p(\theta)\, d\theta.
+\]</span></p>
+</section>
+<section id="perché-questo-campionamento-corrisponde-a-un-integrale" class="slide level2">
+<h2>Perché questo campionamento corrisponde a un integrale</h2>
+<p>Pensiamo a un valore fissato <span class="math inline">\(y\)</span>.</p>
+<p>Ogni possibile valore del parametro <span class="math inline">\(\theta\)</span> assegna a <span class="math inline">\(y\)</span> una probabilità diversa tramite <span class="math inline">\(p(y \mid \theta)\)</span>.</p>
+<p>La probabilità complessiva di osservare <span class="math inline">\(y\)</span> deve quindi:</p>
+<ul>
+<li>tenere conto di <strong>tutti</strong> i valori possibili di <span class="math inline">\(\theta\)</span>;</li>
+<li>pesare ciascun contributo in base a quanto quel valore di <span class="math inline">\(\theta\)</span> è plausibile a priori.</li>
+</ul>
+</section>
+<section id="una-media-pesata-sulle-possibili-theta" class="slide level2">
+<h2>Una media pesata sulle possibili <span class="math inline">\(\theta\)</span></h2>
+<p>La distribuzione predittiva a priori è una <strong>media pesata</strong> delle distribuzioni <span class="math inline">\(p(y \mid \theta)\)</span>:</p>
+<ul>
+<li><span class="math inline">\(p(y \mid \theta)\)</span> dice <em>quanto è probabile <span class="math inline">\(y\)</span></em> se il parametro fosse <span class="math inline">\(\theta\)</span>;</li>
+<li><span class="math inline">\(p(\theta)\)</span> dice <em>quanto è plausibile</em> quel valore di <span class="math inline">\(\theta\)</span> prima di vedere i dati.</li>
+</ul>
+<p>L’integrale</p>
+<p><span class="math display">\[
+p(y) = \int p(y \mid \theta)\, p(\theta)\, d\theta,
+\]</span> somma tutti questi contributi, pesandoli correttamente.</p>
+</section>
+<section id="dal-campionamento-allintegrale" class="slide level2">
+<h2>Dal campionamento all’integrale</h2>
+<p>Il procedimento di simulazione fa esattamente questo:</p>
+<ul>
+<li>i valori di <span class="math inline">\(\theta\)</span> più plausibili vengono estratti più spesso (peso <span class="math inline">\(p(\theta))\)</span>;</li>
+<li>per ciascun <span class="math inline">\(\theta\)</span>, i valori di <span class="math inline">\(y\)</span> più probabili vengono generati più spesso (peso <span class="math inline">\(p(y \mid \theta))\)</span>.</li>
+</ul>
+<p>Ripetendo il procedimento molte volte, la frequenza con cui osserviamo ciascun valore di <span class="math inline">\(y\)</span> <strong>approssima l’integrale</strong>.</p>
+<p>L’integrale non è altro che il limite ideale di questo processo di campionamento.</p>
+</section>
+<section id="un-messaggio-chiave" class="slide level2">
+<h2>Un messaggio chiave</h2>
+<blockquote>
+<p>La distribuzione predittiva a priori descrive ciò che otteniamo <strong>prima</strong> osservando un parametro dalla prior e <strong>poi</strong> osservando i dati dal modello.</p>
+</blockquote>
+<p>L’integrale</p>
+<p><span class="math display">\[
+p(y) = \int p(y \mid \theta)\, p(\theta)\, d\theta
+\]</span> formalizza esattamente questa idea.</p>
+</section>
+<section id="in-sintesi" class="slide level2">
+<h2>In sintesi</h2>
+<ul>
+<li><p>Considerato un singolo valore del parametro <span class="math inline">\(\theta\)</span>, il modello <span class="math inline">\(p(y \mid \theta)\)</span> <strong>determina in modo univoco</strong> la distribuzione dei possibili valori della variabile casuale <span class="math inline">\(y\)</span>.</p></li>
+<li><p>Tuttavia, <span class="math inline">\(\theta\)</span> non è noto: la distribuzione a priori descrive quanto siano <strong>relativamente plausibili</strong> i diversi valori che <span class="math inline">\(\theta\)</span> può assumere prima di osservare i dati.</p></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>La <strong>distribuzione predittiva a priori</strong> si ottiene allora così:</p>
+<ul>
+<li>si considera la distribuzione di <span class="math inline">\(y\)</span> associata a ciascun possibile valore di <span class="math inline">\(\theta\)</span>;</li>
+<li>si fa una <strong>media</strong> di tutte queste distribuzioni;</li>
+<li>a ciascuna si assegna un peso proporzionale alla plausibilità a priori del valore di <span class="math inline">\(\theta\)</span> che l’ha generata.</li>
+</ul>
+<p>Il risultato di questa media pesata è la distribuzione predittiva a priori.</p>
+</section>
+<section class="slide level2">
+
+<p>Per concludere,</p>
+<blockquote>
+<p>la distribuzione predittiva a priori descrive ciò che il modello si aspetta di osservare, tenendo conto sia dell’incertezza sui parametri sia della variabilità dei dati.</p>
+</blockquote>
+</section>
+<section id="unanalogia-il-meteorologo" class="slide level2">
+<h2>Un’analogia: il meteorologo</h2>
+<p>Prima di guardare i dati satellitari, un meteorologo potrebbe dire:</p>
+<blockquote>
+<p>“A marzo a Firenze, sulla base della mia esperienza, mi aspetto temperature tra 5 °C e 18 °C.”</p>
+</blockquote>
+<p>Se il suo modello considerasse plausibili −30 °C o +50 °C, <strong>il problema non sarebbero i dati, ma il modello</strong>.</p>
+</section>
+<section class="slide level2">
+
+<p>Allo stesso modo, la distribuzione predittiva a priori ci permette di verificare se:</p>
+<ul>
+<li>le nostre assunzioni a priori sono <strong>ragionevoli</strong>;</li>
+<li>il modello genera dati <strong>compatibili con la realtà che ci aspettiamo</strong>.</li>
+</ul>
+<p>È uno strumento fondamentale per evitare prior “al buio”.</p>
+</section></section>
+<section>
+<section id="parte-2-un-primo-esempio" class="title-slide slide level1 center">
+<h1>Parte 2: un primo esempio</h1>
+
+</section>
+<section id="scenario-efficacia-di-un-nuovo-farmaco-ansiolitico" class="slide level2">
+<h2>Scenario: efficacia di un nuovo farmaco ansiolitico</h2>
+<p>Un’azienda farmaceutica sta testando un nuovo farmaco per l’ansia. Prima dello studio clinico vogliono verificare se le assunzioni del modello sono ragionevoli.</p>
+<p><strong>Modello:</strong></p>
+<ul>
+<li><span class="math inline">\(N = 50\)</span> pazienti ricevono il trattamento;</li>
+<li>misuriamo quanti mostrano una riduzione rilevante dell’ansia;</li>
+<li>la probabilità di successo <span class="math inline">\(\theta\)</span> ha prior <span class="math inline">\(\text{Beta}(2,2)\)</span>.</li>
+</ul>
+</section>
+<section id="la-prior-sul-parametro-theta" class="slide level2">
+<h2>La prior sul parametro <span class="math inline">\(\theta\)</span></h2>
+
+<img data-src="prior_predictive_1_files/figure-revealjs/unnamed-chunk-2-1.png" width="960" class="r-stretch"><p>La Beta(2,2) esprime una credenza iniziale “moderata”: valori estremi (vicino a 0 o 1) sono meno plausibili, ma non esclusi.</p>
+</section>
+<section id="predittiva-a-priori-le-domande-prima-dei-dati" class="slide level2">
+<h2>Predittiva a priori: le domande (prima dei dati)</h2>
+<p>Prima di raccogliere dati, vogliamo chiederci:</p>
+<ul>
+<li><strong>quanti successi è ragionevole osservare su 50</strong>, se il modello è corretto?</li>
+<li>il modello prevede risultati <strong>realistici</strong> per un ansiolitico?</li>
+</ul>
+<p>Questa è la <strong>distribuzione predittiva a priori</strong>:</p>
+<p><span class="math display">\[
+\theta \sim \text{Beta}(2,2), \qquad Y \mid \theta \sim \text{Binomiale}(50,\theta).
+\]</span></p>
+</section>
+<section id="una-singola-simulazione-un-mondo-possibile" class="slide level2">
+<h2>1) Una singola simulazione (un “mondo possibile”)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="co"># Una singola simulazione</span></span>
+<span id="cb1-2"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb1-3"><a href=""></a></span>
+<span id="cb1-4"><a href=""></a>n_pazienti <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb1-5"><a href=""></a></span>
+<span id="cb1-6"><a href=""></a>theta_1 <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="dv">1</span>, <span class="at">shape1 =</span> <span class="dv">2</span>, <span class="at">shape2 =</span> <span class="dv">2</span>)</span>
+<span id="cb1-7"><a href=""></a>successi_1 <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">1</span>, <span class="at">size =</span> n_pazienti, <span class="at">prob =</span> theta_1)</span>
+<span id="cb1-8"><a href=""></a></span>
+<span id="cb1-9"><a href=""></a><span class="fu">cat</span>(<span class="st">"θ estratto ="</span>, <span class="fu">round</span>(theta_1, <span class="dv">3</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>θ estratto = 0.328 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Successi simulati su 50 ="</span>, successi_1, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Successi simulati su 50 = 17 </code></pre>
+</div>
+</div>
+<p>Interpretazione: abbiamo generato <strong>un possibile esito</strong> coerente con il prior.</p>
+</section>
+<section id="ripetizione-esplicita-con-un-loop-for" class="slide level2">
+<h2>2) Ripetizione esplicita con un loop <code>for</code></h2>
+<p>Ora ripetiamo lo stesso esperimento molte volte, passo per passo:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb5-2"><a href=""></a></span>
+<span id="cb5-3"><a href=""></a>n_sim <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
+<span id="cb5-4"><a href=""></a>n_pazienti <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb5-5"><a href=""></a></span>
+<span id="cb5-6"><a href=""></a>theta_for <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n_sim)</span>
+<span id="cb5-7"><a href=""></a>successi_for <span class="ot">&lt;-</span> <span class="fu">integer</span>(n_sim)</span>
+<span id="cb5-8"><a href=""></a></span>
+<span id="cb5-9"><a href=""></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_sim) {</span>
+<span id="cb5-10"><a href=""></a>  theta_for[i] <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb5-11"><a href=""></a>  successi_for[i] <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">1</span>, <span class="at">size =</span> n_pazienti, <span class="at">prob =</span> theta_for[i])</span>
+<span id="cb5-12"><a href=""></a>}</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section class="slide level2">
+
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">head</span>(</span>
+<span id="cb6-2"><a href=""></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb6-3"><a href=""></a>    <span class="at">theta =</span> <span class="fu">round</span>(theta_for, <span class="dv">3</span>), </span>
+<span id="cb6-4"><a href=""></a>    <span class="at">successi =</span> successi_for), </span>
+<span id="cb6-5"><a href=""></a>  <span class="dv">10</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   theta successi
+1  0.328       17
+2  0.835       38
+3  0.881       43
+4  0.127        4
+5  0.636       29
+6  0.498       33
+7  0.414       26
+8  0.283       11
+9  0.329        9
+10 0.416       19</code></pre>
+</div>
+</div>
+<p>Ogni riga è <strong>uno studio simulato</strong>: prima estraiamo <span class="math inline">\(\theta\)</span>, poi generiamo i successi.</p>
+</section>
+<section id="lo-stesso-ma-in-modo-più-efficiente-vettoriale" class="slide level2">
+<h2>3) Lo stesso, ma in modo più efficiente (vettoriale)</h2>
+<p>È lo stesso algoritmo, solo più compatto:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb8-2"><a href=""></a></span>
+<span id="cb8-3"><a href=""></a>n_sim <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
+<span id="cb8-4"><a href=""></a>n_pazienti <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb8-5"><a href=""></a></span>
+<span id="cb8-6"><a href=""></a>theta_sim <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(n_sim, <span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb8-7"><a href=""></a>successi_sim <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n_sim, <span class="at">size =</span> n_pazienti, <span class="at">prob =</span> theta_sim)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section class="slide level2">
+
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="fu">head</span>(</span>
+<span id="cb9-2"><a href=""></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb9-3"><a href=""></a>    <span class="at">theta =</span> <span class="fu">round</span>(theta_sim, <span class="dv">3</span>), </span>
+<span id="cb9-4"><a href=""></a>    <span class="at">successi =</span> successi_sim), </span>
+<span id="cb9-5"><a href=""></a>  <span class="dv">10</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   theta successi
+1  0.328       19
+2  0.552       22
+3  0.274       10
+4  0.881       46
+5  0.592       31
+6  0.278       18
+7  0.636       35
+8  0.701       32
+9  0.659       35
+10 0.414       14</code></pre>
+</div>
+</div>
+</section>
+<section id="interpretazione-cosa-abbiamo-costruito" class="slide level2">
+<h2>Interpretazione (cosa abbiamo costruito)</h2>
+<ul>
+<li><p>Ogni simulazione produce un numero di successi <span class="math inline">\(Y\)</span> su 50.</p></li>
+<li><p>La variabilità riflette <strong>due fonti</strong>:</p>
+<ul>
+<li>incertezza su <span class="math inline">\(\theta\)</span> (prior);</li>
+<li>variabilità campionaria (binomiale).</li>
+</ul></li>
+</ul>
+<p>Questo insieme di valori <span class="math inline">\(Y\)</span> è la <strong>distribuzione predittiva a priori</strong>.</p>
+</section>
+<section id="la-distribuzione-predittiva-a-priori-1" class="slide level2">
+<h2>La distribuzione predittiva a priori</h2>
+
+<img data-src="prior_predictive_1_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section>
+<section id="riassunto-numerico-prima-di-vedere-i-dati" class="slide level2">
+<h2>Riassunto numerico (prima di vedere i dati)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Media:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(successi_sim), <span class="dv">1</span>), <span class="st">"successi</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Media: 25 successi</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Intervallo 95%:"</span>, <span class="fu">quantile</span>(successi_sim, <span class="fl">0.025</span>), <span class="st">"-"</span>,</span>
+<span id="cb13-2"><a href=""></a>    <span class="fu">quantile</span>(successi_sim, <span class="fl">0.975</span>), <span class="st">"successi</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Intervallo 95%: 4 - 46 successi</code></pre>
+</div>
+</div>
+<p>Interpretazione:</p>
+<ul>
+<li>in media ci aspettiamo circa <strong>25 successi su 50</strong>;</li>
+<li>ma risultati molto bassi o molto alti possono ancora capitare.</li>
+</ul>
+</section>
+<section id="la-domanda-chiave-validazione-del-modello" class="slide level2">
+<h2>La domanda chiave (validazione del modello)</h2>
+<blockquote>
+<p>“Questa predittiva a priori produce risultati <strong>plausibili</strong> per un ansiolitico?”</p>
+</blockquote>
+<ul>
+<li><strong>8 su 50 (16%)</strong> — quasi inefficace</li>
+<li><strong>42 su 50 (84%)</strong> — eccezionalmente efficace</li>
+</ul>
+<p>Se i ricercatori si aspettano che farmaci simili abbiano tassi tra <strong>40% e 70%</strong>, questa prior <strong>potrebbe essere troppo vaga</strong> (produce anche scenari poco plausibili).</p>
+</section></section>
+<section>
+<section id="parte-3-calibrare-la-prior" class="title-slide slide level1 center">
+<h1>Parte 3: calibrare la prior</h1>
+
+</section>
+<section id="una-prior-più-informativa" class="slide level2">
+<h2>Una prior più informativa</h2>
+<p>Se l’esperienza suggerisce che farmaci simili hanno tassi di successo <strong>tra 40% e 70%</strong>, possiamo usare un prior più concentrato:</p>
+<p><span class="math display">\[
+\theta \sim \text{Beta}(22,18)
+\]</span></p>
+<ul>
+<li>media: <span class="math inline">\(0.55\)</span>,</li>
+<li>forza: <span class="math inline">\(22+18=40\)</span> (prior più informativo di Beta(2,2)).</li>
+</ul>
+<p>Ricordate la Lezione 19: nella famiglia Beta-Binomiale, la “forza” del prior è <span class="math inline">\(\alpha + \beta\)</span>.</p>
+</section>
+<section id="confronto-delle-prior" class="slide level2">
+<h2>Confronto delle prior</h2>
+
+<img data-src="prior_predictive_1_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"></section>
+<section id="predittiva-a-priori" class="slide level2">
+<h2>Predittiva a priori</h2>
+<p>Ora simuliamo, per ciascun prior:</p>
+<ol type="1">
+<li><span class="math inline">\(\theta \sim \text{Beta}(\alpha,\beta)\)</span>,</li>
+<li><span class="math inline">\(Y\mid\theta \sim \text{Binomiale}(50,\theta)\)</span>.</li>
+</ol>
+</section>
+<section class="slide level2">
+
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb15-2"><a href=""></a></span>
+<span id="cb15-3"><a href=""></a>n_sim <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
+<span id="cb15-4"><a href=""></a>n_pazienti <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb15-5"><a href=""></a></span>
+<span id="cb15-6"><a href=""></a><span class="co"># Prior 1 (vaga)</span></span>
+<span id="cb15-7"><a href=""></a>theta_vaga <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(n_sim, <span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb15-8"><a href=""></a>y_vaga <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n_sim, n_pazienti, theta_vaga)</span>
+<span id="cb15-9"><a href=""></a></span>
+<span id="cb15-10"><a href=""></a><span class="co"># Prior 2 (più informativa)</span></span>
+<span id="cb15-11"><a href=""></a>theta_info <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(n_sim, <span class="dv">22</span>, <span class="dv">18</span>)</span>
+<span id="cb15-12"><a href=""></a>y_info <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n_sim, n_pazienti, theta_info)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="confronto-predittivo-quante-risposte-ci-aspettiamo" class="slide level2">
+<h2>Confronto predittivo: quante risposte ci aspettiamo?</h2>
+
+<img data-src="prior_predictive_1_files/figure-revealjs/unnamed-chunk-12-1.png" width="960" class="r-stretch"></section>
+<section id="confronto-numerico-riassunto" class="slide level2">
+<h2>Confronto numerico (riassunto)</h2>
+<p>Prior vaga (Beta(2,2)):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"  Media successi:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(y_vaga), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Media successi: 25 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"  95%:"</span>, <span class="fu">quantile</span>(y_vaga, <span class="fl">0.025</span>), <span class="st">"-"</span>, <span class="fu">quantile</span>(y_vaga, <span class="fl">0.975</span>), <span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  95%: 4 - 46 </code></pre>
+</div>
+</div>
+<div class="fragment">
+<p>Prior più informativa (Beta(22,18)):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"  Media successi:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(y_info), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Media successi: 27.4 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"  95%:"</span>, <span class="fu">quantile</span>(y_info, <span class="fl">0.025</span>), <span class="st">"-"</span>, <span class="fu">quantile</span>(y_info, <span class="fl">0.975</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  95%: 17 - 37 </code></pre>
+</div>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<h3 id="interpretazione-didattica">Interpretazione didattica</h3>
+<ul>
+<li><p>Con <strong>Beta(2,2)</strong> la predittiva a priori è molto ampia: ammette con probabilità non trascurabile <strong>scenari estremi</strong>, dal quasi fallimento al successo eccezionale.</p></li>
+<li><p>Con <strong>Beta(22,18)</strong> la prior su <span class="math inline">\(\theta\)</span> è più concentrata, con la maggior parte della massa tra <strong>40% e 70%</strong>. Questo produce una predittiva sui dati <strong>più concentrata</strong>, pur includendo ancora la naturale variabilità campionaria (≈ <strong>17–37 successi su 50</strong>).</p></li>
+</ul>
+<p><strong>Messaggio chiave:</strong> la prior restringe ciò che crediamo plausibile per il <strong>parametro</strong>, non elimina la variabilità nei <strong>dati osservabili</strong>.</p>
+</section>
+<section id="intervalli" class="slide level2">
+<h2>Intervalli</h2>
+<blockquote>
+<p>L’intervallo sulla <strong>prior</strong> riguarda <span class="math inline">\(\theta\)</span>;</p>
+</blockquote>
+<blockquote>
+<p>l’intervallo <strong>predittivo</strong> riguarda i dati.</p>
+</blockquote>
+<p>Il secondo è sempre più largo del primo.</p>
+</section>
+<section id="una-nota-importante-calibrazione-come-analisi-di-sensibilità" class="slide level2" data-background-color="#34495e" style="color: white;">
+<h2>Una nota importante: calibrazione come analisi di sensibilità</h2>
+<p>Confrontare la distribuzione predittiva a priori sotto prior diverse — come abbiamo appena fatto — è una forma di <strong>analisi di sensibilità</strong>: verifichiamo quanto le nostre conclusioni dipendono dalla scelta del prior.</p>
+<div class="fragment">
+<p>Questo tema è trattato in modo più formale nel materiale didattico. La lezione di oggi vi dà lo strumento operativo per condurla: simulare e confrontare.</p>
+</div>
+</section>
+<section id="messaggio-chiave-controllo-predittivo-a-priori" class="slide level2">
+<h2>Messaggio chiave (controllo predittivo a priori)</h2>
+<p><strong>Un prior non è semplicemente un’opinione:</strong></p>
+<blockquote>
+<p>è una scelta consapevole che definisce i tipi di dati che ci aspettiamo di osservare, <em>prima</em> di raccoglierli.</p>
+</blockquote>
+</section>
+<section class="slide level2">
+
+<p>Se il controllo predittivo a priori rivela previsioni “strane” o irrealistiche, questo è un <strong>segnale fondamentale</strong> che:</p>
+<ul>
+<li>il prior potrebbe essere <strong>troppo vago</strong> (non incorpora conoscenze di dominio adeguate), oppure</li>
+<li>la <strong>struttura del modello</strong> potrebbe non riflettere adeguatamente il meccanismo che genera i dati.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p><strong>In sintesi:</strong> il controllo predittivo a priori trasforma un’assunzione astratta (il prior) in previsioni concrete e verificabili, aiutandoci a identificare e correggere problemi nel modello <em>prima</em> di osservare i dati reali.</p>
+<p><strong>Le alternative sono chiare:</strong></p>
+<ol type="1">
+<li><strong>affinare il prior</strong> per incorporare conoscenze più realistiche;</li>
+<li><strong>rivedere la struttura del modello</strong> per allinearla meglio alla realtà.</li>
+</ol>
+</section></section>
+<section>
+<section id="parte-4-prior-predictive-check" class="title-slide slide level1 center">
+<h1>Parte 4: prior predictive check</h1>
+
+</section>
+<section id="il-controllo-predittivo-a-priori" class="slide level2">
+<h2>Il controllo predittivo a priori</h2>
+<p>Il <strong>prior predictive check</strong> è una procedura sistematica:</p>
+<ol type="1">
+<li>specifica il modello completo (prior + verosimiglianza);</li>
+<li>simula dati dalla distribuzione predittiva a priori;</li>
+<li>verifica se i dati simulati sono <strong>plausibili</strong>;</li>
+<li>se no, rivedi la prior e ripeti.</li>
+</ol>
+</section>
+<section id="quando-una-prior-è-cattiva" class="slide level2">
+<h2>Quando una prior è “cattiva”?</h2>
+<p>Una prior produce dati implausibili quando:</p>
+<ul>
+<li>prevede valori <strong>impossibili</strong> (es. tempi negativi, proporzioni &gt; 1);</li>
+<li>prevede valori <strong>estremi</strong> con alta probabilità;</li>
+<li>è <strong>incoerente</strong> con la conoscenza del dominio.</li>
+</ul>
+<div class="fragment">
+<p>Il prior predictive check <strong>non richiede dati reali</strong> — è uno strumento di validazione del modello.</p>
+</div>
+</section>
+<section id="un-esempio-problematico" class="slide level2">
+<h2>Un esempio problematico</h2>
+<p>Supponiamo di modellare i tempi di reazione in un compito cognitivo.</p>
+<p><strong>Modello (sbagliato):</strong></p>
+<ul>
+<li><span class="math inline">\(y_i \sim \text{Normale}(\mu, \sigma)\)</span></li>
+<li><span class="math inline">\(\mu \sim \text{Normale}(0, 100)\)</span> — prior molto vaga</li>
+<li><span class="math inline">\(\sigma = 50\)</span> ms (fisso per semplicità)</li>
+</ul>
+</section>
+<section id="cosa-succede-con-questa-prior" class="slide level2">
+<h2>Cosa succede con questa prior?</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a><span class="co"># Simuliamo dalla prior</span></span>
+<span id="cb24-2"><a href=""></a>n_sim <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb24-3"><a href=""></a>n_soggetti <span class="ot">&lt;-</span> <span class="dv">30</span></span>
+<span id="cb24-4"><a href=""></a></span>
+<span id="cb24-5"><a href=""></a><span class="co"># Prior molto vaga su mu</span></span>
+<span id="cb24-6"><a href=""></a>mu_sim <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_sim, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">100</span>)</span>
+<span id="cb24-7"><a href=""></a></span>
+<span id="cb24-8"><a href=""></a><span class="co"># Per ogni mu, generiamo un campione di tempi di reazione</span></span>
+<span id="cb24-9"><a href=""></a>dati_sim <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nrow =</span> n_sim, <span class="at">ncol =</span> n_soggetti)</span>
+<span id="cb24-10"><a href=""></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_sim) {</span>
+<span id="cb24-11"><a href=""></a>  dati_sim[i, ] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_soggetti, <span class="at">mean =</span> mu_sim[i], <span class="at">sd =</span> <span class="dv">50</span>)</span>
+<span id="cb24-12"><a href=""></a>}</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section class="slide level2">
+
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a>dati_sim <span class="sc">|&gt;</span> <span class="fu">dim</span>()</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1000   30</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a><span class="fu">head</span>(dati_sim)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          [,1]      [,2]      [,3]      [,4]       [,5]      [,6]      [,7]
+[1,]  22.35421 -56.15567 -33.04860  55.75622  23.972206 -19.20350 -34.52482
+[2,] -64.67673  22.52654 -35.02890 -64.60356   2.049089  23.02045 -66.87278
+[3,] 131.35520  12.62886  88.23322  68.25835   9.318619 -49.03206  61.03544
+[4,]  51.79731  51.94372 157.80321  52.94261  99.532152  39.89562  27.08713
+[5,] 225.81379 147.23306  66.89929 166.03681 127.526875 121.21727 150.13320
+[6,] 106.49839  37.29320  57.13866 170.49877  71.216336  72.78456  88.38554
+           [,8]       [,9]       [,10]      [,11]     [,12]      [,13]
+[1,]  40.655323  55.237687    6.605161  10.215294 -23.58363  48.106295
+[2,] -28.264224  34.808762 -126.442036  -1.556355 -15.74137  36.504114
+[3,]  -4.851955  99.399948   48.468043  26.060685  40.31991  -2.450019
+[4,]  44.899326 148.635944   90.470109  38.287155 145.97316 108.345469
+[5,] 115.395190 317.186118  256.111915 165.992383 248.41137 195.931063
+[6,] 156.135333  -4.602193   40.128923  40.661848  43.97152 113.299858
+         [,14]     [,15]     [,16]     [,17]     [,18]     [,19]      [,20]
+[1,] 110.38660  74.03149 104.98150 -49.57709 124.42402  66.00849   8.843284
+[2,] -55.73329  68.88373  14.17952 -96.58628 -77.95608 -76.25850 -46.788748
+[3,] -21.53256  40.10035  56.58522 -15.58852 109.85548  16.36793 104.486611
+[4,]  87.17758  51.40600 120.27202 128.30301  42.70696  93.87880  98.492895
+[5,] 182.03884 146.37459  77.83714  88.32402 222.12582 273.33661 187.906539
+[6,]  91.75940 103.97224  86.77061  28.60182  76.91226 153.47247 123.714594
+           [,21]      [,22]      [,23]      [,24]      [,25]      [,26]
+[1,]  62.7465541   1.776402  -24.69295 110.413165  -2.225543  27.703439
+[2,] -53.0548134   5.315580 -104.83028   3.755434  -4.881831 -33.839535
+[3,]  -0.1363173  28.601427  -16.88324   2.132766 117.347302  -7.202241
+[4,] 139.2443145 112.216977   95.80202 144.582038 109.536459 -19.441231
+[5,] 261.8677513 281.778732  238.68047 116.291243 149.089979 144.960041
+[6,]  44.2224271  -3.171245   78.14512  16.954551  71.059749 123.139856
+         [,27]      [,28]     [,29]     [,30]
+[1,] -42.91923  11.812454 54.914534 100.54222
+[2,]  51.47085  -5.228591 -9.560506 -45.11705
+[3,]  32.68848  49.419979 12.671986  94.20710
+[4,]  79.53993 116.066151 78.083222 103.33632
+[5,] 216.81006 137.267492 99.844194 263.59360
+[6,] 100.52815 145.815727 66.694162  49.49694</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a><span class="co"># Calcoliamo le medie campionarie</span></span>
+<span id="cb29-2"><a href=""></a>medie_sim <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(dati_sim)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href=""></a>medie_sim</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   [1]   27.8518501  -25.0169129   37.7288661   87.9605466  179.7338478
+   [6]   78.3833194   51.2082659  -47.6798361  108.3775163 -136.3636068
+  [11]   59.8509600 -107.2305573    1.3295655  -55.9896901    0.5537415
+  [16]   92.7975053   69.2564861   91.7962874   59.0986404   15.9086173
+  [21] -131.5630453  -49.8870225  -52.5076009 -124.2423001  -11.5426112
+  [26]   -3.3041531   -7.2439278  -62.9507071   40.9362605 -121.1823768
+  [31]  112.8341824   14.8432430 -171.4165469   11.9073518  280.5405506
+  [36]   29.1372742  142.5194724  136.4083248   71.3468149  -79.4354520
+  [41]   63.3682014   64.5168182  -73.6895651  -11.7666911 -104.4270186
+  [46] -261.8254088   71.7894707   78.6544696   81.1218425   42.5911327
+  [51]   86.1032992  107.9707653  -46.0890530    7.4534384 -123.1050798
+  [56]  109.8575475  -32.2546855   90.0538040  -16.0174368   45.8635694
+  [61]  -56.0557458 -117.5528268  111.1237750 -118.3054937   29.9964612
+  [66]    2.9846094  114.2230933  101.0243809   -8.3477164  142.2217620
+  [71]   76.3722394 -214.5324962   26.0356729   70.6738498   29.1599917
+  [76] -198.3427963   93.2265430   84.7985145  103.4299585   85.6968145
+  [81]   44.8743854  -40.8057078   75.1876705 -110.6665763  -80.5768293
+  [86]  -55.9692868  -76.9620391  -61.8937726    8.0767219    3.9609537
+  [91]  104.3540584  -90.2985305 -148.0530172   30.7340116  108.9253892
+  [96]   78.3561919 -118.4566275    2.5149573   25.9644124  -17.1411861
+ [101] -115.9881043   14.2416450  -13.2412350   22.6222423  -59.2368337
+ [106]   28.1466561  167.4794297   87.6075057  -49.4626211  -29.9518670
+ [111]  -83.6916860  144.8514153 -147.6634261   22.1458386  -20.7486334
+ [116]  -88.0064766   -5.0272401   41.7846183 -120.0207077  225.5313468
+ [121]   17.8167858   92.1928766  -27.1688596  -13.4572417   -1.6836732
+ [126]   38.6595543   -5.7453800  -28.5316633  216.3531313  -88.5328359
+ [131]   26.8531186  -77.6969523   50.9161318  -22.8776906   80.8430952
+ [136]   72.4774570 -194.3925014  -42.2440530   54.2553190   56.6401375
+ [141]  261.5187541 -119.0264994  -54.4340265   91.1521048  -38.8879210
+ [146]   88.0722771  122.2184023  -27.8132224   72.7873861   84.0471517
+ [151] -207.1271123  -88.8647227 -157.9252674   -8.4952412  121.9094552
+ [156]  -43.1769183  -28.5311404  -18.5995746  -75.6895839 -106.0320198
+ [161] -120.8612479  -57.9223933   36.2986305  -67.1002202   61.2032669
+ [166]  166.4054100   43.7640190   84.3020505  -81.8465975  -76.6264196
+ [171]  -47.6334152  -24.2697503   26.6501698 -130.5596809   75.9177761
+ [176]  -65.6706326 -185.1513453 -266.1523239  139.1279682  -63.3486720
+ [181]  -35.2476988  147.7600552  -23.1788327  -87.8520911 -123.5868275
+ [186]  141.9676065  -64.9753379   80.2958812   -7.3867819  153.8395967
+ [191]   85.3154899  179.6076621  195.2724972    9.2853234  113.3804306
+ [196]   53.8697547   69.5040271 -110.3715762 -124.9302134  -65.1652776
+ [201]  -19.7394893  -75.3904019  -20.4501140  134.5763774  124.5020821
+ [206]   13.9506154 -125.1716794 -102.9692555   -1.0389424   79.0638380
+ [211]  -14.4773328  -64.1548728 -185.5175933   38.4993493  158.8560348
+ [216]  -20.2657642   76.6647328  -51.2642425  175.3978348  148.9319905
+ [221]   48.2959387   58.8677534  -47.0284366  156.2287254   -1.8783067
+ [226]  -25.5968954  -69.6020714   50.5485373  130.4400547  123.3330724
+ [231]  108.3773332   17.5470891  -11.1682227   78.4566237  -12.7159305
+ [236]   18.3013174 -100.7075890  -47.2396796  -31.2164385 -190.8892083
+ [241]  -77.1874575   28.3732419  -45.5443575 -141.4740508   -2.0293651
+ [246]   80.3004377   -0.5678301   13.8727473   90.5929231 -182.7920959
+ [251]   11.6979556   14.9766288  -16.3948039  -16.3519645  114.8987946
+ [256] -111.6531648  132.5487426   15.3819031  -99.7865701 -190.5152877
+ [261]   39.5873454   14.5893425  -46.2824539 -129.7888248   71.8691085
+ [266]   52.8133973  -90.6408510  132.8170334  -49.8116688  -38.4788009
+ [271]    5.4053279 -215.4695610   12.3190847  149.2512757   15.0671237
+ [276]  101.3336611  -82.9128259   65.8543512  -40.2035660  -88.2622977
+ [281]  -13.5788238   74.0603162   25.3739178 -123.4455065 -146.3944467
+ [286]   59.8250137  255.6955534 -194.8769267 -271.5364673   51.7162909
+ [291] -160.3751072 -126.3410516  -13.9838511  191.0936973   49.3678710
+ [296]   -9.1541826   81.3571926  193.8339202   63.8911198   95.1557265
+ [301]  -34.6924995  -50.9220671  154.3433753 -101.8599692  174.2068219
+ [306] -262.2797390  -91.9472034  -33.4621300   33.3644256  -23.5000599
+ [311]   24.4596223   37.4155928  -96.6119988  -51.5195139  130.5160214
+ [316]   49.1300009   14.2988159   43.5095880   28.8281089  112.5378888
+ [321]  -69.2607359  -64.3071616  -62.3708579  -10.0956451   19.3095491
+ [326]  175.9111192  209.7388241 -103.9142187   -8.9960293  -82.7912720
+ [331]   65.6365051  139.2441349  104.7166446   70.9978751   12.3902022
+ [336]  107.3440488  -97.9490173  -60.5438476 -127.8925386 -102.1952473
+ [341]   -0.3510290 -200.5060221  -11.0785029    4.1580488  100.2833042
+ [346]  -24.0279934   32.6931366 -131.3683847 -120.1634531   11.3838331
+ [351]  -85.9099391  259.1573736  -55.0248079  102.0547496   16.8530160
+ [356]  204.6918226   51.6356546  158.2772481   88.0831923  -44.1195544
+ [361]   85.5618675  -36.1693213   76.3649661  147.1858302   28.6444817
+ [366]  106.7946809  -83.7529355   25.6582333   50.1106647   64.4477362
+ [371]   61.6004616  -15.8512814   30.4771796 -153.4360978 -104.4470599
+ [376]   66.5065699 -101.7044381 -127.0683743    0.7719537 -200.1875849
+ [381]  -54.0706679 -104.9926474  -76.2156804 -101.4073921   31.5770675
+ [386] -159.2127127  -57.1514502  157.5192594   91.4061371  -25.5883007
+ [391]  101.0419775  164.6105507  -46.2422776  112.1396440  111.9713522
+ [396]  -42.3029523  132.6822472  145.1234245  -78.9957144  114.8946038
+ [401]  135.3444003   94.7358646   41.6222910 -132.2125395    0.7809238
+ [406]  -36.5548325   84.0014641  161.5107602 -137.4738639  177.5329299
+ [411] -183.1363546  -20.1709233   -2.7875138  -33.2344929   -3.8639727
+ [416]  198.1601620   74.1005312   64.1255347  102.9144290  -58.7788352
+ [421] -105.8806688  -67.0027599   51.7730655   85.5323773  -78.3399351
+ [426]   17.7136166 -234.7588776   97.2010593 -146.0013202   63.2254724
+ [431]   69.3380121    1.9495186 -220.0485296 -101.9825306  -25.2893279
+ [436]  187.2269487  101.1370112  -15.4851492   92.1054055   47.1828640
+ [441]   62.3334133 -196.2991919  -70.6657877  102.1965323  -95.3189285
+ [446]   48.3646405  -25.7138952   -8.7617867    8.5744995 -190.8654644
+ [451] -112.8714709 -129.6616910   32.6713164  127.8095807  116.1958480
+ [456] -249.9236130    9.5040229 -193.7498136 -138.6978022  155.3260916
+ [461]  -58.7409389  -64.9305057  -29.5924575 -162.0498109  -63.5920789
+ [466]  -45.1009643  141.2532165  -21.2030711   86.6412085   24.4880239
+ [471]   20.2012768  -25.9652429 -135.1104024   -8.4389686  -18.1498707
+ [476]  -79.5476502  -41.9375074    7.0723349   -9.9002348   20.7440086
+ [481]   93.4260323   -8.9164680  105.4582440  -60.1221233  -68.4324259
+ [486] -160.7644056   98.8691535 -180.2107141 -211.1612129   37.7520042
+ [491]   57.3699427  -83.1999609 -118.1743071  180.1003957   28.7622361
+ [496] -145.2935953   88.5779782  113.1862672    7.3161237  109.3788795
+ [501] -154.6894905   29.0146531  152.8275101  217.6767081   99.6221546
+ [506]   60.8985789  -18.6436016  190.3915768   -3.3638917   20.9515997
+ [511]   -7.1746533   42.7189205  -72.4200514  -56.1360141  -63.0978448
+ [516]   -1.7294681  187.1263984   54.7432414 -102.6644445 -230.2160172
+ [521]  -92.6998213  224.1345646  158.7099961  -22.0075476   64.8769773
+ [526]  106.0102213   50.2865990  -10.1046591  177.0649616  -80.6464855
+ [531]  -11.9828841   80.8808077   41.8426160   37.6069950    1.5754973
+ [536]   -8.6952829  231.9866271  -86.5010731   20.2040947  189.9727838
+ [541]    1.0489079 -130.8194223   41.7165341   71.2316043   64.4654424
+ [546] -126.8865066  -35.8132840   23.1657408  138.0419090  -11.8921338
+ [551]  -30.6498406   49.9621720   41.8728007   80.5429404  -36.6390116
+ [556]   52.6326923  -32.0484915  -78.2854217  155.3632247  123.9149869
+ [561]  -16.5831225  -34.5170020  108.2137314   90.8011648  123.8567264
+ [566]   37.0949859 -115.6225141   25.1884992  -85.9824490  172.3615753
+ [571]  -96.7464929  -89.5931313  -68.0702423  -13.5497059   24.3121553
+ [576]  -28.4316550  -21.1278569    1.6865932    7.6912660  -43.0194874
+ [581] -244.2656245  138.6237202 -125.3582660  144.2286879   25.9730213
+ [586]   48.8200616  -45.4024103 -227.5249903  265.5173431   31.9492009
+ [591]    8.1978564  227.4145045 -171.4839863   22.0607208   86.9918534
+ [596]   87.3383823  -76.9523733   -2.7710809  132.9602272  -48.2244423
+ [601]    6.9907762  106.1832653  -27.7678694  -74.7270505   71.2139902
+ [606]   52.1130932 -120.1969090 -112.2278203   15.3875365    8.0913175
+ [611] -128.6335004  -62.9330396  -10.0297049   77.2654984 -120.8051602
+ [616]  172.7725795   -5.3494400   93.3836445    0.2865836  111.3681171
+ [621]  -30.7766208  -31.6496627  -56.9425356    6.0710825  137.0977962
+ [626]   56.6129709  -21.6034958  -17.1338098   40.8351169  -29.7345176
+ [631]   78.2947373  -61.6216203   85.5101489    8.3511044  151.5540483
+ [636]  -11.1330560   34.6306046  -31.9937240  -63.7334781   77.1368610
+ [641]   -2.5480638  168.9738401   59.6409412  -73.3217052 -255.3163300
+ [646]   35.1728644   27.9896589  111.7741955  103.7650093   97.4526595
+ [651] -128.4576250   91.9373985 -143.6796018 -209.0032575   43.6576715
+ [656] -110.0688961    8.9052846  221.9088725  -49.8718205  -86.8636442
+ [661]   67.3206584  148.4115674   73.1434178  175.1813650   26.8584221
+ [666] -253.1842292   44.7875984  -64.7707607  104.9741128 -113.2556800
+ [671] -204.4913356  137.1486869   18.8388059   76.7400328   51.6665132
+ [676]  -25.7790649  -21.4192583   34.4537112 -134.2321477  148.7325564
+ [681] -168.2795785  -36.8123597  -36.0066125  -79.0939554   88.2327394
+ [686]  -13.9040849  -98.6377941 -137.2619623  -40.1088719   12.4944746
+ [691]  -75.3246015  -60.7124893  152.3863039   30.2597743 -176.7336570
+ [696]  -31.8285278 -103.1282657 -159.4254958  -56.0690982  168.9568254
+ [701]   59.6037397  138.3603563  101.3080070  169.9675623   41.0571365
+ [706]  -37.7099058  -86.9430066    3.4439809   68.1640739  -64.8867265
+ [711]   94.7531560   75.3605616   48.6013485   21.3743524 -235.7608963
+ [716] -154.5925150   40.3071800 -177.1227593  123.3440261  -90.0172350
+ [721] -137.0722609  340.3459701  -67.8336579  -20.3990762  113.2234626
+ [726]  151.1145239 -123.8668308 -103.2335598   55.3035831   47.0170635
+ [731]  111.9674395  -84.2557743  130.3187479  196.8929979   29.8881060
+ [736]  -38.3212700  -80.0882474 -139.6330552  -84.6270906  175.4269381
+ [741] -155.6289166   56.2835127  -22.2051600   36.2612804 -203.7290144
+ [746]  -19.3598088   29.5710753  -30.4171186   -7.8092059 -149.6907712
+ [751]  -35.0513505 -118.3821403 -121.8031259  103.3011473   18.9091547
+ [756]   41.0958840  101.8813512  -15.8048937   11.2534376  -60.2371612
+ [761]   43.7575313  -40.4562479  -14.5217880   -0.9591985   37.9078316
+ [766]   -2.1889247   63.2742753   -2.3870453 -166.3390766  -75.0604094
+ [771]  -73.4855606  -79.3461077  142.8683300   -4.0400668  -15.5005576
+ [776]  -29.1304071  159.9067735  -11.8757200  -72.3389010   66.0690961
+ [781] -104.1554611  169.2174582  222.1321367 -123.8738311 -216.6594009
+ [786]   -4.0304663  -50.4848428  -49.3108263    6.4038234   19.8179585
+ [791]  -14.6146458   53.8316677  -47.0239691  -92.5680685   62.3929145
+ [796]  201.8946897   44.0017411   22.1967001   61.8973718  -23.1573952
+ [801] -100.3401290   -4.7604663    6.9386227  -10.5632520  -43.7743232
+ [806]   17.4190063   -7.1356890   77.1463479 -194.3714944   76.9884584
+ [811]  203.5668599 -162.5085063   59.5504143   -9.3273684 -109.8414851
+ [816] -199.3309084   34.0610098  -16.2791296  -20.1431043 -107.5892796
+ [821]   22.3454528  -61.6256212  -54.9800697   24.6906227  138.6067586
+ [826]  -19.1009359 -109.1078251   -9.9124452  348.4514376    2.7382676
+ [831] -174.6404417  -54.9119689 -116.7495439  124.3660143   13.0561070
+ [836]   50.0702807  114.9329451 -131.1945252  -65.3798834  -50.0223046
+ [841]  178.3903232   72.3132300   42.3528898   25.7649572   62.4478730
+ [846]  -43.1485008  -44.0754660  100.6271200   47.5513552   60.6073174
+ [851]  117.1585423  249.5611267   82.1819878  113.0639092   98.8258622
+ [856]  -49.2550134   25.5562491  -79.1680333  115.2422977  -10.8615959
+ [861]   38.2625685 -189.1308543 -123.4932938   24.3884479   92.2469423
+ [866]  121.0800813  -71.9231498   43.4423745 -110.8448345  -18.2723156
+ [871] -100.2498478   54.3550010   76.5197470    5.2551906  212.9522422
+ [876]   16.5232537  -33.5014349  168.7591777   13.2760511  -57.1823547
+ [881]   41.4380081  -34.0858960  165.7025912   88.3430741 -235.9017373
+ [886]  -95.0377865 -121.6783243  -75.8875228 -140.3175009    3.9556848
+ [891]  -36.3110293  -67.9343790   -4.3679161   10.8044009  -78.0815549
+ [896]  -77.9034204  -99.6226739   32.3354064   63.8569357   85.2210164
+ [901] -122.6109608  -14.6499258 -194.3753615   91.6431884  -45.8337661
+ [906]   53.9195955 -210.2986947  106.3447378  138.7485708   88.0025146
+ [911]  -44.0666070   74.6920993    1.1906988  219.9378238   43.3503642
+ [916]   20.8827076  117.8288264  -60.6104854   21.5643313 -176.6582123
+ [921]   62.6253181  -30.3819637 -100.6607319  -97.1012084  -39.0795095
+ [926]  -83.4758839 -208.9584474   61.8147892   40.9332772  -79.5385924
+ [931]   13.0589975   15.1169435  -81.8311694 -207.4906612 -110.5630336
+ [936]  -25.5939002 -140.4113030 -209.8973853   73.0345944  -70.4744060
+ [941]   77.1731827  -31.3458686  -60.3634119  -56.8723518  -59.2313360
+ [946]   19.6843555   54.3878369   -1.1031335   57.0016642 -126.7408168
+ [951]    7.6402737   98.2847988   54.2295304   37.1438257  150.5778397
+ [956]  -45.4068956  -85.3697277   70.2953984   61.4959853  -74.9568498
+ [961]  -24.8033747  -86.8472354  121.9191737   48.0631829  -37.6434431
+ [966]   -9.1303314    7.3006034 -184.2909593   96.3759827  -62.7979922
+ [971]  -13.6333470  -73.1730792 -107.0654511   43.9341690  -33.2578822
+ [976]   46.6388869   15.3653082  -23.2038174  -58.3565319 -169.9643395
+ [981]  103.7063365  106.2704833  -55.9472724   62.6295652 -136.6764602
+ [986]  142.5328512   -5.7659364   56.8951615  -70.7513120   36.5956431
+ [991]   15.6980934   66.5630240  -80.3528984   74.7707787  -38.5319157
+ [996] -105.5227129  109.8298631   58.1024722  170.3149365 -198.9002170</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Range delle medie simulate: da"</span>, <span class="fu">round</span>(<span class="fu">min</span>(medie_sim)), <span class="st">"fino a "</span>, </span>
+<span id="cb32-2"><a href=""></a>    <span class="fu">round</span>(<span class="fu">max</span>(medie_sim)), <span class="st">"ms</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Range delle medie simulate: da -272 fino a  348 ms</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Proporzione di medie negative:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(medie_sim <span class="sc">&lt;</span> <span class="dv">0</span>) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Proporzione di medie negative: 49.2 %</code></pre>
+</div>
+</div>
+</section>
+<section id="visualizziamo-il-problema" class="slide level2">
+<h2>Visualizziamo il problema</h2>
+
+<img data-src="prior_predictive_1_files/figure-revealjs/unnamed-chunk-21-1.png" width="960" class="r-stretch"></section>
+<section id="una-prior-migliore" class="slide level2">
+<h2>Una prior migliore</h2>
+<p>I tempi di reazione sono tipicamente tra 200 e 800 ms. Usiamo:</p>
+<ul>
+<li><span class="math inline">\(\mu \sim \text{Normale}(450, 125)\)</span></li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href=""></a><span class="co"># Prior ragionevole</span></span>
+<span id="cb36-2"><a href=""></a>mu_sim_good <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_sim, <span class="at">mean =</span> <span class="dv">450</span>, <span class="at">sd =</span> <span class="dv">125</span>)</span>
+<span id="cb36-3"><a href=""></a></span>
+<span id="cb36-4"><a href=""></a>dati_sim_good <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nrow =</span> n_sim, <span class="at">ncol =</span> n_soggetti)</span>
+<span id="cb36-5"><a href=""></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_sim) {</span>
+<span id="cb36-6"><a href=""></a>  dati_sim_good[i, ] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_soggetti, <span class="at">mean =</span> mu_sim_good[i], <span class="at">sd =</span> <span class="dv">50</span>)</span>
+<span id="cb36-7"><a href=""></a>}</span>
+<span id="cb36-8"><a href=""></a></span>
+<span id="cb36-9"><a href=""></a>medie_sim_good <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(dati_sim_good)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section class="slide level2">
+
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Range delle medie simulate:"</span>, <span class="fu">round</span>(<span class="fu">min</span>(medie_sim_good)), <span class="st">"-"</span>, </span>
+<span id="cb37-2"><a href=""></a>    <span class="fu">round</span>(<span class="fu">max</span>(medie_sim_good)), <span class="st">"ms</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Range delle medie simulate: 94 - 823 ms</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Proporzione di medie negative:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(medie_sim_good <span class="sc">&lt;</span> <span class="dv">0</span>) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Proporzione di medie negative: 0 %</code></pre>
+</div>
+</div>
+</section>
+<section id="confronto" class="slide level2">
+<h2>Confronto</h2>
+
+<img data-src="prior_predictive_1_files/figure-revealjs/unnamed-chunk-24-1.png" width="960" class="r-stretch"></section></section>
+<section>
+<section id="parte-5-il-flusso-di-lavoro" class="title-slide slide level1 center">
+<h1>Parte 5: il flusso di lavoro</h1>
+
+</section>
+<section id="prior-predictive-check-nel-workflow-bayesiano" class="slide level2">
+<h2>Prior predictive check nel workflow bayesiano</h2>
+
+<img data-src="prior_predictive_1_files/figure-revealjs/unnamed-chunk-25-1.png" width="960" class="r-stretch"><p>Il prior predictive check avviene <strong>prima</strong> di raccogliere i dati reali.</p>
+</section>
+<section id="perché-è-così-importante" class="slide level2">
+<h2>Perché è così importante?</h2>
+<ol type="1">
+<li><p><strong>Trasparenza:</strong> le assunzioni sono esplicite e verificabili.</p></li>
+<li><p><strong>Prevenzione:</strong> identifica problemi nel modello prima di sprecare risorse.</p></li>
+<li><p><strong>Comunicazione:</strong> facilita la discussione con collaboratori non statistici.</p></li>
+<li><p><strong>Riproducibilità:</strong> documenta le scelte metodologiche.</p></li>
+</ol>
+</section>
+<section id="riepilogo" class="slide level2">
+<h2>Riepilogo</h2>
+<ol type="1">
+<li><p>La <strong>distribuzione predittiva a priori</strong> mostra quali dati ci aspettiamo <em>prima</em> di osservarli.</p></li>
+<li><p>Si ottiene per <strong>simulazione</strong>: estrai θ dal prior, genera dati, ripeti.</p></li>
+<li><p>Il <strong>prior predictive check</strong> verifica se i dati simulati sono plausibili.</p></li>
+<li><p>Se i dati simulati sono irrealistici, <strong>rivedi prior o modello</strong>.</p></li>
+<li><p>È uno strumento essenziale nel <strong>flusso di lavoro bayesiano</strong>.</p></li>
+</ol>
+</section>
+<section id="nel-prossimo-segmento" class="slide level2">
+<h2>Nel prossimo segmento</h2>
+<p>Vedremo:</p>
+<ul>
+<li>come applicare il prior predictive check a <strong>modelli più complessi</strong>;</li>
+<li>esempi con <strong>variabili continue</strong> (scala BDI-II);</li>
+<li>come usare il prior predictive check per <strong>comunicare</strong> con i colleghi;</li>
+<li>la relazione con la <strong>distribuzione predittiva a posteriori</strong>.</li>
+</ul>
+
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="prior_predictive_1_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="prior_predictive_1_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="prior_predictive_1_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="prior_predictive_1_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="prior_predictive_1_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="prior_predictive_1_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="prior_predictive_1_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="prior_predictive_1_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="prior_predictive_1_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="prior_predictive_1_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'print',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copiato!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copiato!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

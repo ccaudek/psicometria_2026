@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="it"><head>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-5c1318cf63eba56dbef7ba16bc7d56f5.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
+
+  <meta name="author" content="Corrado Caudek">
+  <title>Psicometria 2025-26 – Modelli multilivello e modellazione formale</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-172e614ca6238f6067b3ffab71e7e169.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" data-background-color="#0072bc" class="quarto-title-block center">
+  <h1 class="title">Modelli multilivello e modellazione formale</h1>
+  <p class="subtitle">Quando un modello unico non basta</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid" aria-label="ORCID profile for Corrado Caudek"> <img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
+</div>
+<div class="quarto-title-author-email">
+<a href="mailto:corrado.caudek@unifi.it">corrado.caudek@unifi.it</a>
+</div>
+        <p class="quarto-title-affiliation">
+            Università degli Studi di Firenze
+          </p>
+    </div>
+</div>
+
+  <p class="date">29 ottobre 2026</p>
+</section>
+<section id="dal-singolo-gruppo-ai-dati-raggruppati" class="slide level2" data-background-color="#2c3e50" style="color: white;">
+<h2>Dal singolo gruppo ai dati raggruppati</h2>
+<p>Nella Lezione 28 abbiamo visto come analizzare un dataset con entrambi gli approcci inferenziali: frequentista e bayesiano. Ma lo studio di Mehr et al.&nbsp;era relativamente semplice: un unico campione, una sola variabile.</p>
+<div class="fragment">
+<p>Nella pratica psicologica, però, i dati hanno quasi sempre una <strong>struttura più complessa</strong>: pazienti raggruppati per terapeuta, studenti raggruppati per classe, misure ripetute sullo stesso individuo. Oggi vediamo come gestire questa complessità.</p>
+</div>
+</section>
+<section id="dove-siamo" class="slide level2">
+<h2>Dove siamo</h2>
+<p>In questo corso abbiamo imparato a:</p>
+<ul>
+<li>descrivere i dati (EDA),</li>
+<li>ragionare con la probabilità,</li>
+<li>aggiornare le credenze con il teorema di Bayes (Lezione 17),</li>
+<li>stimare un parametro: media (Lezione 25), differenza tra gruppi (Lezione 26), regressione (Lezione 24).</li>
+</ul>
+<div class="fragment">
+<p>Oggi facciamo un passo in più: cosa succede quando <strong>i dati hanno una struttura gerarchica</strong> — cioè quando le osservazioni sono raggruppate?</p>
+</div>
+</section>
+<section id="perché-vi-riguarda-come-futuri-psicologi" class="slide level2">
+<h2>Perché vi riguarda come futuri psicologi</h2>
+<p>Pensate a queste situazioni professionali concrete:</p>
+<ul>
+<li>Uno <strong>psicologo scolastico</strong> valuta un intervento anti-bullismo in 12 classi di 4 scuole diverse. I risultati dipendono dalla classe? Dalla scuola?</li>
+<li>Uno <strong>psicoterapeuta</strong> in un servizio clinico vuole sapere se la CBT funziona. Ma i pazienti sono seguiti da 8 terapeuti diversi — e alcuni terapeuti ottengono risultati sistematicamente migliori.</li>
+<li>Un <strong>ricercatore</strong> somministra un questionario a 200 studenti di 5 università. Le risposte di studenti della stessa università sono più simili tra loro.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>In tutti questi casi, <strong>ignorare la struttura dei gruppi porta a conclusioni sbagliate</strong>.</p>
+</section>
+<section class="slide level2">
+
+<p><strong>Cosa sono i dati gerarchici?</strong><br>
+In psicologia, i dati sono <strong>sempre</strong> organizzati a più livelli:</p>
+<ul>
+<li><strong>studenti</strong> → classi → scuole;<br>
+</li>
+<li><strong>misure ripetute</strong> → partecipanti;<br>
+</li>
+<li><strong>item</strong> → sottoscale → partecipanti.</li>
+</ul>
+<div class="fragment">
+<p>Questa struttura crea <strong>dipendenza statistica</strong>: osservazioni dello stesso gruppo (es. stessa classe) tendono a essere più simili tra loro.<br>
+Trascurarla porta a <strong>risultati distorti</strong> e conclusioni non valide.</p>
+</div>
+</section>
+<section>
+<section id="il-problema" class="title-slide slide level1 center" data-background-color="#2c3e50" style="color: white;">
+<h1>Il problema</h1>
+
+</section>
+<section id="un-esempio-concreto" class="slide level2">
+<h2>Un esempio concreto</h2>
+<p>Immaginiamo uno studio sull’ansia statistica in <strong>5 università italiane</strong>. In ciascuna si somministra la STARS a un campione di studenti.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-label="1"></a><span class="fu">sample_n</span>(dati_multi, <span class="at">size=</span><span class="dv">8</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 8 × 2
+  universita STARS_total
+  &lt;chr&gt;            &lt;dbl&gt;
+1 Firenze            186
+2 Padova             137
+3 Roma               167
+4 Firenze            136
+5 Bologna            155
+6 Bologna            154
+7 Roma               168
+8 Firenze            165</code></pre>
+</div>
+</div>
+</section>
+<section id="un-primo-sguardo-ai-dati" class="slide level2">
+<h2>Un primo sguardo ai dati</h2>
+
+<img data-src="1_multilivello_modellazione_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"><div class="fragment">
+<p>Le distribuzioni si <strong>sovrappongono molto</strong>, ma le medie non sono identiche. Come modelliamo questa situazione?</p>
+</div>
+</section>
+<section id="strategia-1-ignorare-i-gruppi-complete-pooling" class="slide level2">
+<h2>Strategia 1: ignorare i gruppi (“complete pooling”)</h2>
+<p>Facciamo finta che tutti gli studenti vengano dalla stessa popolazione e stimiamo <strong>un’unica media</strong>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a aria-label="1"></a>dati_multi <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a aria-label="2"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb3-3"><a aria-label="3"></a>    <span class="at">media_globale =</span> <span class="fu">mean</span>(STARS_total),</span>
+<span id="cb3-4"><a aria-label="4"></a>    <span class="at">sd_globale =</span> <span class="fu">sd</span>(STARS_total),</span>
+<span id="cb3-5"><a aria-label="5"></a>    <span class="at">n =</span> <span class="fu">n</span>()</span>
+<span id="cb3-6"><a aria-label="6"></a>  )</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  media_globale sd_globale     n
+          &lt;dbl&gt;      &lt;dbl&gt; &lt;int&gt;
+1          154.       24.0   203</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<p><strong>Problema</strong>:<br>
+ignoriamo completamente le differenze tra università. Se un’università ha un corso di metodologia particolarmente ansiogeno, il suo effetto viene “diluito” nella media globale.</p>
+</section>
+<section id="strategia-2-analizzare-ogni-gruppo-da-solo-no-pooling" class="slide level2">
+<h2>Strategia 2: analizzare ogni gruppo da solo (“no pooling”)</h2>
+<p>Stimiamo una media <strong>separata</strong> per ciascuna università, senza condividere informazioni tra gruppi.</p>
+</section>
+<section class="slide level2">
+
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a aria-label="1"></a>dati_multi <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a aria-label="2"></a>  <span class="fu">group_by</span>(universita) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a aria-label="3"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb5-4"><a aria-label="4"></a>    <span class="at">media =</span> <span class="fu">round</span>(<span class="fu">mean</span>(STARS_total), <span class="dv">1</span>),</span>
+<span id="cb5-5"><a aria-label="5"></a>    <span class="at">sd =</span> <span class="fu">round</span>(<span class="fu">sd</span>(STARS_total), <span class="dv">1</span>),</span>
+<span id="cb5-6"><a aria-label="6"></a>    <span class="at">n =</span> <span class="fu">n</span>()</span>
+<span id="cb5-7"><a aria-label="7"></a>  )</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 4
+  universita media    sd     n
+  &lt;chr&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;
+1 Bologna     172.  19.8    32
+2 Firenze     147.  21.7    48
+3 Napoli      154.  19.2    42
+4 Padova      141   26.6    45
+5 Roma        166.  17.9    36</code></pre>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Problema</strong>:<br>
+se un’università ha pochi studenti, la stima è molto incerta. E non sfruttiamo il fatto che tutte le università italiane hanno qualcosa in comune.</p>
+</div>
+</section>
+<section id="strategia-3-il-compromesso-multilivello-partial-pooling" class="slide level2">
+<h2>Strategia 3: il compromesso multilivello (“partial pooling”)</h2>
+<p>L’idea chiave dei modelli multilivello:</p>
+<blockquote>
+<p>Le medie dei gruppi non sono né identiche né completamente indipendenti. Vengono da una <strong>distribuzione comune</strong> le cui caratteristiche vengono stimate dai dati stessi.</p>
+</blockquote>
+<div class="fragment">
+<p>Questo produce un effetto chiamato <strong>shrinkage</strong> (restringimento): le stime dei gruppi vengono “attirate” verso la media globale, ma non completamente — di più per i gruppi piccoli, di meno per quelli grandi.</p>
+</div>
+</section>
+<section id="shrinkage-unintuizione-visiva" class="slide level2">
+<h2>Shrinkage: un’intuizione visiva</h2>
+
+<img data-src="1_multilivello_modellazione_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"></section>
+<section id="perché-lo-shrinkage-ha-senso" class="slide level2">
+<h2>Perché lo shrinkage ha senso</h2>
+<p>Lo shrinkage non è un trucco matematico: è una conseguenza logica del ragionamento bayesiano che abbiamo studiato dalla Lezione 17 in poi.</p>
+<div class="fragment">
+<p>Se sappiamo che le università italiane condividono un contesto simile (bacino di reclutamento, programmi formativi affini e stessi metodi didattici), è <strong>ragionevole</strong> che un’università con una media anomala basata su pochi dati venga “corretta” verso la media comune.</p>
+</div>
+</section>
+<section class="slide level2">
+
+<ul>
+<li><p>Con più dati, la correzione è minore: i dati parlano da soli.</p></li>
+<li><p>Con pochi dati, la correzione è maggiore: ci affidiamo di più alle informazioni degli altri gruppi.</p></li>
+</ul>
+<div class="fragment">
+<ul>
+<li>Questo è esattamente il <strong>bilanciamento prior–verosimiglianza</strong> che abbiamo studiato, applicato a livello di gruppo.</li>
+</ul>
+</div>
+</section></section>
+<section>
+<section id="la-struttura-del-modello" class="title-slide slide level1 center" data-background-color="#2c3e50" style="color: white;">
+<h1>La struttura del modello</h1>
+
+</section>
+<section id="due-livelli-di-analisi" class="slide level2">
+<h2>Due livelli di analisi</h2>
+<p>Un <strong>modello multilivello</strong> (o gerarchico) serve quando i dati hanno una <strong>struttura a gruppi</strong>. Nel nostro esempio:</p>
+<ul>
+<li>gli <strong>studenti</strong> sono raggruppati dentro le <strong>università</strong>;</li>
+<li>quindi le osservazioni non sono tutte indipendenti tra loro.</li>
+</ul>
+<p>Per questo il modello lavora su <strong>almeno due livelli</strong>.</p>
+</section>
+<section id="livello-1-variazione-dentro-i-gruppi-within" class="slide level2">
+<h2>Livello 1 — variazione <em>dentro</em> i gruppi (within)</h2>
+<p><strong>Domanda:</strong><br>
+<em>In che modo gli studenti differiscono tra loro all’interno della stessa università?</em></p>
+<p>La formula è:</p>
+<p><span class="math display">\[
+y_{ij} = \mu_j + \varepsilon_{ij}.
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p>Vediamo i termini uno per uno:</p>
+<ul>
+<li><p><span class="math inline">\(\boldsymbol{y_{ij}}\)</span> è il punteggio osservato dello <strong>studente <span class="math inline">\(i\)</span></strong> nella <strong>università <span class="math inline">\(j\)</span></strong> (ad esempio: un punteggio di ansia, memoria, benessere psicologico, ecc.).</p></li>
+<li><p><span class="math inline">\(\boldsymbol{\mu_j}\)</span> è la <strong>media della università (j)</strong> → rappresenta il livello “tipico” degli studenti di quella università.</p></li>
+<li><p><span class="math inline">\(\boldsymbol{\varepsilon_{ij}}\)</span> è lo <strong>scarto individuale</strong> dello studente <span class="math inline">\(i\)</span> rispetto alla media della sua università → cattura le differenze individuali <em>dentro</em> lo stesso gruppo.</p></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>Assumiamo che questi scarti seguano una distribuzione normale:</p>
+<p><span class="math display">\[
+\varepsilon_{ij} \sim \text{Normale}(0, \sigma_w)
+\]</span> con</p>
+<ul>
+<li><strong>media = 0</strong>: in media gli studenti non sono né sopra né sotto la media del gruppo;</li>
+<li><strong><span class="math inline">\(\sigma_w\)</span></strong> (<em>within-group variability</em>): indica <strong>quanto gli studenti differiscono tra loro dentro la stessa università</strong>.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>In parole semplici: <span class="math inline">\(\boldsymbol{\sigma_w}\)</span> misura la <strong>variabilità individuale</strong> all’interno dei gruppi. Come nella Lezione 25, è la variabilità che incontriamo quando passiamo dalla media <span class="math inline">\(\mu\)</span> all’individuo <span class="math inline">\(X\)</span>.</p>
+</section>
+<section id="livello-2-variazione-tra-i-gruppi-between" class="slide level2">
+<h2>Livello 2 — variazione <em>tra</em> i gruppi (between)</h2>
+<p><strong>Domanda:</strong><br>
+<em>In che modo le università differiscono tra loro?</em></p>
+<p>Qui non guardiamo più i singoli studenti, ma le <strong>medie delle università</strong>:</p>
+<p><span class="math display">\[
+\mu_j \sim \text{Normale}(\mu_0, \sigma_b).
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p>Anche qui, termine per termine:</p>
+<ul>
+<li><p><span class="math inline">\(\boldsymbol{\mu_j}\)</span> è la media della università <span class="math inline">\(j\)</span> (già vista nel Livello 1).</p></li>
+<li><p><span class="math inline">\(\boldsymbol{\mu_0}\)</span> è la <strong>media generale</strong>, cioè la media di <em>tutte</em> le università messe insieme.</p></li>
+<li><p><span class="math inline">\(\boldsymbol{\sigma_b}\)</span> (<em>between-group variability</em>): indica <strong>quanto le università differiscono tra loro</strong>.</p></li>
+</ul>
+<p>In parole semplici: <span class="math inline">\(\boldsymbol{\sigma_b}\)</span> misura l’<strong>eterogeneità tra i gruppi</strong>.</p>
+</section>
+<section id="riassunto-intuitivo-delle-due-variabilità" class="slide level2">
+<h2>Riassunto intuitivo delle due variabilità</h2>
+<ul>
+<li><span class="math inline">\(\boldsymbol{\sigma_w}\)</span> → <em>quanto sono diversi gli studenti dentro la stessa università</em>.</li>
+<li><span class="math inline">\(\boldsymbol{\sigma_b}\)</span> → <em>quanto sono diverse le università tra loro</em>.</li>
+</ul>
+<p>Entrambe sono fondamentali per capire la struttura dei dati.</p>
+</section>
+<section id="il-ruolo-di-sigma_b-perché-è-così-importante" class="slide level2">
+<h2>Il ruolo di <span class="math inline">\(\sigma_b\)</span>: perché è così importante</h2>
+<p>Il parametro <span class="math inline">\(\sigma_b\)</span> controlla <strong>quanta informazione viene condivisa tra i gruppi</strong>.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="caso-1-sigma_b-approx-0">Caso 1 — <span class="math inline">\(\sigma_b \approx 0\)</span></h3>
+<ul>
+<li>Le università sono quasi identiche.</li>
+<li>Le loro medie sono tutte molto simili.</li>
+<li>Il modello si comporta come se ci fosse <strong>un solo grande gruppo</strong> → <strong>complete pooling</strong>.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="caso-2-sigma_b-molto-grande-rispetto-a-sigma_w">Caso 2 — <span class="math inline">\(\sigma_b\)</span> molto grande (rispetto a <span class="math inline">\(\sigma_w\)</span>)</h3>
+<ul>
+<li>Le università sono molto diverse tra loro.</li>
+<li>Ogni università è trattata quasi come un caso a sé → <strong>no pooling</strong>.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="caso-3-valori-intermedi-di-sigma_b">Caso 3 — valori intermedi di <span class="math inline">\(\sigma_b\)</span></h3>
+<ul>
+<li>Le università sono diverse, ma non completamente.</li>
+<li>Ogni università mantiene la propria identità, ma <strong>beneficia delle informazioni delle altre</strong> → <strong>partial pooling</strong> (la situazione più realistica nella pratica).</li>
+</ul>
+</section>
+<section id="il-punto-chiave" class="slide level2">
+<h2>Il punto chiave</h2>
+<ul>
+<li><strong>Non siamo noi a decidere quanta informazione condividere tra i gruppi.</strong></li>
+<li><strong>È il modello che lo impara dai dati stimando <span class="math inline">\(\boldsymbol{\sigma_b}\)</span>.</strong></li>
+</ul>
+<p>Questo è uno dei grandi vantaggi dei modelli multilivello:</p>
+<ul>
+<li>un compromesso automatico e guidato dai dati tra semplicità e flessibilità.</li>
+</ul>
+</section>
+<section id="dove-entra-la-psicologia-esempi-dalla-pratica" class="slide level2">
+<h2>Dove entra la psicologia: esempi dalla pratica</h2>
+<p>In psicologia, i “gruppi” possono essere:</p>
+<div class="fragment">
+<ul>
+<li><strong>partecipanti</strong> in uno studio con misure ripetute (ogni partecipante è un “gruppo” di trial);</li>
+<li><strong>classi scolastiche</strong> in uno studio su un intervento educativo;</li>
+<li><strong>terapeuti</strong> in uno studio sull’efficacia di una psicoterapia.</li>
+</ul>
+</div>
+</section>
+<section class="slide level2">
+
+<p>In ciascun caso, c’è una domanda a cui il modello multilivello aiuta a rispondere:</p>
+<div class="fragment">
+<p><strong>quanta della variabilità osservata è attribuibile al livello del gruppo?</strong></p>
+</div>
+<div class="fragment">
+<p>Per esempio: se un terapeuta ottiene risultati molto migliori degli altri, è merito del terapeuta o del tipo di pazienti assegnati? I modelli multilivello separano queste fonti di variabilità.</p>
+</div>
+</section>
+<section id="la-correlazione-intra-classe-icc" class="slide level2">
+<h2>La correlazione intra-classe (ICC)</h2>
+<p>Un modo semplice di riassumere la struttura gerarchica è la <strong>correlazione intra-classe</strong> (<em>intraclass correlation coefficient</em>, ICC):</p>
+<p><span class="math display">\[
+\text{ICC} = \frac{\sigma_b^2}{\sigma_b^2 + \sigma_w^2}.
+\]</span></p>
+<div class="fragment">
+<p>L’ICC esprime <strong>la proporzione di variabilità totale attribuibile alle differenze tra gruppi</strong>.</p>
+</div>
+</section>
+<section id="interpretazione-dellicc" class="slide level2">
+<h2>Interpretazione dell’ICC</h2>
+<ul>
+<li><strong>ICC ≈ 0</strong> — le differenze tra i gruppi sono <strong>trascurabili</strong>: le osservazioni sono molto simili indipendentemente dal gruppo.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li><strong>ICC ≈ 0.10</strong> — circa il <strong>10% della variabilità totale</strong> è dovuto a differenze <strong>tra i gruppi</strong>. Questo valore è <strong>abbastanza comune in psicologia</strong> e indica un effetto di raggruppamento moderato ma non trascurabile.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><strong>ICC ≥ 0.20</strong> — una <strong>quota consistente della variabilità</strong> è spiegata dall’appartenenza al gruppo. Per esempio, se i gruppi sono gli individui (misure ripetute), un ICC elevato indica grandi differenze individuali stabili nel tempo.</li>
+</ul>
+</div>
+</section></section>
+<section>
+<section id="dalla-modellazione-statistica-a-quella-formale" class="title-slide slide level1 center" data-background-color="#2c3e50" style="color: white;">
+<h1>Dalla modellazione statistica a quella formale</h1>
+
+</section>
+<section id="oltre-la-statistica-descrittiva" class="slide level2">
+<h2>Oltre la statistica descrittiva</h2>
+<p>Finora abbiamo usato i modelli soprattutto come strumenti per <strong>riassumere i dati</strong>: stimare una media, una differenza tra gruppi o una relazione di regressione.</p>
+<div class="fragment">
+<p>In psicologia cognitiva e clinica, però, esiste un’altra tradizione di ricerca: la <strong>modellazione formale</strong>. Qui il modello non si limita a descrivere <em>cosa</em> osserviamo nei dati, ma cerca di spiegare <strong>quale processo psicologico</strong> li ha generati.</p>
+</div>
+</section>
+<section id="un-esempio-lapprendimento-per-rinforzo" class="slide level2">
+<h2>Un esempio: l’apprendimento per rinforzo</h2>
+<p>Immaginate un esperimento in cui un partecipante deve imparare quale di due pulsanti produce più spesso una ricompensa.</p>
+<div class="fragment">
+<p>Un modello puramente statistico potrebbe limitarsi a dire: “la probabilità di scegliere il pulsante A è <span class="math inline">\(p\)</span> = 0.72”.</p>
+</div>
+<div class="fragment">
+<p>Questa informazione è utile, ma descrive solo il <strong>comportamento osservato</strong>, non il <strong>meccanismo mentale</strong> che lo produce.</p>
+</div>
+</section>
+<section id="dal-comportamento-al-processo" class="slide level2">
+<h2>Dal comportamento al processo</h2>
+<p>La domanda diventa:</p>
+<ul>
+<li>Come il partecipante aggiorna le sue aspettative?</li>
+<li>Quanto peso dà agli errori?</li>
+<li>Impara velocemente o lentamente?</li>
+</ul>
+<p>Per rispondere serve un <strong>modello del meccanismo</strong>.</p>
+</section>
+<section id="modello-rescorla-wagner" class="slide level2">
+<h2>Modello Rescorla-Wagner</h2>
+<p>Dopo ogni prova, il valore atteso dello stimolo <span class="math inline">\(s\)</span> viene modificato secondo la regola:</p>
+<p><span class="math display">\[
+Q_{t+1}(s) \;=\; Q_t(s) \;+\; \alpha \, \delta_t ,
+\]</span> dove</p>
+<p><span class="math display">\[
+\delta_t \;=\; R_t - Q_t(s)
+\]</span> è l’<em>errore di previsione</em> (<em>prediction error</em>), cioè la differenza tra la ricompensa ottenuta <span class="math inline">\(R_t\)</span> e l’aspettativa precedente <span class="math inline">\(Q_t(s)\)</span>.</p>
+</section>
+<section id="il-motore-dellapprendimento-la-sorpresa" class="slide level2">
+<h2>Il motore dell’apprendimento: la sorpresa</h2>
+<p><span class="math display">\[
+\delta_t = R_t - Q_t(s),
+\]</span></p>
+<ul>
+<li>se <span class="math inline">\(\delta_t &gt; 0\)</span> → ricompensa <strong>migliore</strong> del previsto → <strong>rafforzamento</strong> della scelta;<br>
+</li>
+<li>se <span class="math inline">\(\delta_t &lt; 0\)</span> → ricompensa <strong>peggiore</strong> del previsto → <strong>indebolimento</strong>;<br>
+</li>
+<li>se <span class="math inline">\(\delta_t = 0\)</span> → nessuna sorpresa → <strong>nessun apprendimento</strong>.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<blockquote>
+<p>L’apprendimento è guidato dalla discrepanza tra aspettativa ed esito: più siamo sorpresi, più correggiamo la nostra previsione.</p>
+</blockquote>
+<div class="fragment">
+<p>L’apprendimento è guidato dalla “sorpresa”: la discrepanza tra ciò che ci aspettavamo e ciò che è successo veramente.</p>
+</div>
+</section>
+<section id="il-parametro-alpha-quanto-velocemente-impariamo" class="slide level2">
+<h2>Il parametro <span class="math inline">\(\alpha\)</span>: quanto velocemente impariamo?</h2>
+<p>Il parametro <span class="math inline">\(\alpha \in [0,1]\)</span> è il tasso di apprendimento.</p>
+<ul>
+<li><strong><span class="math inline">\(\alpha\)</span> alto</strong> → l’ultimo esito ha molto peso → apprendimento rapido, ma anche instabile (sensibile al rumore);<br>
+</li>
+<li><strong><span class="math inline">\(\alpha\)</span> basso</strong> → gli esiti passati contano di più → apprendimento lento e conservativo.</li>
+</ul>
+</section>
+<section id="i-modelli-meccanicistici" class="slide level2">
+<h2>I modelli meccanicistici</h2>
+<p>Un <strong>modello formale</strong> (come il modello di Rescorla–Wagner) non è solo una descrizione dei dati ma fornisce una spiegazione del processo:</p>
+<blockquote>
+<p>Il partecipante aggiorna, prova dopo prova, il valore atteso di ciascun pulsante in base alla sorpresa generata dall’esito, usando un tasso di apprendimento <span class="math inline">\(\alpha\)</span>.</p>
+</blockquote>
+<div class="fragment">
+<p><strong><span class="math inline">\(\alpha\)</span> non è un semplice parametro matematico</strong>: è un’ipotesi psicologica su <strong>come avviene l’apprendimento</strong> (ad esempio, persone ansiose potrebbero avere <span class="math inline">\(\alpha\)</span> diverso).</p>
+</div>
+</section>
+<section id="il-framework-dalla-teoria-al-modello-al-dato" class="slide level2">
+<h2>Il framework: dalla teoria al modello al dato</h2>
+
+<img data-src="1_multilivello_modellazione_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"><div class="fragment">
+<p><strong>Nella modellazione formale, il confronto con i dati è l’ultimo passo.</strong><br>
+Prima viene la teoria, poi la sua formalizzazione matematica, poi le previsioni da testare.</p>
+</div>
+</section>
+<section id="perché-ci-interessa" class="slide level2">
+<h2>Perché ci interessa?</h2>
+<ol type="1">
+<li><strong>Rendono le teorie precise e falsificabili</strong>
+<ul>
+<li>“Le persone imparano dall’esperienza” → vago.<br>
+</li>
+<li>“Aggiornano il valore atteso con tasso <span class="math inline">\(\alpha\)</span>” → verificabile.</li>
+</ul></li>
+</ol>
+<div class="fragment">
+<ol start="2" type="1">
+<li><strong>Permettono di distinguere teorie verbalmente simili</strong>
+<ul>
+<li>Due teorie verbali possono sembrare identiche, ma i loro modelli formali producono previsioni diverse.</li>
+</ul></li>
+</ol>
+</div>
+</section>
+<section class="slide level2">
+
+<ol start="3" type="1">
+<li><strong>Si integrano perfettamente con l’inferenza bayesiana</strong>
+<ul>
+<li>I parametri cognitivi (come <span class="math inline">\(\alpha\)</span>) possono essere stimati con i metodi bayesiani che abbiamo già incontrato (Lezioni 17 in poi).</li>
+</ul></li>
+</ol>
+</section>
+<section id="il-collegamento-con-i-modelli-multilivello" class="slide level2">
+<h2>Il collegamento con i modelli multilivello</h2>
+<p>Nella pratica, modellazione formale e modelli multilivello si incontrano spesso:</p>
+<ul>
+<li>Se stimiamo un modello di apprendimento per ciascun partecipante, otteniamo un <span class="math inline">\(\alpha\)</span> per persona. Ma le stime individuali possono essere molto rumorose (pochi trial per partecipante).</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>La soluzione? Un <strong>modello gerarchico</strong>: le <span class="math inline">\(\alpha_j\)</span> dei singoli partecipanti vengono da una distribuzione di gruppo.</p>
+<p><span class="math display">\[\alpha_j \sim \text{Distribuzione}(\mu_\alpha, \sigma_\alpha).\]</span></p>
+<div class="fragment">
+<p>Lo shrinkage migliora le stime individuali e <span class="math inline">\(\sigma_\alpha\)</span> ci dice quanta <strong>eterogeneità</strong> c’è nel tasso di apprendimento della popolazione. È la stessa logica nomotetico/idiografico delle Lezioni 25–26.</p>
+</div>
+</section>
+<section id="modellazione-formale-in-brms" class="slide level2">
+<h2>Modellazione formale in <code>brms</code></h2>
+<p>Per chi vuole approfondire: l’approccio si può implementare in <code>brms</code> per modelli relativamente semplici o in <code>Stan</code> per modelli cognitivi più complessi.</p>
+<div class="fragment">
+<ul>
+<li>Il companion (<a href="https://ccaudek.github.io/utet-companion/chapters/formal_models/01_statistical_models.html">Cap. 39–43</a>) presenta esempi completi, incluso il modello di Rescorla-Wagner implementato in Stan con struttura gerarchica.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>In questo corso, l’obiettivo è comprendere la <strong>logica fondamentale</strong>: i modelli formali traducono in linguaggio matematico le teorie psicologiche; i modelli multilivello gestiscono l’eterogeneità dei dati tra diversi livelli (es. individui, gruppi).</p>
+</div>
+</section></section>
+<section>
+<section id="riepilogo" class="title-slide slide level1 center" data-background-color="#2c3e50" style="color: white;">
+<h1>Riepilogo</h1>
+
+</section>
+<section id="le-idee-da-portare-a-casa" class="slide level2">
+<h2>Le idee da portare a casa</h2>
+<div class="fragment">
+<p><strong>I dati psicologici sono quasi sempre raggruppati.</strong> Ignorare la struttura gerarchica porta a conclusioni distorte.</p>
+</div>
+<div class="fragment">
+<p><strong>Tre strategie</strong>: complete pooling (un’unica media), no pooling (medie separate), partial pooling (modello multilivello). Solo la terza usa tutta l’informazione disponibile.</p>
+</div>
+<div class="fragment">
+<p><strong>Lo shrinkage</strong> è una conseguenza naturale del ragionamento bayesiano applicato ai gruppi: le stime vengono “bilanciate” tra informazione locale e globale.</p>
+</div>
+<div class="fragment">
+<p><strong>La modellazione formale</strong> traduce le teorie psicologiche in modelli matematici con parametri interpretabili e si integra naturalmente con l’approccio bayesiano e multilivello.</p>
+</div>
+</section>
+<section id="per-approfondire" class="slide level2">
+<h2>Per approfondire</h2>
+<ul>
+<li><p><a href="https://ccaudek.github.io/utet-companion/chapters/linear_models/12_multilevel.html">Cap. 30 — Modelli multilivello</a>: il modello completo con implementazione in brms</p></li>
+<li><p><a href="https://ccaudek.github.io/utet-companion/chapters/formal_models/01_statistical_models.html">Cap. 39–43 — Modellazione formale</a>: dal concetto di modello statistico al modello di Rescorla-Wagner</p></li>
+</ul>
+<div class="fragment">
+<p>Questi capitoli contengono la formalizzazione matematica completa e il codice R riproducibile. Per l’esame è sufficiente quanto visto oggi: la <strong>logica</strong> del <em>partial pooling</em>, dello <em>shrinkage</em> e del legame tra modellazione formale e approccio bayesiano.</p>
+
+
+
+</div>
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'print',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copiato!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copiato!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp("https:\/\/ccaudek\.github\.io\/psicometria_2026\/");
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

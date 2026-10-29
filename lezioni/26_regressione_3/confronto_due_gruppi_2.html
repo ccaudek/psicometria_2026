@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="it"><head>
+<script src="confronto_due_gruppi_2_files/libs/clipboard/clipboard.min.js"></script>
+<script src="confronto_due_gruppi_2_files/libs/quarto-html/tabby.min.js"></script>
+<script src="confronto_due_gruppi_2_files/libs/quarto-html/popper.min.js"></script>
+<script src="confronto_due_gruppi_2_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="confronto_due_gruppi_2_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="confronto_due_gruppi_2_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="confronto_due_gruppi_2_files/libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.27">
+
+  <meta name="author" content="Corrado Caudek">
+  <title>Confronto tra due gruppi</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="confronto_due_gruppi_2_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="confronto_due_gruppi_2_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="confronto_due_gruppi_2_files/libs/revealjs/dist/theme/quarto-32eda4d62c2e25823ebe39cba2bb0a8e.css">
+  <link href="confronto_due_gruppi_2_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="confronto_due_gruppi_2_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="confronto_due_gruppi_2_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="confronto_due_gruppi_2_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" data-background-color="#0072bc" class="quarto-title-block center">
+  <h1 class="title">Confronto tra due gruppi</h1>
+  <p class="subtitle">Implementazione bayesiana e previsioni individuali — Segmento 2</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
+</div>
+<div class="quarto-title-author-email">
+<a href="mailto:corrado.caudek@unifi.it">corrado.caudek@unifi.it</a>
+</div>
+        <p class="quarto-title-affiliation">
+            Università degli Studi di Firenze
+          </p>
+    </div>
+</div>
+
+  <p class="date">21 febbraio 2026</p>
+</section>
+<section id="obiettivi" class="slide level2 unnumbered unlisted">
+<h2>Obiettivi</h2>
+<ol type="1">
+<li>Implementare il confronto tra due gruppi con <strong>brms</strong>.</li>
+<li>Interpretare i risultati del modello bayesiano.</li>
+<li>Calcolare la <strong>distribuzione predittiva</strong> per nuovi pazienti.</li>
+<li>Distinguere tra <strong>incertezza epistemica</strong> e <strong>variabilità aleatoria</strong>.</li>
+<li>Comunicare i risultati in modo <strong>clinicamente utile</strong>.</li>
+</ol>
+</section>
+<section>
+<section id="parte-1-riprendiamo-i-dati" class="title-slide slide level1 center">
+<h1>Parte 1: riprendiamo i dati</h1>
+
+</section>
+<section id="lo-studio-sulla-mindfulness" class="slide level2">
+<h2>Lo studio sulla mindfulness</h2>
+<p>Continuiamo con l’esempio del segmento precedente, dove abbiamo confrontato l’ansia tra gruppo Controllo e Mindfulness e visto quanto la variabilità individuale supera la differenza tra le medie.</p>
+</section>
+<section class="slide level2">
+
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="co"># Ricreiamo i dati dello studio</span></span>
+<span id="cb1-2"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb1-3"><a href=""></a></span>
+<span id="cb1-4"><a href=""></a>n_controllo <span class="ot">&lt;-</span> <span class="dv">30</span></span>
+<span id="cb1-5"><a href=""></a>ansia_controllo <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_controllo, <span class="at">mean =</span> <span class="dv">55</span>, <span class="at">sd =</span> <span class="dv">12</span>)</span>
+<span id="cb1-6"><a href=""></a></span>
+<span id="cb1-7"><a href=""></a>n_trattamento <span class="ot">&lt;-</span> <span class="dv">30</span></span>
+<span id="cb1-8"><a href=""></a>ansia_trattamento <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n_trattamento, <span class="at">mean =</span> <span class="dv">46</span>, <span class="at">sd =</span> <span class="dv">11</span>)</span>
+<span id="cb1-9"><a href=""></a></span>
+<span id="cb1-10"><a href=""></a>dati <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-11"><a href=""></a>  <span class="at">ansia =</span> <span class="fu">c</span>(ansia_controllo, ansia_trattamento),</span>
+<span id="cb1-12"><a href=""></a>  <span class="at">gruppo =</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">"Controllo"</span>, n_controllo), </span>
+<span id="cb1-13"><a href=""></a>                    <span class="fu">rep</span>(<span class="st">"Mindfulness"</span>, n_trattamento)))</span>
+<span id="cb1-14"><a href=""></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="riepilogo-dei-dati" class="slide level2">
+<h2>Riepilogo dei dati</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="co"># Statistiche descrittive per gruppo</span></span>
+<span id="cb2-2"><a href=""></a>dati <span class="sc">|&gt;</span> </span>
+<span id="cb2-3"><a href=""></a>  <span class="fu">group_by</span>(gruppo) <span class="sc">|&gt;</span> </span>
+<span id="cb2-4"><a href=""></a>  <span class="fu">summarise</span>(</span>
+<span id="cb2-5"><a href=""></a>    <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb2-6"><a href=""></a>    <span class="at">media =</span> <span class="fu">round</span>(<span class="fu">mean</span>(ansia), <span class="dv">1</span>),</span>
+<span id="cb2-7"><a href=""></a>    <span class="at">ds =</span> <span class="fu">round</span>(<span class="fu">sd</span>(ansia), <span class="dv">1</span>)</span>
+<span id="cb2-8"><a href=""></a>  )</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 4
+  gruppo          n media    ds
+  &lt;fct&gt;       &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 Controllo      30  54.4  11.8
+2 Mindfulness    30  48     9.2</code></pre>
+</div>
+</div>
+</section></section>
+<section>
+<section id="parte-2-il-modello-bayesiano-con-brms" class="title-slide slide level1 center">
+<h1>Parte 2: il modello bayesiano con <code>brms</code></h1>
+
+</section>
+<section id="specificazione-del-modello" class="slide level2">
+<h2>Specificazione del modello</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="co"># Modello bayesiano per il confronto tra due gruppi</span></span>
+<span id="cb4-2"><a href=""></a>fit <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb4-3"><a href=""></a>  ansia <span class="sc">~</span> gruppo,</span>
+<span id="cb4-4"><a href=""></a>  <span class="at">data =</span> dati,</span>
+<span id="cb4-5"><a href=""></a>  <span class="at">family =</span> <span class="fu">gaussian</span>(),</span>
+<span id="cb4-6"><a href=""></a>  <span class="at">seed =</span> <span class="dv">42</span>,</span>
+<span id="cb4-7"><a href=""></a>  <span class="at">backend =</span> <span class="st">"cmdstanr"</span>,</span>
+<span id="cb4-8"><a href=""></a>  <span class="at">silent =</span> <span class="dv">2</span>,</span>
+<span id="cb4-9"><a href=""></a>  <span class="at">refresh =</span> <span class="dv">0</span></span>
+<span id="cb4-10"><a href=""></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="cosa-fa-brms-dietro-le-quinte" class="slide level2">
+<h2>Cosa fa brms “dietro le quinte”</h2>
+<p>La stessa procedura che abbiamo visto nella Lezione 24 per la regressione:</p>
+<ol type="1">
+<li>traduce la formula R in codice <strong>Stan</strong>;</li>
+<li>genera i <strong>prior di default</strong> se non specificati;</li>
+<li>esegue il campionamento <strong>MCMC</strong> (4 catene, 2000 iterazioni ciascuna);</li>
+<li>restituisce la <strong>distribuzione a posteriori</strong> dei parametri.</li>
+</ol>
+</section>
+<section id="diagnostica-della-convergenza" class="slide level2">
+<h2>Diagnostica della convergenza</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="co"># Verifichiamo la convergenza</span></span>
+<span id="cb5-2"><a href=""></a><span class="fu">summary</span>(fit)<span class="sc">$</span>fixed[, <span class="fu">c</span>(<span class="st">"Estimate"</span>, <span class="st">"Est.Error"</span>, <span class="st">"Rhat"</span>, <span class="st">"Bulk_ESS"</span>)]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   Estimate Est.Error     Rhat Bulk_ESS
+Intercept         54.415104   1.93826 1.001144 3916.756
+gruppoMindfulness -6.510058   2.74072 1.000296 3750.254</code></pre>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Criteri di convergenza:</strong></p>
+<ul>
+<li><span class="math inline">\(\hat{R} \approx 1.00\)</span> → le catene hanno raggiunto la stessa distribuzione;</li>
+<li>ESS &gt; 400 → campione effettivo sufficiente.</li>
+</ul>
+</div>
+</section>
+<section id="trace-plots" class="slide level2">
+<h2>Trace plots</h2>
+
+<img data-src="confronto_due_gruppi_2_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch"><p>Catene che si sovrappongono → buona convergenza.</p>
+</section>
+<section id="interpretazione-dei-coefficienti" class="slide level2">
+<h2>Interpretazione dei coefficienti</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="co"># Estraiamo le stime</span></span>
+<span id="cb7-2"><a href=""></a>coefs_bayes <span class="ot">&lt;-</span> <span class="fu">fixef</span>(fit)</span>
+<span id="cb7-3"><a href=""></a>coefs_bayes</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   Estimate Est.Error      Q2.5     Q97.5
+Intercept         54.415104   1.93826  50.57089 58.347790
+gruppoMindfulness -6.510058   2.74072 -12.00755 -1.128919</code></pre>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Significato:</strong></p>
+<ul>
+<li><code>Intercept</code> (54.4) = media attesa per il gruppo <strong>Controllo</strong>;</li>
+<li><code>gruppoMindfulness</code> (-6.5) = <strong>differenza</strong> rispetto al controllo.</li>
+</ul>
+</div>
+</section>
+<section id="le-medie-dei-due-gruppi" class="slide level2">
+<h2>Le medie dei due gruppi</h2>
+<p>Estraiamo i campioni a posteriori:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>post <span class="ot">&lt;-</span> <span class="fu">as_draws_df</span>(fit)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="fu">head</span>(post)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A draws_df: 6 iterations, 1 chains, and 6 variables
+  b_Intercept b_gruppoMindfulness sigma Intercept lprior lp__
+1          55                -9.0   9.9        50   -6.5 -231
+2          57               -10.9  10.0        52   -6.5 -231
+3          51                -1.5  11.3        50   -6.6 -232
+4          55                -5.1  11.9        52   -6.7 -231
+5          54                -1.1  12.4        53   -6.8 -234
+6          55                -4.9  13.2        53   -6.9 -234
+# ... hidden reserved variables {'.chain', '.iteration', '.draw'}</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<h3 id="interpretazione-dei-parametri">Interpretazione dei parametri</h3>
+<ul>
+<li><code>b_Intercept</code>: media del gruppo Controllo (condizione di riferimento);</li>
+<li><code>b_gruppoMindfulness</code>: differenza tra la media del gruppo Mindfulness e il gruppo Controllo.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="medie-e-intervalli-di-credibilità">Medie e intervalli di credibilità</h3>
+<p>Calcoliamo le medie dei due gruppi:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a>media_controllo <span class="ot">&lt;-</span> post<span class="sc">$</span>b_Intercept</span>
+<span id="cb12-2"><a href=""></a>media_mindfulness <span class="ot">&lt;-</span> post<span class="sc">$</span>b_Intercept <span class="sc">+</span> post<span class="sc">$</span>b_gruppoMindfulness</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Intervalli di credibilità per ciascuna media:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Media gruppo Controllo:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(media_controllo), <span class="dv">1</span>), </span>
+<span id="cb13-2"><a href=""></a>    <span class="st">"["</span>, <span class="fu">round</span>(<span class="fu">quantile</span>(media_controllo, <span class="fl">0.025</span>), <span class="dv">1</span>), <span class="st">","</span>, </span>
+<span id="cb13-3"><a href=""></a>    <span class="fu">round</span>(<span class="fu">quantile</span>(media_controllo, <span class="fl">0.975</span>), <span class="dv">1</span>), <span class="st">"]</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Media gruppo Controllo: 54.4 [ 50.6 , 58.3 ]</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Media gruppo Mindfulness:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(media_mindfulness), <span class="dv">1</span>),</span>
+<span id="cb15-2"><a href=""></a>    <span class="st">"["</span>, <span class="fu">round</span>(<span class="fu">quantile</span>(media_mindfulness, <span class="fl">0.025</span>), <span class="dv">1</span>), <span class="st">","</span>, </span>
+<span id="cb15-3"><a href=""></a>    <span class="fu">round</span>(<span class="fu">quantile</span>(media_mindfulness, <span class="fl">0.975</span>), <span class="dv">1</span>), <span class="st">"]</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Media gruppo Mindfulness: 47.9 [ 44.1 , 51.8 ]</code></pre>
+</div>
+</div>
+</section>
+<section id="visualizziamo-le-posterior-delle-medie" class="slide level2">
+<h2>Visualizziamo le posterior delle medie</h2>
+
+<img data-src="confronto_due_gruppi_2_files/figure-revealjs/unnamed-chunk-12-1.png" width="960" class="r-stretch"></section></section>
+<section>
+<section id="parte-3-la-differenza-tra-le-medie" class="title-slide slide level1 center">
+<h1>Parte 3: la differenza tra le medie</h1>
+
+</section>
+<section id="la-distribuzione-di-β" class="slide level2">
+<h2>La distribuzione di β</h2>
+<p>Otteniamo i campioni a posteriori di <span class="math inline">\(\beta\)</span>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a>beta <span class="ot">&lt;-</span> post<span class="sc">$</span>b_gruppoMindfulness</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="visualizzazione" class="slide level2">
+<h2>Visualizzazione</h2>
+
+<img data-src="confronto_due_gruppi_2_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"></section>
+<section id="descrizione-della-distribuzione-a-posteriori-di-beta" class="slide level2">
+<h2>Descrizione della distribuzione a posteriori di <span class="math inline">\(\beta\)</span></h2>
+<p>Valore atteso della differenza (Mindfulness - Controllo):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="fu">round</span>(<span class="fu">mean</span>(beta), <span class="dv">2</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -6.51</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a><span class="fu">round</span>(<span class="fu">sd</span>(beta), <span class="dv">2</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.74</code></pre>
+</div>
+</div>
+<p>Intervallo di credibilità al 95%:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a><span class="fu">c</span>(</span>
+<span id="cb22-2"><a href=""></a>  <span class="fu">round</span>(<span class="fu">quantile</span>(beta, <span class="fl">0.025</span>), <span class="dv">2</span>), </span>
+<span id="cb22-3"><a href=""></a>  <span class="fu">round</span>(<span class="fu">quantile</span>(beta, <span class="fl">0.975</span>), <span class="dv">2</span>)</span>
+<span id="cb22-4"><a href=""></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  2.5%  97.5% 
+-12.01  -1.13 </code></pre>
+</div>
+</div>
+</section>
+<section id="probabilità-dirette-sulla-differenza" class="slide level2">
+<h2>Probabilità dirette sulla differenza</h2>
+<p>Probabilità che il trattamento sia efficace (riduca l’ansia):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a>prob_eff <span class="ot">&lt;-</span> <span class="fu">mean</span>(beta <span class="sc">&lt;</span> <span class="dv">0</span>)</span>
+<span id="cb24-2"><a href=""></a>prob_eff</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.99075</code></pre>
+</div>
+</div>
+<div class="fragment">
+<p>Probabilità di un effetto clinicamente rilevante (&gt; 5 punti):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a>prob_rel <span class="ot">&lt;-</span> <span class="fu">mean</span>(beta <span class="sc">&lt;</span> <span class="sc">-</span><span class="dv">5</span>)</span>
+<span id="cb26-2"><a href=""></a>prob_rel</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7105</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Probabilità di effetto piccolo (tra 0 e -5):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href=""></a><span class="fu">mean</span>(beta <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> beta <span class="sc">&gt;=</span> <span class="sc">-</span><span class="dv">5</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.28025</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="visualizziamo-le-probabilità" class="slide level2">
+<h2>Visualizziamo le probabilità</h2>
+
+<img data-src="confronto_due_gruppi_2_files/figure-revealjs/unnamed-chunk-21-1.png" width="960" class="r-stretch"></section></section>
+<section>
+<section id="parte-4-la-distribuzione-predittiva-individuale" class="title-slide slide level1 center">
+<h1>Parte 4: la distribuzione predittiva individuale</h1>
+
+</section>
+<section id="cosè-la-distribuzione-predittiva" class="slide level2">
+<h2>Cos’è la distribuzione predittiva?</h2>
+<p>Nel segmento precedente abbiamo visto che i dati individuali sono molto variabili. Ora vogliamo rispondere alla domanda — la stessa della Lezione 23 sulla distribuzione predittiva a posteriori:</p>
+<blockquote>
+<p>“Dato il modello stimato, quale punteggio di ansia ci aspettiamo per un <strong>singolo</strong> paziente?”</p>
+</blockquote>
+<div class="fragment">
+<p>La risposta è la <strong>distribuzione predittiva</strong>: una distribuzione di probabilità sui possibili esiti.</p>
+</div>
+</section>
+<section id="una-precisazione-terminologica" class="slide level2">
+<h2>Una precisazione terminologica</h2>
+<p>Quando parliamo di “previsione per un nuovo paziente”, non intendiamo necessariamente un paziente che non abbiamo ancora osservato.</p>
+<div class="fragment">
+<ul>
+<li><p>Intendiamo: <strong>un paziente con le stesse caratteristiche</strong> di quelli nel nostro campione.</p></li>
+<li><p>Potrebbe essere:</p>
+<ul>
+<li>un paziente futuro;</li>
+<li>un paziente già osservato (per verificare il modello);</li>
+<li>un paziente ipotetico.</li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="partiamo-da-un-singolo-paziente-mario" class="slide level2">
+<h2>Partiamo da un singolo paziente: Mario</h2>
+<p>Immaginiamo <strong>Mario</strong>, un paziente che sta per iniziare il trattamento di mindfulness.</p>
+<p><strong>Domanda:</strong> quale punteggio di ansia ci aspettiamo per Mario dopo il trattamento?</p>
+</section>
+<section id="preparazione-per-la-previsione-individuale" class="slide level2">
+<h2>Preparazione per la previsione individuale</h2>
+<p>Stiamo per utilizzare il nostro modello statistico per fare una <strong>previsione personalizzata</strong>: vogliamo stimare quale potrebbe essere il livello di ansia di un individuo specifico (che chiameremo “Mario”) <strong>se fosse assegnato al gruppo di trattamento Mindfulness</strong>.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="perché-un-data-frame-vuoto">Perché un data frame “vuoto”?</h3>
+<p>Nella statistica bayesiana (e in molti modelli di regressione), dobbiamo fornire i dati nello stesso formato utilizzato per costruire il modello originale.</p>
+<p>Anche se Mario non è stato effettivamente osservato nei dati originali, dobbiamo inserirlo in un formato compatibile.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href=""></a><span class="co"># Mario sarà nel gruppo Mindfulness</span></span>
+<span id="cb30-2"><a href=""></a>mario <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb30-3"><a href=""></a>  <span class="at">gruppo =</span> <span class="fu">factor</span>(<span class="st">"Mindfulness"</span>, <span class="at">levels =</span> <span class="fu">levels</span>(dati<span class="sc">$</span>gruppo))</span>
+<span id="cb30-4"><a href=""></a>)</span>
+<span id="cb30-5"><a href=""></a><span class="fu">print</span>(mario)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       gruppo
+1 Mindfulness</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<p><strong>Analisi del codice:</strong></p>
+<ol type="1">
+<li><strong><code>data.frame()</code></strong> → crea una nuova tabella dati.</li>
+<li><strong><code>gruppo = factor(...)</code></strong> → crea una variabile “gruppo” di tipo fattore.
+<ul>
+<li><code>"Mindfulness"</code> → il valore che vogliamo assegnare a Mario.</li>
+<li><code>levels = levels(dati$gruppo)</code> → <strong>molto importante</strong>: assicura che i livelli del fattore siano <strong>esattamente gli stessi</strong> utilizzati nel modello originale.</li>
+</ul></li>
+</ol>
+</section>
+<section class="slide level2">
+
+<h3 id="importanza-dei-livelli-del-fattore">Importanza dei livelli del fattore</h3>
+<p>Quando un modello statistico viene addestrato su dati categorici (come “Controllo” e “Mindfulness”), mantiene internamente una mappatura tra le etichette e i codici numerici. Specificare <code>levels = levels(dati$gruppo)</code> garantisce che:</p>
+<ol type="1">
+<li>la codifica di “Mindfulness” sia identica a quella usata durante il fit del modello;</li>
+<li>senza questa specifica, R potrebbe creare nuovi livelli o riordinarli in modo diverso;</li>
+<li>il modello potrà interpretare correttamente il dato di input.</li>
+</ol>
+</section>
+<section class="slide level2">
+
+<h3 id="analogia-pratica">Analogia pratica</h3>
+<p>Possiamo pensare a questo come ad un modulo per l’ammissione ospedaliera:</p>
+<ul>
+<li>Nome paziente: <strong>Mario</strong>.<br>
+</li>
+<li>Gruppo di trattamento: <strong>Mindfulness</strong>.<br>
+</li>
+<li>Tutti gli altri dati: non specificati (il modello li stimerà).</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="prossimo-passo">Prossimo passo</h3>
+<p>Una volta creato questo data frame con Mario, lo passeremo alla funzione <code>predict()</code> del nostro modello per ottenere:</p>
+<ul>
+<li>la distribuzione predittiva del suo livello d’ansia;</li>
+<li>l’incertezza associata a questa previsione.</li>
+</ul>
+<p><strong>Questo è il primo passo verso previsioni personalizzate basate sul modello.</strong></p>
+</section>
+<section id="due-tipi-di-previsione-per-mario" class="slide level2">
+<h2>Due tipi di previsione per Mario</h2>
+<p>La stessa distinzione che abbiamo appreso nella Lezione 25 tra inferenza sulla media e previsione individuale:</p>
+<ol type="1">
+<li><p><strong>Qual è la media attesa per pazienti come Mario?</strong><br>
+Questa domanda riguarda il <strong>parametro</strong> <span class="math inline">\(\mu\)</span> (la media del gruppo).</p></li>
+<li><p><strong>Quale sarà il punteggio <em>specifico</em> di Mario?</strong><br>
+Questa domanda riguarda il <strong>valore individuale</strong> <span class="math inline">\(X\)</span>.</p></li>
+</ol>
+<div class="fragment">
+<p>Sono domande diverse, con risposte diverse.</p>
+</div>
+</section>
+<section id="previsione-della-media-fitted" class="slide level2">
+<h2>Previsione della media: <code>fitted()</code></h2>
+<p>Iniziamo con la previsione della <strong>media</strong> per pazienti come Mario.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href=""></a>pred_media_mario <span class="ot">&lt;-</span> <span class="fu">fitted</span>(fit, <span class="at">newdata =</span> mario, <span class="at">summary =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb32-2"><a href=""></a><span class="fu">print</span>(pred_media_mario)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Estimate Est.Error     Q2.5 Q97.5
+[1,] 47.90505  1.934854 44.11001 51.75</code></pre>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Interpretazione:</strong></p>
+<ul>
+<li>la media attesa per pazienti nel gruppo Mindfulness è circa 48 punti;</li>
+<li>l’incertezza (Est.Error <span class="math inline">\(\approx\)</span> 2) riflette solo la nostra <strong>incertezza sui parametri</strong>.</li>
+</ul>
+</div>
+</section>
+<section id="previsione-individuale-predict" class="slide level2">
+<h2>Previsione individuale: <code>predict()</code></h2>
+<p>Consideriamo la previsione del <strong>valore individuale</strong> per Mario:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href=""></a>pred_ind_mario <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, <span class="at">newdata =</span> mario, <span class="at">summary =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb34-2"><a href=""></a><span class="fu">print</span>(pred_ind_mario)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Estimate Est.Error     Q2.5    Q97.5
+[1,] 47.85986  10.92806 26.07217 69.27187</code></pre>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Interpretazione:</strong></p>
+<ul>
+<li>ci aspettiamo che Mario abbia un punteggio attorno a 48;</li>
+<li>ma l’incertezza (Est.Error <span class="math inline">\(\approx\)</span> 11) è <strong>molto maggiore</strong>;</li>
+<li>l’intervallo 95% va da circa 26 a 69 punti.</li>
+</ul>
+</div>
+</section>
+<section id="perché-lincertezza-è-così-diversa" class="slide level2">
+<h2>Perché l’incertezza è così diversa?</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>CONFRONTO PER MARIO:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Previsione della MEDIA:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Stima: 47.9 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  IC 95%: [ 44.1 , 51.8 ]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Ampiezza IC: 7.6 punti</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Previsione INDIVIDUALE:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Stima: 47.9 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  IC 95%: [ 26.1 , 69.3 ]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Ampiezza IC: 43.2 punti</code></pre>
+</div>
+</div>
+<p>L’intervallo individuale è circa <strong>6 volte più ampio</strong>.</p>
+</section>
+<section id="la-spiegazione-due-fonti-di-incertezza" class="slide level2" data-background-color="#2c3e50" style="color: white;">
+<h2>La spiegazione: due fonti di incertezza</h2>
+<p><strong>Previsione della media (<code>fitted</code>)</strong></p>
+<p>Include solo l’<strong>incertezza epistemica</strong>: non conosciamo esattamente i parametri del modello.</p>
+</section>
+<section id="la-spiegazione-due-fonti-di-incertezza-1" class="slide level2" data-background-color="#2c3e50" style="color: white;">
+<h2>La spiegazione: due fonti di incertezza</h2>
+<p><strong>Previsione individuale (<code>predict</code>)</strong></p>
+<p>Include:</p>
+<ol type="1">
+<li>l’<strong>incertezza epistemica</strong> (sui parametri);</li>
+<li>la <strong>variabilità aleatoria</strong> (tra i pazienti);</li>
+</ol>
+<p><span class="math display">\[
+\sigma_{\text{pred}}^2 = \sigma_{\text{param}}^2 + \sigma^2.
+\]</span></p>
+<p>È la stessa formula della Lezione 25.</p>
+</section>
+<section id="visualizziamo-le-due-previsioni-per-mario" class="slide level2">
+<h2>Visualizziamo le due previsioni per Mario</h2>
+
+<img data-src="confronto_due_gruppi_2_files/figure-revealjs/unnamed-chunk-27-1.png" width="960" class="r-stretch"></section>
+<section id="probabilità-specifiche-per-mario" class="slide level2">
+<h2>Probabilità specifiche per Mario</h2>
+<p>Con la distribuzione predittiva possiamo calcolare probabilità concrete — esattamente come nella Lezione 20.</p>
+</section>
+<section class="slide level2">
+
+<p>Probabilità che Mario abbia ansia bassa (&lt; 40):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href=""></a>prob_bassa <span class="ot">&lt;-</span> <span class="fu">mean</span>(pred_ind_samples <span class="sc">&lt;</span> <span class="dv">40</span>)</span>
+<span id="cb45-2"><a href=""></a>prob_bassa</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.23325</code></pre>
+</div>
+</div>
+<div class="fragment">
+<p>Probabilità che Mario abbia ansia alta (&gt; 60):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href=""></a>prob_alta <span class="ot">&lt;-</span> <span class="fu">mean</span>(pred_ind_samples <span class="sc">&gt;</span> <span class="dv">60</span>)</span>
+<span id="cb47-2"><a href=""></a>prob_alta</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.13225</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Probabilità che Mario sia nella “zona normale” (40-60):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href=""></a><span class="fu">mean</span>(pred_ind_samples <span class="sc">&gt;=</span> <span class="dv">40</span> <span class="sc">&amp;</span> pred_ind_samples <span class="sc">&lt;=</span> <span class="dv">60</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6345</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="cosa-diciamo-a-mario" class="slide level2">
+<h2>Cosa diciamo a Mario?</h2>
+<p><strong>Comunicazione problematica:</strong></p>
+<blockquote>
+<p>“Il trattamento funziona. La media del gruppo è 48.”</p>
+</blockquote>
+<div class="fragment">
+<p><strong>Comunicazione onesta:</strong></p>
+<blockquote>
+<p>“Dopo il trattamento, ci aspettiamo che il tuo punteggio sia attorno a 48, ma potrebbe variare molto: c’è circa il 23% di probabilità che sia sotto 40 e circa il 13% che sia sopra 60.”</p>
+</blockquote>
+</div>
+</section></section>
+<section>
+<section id="parte-5-dallindividuo-allinsieme" class="title-slide slide level1 center">
+<h1>Parte 5: dall’individuo all’insieme</h1>
+
+</section>
+<section id="passaggio-concettuale-dal-singolo-paziente-ai-gruppi" class="slide level2">
+<h2>Passaggio concettuale: dal singolo paziente ai gruppi</h2>
+<p>Finora abbiamo analizzato <strong>un singolo paziente</strong>.</p>
+<p>Ora allarghiamo lo sguardo a livello di gruppo:</p>
+<ul>
+<li>costruiamo un <strong>paziente tipo</strong> per ciascun gruppo;</li>
+<li>usiamo il modello per simulare <strong>quali valori di ansia potremmo osservare</strong> per un individuo appartenente a quel gruppo.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>Questo è diverso da: “Qual è la differenza media tra i gruppi?”</p>
+<p>Vogliamo le <strong>previsioni individuali</strong> generate dal modello per tutti gli individui di ciascun gruppo.</p>
+</section>
+<section id="pazienti-tipo-e-significato-degli-indici" class="slide level2">
+<h2>Pazienti tipo (e significato degli indici)</h2>
+<p>Creiamo un dataset con <strong>due righe</strong>:</p>
+<ol type="1">
+<li>riga 1 → un individuo generico nel gruppo <em>Controllo</em>;</li>
+<li>riga 2 → un individuo generico nel gruppo <em>Mindfulness</em>.</li>
+</ol>
+<p>Gli indici <code>1</code> e <code>2</code> servono <strong>solo</strong> a selezionare queste due righe.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href=""></a><span class="co"># Pazienti tipo per ciascun gruppo</span></span>
+<span id="cb51-2"><a href=""></a>pazienti_tipo <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb51-3"><a href=""></a>  <span class="at">gruppo =</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">"Controllo"</span>, <span class="st">"Mindfulness"</span>),</span>
+<span id="cb51-4"><a href=""></a>                  <span class="at">levels =</span> <span class="fu">levels</span>(dati<span class="sc">$</span>gruppo))</span>
+<span id="cb51-5"><a href=""></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section class="slide level2">
+
+<p>Usiamo il modello (<code>fit</code>) per prevedere l’ansia di questi individui tipo.</p>
+<p>Previsione per un individuo del gruppo Controllo (riga 1):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href=""></a>pred_controllo <span class="ot">&lt;-</span> <span class="fu">predict</span>(</span>
+<span id="cb52-2"><a href=""></a>  fit,</span>
+<span id="cb52-3"><a href=""></a>  <span class="at">newdata =</span> pazienti_tipo[<span class="dv">1</span>, , <span class="at">drop =</span> <span class="cn">FALSE</span>],</span>
+<span id="cb52-4"><a href=""></a>  <span class="at">summary =</span> <span class="cn">FALSE</span></span>
+<span id="cb52-5"><a href=""></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Previsione per un individuo del gruppo Mindfulness (riga 2):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href=""></a>pred_mindfulness <span class="ot">&lt;-</span> <span class="fu">predict</span>(</span>
+<span id="cb53-2"><a href=""></a>  fit,</span>
+<span id="cb53-3"><a href=""></a>  <span class="at">newdata =</span> pazienti_tipo[<span class="dv">2</span>, , <span class="at">drop =</span> <span class="cn">FALSE</span>],</span>
+<span id="cb53-4"><a href=""></a>  <span class="at">summary =</span> <span class="cn">FALSE</span></span>
+<span id="cb53-5"><a href=""></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section class="slide level2">
+
+<p>Ogni previsione della <strong>distribuzione predittiva</strong></p>
+<p><span class="math display">\[
+p(\tilde y \mid \text{gruppo}, \text{dati})
+\]</span> combina:</p>
+<ul>
+<li>l’incertezza sui parametri del modello;</li>
+<li>la variabilità individuale.</li>
+</ul>
+</section>
+<section id="cosa-vogliamo-ottenere" class="slide level2">
+<h2>Cosa vogliamo ottenere</h2>
+<p>Vogliamo rispondere a una domanda clinicamente rilevante:</p>
+<blockquote>
+<p><em>Di quanto potrebbe cambiare l’ansia di un individuo se appartenesse al gruppo Mindfulness invece che al gruppo di Controllo?</em></p>
+</blockquote>
+<div class="fragment">
+<p>Lo facciamo confrontando <strong>due previsioni individuali generate dal modello</strong>, non confrontando due medie osservate nei dati.</p>
+<p>L’obiettivo non è stimare un effetto medio di popolazione, ma descrivere <strong>la variabilità plausibile dell’effetto a livello individuale</strong>.</p>
+</div>
+</section>
+<section id="il-beneficio-individuale-del-trattamento" class="slide level2">
+<h2>Il beneficio individuale del trattamento</h2>
+<p>Definiamo il beneficio individuale come: <span class="math display">\[
+\Delta_i = \tilde y_{i,\text{Mindfulness}} - \tilde y_{i,\text{Controllo}}
+\]</span> dove <span class="math inline">\(\tilde y\)</span> indica un <strong>valore futuro predetto</strong> dal modello.</p>
+<div class="fragment">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href=""></a><span class="co"># Differenza individuale prevista tra i due gruppi</span></span>
+<span id="cb54-2"><a href=""></a>beneficio_ind <span class="ot">&lt;-</span> pred_mindfulness <span class="sc">-</span> pred_controllo</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>La distribuzione di <span class="math inline">\(\Delta_i\)</span> rappresenta i <strong>possibili benefici del trattamento</strong> per <strong>un individuo generico</strong>, cioè non caratterizzato da covariate specifiche.</p>
+</div>
+</section>
+<section id="attenzione-allinterpretazione" class="slide level2">
+<h2>Attenzione all’interpretazione</h2>
+<p>Questa distribuzione <strong>non</strong> descrive:</p>
+<ul>
+<li>il beneficio di un paziente reale già osservato;</li>
+<li>l’effetto medio del trattamento;</li>
+<li>una garanzia di miglioramento per ogni individuo.</li>
+</ul>
+<div class="fragment">
+<p>Descrive invece:</p>
+<ul>
+<li>una <strong>previsione probabilistica</strong> per un individuo qualunque appartenente a quel gruppo,</li>
+<li>ottenuta combinando l’incertezza sui parametri del modello e la variabilità individuale residua.</li>
+</ul>
+<p>È quindi una previsione su ciò che <em>potrebbe accadere</em>, non una quantità osservata né deterministica.</p>
+</div>
+</section>
+<section id="come-funzionano-le-dimensioni" class="slide level2">
+<h2>Come funzionano le dimensioni</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href=""></a><span class="fu">dim</span>(pred_mindfulness)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4000    1</code></pre>
+</div>
+</div>
+<p>Il modello genera <strong>4000 valori predetti</strong> per <strong>un singolo individuo</strong> nel gruppo Mindfulness.</p>
+<p>Questi 4000 valori derivano da:</p>
+<ul>
+<li>4000 campioni posteriori dei parametri;</li>
+<li>la distribuzione dell’errore individuale.</li>
+</ul>
+<p>Lo stesso processo viene applicato al gruppo Controllo.</p>
+</section>
+<section class="slide level2">
+
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href=""></a><span class="fu">dim</span>(beneficio_ind)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4000    1</code></pre>
+</div>
+</div>
+<p>Sottraendo i valori corrispondenti dei due vettori, otteniamo 4000 possibili valori di <span class="math inline">\(\Delta_i\)</span>.</p>
+<p>Ogni valore rappresenta un <strong>confronto ipotetico controfattuale</strong>:</p>
+<blockquote>
+<p>cosa potremmo osservare <strong>per lo stesso individuo</strong> se appartenesse al gruppo Mindfulness anziché al gruppo di Controllo.</p>
+</blockquote>
+</section>
+<section class="slide level2">
+
+<p>È fondamentale notare che:</p>
+<ul>
+<li>il beneficio è calcolato a livello <strong>individuale</strong>;</li>
+<li><strong>non</strong> è la differenza tra due medie di gruppo.</li>
+</ul>
+<div class="fragment">
+<p>L’incertezza sulla differenza tra le medie è tipicamente <strong>molto più piccola</strong> dell’incertezza associata ai punteggi del singolo individuo.</p>
+</div>
+</section>
+<section id="distribuzione-dei-benefici-individuali" class="slide level2">
+<h2>Distribuzione dei benefici individuali</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>BENEFICIO INDIVIDUALE DEL TRATTAMENTO:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Media: -6.7 punti</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  DS: 15.4 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  IC 95%: [ -37 , 24.1 ]</code></pre>
+</div>
+</div>
+<p>La distribuzione seguente mostra come varia il beneficio individuale previsto:</p>
+<ul>
+<li>valori negativi indicano una <strong>riduzione dell’ansia</strong> (beneficio);</li>
+<li>la dispersione riflette la variabilità individuale attesa.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+
+<img data-src="confronto_due_gruppi_2_files/figure-revealjs/unnamed-chunk-38-1.png" width="960" class="r-stretch"></section>
+<section id="probabilità-clinicamente-rilevanti" class="slide level2">
+<h2>Probabilità clinicamente rilevanti</h2>
+<p><strong>Domande concrete per il clinico:</strong></p>
+<p>Probabilità di qualsiasi beneficio:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href=""></a>prob_beneficio <span class="ot">&lt;-</span> <span class="fu">mean</span>(beneficio_ind <span class="sc">&lt;</span> <span class="dv">0</span>)</span>
+<span id="cb63-2"><a href=""></a>prob_beneficio</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6795</code></pre>
+</div>
+</div>
+<p>Probabilità di beneficio rilevante (&gt; 5 punti):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href=""></a>prob_rilevante_ind <span class="ot">&lt;-</span> <span class="fu">mean</span>(beneficio_ind <span class="sc">&lt;</span> <span class="sc">-</span><span class="dv">5</span>)</span>
+<span id="cb65-2"><a href=""></a>prob_rilevante_ind</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.553</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<p>Probabilità di <strong>non</strong> migliorare:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href=""></a>prob_non_migliora <span class="ot">&lt;-</span> <span class="fu">mean</span>(beneficio_ind <span class="sc">&gt;=</span> <span class="dv">0</span>)</span>
+<span id="cb67-2"><a href=""></a>prob_non_migliora</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3205</code></pre>
+</div>
+</div>
+<p>Probabilità di peggiorare (&gt; 5 punti in più di ansia):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href=""></a><span class="fu">mean</span>(beneficio_ind <span class="sc">&gt;</span> <span class="dv">5</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.21275</code></pre>
+</div>
+</div>
+</section>
+<section id="il-pattern-è-sempre-lo-stesso" class="slide level2">
+<h2>Il pattern è sempre lo stesso</h2>
+<p>I risultati confermano quelli della Lezione 25:</p>
+<div class="fragment">
+<ul>
+<li>a livello di <strong>gruppo</strong>: siamo molto certi che il trattamento funzioni;</li>
+<li>a livello <strong>individuale</strong>: c’è molta più incertezza.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>È la stessa distinzione <span class="math inline">\(\mu\)</span> vs <span class="math inline">\(X\)</span>:</p>
+<p><span class="math display">\[
+\sigma_{\text{pred}}^2 = \sigma_{\text{post}}^2 + \sigma^2.
+\]</span></p>
+</div>
+</section>
+<section id="considerazione-generale-importante" class="slide level2">
+<h2>Considerazione generale (importante)</h2>
+<p>In questo esempio <strong>non usiamo covariate</strong>.</p>
+<p>Le previsioni riguardano quindi un <em>individuo generico</em> del gruppo, cioè qualcuno che differisce dagli altri solo per la variabilità casuale.</p>
+</section>
+<section class="slide level2">
+
+<p>Predizioni più <strong>puntuali sul singolo individuo</strong> diventano possibili se includiamo covariate che lo caratterizzano meglio, ad esempio:</p>
+<ul>
+<li>età;</li>
+<li>livello iniziale di ansia;</li>
+<li>durata del disturbo;</li>
+<li>aderenza al trattamento.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>Questo si ottiene naturalmente usando un <strong>modello di regressione</strong> con più predittori — un’estensione diretta del modello della Lezione 24.</p>
+<div class="fragment">
+<p>È un tema avanzato che qui non trattiamo, ma è fondamentale riconoscere che <strong>questa è la direzione</strong> per ottenere stime individuali più precise.</p>
+</div>
+</section></section>
+<section>
+<section id="parte-6-limiti-dellapproccio-frequentista" class="title-slide slide level1 center">
+<h1>Parte 6: limiti dell’approccio frequentista</h1>
+
+</section>
+<section id="il-test-t-e-la-domanda-idiografica" class="slide level2">
+<h2>Il test <span class="math inline">\(t\)</span> e la domanda idiografica</h2>
+<p>L’approccio frequentista (test <span class="math inline">\(t\)</span> di Student) può rispondere alla domanda:</p>
+<blockquote>
+<p>“C’è una differenza significativa tra le medie dei gruppi?”</p>
+</blockquote>
+<div class="fragment">
+<p>Ma <strong>non può</strong> rispondere facilmente a:</p>
+<blockquote>
+<p>“Qual è la probabilità che questo paziente migliori?”</p>
+</blockquote>
+</div>
+</section>
+<section id="perché-il-frequentismo-ha-difficoltà" class="slide level2">
+<h2>Perché il frequentismo ha difficoltà?</h2>
+<h3 id="nessuna-distribuzione-sui-parametri">1. Nessuna distribuzione sui parametri</h3>
+<p>Nel framework frequentista, i parametri sono <strong>numeri fissi</strong> (anche se sconosciuti) — come abbiamo visto nella Lezione 14.</p>
+<ul>
+<li>Non esiste una “distribuzione a posteriori” da cui derivare previsioni probabilistiche.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="intervalli-di-confidenza-probabilità">2. Intervalli di confidenza ≠ probabilità</h3>
+<p>Come abbiamo discusso nelle Lezioni 15–16, un intervallo di confidenza al 95% <strong>non</strong> significa:</p>
+<blockquote>
+<p>“C’è il 95% di probabilità che il vero parametro sia in questo intervallo.”</p>
+</blockquote>
+<p>Significa (in modo contorto):</p>
+<blockquote>
+<p>“Se ripetessimo lo studio infinite volte, il 95% degli intervalli conterrebbe il vero parametro.”</p>
+</blockquote>
+<p>L’intervallo di credibilità bayesiano (Lezione 20) ha invece l’interpretazione diretta.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="nessun-meccanismo-naturale-per-le-previsioni-individuali">3. Nessun meccanismo naturale per le previsioni individuali</h3>
+<p>Per ottenere una “previsione individuale” nel framework frequentista, si usano <strong>intervalli di previsione</strong>, ma:</p>
+<ul>
+<li>sono calcolati con formule ad hoc;</li>
+<li>non integrano naturalmente l’incertezza sui parametri;</li>
+<li>non permettono di calcolare probabilità specifiche (es. P(ansia &lt; 40)).</li>
+</ul>
+</section>
+<section id="lapproccio-bayesiano-è-naturale-per-lanalisi-idiografica" class="slide level2">
+<h2>L’approccio bayesiano è naturale per l’analisi idiografica</h2>
+<p>Nel framework bayesiano:</p>
+<ol type="1">
+<li>i parametri hanno una <strong>distribuzione</strong> (la posterior);</li>
+<li>possiamo <strong>propagare l’incertezza</strong> dai parametri alle previsioni;</li>
+<li>la distribuzione predittiva emerge <strong>naturalmente</strong> dal modello;</li>
+<li>possiamo calcolare <strong>qualsiasi probabilità</strong> ci interessi.</li>
+</ol>
+</section>
+<section id="confronto-operativo" class="slide level2">
+<h2>Confronto operativo</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 26%">
+<col style="width: 41%">
+<col style="width: 32%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Domanda</th>
+<th>Frequentista</th>
+<th>Bayesiano</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>“Le medie sono diverse?”</td>
+<td>test t, p-value</td>
+<td>P(β ≠ 0)</td>
+</tr>
+<tr class="even">
+<td>“Di quanto?”</td>
+<td>IC per β</td>
+<td>Posterior di β</td>
+</tr>
+<tr class="odd">
+<td>“Quanto sarà l’ansia di Mario?”</td>
+<td>Intervallo di previsione</td>
+<td><code>predict()</code></td>
+</tr>
+<tr class="even">
+<td>“P(Mario &lt; 40)?”</td>
+<td><strong>Non calcolabile</strong></td>
+<td>Facilmente calcolabile</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="il-limite-fondamentale" class="slide level2">
+<h2>Il limite fondamentale</h2>
+<blockquote>
+<p>L’approccio frequentista risponde bene alle domande <strong>nomotetico-inferenziali</strong>: “Posso generalizzare questo risultato alla popolazione?”</p>
+</blockquote>
+<blockquote>
+<p>Ma ha difficoltà con le domande <strong>idiografico-predittive</strong>: “Cosa succederà a questa specifica persona?”</p>
+</blockquote>
+<div class="fragment">
+<p>Per la psicologia clinica, le domande idiografiche sono spesso le più importanti.</p>
+</div>
+</section></section>
+<section>
+<section id="parte-7-comunicare-i-risultati" class="title-slide slide level1 center">
+<h1>Parte 7: comunicare i risultati</h1>
+
+</section>
+<section id="comunicazione-problematica" class="slide level2">
+<h2>Comunicazione problematica</h2>
+<blockquote>
+<p>“Lo studio dimostra che la mindfulness riduce significativamente l’ansia (p &lt; 0.05). I pazienti dovrebbero seguire questo trattamento.”</p>
+</blockquote>
+<div class="fragment">
+<p><strong>Problemi:</strong></p>
+<ul>
+<li>non quantifica l’effetto;</li>
+<li>non considera la variabilità individuale;</li>
+<li>suggerisce una certezza che non c’è.</li>
+</ul>
+</div>
+</section>
+<section id="comunicazione-migliore" class="slide level2">
+<h2>Comunicazione migliore</h2>
+<blockquote>
+<p>“Il trattamento di mindfulness riduce l’ansia in media di circa 7 punti (IC 95%: -12 a -1 punti). Tuttavia, la risposta individuale varia molto: stimiamo che circa il 68% dei pazienti mostri miglioramento, ma circa il 32% potrebbe non beneficiarne. Per un nuovo paziente come Mario, ci aspettiamo un livello di ansia tra 26 e 69 punti dopo il trattamento.”</p>
+</blockquote>
+</section></section>
+<section>
+<section id="riepilogo-e-percorso-del-corso" class="title-slide slide level1 center">
+<h1>Riepilogo e percorso del corso</h1>
+
+</section>
+<section id="il-percorso-fin-qui" class="slide level2" data-background-color="#27ae60" style="color: white;">
+<h2>Il percorso fin qui</h2>
+<div class="fragment">
+<p><strong>Lezioni 14–16</strong> — Inferenza frequentista, test t, p-value, crisi di replicabilità.</p>
+<p><strong>Lezione 17</strong> — Prior, verosimiglianza, posterior.</p>
+<p><strong>Lezioni 18–19</strong> — Apprendimento sequenziale, famiglie coniugate.</p>
+<p><strong>Lezione 20</strong> — Sintesi della posterior, intervalli credibili, probabilità dirette.</p>
+<p><strong>Lezioni 22–23</strong> — Distribuzione predittiva a priori e a posteriori.</p>
+</div>
+</section>
+<section id="il-percorso-fin-qui-1" class="slide level2" data-background-color="#27ae60" style="color: white;">
+<h2>Il percorso fin qui</h2>
+<p><strong>Lezione 24</strong> — Regressione lineare bayesiana.</p>
+<p><strong>Lezione 25</strong> — Inferenza su una media: dal gruppo all’individuo.</p>
+<p><strong>Lezione 26 (oggi)</strong> — Confronto tra due gruppi: dalla differenza tra medie alla previsione individuale.</p>
+<div class="fragment">
+<p>Nella prossima lezione passeremo dalla modellazione al <strong>flusso di lavoro riproducibile</strong>: come organizzare un’analisi completa dalla domanda di ricerca al report.</p>
+</div>
+</section>
+<section id="i-punti-chiave" class="slide level2">
+<h2>I punti chiave</h2>
+<ol type="1">
+<li><p>La <strong>distribuzione predittiva</strong> risponde alla domanda idiografica.</p></li>
+<li><p><code>fitted()</code> prevede la media; <code>predict()</code> prevede l’individuo.</p></li>
+<li><p>L’incertezza individuale include sia l’incertezza sui parametri che la variabilità tra pazienti.</p></li>
+<li><p>L’approccio <strong>frequentista</strong> ha difficoltà con le previsioni individuali probabilistiche.</p></li>
+<li><p>L’approccio <strong>bayesiano</strong> gestisce naturalmente sia domande nomotetiche che idiografiche.</p></li>
+</ol>
+</section>
+<section id="il-messaggio-fondamentale" class="slide level2" data-background-color="#2c3e50" style="color: white;">
+<h2>Il messaggio fondamentale</h2>
+<blockquote>
+<p>“La psicologia clinica richiede risposte a domande idiografiche: cosa succederà a <em>questo</em> paziente? L’approccio bayesiano è naturalmente attrezzato per rispondere, mentre l’approccio frequentista rimane ancorato alle domande sui gruppi.”</p>
+</blockquote>
+</section>
+<section id="la-formula-chiave-ancora-una-volta" class="slide level2">
+<h2>La formula chiave (ancora una volta)</h2>
+<p><span class="math display">\[
+\sigma_{\text{pred}} = \sqrt{\sigma_{\text{post}}^2 + \sigma^2}
+\]</span></p>
+<div class="fragment">
+<p><strong>In parole:</strong></p>
+<p>l’incertezza sulla previsione individuale combina:</p>
+<ul>
+<li>l’incertezza sui <strong>parametri</strong> del modello,</li>
+<li>la <strong>variabilità tra pazienti</strong>.</li>
+</ul>
+<p>Solo considerando entrambe possiamo dare risposte clinicamente oneste.</p>
+</div>
+</section>
+<section id="per-la-prossima-lezione" class="slide level2">
+<h2>Per la prossima lezione</h2>
+<p>Materiale di studio: https://ccaudek.github.io/utet-companion/</p>
+<p><strong>Prossimo argomento:</strong></p>
+<p>Nella Lezione 27 passeremo dal “cosa” al “come”: il <strong>flusso di lavoro riproducibile</strong>, dalla domanda di ricerca al report finale. Impareremo a organizzare un’analisi bayesiana completa in modo trasparente e replicabile.</p>
+
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="confronto_due_gruppi_2_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="confronto_due_gruppi_2_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="confronto_due_gruppi_2_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="confronto_due_gruppi_2_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="confronto_due_gruppi_2_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="confronto_due_gruppi_2_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="confronto_due_gruppi_2_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="confronto_due_gruppi_2_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="confronto_due_gruppi_2_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="confronto_due_gruppi_2_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'print',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copiato!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copiato!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

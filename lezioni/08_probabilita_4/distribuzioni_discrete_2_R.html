@@ -1,0 +1,2096 @@
+<!DOCTYPE html>
+<html lang="it"><head>
+<script src="distribuzioni_discrete_2_R_files/libs/clipboard/clipboard.min.js"></script>
+<script src="distribuzioni_discrete_2_R_files/libs/quarto-html/tabby.min.js"></script>
+<script src="distribuzioni_discrete_2_R_files/libs/quarto-html/popper.min.js"></script>
+<script src="distribuzioni_discrete_2_R_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="distribuzioni_discrete_2_R_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="distribuzioni_discrete_2_R_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="distribuzioni_discrete_2_R_files/libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.27">
+
+  <meta name="author" content="Corrado Caudek">
+  <title>Distribuzioni discrete: Bernoulli, Binomiale, Poisson</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="distribuzioni_discrete_2_R_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="distribuzioni_discrete_2_R_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="distribuzioni_discrete_2_R_files/libs/revealjs/dist/theme/quarto-32eda4d62c2e25823ebe39cba2bb0a8e.css">
+  <link href="distribuzioni_discrete_2_R_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="distribuzioni_discrete_2_R_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="distribuzioni_discrete_2_R_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="distribuzioni_discrete_2_R_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" data-background-color="#0072bc" class="quarto-title-block center">
+  <h1 class="title">Distribuzioni discrete: Bernoulli, Binomiale, Poisson</h1>
+  <p class="subtitle">Esercitazione pratica – Segmento 2 (esercizi con R)</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
+</div>
+<div class="quarto-title-author-email">
+<a href="mailto:corrado.caudek@unifi.it">corrado.caudek@unifi.it</a>
+</div>
+        <p class="quarto-title-affiliation">
+            Università degli Studi di Firenze
+          </p>
+    </div>
+</div>
+
+  <p class="date">10 febbraio 2026</p>
+</section>
+<section id="obiettivi-del-segmento" class="slide level2 unnumbered unlisted">
+<h2>Obiettivi del segmento</h2>
+<p>In questo secondo segmento usiamo <strong>R</strong> come “calcolatrice probabilistica” e come laboratorio per esplorare le distribuzioni.</p>
+<div class="fragment">
+<p>Faremo due cose:</p>
+<ol type="1">
+<li>calcolare probabilità <strong>esatte</strong> con le funzioni di R;</li>
+<li>verificare e capire le formule con <strong>simulazioni</strong> (Monte Carlo).</li>
+</ol>
+</div>
+<div class="fragment">
+<p>Regola di oggi:</p>
+<blockquote>
+<p>ogni riga di codice deve corrispondere a un’idea probabilistica chiara.</p>
+</blockquote>
+</div>
+</section>
+<section id="perché-r-è-indispensabile-per-uno-psicologo" class="slide level2">
+<h2>Perché R è indispensabile per uno psicologo</h2>
+<p>Nel segmento precedente abbiamo visto che calcolare a mano <span class="math inline">\(P(X \geq 16)\)</span> per una binomiale richiede cinque calcoli separati. In un contesto reale — dove i test hanno 50, 100 o più item — il calcolo a mano è impraticabile.</p>
+<div class="fragment">
+<p>R vi permette di passare dalla domanda alla risposta in una riga di codice. Ma soprattutto, le <strong>simulazioni</strong> vi danno un modo concreto per <em>verificare</em> che la teoria funziona — e per sviluppare un’intuizione su come si comportano le distribuzioni.</p>
+</div>
+</section>
+<section id="setup-da-eseguire-una-volta" class="slide level2 unnumbered unlisted">
+<h2>Setup (da eseguire una volta)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="co"># Rendiamo i risultati replicabili</span></span>
+<span id="cb1-2"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">2026</span>)</span>
+<span id="cb1-3"><a href=""></a></span>
+<span id="cb1-4"><a href=""></a><span class="co"># Dimensione della simulazione (grande = stime più stabili)</span></span>
+<span id="cb1-5"><a href=""></a>Nsim <span class="ot">&lt;-</span> <span class="dv">200000</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li><code>set.seed()</code> serve a ottenere gli stessi numeri casuali se rieseguiamo il codice.<br>
+</li>
+<li><code>Nsim</code> è il numero di “esperimenti” simulati.</li>
+</ul>
+</section>
+<section id="ripasso-rapidissimo-tre-famiglie-di-funzioni-in-r" class="slide level2">
+<h2>Ripasso rapidissimo: tre famiglie di funzioni in R</h2>
+<p>Per molte distribuzioni, R usa una convenzione molto semplice:</p>
+<ul>
+<li><code>d...</code> = <strong>massa di probabilità</strong> (probabilità puntuale)<br>
+</li>
+<li><code>p...</code> = <strong>cumulativa</strong> (probabilità fino a un valore)<br>
+</li>
+<li><code>r...</code> = <strong>random</strong> (generazione di dati casuali)</li>
+</ul>
+<p>Esempi:</p>
+<ul>
+<li>binomiale: <code>dbinom()</code>, <code>pbinom()</code>, <code>rbinom()</code></li>
+<li>Poisson: <code>dpois()</code>, <code>ppois()</code>, <code>rpois()</code></li>
+</ul>
+</section>
+<section id="esercizio-1-screening-e-probabilità-di-un-singolo-esito" class="slide level2">
+<h2>Esercizio 1 — Screening e probabilità di un singolo esito</h2>
+<h3 id="problema">Problema</h3>
+<p>Somministrate un test di screening per la difficoltà di lettura a un singolo bambino. In base ai dati normativi, la probabilità di risultare positivo nella popolazione scolastica è <code>p = 0.15</code>.</p>
+<p>Calcoliamo con R:</p>
+<ul>
+<li><span class="math inline">\(P(X=1)\)</span> (test positivo)</li>
+<li><span class="math inline">\(P(X=0)\)</span> (test negativo)</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione">Soluzione</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a>p <span class="ot">&lt;-</span> <span class="fl">0.15</span></span>
+<span id="cb2-2"><a href=""></a></span>
+<span id="cb2-3"><a href=""></a><span class="co"># Bernoulli è una binomiale con size = 1</span></span>
+<span id="cb2-4"><a href=""></a>P_pos <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> p)</span>
+<span id="cb2-5"><a href=""></a>P_neg <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">0</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> p)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li><code>dbinom(x, size, prob)</code> restituisce <span class="math inline">\(P(X=x)\)</span> per <span class="math inline">\(X \sim \text{Binomiale}(\text{size}, \text{prob})\)</span>.</li>
+<li>se <code>size = 1</code>, stiamo considerando una distribuzione di Bernoulli.</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a>P_pos</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.15</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a>P_neg</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.85</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<p>Controllo concettuale:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="co"># La somma su tutti gli esiti possibili deve dare 1</span></span>
+<span id="cb7-2"><a href=""></a>P_pos <span class="sc">+</span> P_neg</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+</div>
+</section>
+<section id="esercizio-2-simulazione-bernoulli-e-frequenze" class="slide level2">
+<h2>Esercizio 2 — Simulazione Bernoulli e frequenze</h2>
+<p><strong>Problema</strong></p>
+<p>Simuliamo <code>Nsim</code> screening Bernoulli e stimiamo la frequenza di risultati positivi.<br>
+Poi la confrontiamo con <code>p = 0.15</code>.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-guidata">Soluzione guidata</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="co"># rbinom genera 0/1: successi su prove</span></span>
+<span id="cb9-2"><a href=""></a>X <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="at">n =</span> Nsim, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> p)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li><code>rbinom(..., size=1)</code> genera molte prove di Bernoulli (0/1).</li>
+<li>La media di una variabile 0/1 è la proporzione di 1 (successi).<br>
+Quindi <code>mean(X)</code> stima <span class="math inline">\(P(X=1)\)</span>.</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="co"># La media di 0/1 è la proporzione di successi</span></span>
+<span id="cb10-2"><a href=""></a><span class="fu">mean</span>(X)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.151355</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<p><strong>Interpretazione:</strong> su 2e+05 bambini (simulati) sottoposti a screening, la proporzione di positivi è molto vicina al 15% teorico.</p>
+<div class="fragment">
+<p>In un vero programma di screening scolastico con migliaia di bambini, questo è esattamente il tipo di informazione che serve per stimare quante valutazioni di approfondimento saranno necessarie.</p>
+</div>
+</section>
+<section id="esercizio-3-punteggio-esatto-in-un-test-neuropsicologico" class="slide level2">
+<h2>Esercizio 3 — Punteggio esatto in un test neuropsicologico</h2>
+<p><strong>Problema</strong></p>
+<p>Un paziente risponde a 20 item indipendenti di una batteria neuropsicologica. Per un soggetto con capacità nella norma, la probabilità di risposta corretta per ciascun item è <span class="math inline">\(p = 0.80\)</span>.</p>
+<p>Calcolare:</p>
+<ul>
+<li><span class="math inline">\(P(X=16)\)</span></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-guidata-1">Soluzione guidata</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a>n <span class="ot">&lt;-</span> <span class="dv">20</span></span>
+<span id="cb12-2"><a href=""></a>p <span class="ot">&lt;-</span> <span class="fl">0.80</span></span>
+<span id="cb12-3"><a href=""></a>k <span class="ot">&lt;-</span> <span class="dv">16</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li><code>dbinom(16, 20, 0.8)</code> calcola direttamente la probabilità che il numero di successi sia <strong>esattamente</strong> 16.</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a>P_Xeq16 <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="at">x =</span> k, <span class="at">size =</span> n, <span class="at">prob =</span> p)</span>
+<span id="cb13-2"><a href=""></a>P_Xeq16</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2181994</code></pre>
+</div>
+</div>
+<p>Il valore ottenuto corrisponde a quello che abbiamo trovato in precedenza svolgendo i calcoli “a mano”.</p>
+</section>
+<section id="esercizio-4-prestazione-nella-norma" class="slide level2">
+<h2>Esercizio 4 — Prestazione “nella norma”</h2>
+<p><strong>Problema</strong></p>
+<p>Calcolare:</p>
+<ul>
+<li><span class="math inline">\(P(X \ge 16)\)</span> con <span class="math inline">\(X \sim \text{Binomiale}(20, 0.8)\)</span>.</li>
+</ul>
+<p>Questa è una domanda che ha un significato clinico diretto: “Qual è la probabilità che un soggetto nella norma ottenga <strong>almeno</strong> 16/20?”</p>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-1">Soluzione</h3>
+<p><code>pbinom(q, ...)</code> restituisce <span class="math inline">\(P(X &lt;= q)\)</span>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a>P_Xle15 <span class="ot">&lt;-</span> <span class="fu">pbinom</span>(<span class="at">q =</span> <span class="dv">15</span>, <span class="at">size =</span> n, <span class="at">prob =</span> p)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Quindi <span class="math inline">\(P(X &gt;= 16) = 1 - P(X &lt;= 15)\)</span>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a>P_Xge16 <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> P_Xle15</span>
+<span id="cb16-2"><a href=""></a>P_Xge16</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6296483</code></pre>
+</div>
+</div>
+<ul>
+<li>Questa è un’applicazione del <strong>complemento</strong> nello spazio giusto:<br>
+<span class="math inline">\(P(X \ge 16) = 1 - P(X \le 15)\)</span>.<br>
+</li>
+<li><code>pbinom()</code> evita di sommare a mano tante probabilità puntuali.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>Verifichiamo sommando le probabilità puntuali:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">16</span>, <span class="at">size =</span> n, <span class="at">prob =</span> p) <span class="sc">+</span></span>
+<span id="cb18-2"><a href=""></a>  <span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">17</span>, <span class="at">size =</span> n, <span class="at">prob =</span> p) <span class="sc">+</span></span>
+<span id="cb18-3"><a href=""></a>  <span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">18</span>, <span class="at">size =</span> n, <span class="at">prob =</span> p) <span class="sc">+</span></span>
+<span id="cb18-4"><a href=""></a>  <span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">19</span>, <span class="at">size =</span> n, <span class="at">prob =</span> p) <span class="sc">+</span></span>
+<span id="cb18-5"><a href=""></a>  <span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">20</span>, <span class="at">size =</span> n, <span class="at">prob =</span> p)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6296483</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<p>L’operazione di sommare le probabilità per più valori consecutivi di <span class="math inline">\(k\)</span> può essere scritta in modo compatto usando la funzione <code>sum()</code> in R.</p>
+<p>Invece di calcolare separatamente</p>
+<p><span class="math display">\[P(X = 16) + P(X = 17) + \dots + P(X = 20)\]</span></p>
+<p>possiamo passare alla funzione <code>dbinom()</code> un <strong>vettore</strong> di valori per l’argomento <code>x</code> e sommare i risultati in un unico comando:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a><span class="fu">sum</span>(<span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">16</span><span class="sc">:</span><span class="dv">20</span>, <span class="at">size =</span> n, <span class="at">prob =</span> p))</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6296483</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<p><strong>Spiegazione:</strong></p>
+<ul>
+<li><code>16:20</code> crea il vettore <code>c(16, 17, 18, 19, 20)</code>.<br>
+</li>
+<li><code>dbinom()</code> calcola la densità binomiale per ciascuno di questi valori e restituisce un vettore di probabilità.<br>
+</li>
+<li><code>sum()</code> infine somma tutti gli elementi del vettore, restituendo la probabilità totale <span class="math inline">\(P(X \geq 16)\)</span>.</li>
+</ul>
+<div class="fragment">
+<p><strong>Significato clinico:</strong> circa il 63% dei soggetti con capacità nella norma otterrà almeno 16/20. Se un paziente ottiene 12/20, possiamo chiederci: “Quanto è probabile questo punteggio per un soggetto nella norma?” — ed è esattamente il tipo di ragionamento che fonda i <strong>cut-off</strong> diagnostici.</p>
+</div>
+</section>
+<section id="esercizio-5-visualizzare-la-distribuzione-binomiale" class="slide level2">
+<h2>Esercizio 5 — Visualizzare la distribuzione binomiale</h2>
+<p><strong>Problema</strong></p>
+<p>Costruire la distribuzione completa di <span class="math inline">\(X \sim \text{Binomiale}(20, 0.8)\)</span> che include:</p>
+<ul>
+<li>i valori possibili: 0, 1, …, 20;</li>
+<li>le rispettive probabilità: <span class="math inline">\(P(X=k)\)</span>.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-2">Soluzione</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a><span class="co"># Calcoliamo tutte le probabilità puntuali in un vettore</span></span>
+<span id="cb22-2"><a href=""></a>pk <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">0</span><span class="sc">:</span>n, <span class="at">size =</span> n, <span class="at">prob =</span> p)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li><code>dbinom()</code> prende come argomento anche un vettore: restituisce un vettore di probabilità;</li>
+<li>la tabella ci permette di “vedere” la distribuzione come un oggetto.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>Per visualizzare la distribuzione binomiale, creiamo un data frame:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a>tab_binom <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">k =</span> <span class="dv">0</span><span class="sc">:</span>n, <span class="at">P =</span> pk)</span>
+<span id="cb23-2"><a href=""></a>tab_binom</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    k            P
+1   0 1.048576e-14
+2   1 8.388608e-13
+3   2 3.187671e-11
+4   3 7.650410e-10
+5   4 1.300570e-08
+6   5 1.664729e-07
+7   6 1.664729e-06
+8   7 1.331783e-05
+9   8 8.656592e-05
+10  9 4.616849e-04
+11 10 2.031414e-03
+12 11 7.386959e-03
+13 12 2.216088e-02
+14 13 5.454985e-02
+15 14 1.090997e-01
+16 15 1.745595e-01
+17 16 2.181994e-01
+18 17 2.053641e-01
+19 18 1.369094e-01
+20 19 5.764608e-02
+21 20 1.152922e-02</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<p>Controllo: la somma deve essere 1.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a><span class="fu">sum</span>(tab_binom<span class="sc">$</span>P)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<p>Grafico a barre:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a><span class="fu">barplot</span>(<span class="at">height =</span> tab_binom<span class="sc">$</span>P, <span class="at">names.arg =</span> tab_binom<span class="sc">$</span>k,</span>
+<span id="cb27-2"><a href=""></a>        <span class="at">xlab =</span> <span class="st">"k (numero di risposte corrette)"</span>,</span>
+<span id="cb27-3"><a href=""></a>        <span class="at">ylab =</span> <span class="st">"P(X = k)"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="distribuzioni_discrete_2_R_files/figure-revealjs/unnamed-chunk-17-1.png" width="960" class="r-stretch"></section>
+<section class="slide level2">
+
+<p>Usiamo <code>ggplot2</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb28-2"><a href=""></a></span>
+<span id="cb28-3"><a href=""></a>tab_binom <span class="sc">|&gt;</span> </span>
+<span id="cb28-4"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> k, <span class="at">y =</span> P)) <span class="sc">+</span></span>
+<span id="cb28-5"><a href=""></a>    <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb28-6"><a href=""></a>    <span class="fu">labs</span>(</span>
+<span id="cb28-7"><a href=""></a>      <span class="at">x =</span> <span class="st">"k (numero di risposte corrette)"</span>,</span>
+<span id="cb28-8"><a href=""></a>      <span class="at">y =</span> <span class="st">"P(X = k)"</span></span>
+<span id="cb28-9"><a href=""></a>    )</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="distribuzioni_discrete_2_R_files/figure-revealjs/unnamed-chunk-18-1.png" width="960" class="r-stretch"></section>
+<section class="slide level2">
+
+<p><strong>Osservate:</strong> la distribuzione è concentrata intorno a <span class="math inline">\(n \times p = 20 \times 0.80 = 16\)</span>. Questo è il punteggio “atteso” per un soggetto nella norma.</p>
+</section>
+<section id="esercizio-6-simulazione-monte-carlo-di-una-binomiale" class="slide level2">
+<h2>Esercizio 6 — Simulazione Monte Carlo di una Binomiale</h2>
+<p><strong>Obiettivo:</strong><br>
+<strong>verificare empiricamente</strong> la distribuzione binomiale attraverso simulazione, confrontando i risultati sperimentali con la teoria.</p>
+</section>
+<section class="slide level2">
+
+<h3 class="unnumbered unlisted" id="contesto-del-problema">1. Contesto del problema</h3>
+<p>Vogliamo studiare il comportamento di una <strong>variabile binomiale</strong>:</p>
+<p><span class="math display">\[
+X \sim \text{Binomial}(n = 20, p = 0.80).
+\]</span></p>
+<p><strong>Approccio pratico:</strong> invece di calcolare solo le probabilità teoriche, <strong>simuliamo</strong> migliaia di volte l’esperimento e osserviamo la distribuzione dei risultati.</p>
+</section>
+<section class="slide level2">
+
+<p><strong>Perché simulare?</strong></p>
+<p>La simulazione ci permette di:</p>
+<ol type="1">
+<li>visualizzare concretamente la variabile aleatoria;</li>
+<li>verificare le proprietà teoriche;</li>
+<li>comprendere il concetto di “distribuzione” in modo empirico.</li>
+</ol>
+</section>
+<section class="slide level2">
+
+<h3 class="unnumbered unlisted" id="schema-della-simulazione">2. Schema della simulazione</h3>
+<pre><code>[Esperimento Base]  
+20 prove Bernoulli indipendenti (p = 0.80)  
+↓  
+Contare i successi → Un valore di X  
+↓  
+[Ripetere Nsim volte]  
+↓  
+Distribuzione empirica di X</code></pre>
+</section>
+<section class="slide level2">
+
+<h3 class="unnumbered unlisted" id="implementazione-in-r">3. Implementazione in R</h3>
+<p><strong>Generazione dei dati simulati</strong></p>
+<p>La funzione <code>rbinom()</code> genera direttamente il numero di successi:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href=""></a><span class="co"># Parametri</span></span>
+<span id="cb30-2"><a href=""></a>n <span class="ot">&lt;-</span> <span class="dv">20</span>      <span class="co"># Numero di prove per esperimento</span></span>
+<span id="cb30-3"><a href=""></a>p <span class="ot">&lt;-</span> <span class="fl">0.80</span>    <span class="co"># Probabilità di successo</span></span>
+<span id="cb30-4"><a href=""></a>Nsim <span class="ot">&lt;-</span> <span class="dv">10000</span> <span class="co"># Numero di simulazioni</span></span>
+<span id="cb30-5"><a href=""></a></span>
+<span id="cb30-6"><a href=""></a><span class="co"># Simulazione: Nsim valori dalla Binomiale(20, 0.80)</span></span>
+<span id="cb30-7"><a href=""></a>X_sim <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="at">n =</span> Nsim, <span class="at">size =</span> n, <span class="at">prob =</span> p)</span>
+<span id="cb30-8"><a href=""></a></span>
+<span id="cb30-9"><a href=""></a><span class="co"># Primi 10 valori generati</span></span>
+<span id="cb30-10"><a href=""></a><span class="fu">head</span>(X_sim, <span class="dv">10</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 17 15 17 18 14 16 18 14 12 17</code></pre>
+</div>
+</div>
+<p>Ogni numero rappresenta il conteggio di successi in <strong>un singolo esperimento</strong> completo di 20 prove.</p>
+</section>
+<section class="slide level2">
+
+<h3 class="unnumbered unlisted" id="analisi-empirica-frequenza-di-un-esito-specifico">4. Analisi empirica: frequenza di un esito specifico</h3>
+<p><strong>Domanda:</strong> qual è la frequenza relativa con cui otteniamo <em>esattamente</em> 16 successi?</p>
+<p><strong>Passo 1: Identificare i casi favorevoli</strong></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href=""></a><span class="co"># Test logico: quali simulazioni hanno dato 16 successi?</span></span>
+<span id="cb32-2"><a href=""></a>is_16 <span class="ot">&lt;-</span> X_sim <span class="sc">==</span> <span class="dv">16</span></span>
+<span id="cb32-3"><a href=""></a></span>
+<span id="cb32-4"><a href=""></a><span class="co"># Visualizzazione parziale</span></span>
+<span id="cb32-5"><a href=""></a><span class="fu">head</span>(is_16, <span class="dv">10</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE</code></pre>
+</div>
+</div>
+<blockquote>
+<p><code>TRUE</code> indica una simulazione dove <span class="math inline">\(X = 16\)</span>.</p>
+</blockquote>
+</section>
+<section class="slide level2">
+
+<p><strong>Passo 2: Calcolare la frequenza relativa</strong></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href=""></a><span class="co"># Proporzione di TRUE = frequenza relativa di X = 16</span></span>
+<span id="cb34-2"><a href=""></a>freq_16 <span class="ot">&lt;-</span> <span class="fu">mean</span>(is_16)</span>
+<span id="cb34-3"><a href=""></a>freq_16</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2146</code></pre>
+</div>
+</div>
+<p><strong>Interpretazione:</strong><br>
+nelle 10.000 simulazioni, circa il 22% ha prodotto esattamente 16 successi.</p>
+<blockquote>
+<p><strong>Nota:</strong> <code>mean()</code> su un vettore logico calcola direttamente la proporzione di <code>TRUE</code>, poiché R converte <code>TRUE = 1</code> e <code>FALSE = 0</code>.</p>
+</blockquote>
+</section>
+<section class="slide level2">
+
+<h3 class="unnumbered unlisted" id="confronto-critico-simulazione-vs-teoria">5. Confronto critico: simulazione vs teoria</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href=""></a><span class="co"># Confronto quantitativo</span></span>
+<span id="cb36-2"><a href=""></a>confronto <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb36-3"><a href=""></a>  <span class="at">Metodo =</span> <span class="fu">c</span>(<span class="st">"Simulazione (Monte Carlo)"</span>, <span class="st">"Teoria (formula binomiale)"</span>),</span>
+<span id="cb36-4"><a href=""></a>  Probabilità <span class="ot">=</span> <span class="fu">c</span>(</span>
+<span id="cb36-5"><a href=""></a>    <span class="fu">mean</span>(X_sim <span class="sc">==</span> <span class="dv">16</span>),      <span class="co"># Stima empirica</span></span>
+<span id="cb36-6"><a href=""></a>    <span class="fu">dbinom</span>(<span class="dv">16</span>, <span class="at">size =</span> n, <span class="at">prob =</span> p)  <span class="co"># Valore teorico esatto</span></span>
+<span id="cb36-7"><a href=""></a>  )</span>
+<span id="cb36-8"><a href=""></a>)</span>
+<span id="cb36-9"><a href=""></a></span>
+<span id="cb36-10"><a href=""></a>confronto</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                      Metodo Probabilità
+1  Simulazione (Monte Carlo)   0.2146000
+2 Teoria (formula binomiale)   0.2181994</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<p><strong>Visualizzazione del confronto</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href=""></a>confronto <span class="sc">|&gt;</span></span>
+<span id="cb38-2"><a href=""></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Metodo, <span class="at">y =</span> Probabilità, <span class="at">fill =</span> Metodo)) <span class="sc">+</span></span>
+<span id="cb38-3"><a href=""></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb38-4"><a href=""></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">round</span>(Probabilità, <span class="dv">4</span>)), <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb38-5"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Confronto: Stima Monte Carlo vs Teoria"</span>,</span>
+<span id="cb38-6"><a href=""></a>       <span class="at">subtitle =</span> <span class="st">"P(X = 16) per Binomiale(20, 0.80)"</span>) <span class="sc">+</span></span>
+<span id="cb38-7"><a href=""></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb38-8"><a href=""></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="fl">0.25</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section class="slide level2">
+
+
+<img data-src="distribuzioni_discrete_2_R_files/figure-revealjs/unnamed-chunk-23-1.png" width="960" class="r-stretch"></section>
+<section class="slide level2">
+
+<h3 class="unnumbered unlisted" id="interpretazione-dei-risultati">6. Interpretazione dei risultati</h3>
+<p><strong>Perché i valori sono simili ma non identici?</strong></p>
+<ol type="1">
+<li><p><strong>Legge dei Grandi Numeri:</strong><br>
+Con <span class="math inline">\(N_{\text{sim}} = 10,000\)</span>, la stima empirica converge al valore teorico, ma non è ancora esatta.</p></li>
+<li><p><strong>Errore di simulazione (variabilità campionaria):</strong><br>
+<span class="math display">\[
+\text{SE} \approx \sqrt{\frac{p(1-p)}{N_{\text{sim}}}} \approx 0.004.
+\]</span> L’intervallo <span class="math inline">\(0.2174 \pm 0.008\)</span> contiene il valore teorico <span class="math inline">\(0.2182\)</span>.</p></li>
+</ol>
+</section>
+<section class="slide level2">
+
+<ol start="3" type="1">
+<li><p><strong>Aumentando <span class="math inline">\(N_{\text{sim}}\)</span>:</strong></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href=""></a><span class="co"># Con 1 milione di simulazioni</span></span>
+<span id="cb39-2"><a href=""></a>X_large <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="fl">1e6</span>, n, p)</span>
+<span id="cb39-3"><a href=""></a><span class="fu">mean</span>(X_large <span class="sc">==</span> <span class="dv">16</span>)  <span class="co"># Molto più vicino a 0.2182</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.218567</code></pre>
+</div>
+</div></li>
+</ol>
+</section>
+<section class="slide level2">
+
+<h3 class="unnumbered unlisted" id="riepilogo-concettuale">7. Riepilogo concettuale</h3>
+<table class="caption-top">
+<colgroup>
+<col style="width: 24%">
+<col style="width: 43%">
+<col style="width: 31%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Concetto</th>
+<th>Implementazione R</th>
+<th>Significato</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Simulazione binomiale</strong></td>
+<td><code>rbinom(Nsim, size, prob)</code></td>
+<td>Genera Nsim conteggi di successi</td>
+</tr>
+<tr class="even">
+<td><strong>Condizione logica</strong></td>
+<td><code>X_sim == 16</code></td>
+<td>Identifica i casi con esattamente 16 successi</td>
+</tr>
+<tr class="odd">
+<td><strong>Frequenza relativa</strong></td>
+<td><code>mean(condizione)</code></td>
+<td>Stima Monte Carlo di <span class="math inline">\(P(X = 16)\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Valore teorico</strong></td>
+<td><code>dbinom(16, size, prob)</code></td>
+<td>Probabilità esatta dalla binomiale</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Take-home message:</strong><br>
+la simulazione Monte Carlo ci permette di <strong>validare empiricamente</strong> i risultati teorici e di comprendere la variabilità intrinseca dei processi aleatori.</p>
+</section>
+<section id="esercizio-7-modello-poisson-per-gli-arrivi-in-un-servizio" class="slide level2">
+<h2>Esercizio 7 — Modello Poisson per gli arrivi in un servizio</h2>
+<p><strong>Contesto del problema</strong></p>
+<p>Un servizio di consulenza psicologica riceve pazienti senza appuntamento. Il responsabile del servizio vi chiede di aiutarlo a <strong>pianificare il personale</strong>: quanti psicologi servono nelle diverse fasce orarie?</p>
+</section>
+<section class="slide level2">
+
+<p>Il tasso medio di arrivo è <span class="math inline">\(\lambda = 2\)</span> pazienti all’ora. Le ipotesi del modello Poisson sono:</p>
+<ol type="1">
+<li>gli arrivi sono <strong>indipendenti</strong> tra loro;</li>
+<li>la probabilità di arrivo è <strong>costante</strong> nell’intervallo temporale;</li>
+<li>più di un arrivo <strong>non</strong> può verificarsi nello stesso istante.</li>
+</ol>
+</section>
+<section class="slide level2">
+
+<p><strong>Variabile di interesse:</strong></p>
+<p><span class="math inline">\(X\)</span> = numero di pazienti che arrivano in <strong>un’ora fissata</strong></p>
+<p>Dunque:</p>
+<p><span class="math display">\[
+X \sim \text{Poisson}(\lambda = 2).
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p><strong>Obiettivi.</strong><br>
+Calcolare tre probabilità utili per la gestione del servizio:</p>
+<ol type="1">
+<li><p><strong>Probabilità di nessun arrivo:</strong> <span class="math inline">\(P(X = 0)\)</span><br>
+→ Quante ore “vuote” aspettarsi? Si può usare quel tempo per altre attività?</p></li>
+<li><p><strong>Probabilità di esattamente 3 arrivi:</strong> <span class="math inline">\(P(X = 3)\)</span><br>
+→ Un solo psicologo può gestire 3 pazienti all’ora?</p></li>
+<li><p><strong>Probabilità di al più 1 arrivo:</strong> <span class="math inline">\(P(X \leq 1)\)</span><br>
+→ Quanto spesso il carico è basso abbastanza per un solo operatore?</p></li>
+</ol>
+</section>
+<section class="slide level2">
+
+<p><strong>Soluzione in R</strong></p>
+<p>Impostazione del parametro</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href=""></a><span class="co"># Tasso medio: 2 pazienti/ora</span></span>
+<span id="cb41-2"><a href=""></a>lambda <span class="ot">&lt;-</span> <span class="dv">2</span>  </span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol type="1">
+<li>Probabilità di nessun arrivo <span class="math inline">\(P(X = 0)\)</span>:</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href=""></a>P0 <span class="ot">&lt;-</span> <span class="fu">dpois</span>(<span class="at">x =</span> <span class="dv">0</span>, <span class="at">lambda =</span> lambda)</span>
+<span id="cb42-2"><a href=""></a>P0</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1353353</code></pre>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Interpretazione:</strong> c’è circa il <strong>13.5% di probabilità</strong> che in un’ora non arrivi alcun paziente. Su un turno di 8 ore, ci si aspetta circa un’ora vuota — tempo che può essere dedicato alla documentazione clinica.</p>
+</div>
+</section>
+<section class="slide level2">
+
+<ol start="2" type="1">
+<li>Probabilità di esattamente 3 arrivi <span class="math inline">\(P(X = 3)\)</span></li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href=""></a>P3 <span class="ot">&lt;-</span> <span class="fu">dpois</span>(<span class="at">x =</span> <span class="dv">3</span>, <span class="at">lambda =</span> lambda)</span>
+<span id="cb44-2"><a href=""></a>P3</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.180447</code></pre>
+</div>
+</div>
+<p><strong>Interpretazione:</strong> c’è circa il <strong>18.0% di probabilità</strong> che in un’ora arrivino esattamente 3 pazienti. Se un singolo psicologo può gestire al massimo 2 pazienti all’ora, serve prevedere un supporto aggiuntivo.</p>
+</section>
+<section class="slide level2">
+
+<ol start="3" type="1">
+<li>Probabilità di al più 1 arrivo <span class="math inline">\(P(X \leq 1)\)</span>:</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href=""></a>P_le1 <span class="ot">&lt;-</span> <span class="fu">ppois</span>(<span class="at">q =</span> <span class="dv">1</span>, <span class="at">lambda =</span> lambda)</span>
+<span id="cb46-2"><a href=""></a>P_le1</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4060058</code></pre>
+</div>
+</div>
+<p><strong>Interpretazione:</strong> c’è circa il <strong>40.6% di probabilità</strong> che in un’ora arrivino <strong>0 oppure 1</strong> pazienti. Per circa il 40% del tempo, un solo psicologo sarebbe sufficiente.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="visualizzazione-della-distribuzione-di-poisson">Visualizzazione della distribuzione di Poisson</h3>
+<p>Passo 1: preparare i dati per il grafico.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href=""></a><span class="co"># 1. Creiamo una sequenza di valori possibili per k (numero di pazienti)</span></span>
+<span id="cb48-2"><a href=""></a>k_valori <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">8</span>  <span class="co"># Da 0 a 8 pazienti</span></span>
+<span id="cb48-3"><a href=""></a></span>
+<span id="cb48-4"><a href=""></a><span class="co"># 2. Calcoliamo le probabilità per ciascun valore di k</span></span>
+<span id="cb48-5"><a href=""></a>probabilita <span class="ot">&lt;-</span> <span class="fu">dpois</span>(k_valori, <span class="at">lambda =</span> <span class="dv">2</span>)</span>
+<span id="cb48-6"><a href=""></a></span>
+<span id="cb48-7"><a href=""></a><span class="co"># 3. Mettiamo i dati in una tabella (data frame)</span></span>
+<span id="cb48-8"><a href=""></a>tabella <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb48-9"><a href=""></a>  <span class="at">pazienti =</span> k_valori,    <span class="co"># Prima colonna: numero di pazienti</span></span>
+<span id="cb48-10"><a href=""></a>  <span class="at">prob =</span> probabilita      <span class="co"># Seconda colonna: probabilità</span></span>
+<span id="cb48-11"><a href=""></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section class="slide level2">
+
+<p>Visualizziamo la tabella per vedere i valori:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href=""></a>tabella</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  pazienti         prob
+1        0 0.1353352832
+2        1 0.2706705665
+3        2 0.2706705665
+4        3 0.1804470443
+5        4 0.0902235222
+6        5 0.0360894089
+7        6 0.0120298030
+8        7 0.0034370866
+9        8 0.0008592716</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<p><strong>Spiegazione:</strong></p>
+<ul>
+<li><code>0:8</code> crea i numeri 0, 1, 2, …, 8.</li>
+<li><code>dpois()</code> calcola la probabilità per ogni numero di pazienti.</li>
+<li><code>data.frame()</code> organizza i dati in una tabella ordinata.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>Passo 2: creare il grafico a barre.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href=""></a>tabella <span class="sc">|&gt;</span> </span>
+<span id="cb51-2"><a href=""></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> pazienti, <span class="at">y =</span> prob)) <span class="sc">+</span></span>
+<span id="cb51-3"><a href=""></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb51-4"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribuzione di Poisson (2 pazienti/ora in media)"</span>,</span>
+<span id="cb51-5"><a href=""></a>       <span class="at">x =</span> <span class="st">"Numero di pazienti in un'ora"</span>,</span>
+<span id="cb51-6"><a href=""></a>       <span class="at">y =</span> <span class="st">"Probabilità"</span>) </span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="distribuzioni_discrete_2_R_files/figure-revealjs/unnamed-chunk-31-1.png" width="960" class="r-stretch"></section>
+<section class="slide level2">
+
+<h3 id="domanda-per-il-responsabile-del-servizio">Domanda per il responsabile del servizio</h3>
+<p>Con questo grafico possiamo rispondere a una domanda operativa concreta:</p>
+<blockquote>
+<p>“Quale organico serve per coprire <strong>almeno il 95%</strong> delle ore senza sovraccarico?”</p>
+</blockquote>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href=""></a><span class="co"># Probabilità cumulativa: P(X &lt;= k) per ogni k</span></span>
+<span id="cb52-2"><a href=""></a><span class="fu">ppois</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">lambda =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1353353 0.4060058 0.6766764 0.8571235 0.9473470 0.9834364 0.9954662</code></pre>
+</div>
+</div>
+<p>Con 4 slot/ora (cioè capacità di accogliere fino a 4 pazienti), copriamo il ~95% delle ore. Questa è una decisione organizzativa fondata sui dati.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="domanda-operativa-chiave">Domanda operativa chiave</h3>
+<p>Il responsabile del servizio non chiede una probabilità astratta, ma qualcosa del tipo:</p>
+<blockquote>
+<p><strong>“Quanti pazienti all’ora devo essere in grado di gestire per non andare in crisi quasi mai?”</strong></p>
+</blockquote>
+<p>Formalizziamo “quasi mai” come:</p>
+<ul>
+<li><em>almeno il 95% delle ore</em> senza sovraccarico.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="traduzione-statistica-della-domanda">Traduzione statistica della domanda</h3>
+<p>Dire <em>“non andare in sovraccarico”</em> significa:</p>
+<blockquote>
+<p>il numero di pazienti che arrivano in un’ora <strong>non supera la capacità del servizio</strong>.</p>
+</blockquote>
+</section>
+<section class="slide level2">
+
+<p>Se la capacità è <span class="math inline">\(k\)</span> pazienti/ora, questo evento è: <span class="math display">\[
+X \le k.
+\]</span></p>
+<p>Quindi la domanda diventa:</p>
+<blockquote>
+<p>per quale valore di <span class="math inline">\(k\)</span> vale <span class="math display">\[P(X \le k) \ge 0.95\ ?\]</span></p>
+</blockquote>
+</section>
+<section class="slide level2">
+
+<h3 id="uso-della-poisson-cumulativa">Uso della Poisson cumulativa</h3>
+<p>Calcoliamo la probabilità cumulativa per diversi valori di <span class="math inline">\(k\)</span>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href=""></a><span class="fu">ppois</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">lambda =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Questo comando restituisce:</p>
+<ul>
+<li><span class="math inline">\(P(X \le 0)\)</span></li>
+<li><span class="math inline">\(P(X \le 1)\)</span></li>
+<li>…</li>
+<li><span class="math inline">\(P(X \le 6)\)</span></li>
+</ul>
+<p>cioè: <strong>quanta parte delle ore è coperta se posso gestire fino a <span class="math inline">\(k\)</span> pazienti</strong>.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="interpretazione-dei-risultati-1">Interpretazione dei risultati</h3>
+<p>Leggendo i valori cumulativi (approssimativamente):</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 35%">
+<col style="width: 16%">
+<col style="width: 47%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Capacità (k pazienti/ora)</th>
+<th><span class="math inline">\(P(X \le k)\)</span></th>
+<th>Significato operativo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2</td>
+<td>~0.68</td>
+<td>sovraccarico nel 32% delle ore</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>~0.86</td>
+<td>sovraccarico nel 14% delle ore</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>~0.95</td>
+<td>sovraccarico solo nel 5% delle ore</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>~0.98</td>
+<td>margine molto ampio</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="slide level2">
+
+<h3 id="conclusione-gestionale">Conclusione gestionale</h3>
+<p>👉 <strong>Con una capacità di 4 pazienti all’ora</strong>, il servizio riesce a gestire <strong>circa il 95% delle ore</strong> senza sovraccarico.</p>
+<p>Questo non significa che:</p>
+<ul>
+<li>non arriveranno mai più di 4 pazienti,</li>
+<li>oppure che il modello sia “vero”.</li>
+</ul>
+<p>Significa che:</p>
+<blockquote>
+<p><strong>stiamo prendendo una decisione organizzativa consapevole, basata su un livello di rischio esplicito</strong>.</p>
+</blockquote>
+</section>
+<section class="slide level2">
+
+<h3 id="messaggio-chiave-della-slide">Messaggio chiave della slide</h3>
+<ul>
+<li>La Poisson <strong>non serve solo a fare calcoli</strong>.</li>
+<li>Serve a <strong>trasformare l’incertezza in decisioni operative</strong>, con un rischio quantificato.</li>
+<li>Qui la distribuzione di Poisson diventa uno strumento di <strong>pianificazione reale</strong>, non solo teoria.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="sintesi-delle-funzioni-r-utilizzate">Sintesi delle funzioni R utilizzate</h3>
+<table class="caption-top">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 11%">
+<col style="width: 44%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Funzione</th>
+<th>Uso</th>
+<th>Formula matematica</th>
+<th>Esempio</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>dpois(x, lambda)</code></td>
+<td>Densità: <span class="math inline">\(P(X = k)\)</span></td>
+<td><span class="math inline">\(\frac{\lambda^k e^{-\lambda}}{k!}\)</span></td>
+<td><code>dpois(3, 2)</code> → <span class="math inline">\(P(X = 3)\)</span></td>
+</tr>
+<tr class="even">
+<td><code>ppois(q, lambda)</code></td>
+<td>Distribuzione cumulativa: <span class="math inline">\(P(X \leq q)\)</span></td>
+<td><span class="math inline">\(\sum_{k=0}^q \frac{\lambda^k e^{-\lambda}}{k!}\)</span></td>
+<td><code>ppois(1, 2)</code> → <span class="math inline">\(P(X \leq 1)\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="slide level2">
+
+<h3 id="riepilogo-concettuale-1">Riepilogo concettuale</h3>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Concetto</th>
+<th>Formula</th>
+<th>Calcolo R</th>
+<th>Risultato</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Evento raro</strong></td>
+<td><span class="math inline">\(P(X = 0)\)</span></td>
+<td><code>dpois(0, 2)</code></td>
+<td>0.1353</td>
+</tr>
+<tr class="even">
+<td><strong>Evento moderato</strong></td>
+<td><span class="math inline">\(P(X = 3)\)</span></td>
+<td><code>dpois(3, 2)</code></td>
+<td>0.1804</td>
+</tr>
+<tr class="odd">
+<td><strong>Evento cumulativo</strong></td>
+<td><span class="math inline">\(P(X \leq 1)\)</span></td>
+<td><code>ppois(1, 2)</code></td>
+<td>0.4060</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="esercizio-8-verifica-monte-carlo-della-distribuzione-di-poisson" class="slide level2">
+<h2>Esercizio 8 — Verifica Monte Carlo della distribuzione di Poisson</h2>
+<p><strong>Obiettivo:</strong><br>
+<strong>verificare empiricamente</strong> la distribuzione di Poisson attraverso una simulazione.</p>
+<ul>
+<li><strong>Teoria:</strong> sappiamo che per <span class="math inline">\(\lambda = 2\)</span>:
+<ul>
+<li><span class="math inline">\(P(X = 0) = 0.1353\)</span>,</li>
+<li><span class="math inline">\(P(X = 3) = 0.1804\)</span>.</li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<ul>
+<li><p><strong>Simulazione:</strong> generiamo migliaia di valori casuali e calcoliamo le frequenze osservate.</p></li>
+<li><p><strong>Confronto:</strong> le frequenze osservate dovrebbero avvicinarsi alle probabilità teoriche.</p></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p><strong>Procedura passo-passo</strong></p>
+<p>Passo 1: impostare i parametri</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href=""></a><span class="co"># Parametri della simulazione</span></span>
+<span id="cb55-2"><a href=""></a>lambda <span class="ot">&lt;-</span> <span class="dv">2</span>         <span class="co"># Media: 2 pazienti all'ora</span></span>
+<span id="cb55-3"><a href=""></a>Nsim <span class="ot">&lt;-</span> <span class="dv">10000</span>       <span class="co"># Numero di simulazioni (10,000)</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Spiegazione:</strong> simuleremo 10,000 volte il conteggio di pazienti in un’ora, con una media di 2 pazienti.</p>
+</section>
+<section class="slide level2">
+
+<p>Passo 2: generare i dati simulati.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href=""></a><span class="co"># Genera Nsim valori dalla distribuzione Poisson</span></span>
+<span id="cb56-2"><a href=""></a>arrivi_simulati <span class="ot">&lt;-</span> <span class="fu">rpois</span>(<span class="at">n =</span> Nsim, <span class="at">lambda =</span> lambda)</span>
+<span id="cb56-3"><a href=""></a></span>
+<span id="cb56-4"><a href=""></a><span class="co"># Visualizza i primi 20 valori</span></span>
+<span id="cb56-5"><a href=""></a><span class="fu">head</span>(arrivi_simulati, <span class="dv">20</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 4 2 4 0 2 2 1 4 4 0 0 0 3 2 2 4 2 0 1 2</code></pre>
+</div>
+</div>
+<p><strong>Cosa significa?</strong> Ogni numero rappresenta quanti pazienti sono “arrivati” in un’ora simulata.</p>
+</section>
+<section class="slide level2">
+
+<p>Passo 3: calcolare le frequenze osservate.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href=""></a><span class="co"># Frequenza di 0 arrivi (ore senza pazienti)</span></span>
+<span id="cb58-2"><a href=""></a>freq_0 <span class="ot">&lt;-</span> <span class="fu">mean</span>(arrivi_simulati <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb58-3"><a href=""></a></span>
+<span id="cb58-4"><a href=""></a><span class="co"># Frequenza di 3 arrivi (ore con 3 pazienti)</span></span>
+<span id="cb58-5"><a href=""></a>freq_3 <span class="ot">&lt;-</span> <span class="fu">mean</span>(arrivi_simulati <span class="sc">==</span> <span class="dv">3</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href=""></a><span class="co"># Mostra i risultati</span></span>
+<span id="cb59-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"Frequenza osservata di 0 arrivi:"</span>, freq_0, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Frequenza osservata di 0 arrivi: 0.1378 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Frequenza osservata di 3 arrivi:"</span>, freq_3)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Frequenza osservata di 3 arrivi: 0.183</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<p><strong>Come funziona:</strong></p>
+<ul>
+<li><code>arrivi_simulati == 0</code> crea una lista di TRUE/FALSE (TRUE dove ci sono 0 arrivi);</li>
+<li><code>mean()</code> calcola la percentuale di TRUE (perché TRUE=1, FALSE=0).</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>Passo 4: confronto diretto con la teoria.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href=""></a><span class="co"># Calcola le probabilità teoriche</span></span>
+<span id="cb63-2"><a href=""></a>teoria_0 <span class="ot">&lt;-</span> <span class="fu">dpois</span>(<span class="dv">0</span>, lambda)  <span class="co"># P(X = 0) teorica</span></span>
+<span id="cb63-3"><a href=""></a>teoria_3 <span class="ot">&lt;-</span> <span class="fu">dpois</span>(<span class="dv">3</span>, lambda)  <span class="co"># P(X = 3) teorica</span></span>
+<span id="cb63-4"><a href=""></a></span>
+<span id="cb63-5"><a href=""></a><span class="co"># Crea una tabella di confronto</span></span>
+<span id="cb63-6"><a href=""></a>confronto <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb63-7"><a href=""></a>  <span class="at">Evento =</span> <span class="fu">c</span>(<span class="st">"0 arrivi"</span>, <span class="st">"3 arrivi"</span>),</span>
+<span id="cb63-8"><a href=""></a>  <span class="at">Simulazione =</span> <span class="fu">c</span>(freq_0, freq_3),</span>
+<span id="cb63-9"><a href=""></a>  <span class="at">Teoria =</span> <span class="fu">c</span>(teoria_0, teoria_3),</span>
+<span id="cb63-10"><a href=""></a>  <span class="at">Differenza =</span> <span class="fu">c</span>(freq_0 <span class="sc">-</span> teoria_0, freq_3 <span class="sc">-</span> teoria_3)</span>
+<span id="cb63-11"><a href=""></a>)</span>
+<span id="cb63-12"><a href=""></a></span>
+<span id="cb63-13"><a href=""></a><span class="co"># Mostra la tabella</span></span>
+<span id="cb63-14"><a href=""></a><span class="fu">print</span>(confronto)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    Evento Simulazione    Teoria  Differenza
+1 0 arrivi      0.1378 0.1353353 0.002464717
+2 3 arrivi      0.1830 0.1804470 0.002552956</code></pre>
+</div>
+</div>
+<p><strong>Interpretazione:</strong> le frequenze osservate sono molto vicine ai valori teorici.</p>
+</section>
+<section class="slide level2">
+
+<p>Se aumentiamo le simulazioni (Nsim = 100,000):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href=""></a>arrivi_grandi <span class="ot">&lt;-</span> <span class="fu">rpois</span>(<span class="dv">100000</span>, lambda)</span>
+<span id="cb65-2"><a href=""></a><span class="fu">mean</span>(arrivi_grandi <span class="sc">==</span> <span class="dv">0</span>)  <span class="co"># Più vicino a 0.1353</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.13472</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href=""></a><span class="fu">mean</span>(arrivi_grandi <span class="sc">==</span> <span class="dv">3</span>)  <span class="co"># Più vicino a 0.1804</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.18262</code></pre>
+</div>
+</div>
+<p><strong>Nota:</strong> più simulazioni = risultati più precisi.</p>
+</section>
+<section class="slide level2">
+
+<p><strong>Cosa abbiamo imparato?</strong></p>
+<ol type="1">
+<li><strong><code>rpois(n, lambda)</code></strong> genera <code>n</code> valori casuali da una Poisson.</li>
+<li><strong><code>mean(X == k)</code></strong> calcola la frequenza relativa dell’evento <span class="math inline">\(X = k\)</span>.</li>
+<li>Le <strong>simulazioni Monte Carlo</strong> approssimano le probabilità teoriche.</li>
+<li>Più simulazioni = migliore approssimazione (legge dei grandi numeri).</li>
+<li>Possiamo <strong>verificare</strong> formule matematiche attraverso esperimenti simulati.</li>
+</ol>
+</section>
+<section id="esercizio-9-esplorare-come-cambiano-le-distribuzioni" class="slide level2">
+<h2>Esercizio 9 — Esplorare come cambiano le distribuzioni</h2>
+<p><strong>Obiettivo:</strong><br>
+<strong>visualizzare</strong> come cambiano la distribuzione Binomiale e Poisson al variare dei loro parametri.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="parte-1-distribuzione-binomiale---effetto-di-p">Parte 1: Distribuzione Binomiale - Effetto di <code>p</code></h3>
+<p>Parametri fissi:</p>
+<ul>
+<li>Numero di prove: <span class="math inline">\(n = 20\)</span> (fisso)</li>
+<li>Variamo la probabilità di successo: <span class="math inline">\(p = 0.2, 0.5, 0.8\)</span></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>Codice per generare i dati:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href=""></a><span class="co"># Parametri</span></span>
+<span id="cb69-2"><a href=""></a>n <span class="ot">&lt;-</span> <span class="dv">20</span></span>
+<span id="cb69-3"><a href=""></a>k_vals <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span>n  <span class="co"># Valori possibili per k (da 0 a 20)</span></span>
+<span id="cb69-4"><a href=""></a></span>
+<span id="cb69-5"><a href=""></a><span class="co"># Calcola le probabilità per tre diversi valori di p</span></span>
+<span id="cb69-6"><a href=""></a>pk_p02 <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(k_vals, <span class="at">size =</span> n, <span class="at">prob =</span> <span class="fl">0.2</span>)  <span class="co"># p basso</span></span>
+<span id="cb69-7"><a href=""></a>pk_p05 <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(k_vals, <span class="at">size =</span> n, <span class="at">prob =</span> <span class="fl">0.5</span>)  <span class="co"># p intermedio</span></span>
+<span id="cb69-8"><a href=""></a>pk_p08 <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(k_vals, <span class="at">size =</span> n, <span class="at">prob =</span> <span class="fl">0.8</span>)  <span class="co"># p alto</span></span>
+<span id="cb69-9"><a href=""></a></span>
+<span id="cb69-10"><a href=""></a><span class="co"># Combina i dati in un'unica tabella</span></span>
+<span id="cb69-11"><a href=""></a>dati_binom <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb69-12"><a href=""></a>  <span class="at">k =</span> <span class="fu">rep</span>(k_vals, <span class="dv">3</span>),</span>
+<span id="cb69-13"><a href=""></a>  <span class="at">prob =</span> <span class="fu">c</span>(pk_p02, pk_p05, pk_p08),</span>
+<span id="cb69-14"><a href=""></a>  <span class="at">p =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"p = 0.2"</span>, <span class="st">"p = 0.5"</span>, <span class="st">"p = 0.8"</span>), <span class="at">each =</span> <span class="fu">length</span>(k_vals)))</span>
+<span id="cb69-15"><a href=""></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section class="slide level2">
+
+<p>Visualizza le prime righe:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href=""></a><span class="fu">head</span>(dati_binom, <span class="dv">10</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   k        prob       p
+1  0 0.011529215 p = 0.2
+2  1 0.057646075 p = 0.2
+3  2 0.136909429 p = 0.2
+4  3 0.205364143 p = 0.2
+5  4 0.218199402 p = 0.2
+6  5 0.174559522 p = 0.2
+7  6 0.109099701 p = 0.2
+8  7 0.054549850 p = 0.2
+9  8 0.022160877 p = 0.2
+10 9 0.007386959 p = 0.2</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<h3 id="visualizzazione-con-ggplot2">Visualizzazione con ggplot2</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb72"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href=""></a>dati_binom <span class="sc">|&gt;</span> </span>
+<span id="cb72-2"><a href=""></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> k, <span class="at">y =</span> prob, <span class="at">fill =</span> p)) <span class="sc">+</span></span>
+<span id="cb72-3"><a href=""></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb72-4"><a href=""></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> p, <span class="at">ncol =</span> <span class="dv">3</span>) <span class="sc">+</span>  <span class="co"># Tre grafici affiancati</span></span>
+<span id="cb72-5"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribuzione Binomiale: effetto di p (n = 20)"</span>,</span>
+<span id="cb72-6"><a href=""></a>       <span class="at">x =</span> <span class="st">"Numero di successi (k)"</span>,</span>
+<span id="cb72-7"><a href=""></a>       <span class="at">y =</span> <span class="st">"P(X = k)"</span>) <span class="sc">+</span></span>
+<span id="cb72-8"><a href=""></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)  <span class="co"># Rimuove la legenda (ridondante)</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section class="slide level2">
+
+
+<img data-src="distribuzioni_discrete_2_R_files/figure-revealjs/unnamed-chunk-42-1.png" width="960" class="r-stretch"></section>
+<section class="slide level2">
+
+<p><strong>Cosa osservare:</strong></p>
+<ol type="1">
+<li><strong>p = 0.2</strong>: la distribuzione è spostata a sinistra (pochi successi);</li>
+<li><strong>p = 0.5</strong>: distribuzione simmetrica attorno a k = 10;</li>
+<li><strong>p = 0.8</strong>: distribuzione spostata a destra (molti successi).</li>
+</ol>
+<blockquote>
+<p><strong>Regola pratica:</strong> il valore più probabile è <span class="math inline">\(n \times p\)</span>.</p>
+</blockquote>
+</section>
+<section class="slide level2">
+
+<p><strong>Significato per l’assessment:</strong> queste tre distribuzioni rappresentano tre scenari diversi per un test a 20 item.</p>
+<div class="fragment">
+<ul>
+<li>Se <span class="math inline">\(p = 0.2\)</span>, il test è molto difficile (la maggior parte dei soggetti risponde correttamente solo a 3-5 item).</li>
+<li>Se <span class="math inline">\(p = 0.8\)</span>, il test è facile (la maggior parte ottiene 15-18 corretti).</li>
+</ul>
+</div>
+<div class="fragment">
+<p>La scelta della <strong>difficoltà degli item</strong> determina la forma della distribuzione dei punteggi — e quindi la capacità del test di discriminare tra soggetti diversi.</p>
+</div>
+</section>
+<section class="slide level2">
+
+<h3 id="versione-alternativa-sovrapporre-le-distribuzioni">Versione alternativa: sovrapporre le distribuzioni</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb73"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href=""></a><span class="fu">ggplot</span>(dati_binom, <span class="fu">aes</span>(<span class="at">x =</span> k, <span class="at">y =</span> prob, <span class="at">color =</span> p)) <span class="sc">+</span></span>
+<span id="cb73-2"><a href=""></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb73-3"><a href=""></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb73-4"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Confronto diretto: Binomiale con diversi p"</span>,</span>
+<span id="cb73-5"><a href=""></a>       <span class="at">x =</span> <span class="st">"Numero di successi (k)"</span>,</span>
+<span id="cb73-6"><a href=""></a>       <span class="at">y =</span> <span class="st">"P(X = k)"</span>,</span>
+<span id="cb73-7"><a href=""></a>       <span class="at">color =</span> <span class="st">"Probabilità</span><span class="sc">\n</span><span class="st">di successo"</span>) </span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section class="slide level2">
+
+
+<img data-src="distribuzioni_discrete_2_R_files/figure-revealjs/unnamed-chunk-43-1.png" width="960" class="r-stretch"></section>
+<section id="parte-2-distribuzione-poisson---effetto-di-λ" class="slide level2">
+<h2>Parte 2: Distribuzione Poisson - Effetto di <code>λ</code></h2>
+<p>Codice per generare i dati</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href=""></a><span class="co"># Valori di k da visualizzare</span></span>
+<span id="cb74-2"><a href=""></a>k_vals <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">20</span></span>
+<span id="cb74-3"><a href=""></a></span>
+<span id="cb74-4"><a href=""></a><span class="co"># Calcola le probabilità per tre diversi lambda</span></span>
+<span id="cb74-5"><a href=""></a>pk_l05 <span class="ot">&lt;-</span> <span class="fu">dpois</span>(k_vals, <span class="at">lambda =</span> <span class="fl">0.5</span>)  <span class="co"># Lambda piccolo</span></span>
+<span id="cb74-6"><a href=""></a>pk_l2  <span class="ot">&lt;-</span> <span class="fu">dpois</span>(k_vals, <span class="at">lambda =</span> <span class="dv">2</span>)    <span class="co"># Lambda intermedio</span></span>
+<span id="cb74-7"><a href=""></a>pk_l6  <span class="ot">&lt;-</span> <span class="fu">dpois</span>(k_vals, <span class="at">lambda =</span> <span class="dv">6</span>)    <span class="co"># Lambda grande</span></span>
+<span id="cb74-8"><a href=""></a></span>
+<span id="cb74-9"><a href=""></a><span class="co"># Combina i dati</span></span>
+<span id="cb74-10"><a href=""></a>dati_pois <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb74-11"><a href=""></a>  <span class="at">k =</span> <span class="fu">rep</span>(k_vals, <span class="dv">3</span>),</span>
+<span id="cb74-12"><a href=""></a>  <span class="at">prob =</span> <span class="fu">c</span>(pk_l05, pk_l2, pk_l6),</span>
+<span id="cb74-13"><a href=""></a>  <span class="at">lambda =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"λ = 0.5"</span>, <span class="st">"λ = 2"</span>, <span class="st">"λ = 6"</span>), <span class="at">each =</span> <span class="fu">length</span>(k_vals)))</span>
+<span id="cb74-14"><a href=""></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section class="slide level2">
+
+<p>Visualizzazione:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb75"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href=""></a><span class="fu">ggplot</span>(dati_pois, <span class="fu">aes</span>(<span class="at">x =</span> k, <span class="at">y =</span> prob, <span class="at">fill =</span> lambda)) <span class="sc">+</span></span>
+<span id="cb75-2"><a href=""></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb75-3"><a href=""></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> lambda, <span class="at">ncol =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb75-4"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribuzione di Poisson: effetto di λ"</span>,</span>
+<span id="cb75-5"><a href=""></a>       <span class="at">x =</span> <span class="st">"Numero di eventi (k)"</span>,</span>
+<span id="cb75-6"><a href=""></a>       <span class="at">y =</span> <span class="st">"P(X = k)"</span>) <span class="sc">+</span></span>
+<span id="cb75-7"><a href=""></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section class="slide level2">
+
+
+<img data-src="distribuzioni_discrete_2_R_files/figure-revealjs/unnamed-chunk-45-1.png" width="960" class="r-stretch"></section>
+<section class="slide level2">
+
+<p><strong>Cosa osservare:</strong></p>
+<ol type="1">
+<li><strong>λ = 0.5</strong>: Molta probabilità su 0 e 1 eventi.</li>
+<li><strong>λ = 2</strong>: Distribuzione più bilanciata, picco attorno a k = 2.</li>
+<li><strong>λ = 6</strong>: Distribuzione più “larga”, picco attorno a k = 6.</li>
+</ol>
+<blockquote>
+<p><strong>Regola pratica:</strong> il valore più probabile è λ.</p>
+</blockquote>
+</section>
+<section class="slide level2">
+
+<p><strong>Significato clinico:</strong> il valore di <span class="math inline">\(\lambda\)</span> cambia completamente il profilo dell’evento.</p>
+<ul>
+<li>Un paziente con <span class="math inline">\(\lambda = 0.5\)</span> crisi di panico a settimana ha un profilo molto diverso da uno con <span class="math inline">\(\lambda = 6\)</span>.</li>
+</ul>
+<p>La Poisson ci permette di quantificare queste differenze e di monitorare i cambiamenti nel tempo durante il trattamento.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="versione-alternativa-sovrapporre-le-distribuzioni-1">Versione alternativa: sovrapporre le distribuzioni</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb76"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href=""></a><span class="fu">ggplot</span>(dati_pois, <span class="fu">aes</span>(<span class="at">x =</span> k, <span class="at">y =</span> prob, <span class="at">color =</span> lambda)) <span class="sc">+</span></span>
+<span id="cb76-2"><a href=""></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb76-3"><a href=""></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb76-4"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Confronto diretto: Poisson con diversi λ"</span>,</span>
+<span id="cb76-5"><a href=""></a>       <span class="at">x =</span> <span class="st">"Numero di eventi (k)"</span>,</span>
+<span id="cb76-6"><a href=""></a>       <span class="at">y =</span> <span class="st">"P(X = k)"</span>,</span>
+<span id="cb76-7"><a href=""></a>       <span class="at">color =</span> <span class="st">"Tasso</span><span class="sc">\n</span><span class="st">medio (λ)"</span>) </span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section class="slide level2">
+
+
+<img data-src="distribuzioni_discrete_2_R_files/figure-revealjs/unnamed-chunk-46-1.png" width="960" class="r-stretch"></section>
+<section id="parte-3-confronto-binomiale-vs-poisson" class="slide level2">
+<h2>Parte 3: Confronto Binomiale vs Poisson</h2>
+<p>Quando <span class="math inline">\(n\)</span> è grande e <span class="math inline">\(p\)</span> è piccolo, la Binomiale ≈ Poisson con <span class="math inline">\(λ = np\)</span></p>
+
+<img data-src="distribuzioni_discrete_2_R_files/figure-revealjs/unnamed-chunk-47-1.png" width="960" class="r-stretch"></section>
+<section id="sintesi-delle-osservazioni" class="slide level2">
+<h2>Sintesi delle osservazioni</h2>
+<p><strong>Per la Binomiale (n = 20):</strong></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>p</th>
+<th>Forma</th>
+<th>Valore più probabile</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0.2</td>
+<td>Asimmetrica a sinistra</td>
+<td>~4</td>
+</tr>
+<tr class="even">
+<td>0.5</td>
+<td>Simmetrica</td>
+<td>~10</td>
+</tr>
+<tr class="odd">
+<td>0.8</td>
+<td>Asimmetrica a destra</td>
+<td>~16</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="slide level2">
+
+<p><strong>Per la Poisson:</strong></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>λ</th>
+<th>Forma</th>
+<th>Valore più probabile</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0.5</td>
+<td>Molto concentrata su 0-1</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Modestamente dispersa</td>
+<td>1-2</td>
+</tr>
+<tr class="odd">
+<td>6</td>
+<td>Ampia dispersione</td>
+<td>5-6</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="esercizio-10-la-scala-temporale-nella-poisson" class="slide level2">
+<h2>Esercizio 10 — La scala temporale nella Poisson</h2>
+<p>Nella distribuzione di Poisson, <strong>λ è un tasso medio</strong>, non un conteggio.</p>
+<p>Se conosco il tasso per un’ora, posso calcolare il tasso per qualsiasi intervallo:</p>
+<p><span class="math display">\[
+\lambda_t = \lambda \times t,
+\]</span></p>
+<p>dove <span class="math inline">\(t\)</span> è la durata in ore.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="il-contesto">Il contesto</h3>
+<p>Un servizio di consulenza psicologica riceve pazienti senza appuntamento.</p>
+<p><strong>Dato:</strong><br>
+in media arrivano <strong>2 pazienti all’ora</strong>.</p>
+<p>Quindi: <span class="math inline">\(\lambda = 2\)</span> (pazienti/ora).</p>
+</section>
+<section class="slide level2">
+
+<h3 id="cosa-significa-λ-2">Cosa significa λ = 2?</h3>
+<p><strong>Attenzione:</strong> <span class="math inline">\(\lambda = 2\)</span> <strong>non</strong> significa che arrivano sempre 2 pazienti.</p>
+<p>Significa che:</p>
+<ul>
+<li>a volte ne arrivano 0, a volte 1, a volte 3, ecc.</li>
+<li><strong>nel lungo periodo</strong>, la media è 2 all’ora.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="cambiamo-lintervallo-di-osservazione">Cambiamo l’intervallo di osservazione</h3>
+<p><strong>Domande:</strong></p>
+<ol type="1">
+<li>in <strong>mezz’ora</strong>, qual è il numero medio atteso di pazienti?</li>
+<li>in <strong>due ore</strong>, qual è il numero medio atteso?</li>
+</ol>
+</section>
+<section class="slide level2">
+
+<h3 id="calcolo-del-tasso-per-intervalli-diversi">Calcolo del tasso per intervalli diversi</h3>
+<p>Usiamo la formula <span class="math inline">\(\lambda_t = \lambda \times t\)</span>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb77"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href=""></a><span class="co"># Tasso base: 2 pazienti all'ora</span></span>
+<span id="cb77-2"><a href=""></a>lambda <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb77-3"><a href=""></a></span>
+<span id="cb77-4"><a href=""></a><span class="co"># Mezz'ora (t = 0.5)</span></span>
+<span id="cb77-5"><a href=""></a>lambda_30min <span class="ot">&lt;-</span> lambda <span class="sc">*</span> <span class="fl">0.5</span></span>
+<span id="cb77-6"><a href=""></a></span>
+<span id="cb77-7"><a href=""></a><span class="co"># Due ore (t = 2)</span></span>
+<span id="cb77-8"><a href=""></a>lambda_2h <span class="ot">&lt;-</span> lambda <span class="sc">*</span> <span class="dv">2</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section class="slide level2">
+
+<h3 id="i-risultati">I risultati</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb78"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href=""></a>lambda_30min</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb80"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href=""></a>lambda_2h</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4</code></pre>
+</div>
+</div>
+<p><strong>Interpretazione:</strong></p>
+<ul>
+<li>in <strong>mezz’ora</strong>, ci aspettiamo <em>in media</em> 1 paziente;</li>
+<li>in <strong>due ore</strong>, ci aspettiamo <em>in media</em> 4 pazienti.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="cosa-cambia-e-cosa-resta-uguale">Cosa cambia e cosa resta uguale</h3>
+<p><strong>Non cambia:</strong></p>
+<ul>
+<li>il meccanismo di arrivo dei pazienti;</li>
+<li>il tasso base (2 pazienti/ora).</li>
+</ul>
+<p><strong>Cambia:</strong></p>
+<ul>
+<li>la durata dell’osservazione;</li>
+<li>il valore atteso del numero di arrivi.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="una-domanda-intuitiva">Una domanda intuitiva</h3>
+<blockquote>
+<p>È più probabile non vedere nessun paziente in 30 minuti o in 2 ore?</p>
+</blockquote>
+</section>
+<section class="slide level2">
+
+<h3 id="la-probabilità-di-zero-arrivi">La probabilità di zero arrivi</h3>
+<p>Nella Poisson, <span class="math inline">\(P(X = 0) = e^{-\lambda}\)</span>.</p>
+<p>Più alto è λ, più bassa è questa probabilità.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb82"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href=""></a><span class="co"># P(X = 0) nei tre scenari</span></span>
+<span id="cb82-2"><a href=""></a><span class="fu">dpois</span>(<span class="dv">0</span>, <span class="at">lambda =</span> <span class="dv">1</span>)    <span class="co"># 30 minuti</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3678794</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href=""></a><span class="fu">dpois</span>(<span class="dv">0</span>, <span class="at">lambda =</span> <span class="dv">2</span>)    <span class="co"># 1 ora</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1353353</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb86"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href=""></a><span class="fu">dpois</span>(<span class="dv">0</span>, <span class="at">lambda =</span> <span class="dv">4</span>)    <span class="co"># 2 ore</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.01831564</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<h3 id="interpretazione">Interpretazione</h3>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Intervallo</th>
+<th>λ</th>
+<th>P(nessun arrivo)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>30 minuti</td>
+<td>1</td>
+<td>37%</td>
+</tr>
+<tr class="even">
+<td>1 ora</td>
+<td>2</td>
+<td>14%</td>
+</tr>
+<tr class="odd">
+<td>2 ore</td>
+<td>4</td>
+<td>2%</td>
+</tr>
+</tbody>
+</table>
+<p>Più tempo osserviamo, più è <strong>improbabile</strong> che non arrivi nessuno.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="unapplicazione-clinica">Un’applicazione clinica</h3>
+<p>Lo stesso principio si applica al monitoraggio clinico:</p>
+<ul>
+<li>Se un paziente con disturbo di panico ha in media <span class="math inline">\(\lambda = 3\)</span> crisi al mese, la probabilità di passare <strong>un’intera settimana</strong> senza crisi (<span class="math inline">\(\lambda_{\text{sett}} = 0.75\)</span>) è <span class="math inline">\(e^{-0.75} \approx 47\%\)</span>.</li>
+<li>Dopo un mese di trattamento, se <span class="math inline">\(\lambda\)</span> scende a 1 crisi/mese, la probabilità di una settimana senza crisi sale a <span class="math inline">\(e^{-0.25} \approx 78\%\)</span>.</li>
+</ul>
+<p>La Poisson ci permette di <strong>quantificare il miglioramento clinico</strong> in termini di probabilità di periodi liberi da sintomi.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="riepilogo">Riepilogo</h3>
+<ol type="1">
+<li><strong>λ è un tasso</strong>, non un conteggio.</li>
+<li>Per cambiare intervallo: <span class="math inline">\(\lambda_t = \lambda \times t\)</span>.</li>
+<li>Intervalli più lunghi → più eventi attesi.</li>
+<li>Eventi rari in intervalli brevi diventano probabili in intervalli lunghi.</li>
+</ol>
+</section>
+<section class="slide level2">
+
+<h3 id="formula-chiave">Formula chiave</h3>
+<p><span class="math display">\[
+\boxed{\lambda_t = \lambda \times t}
+\]</span></p>
+<p><strong>Esempio:</strong></p>
+<ul>
+<li>se λ = 2 pazienti/ora;</li>
+<li>in 3 ore: <span class="math inline">\(\lambda_3 = 2 \times 3 = 6\)</span> pazienti attesi.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 class="unnumbered unlisted" id="riepilogo-finale">Riepilogo finale</h3>
+<p>Oggi abbiamo usato R per:</p>
+<ol type="1">
+<li>calcolare probabilità <strong>esatte</strong>:
+<ul>
+<li>binomiale: <code>dbinom()</code>, <code>pbinom()</code></li>
+<li>Poisson: <code>dpois()</code>, <code>ppois()</code></li>
+</ul></li>
+<li>simulare dati e collegare simulazione e teoria:
+<ul>
+<li><code>rbinom()</code>, <code>rpois()</code></li>
+</ul></li>
+<li>visualizzare la forma della distribuzione e capire l’effetto dei parametri.</li>
+</ol>
+</section>
+<section id="perché-tutto-questo-conta-per-la-nostra-professione" class="slide level2" data-background-color="#2c3e50" style="color: white;">
+<h2>Perché tutto questo conta per la nostra professione</h2>
+<p>Le distribuzioni discrete non sono astrazioni matematiche. Sono il linguaggio con cui si descrivono i <strong>dati che incontrerete ogni giorno</strong>:</p>
+<div class="fragment">
+<ul>
+<li>I <strong>punteggi ai test</strong> sono conteggi (binomiale).</li>
+<li>Le <strong>frequenze dei sintomi</strong> sono conteggi (Poisson).</li>
+<li>Le <strong>decisioni diagnostiche</strong> (positivo/negativo) sono esiti binari (Bernoulli).</li>
+</ul>
+</div>
+</section>
+<section id="perché-tutto-questo-conta-per-la-nostra-professione-1" class="slide level2" data-background-color="#2c3e50" style="color: white;">
+<h2>Perché tutto questo conta per la nostra professione</h2>
+<p>R è lo strumento che ci permette di passare <strong>dalla teoria alla pratica</strong>: dal modello matematico alla risposta alla domanda clinica. Il calcolo a mano migliora la comprensione; R ci fornisce potenza operativa. Servono entrambi.</p>
+<div class="fragment">
+<blockquote>
+<p>Le distribuzioni discrete sono strumenti per descrivere conteggi.<br>
+R ci permette di calcolare, controllare e capire questi strumenti in modo immediato.</p>
+</blockquote>
+
+
+</div>
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="distribuzioni_discrete_2_R_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="distribuzioni_discrete_2_R_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="distribuzioni_discrete_2_R_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="distribuzioni_discrete_2_R_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="distribuzioni_discrete_2_R_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="distribuzioni_discrete_2_R_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="distribuzioni_discrete_2_R_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="distribuzioni_discrete_2_R_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="distribuzioni_discrete_2_R_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="distribuzioni_discrete_2_R_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'print',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copiato!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copiato!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

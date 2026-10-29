@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="it"><head>
+<script src="esercitazione_ripasso_seg2_files/libs/clipboard/clipboard.min.js"></script>
+<script src="esercitazione_ripasso_seg2_files/libs/quarto-html/tabby.min.js"></script>
+<script src="esercitazione_ripasso_seg2_files/libs/quarto-html/popper.min.js"></script>
+<script src="esercitazione_ripasso_seg2_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="esercitazione_ripasso_seg2_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="esercitazione_ripasso_seg2_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="esercitazione_ripasso_seg2_files/libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.27">
+
+  <meta name="author" content="Corrado Caudek">
+  <title>Esercitazione di ripasso – Segmento 2</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="esercitazione_ripasso_seg2_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="esercitazione_ripasso_seg2_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="esercitazione_ripasso_seg2_files/libs/revealjs/dist/theme/quarto-32eda4d62c2e25823ebe39cba2bb0a8e.css">
+  <link href="esercitazione_ripasso_seg2_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="esercitazione_ripasso_seg2_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="esercitazione_ripasso_seg2_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="esercitazione_ripasso_seg2_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" data-background-color="#0072bc" class="quarto-title-block center">
+  <h1 class="title">Esercitazione di ripasso – Segmento 2</h1>
+  <p class="subtitle">Regressione, inferenza su medie, confronto frequentista–bayesiano</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
+</div>
+<div class="quarto-title-author-email">
+<a href="mailto:corrado.caudek@unifi.it">corrado.caudek@unifi.it</a>
+</div>
+        <p class="quarto-title-affiliation">
+            Università degli Studi di Firenze
+          </p>
+    </div>
+</div>
+
+  <p class="date">27 febbraio 2026</p>
+</section>
+<section id="obiettivi-di-questo-segmento" class="slide level2 unnumbered unlisted">
+<h2>Obiettivi di questo segmento</h2>
+<p>In questo segmento metteremo a confronto <strong>approccio frequentista e bayesiano</strong> su tre problemi pratici:</p>
+<ol type="1">
+<li><strong>Regressione lineare</strong> con un predittore continuo;</li>
+<li><strong>Inferenza su una media</strong>;</li>
+<li><strong>Confronto tra due medie</strong>.</li>
+</ol>
+<p>Per ciascun problema: analisi frequentista, analisi bayesiana con <code>brms</code> e poi: <strong>cosa posso concludere nei due approcci?</strong></p>
+<blockquote>
+<p>Riferimento: <a href="https://ccaudek.github.io/utet-companion/" class="uri">https://ccaudek.github.io/utet-companion/</a> — Capitoli 21, 23, 26, 27</p>
+</blockquote>
+</section>
+<section id="formato-della-prova" class="slide level2">
+<h2>Formato della prova</h2>
+<p>Ogni domanda ha <strong>5 alternative, una sola corretta</strong> (verbale o numerica).</p>
+<p>Per le risposte numeriche basate su simulazioni, usiamo <code>set.seed()</code> fisso e <span class="math inline">\(N\)</span> grande per garantire risultati stabili.</p>
+</section>
+<section id="esercizio-5-regressione-lineare-bivariata" class="slide level2">
+<h2>Esercizio 5 — Regressione lineare bivariata</h2>
+<p><strong>Scenario:</strong> Un ricercatore studia la relazione tra ore di studio settimanali (<span class="math inline">\(X\)</span>) e punteggio a un esame (<span class="math inline">\(Y\)</span>, scala 0–30).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb1-2"><a href=""></a>n <span class="ot">&lt;-</span> <span class="dv">30</span></span>
+<span id="cb1-3"><a href=""></a>ore <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">rnorm</span>(n, <span class="at">mean =</span> <span class="dv">15</span>, <span class="at">sd =</span> <span class="dv">5</span>), <span class="dv">1</span>)</span>
+<span id="cb1-4"><a href=""></a>punteggio <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="dv">12</span> <span class="sc">+</span> <span class="fl">0.8</span> <span class="sc">*</span> ore <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="dv">3</span>), <span class="dv">1</span>)</span>
+<span id="cb1-5"><a href=""></a>dati_reg <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">ore =</span> ore, <span class="at">punteggio =</span> punteggio)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a>mod_freq <span class="ot">&lt;-</span> <span class="fu">lm</span>(punteggio <span class="sc">~</span> ore, <span class="at">data =</span> dati_reg)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><em>(8 minuti)</em></p>
+</section>
+<section class="slide level2">
+
+<h3 id="domanda-5.1-numerica">Domanda 5.1 — [Numerica]</h3>
+<p>Qual è la stima della pendenza (<span class="math inline">\(\hat{\beta}_1\)</span>) dal modello <code>lm()</code>? <em>(Due cifre decimali.)</em></p>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-5.1">Soluzione 5.1</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a>beta1 <span class="ot">&lt;-</span> <span class="fu">coef</span>(mod_freq)[<span class="st">"ore"</span>]</span>
+<span id="cb3-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"Pendenza:"</span>, <span class="fu">round</span>(beta1, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Pendenza: 0.7 </code></pre>
+</div>
+</div>
+<p><strong>Risposta:</strong> 0.7</p>
+</section>
+<section class="slide level2">
+
+<h3 id="domanda-5.2-numerica">Domanda 5.2 — [Numerica]</h3>
+<p>Qual è il limite inferiore dell’intervallo di confidenza al 95% per la pendenza? <em>(Due cifre decimali.)</em></p>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-5.2">Soluzione 5.2</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a>ci <span class="ot">&lt;-</span> <span class="fu">confint</span>(mod_freq)[<span class="st">"ore"</span>, ]</span>
+<span id="cb5-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"IC 95% pendenza:"</span>, <span class="fu">round</span>(ci, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>IC 95% pendenza: 0.51 0.89 </code></pre>
+</div>
+</div>
+<p><strong>Risposta:</strong> 0.51</p>
+</section>
+<section class="slide level2">
+
+<h3 id="domanda-5.3-numerica">Domanda 5.3 — [Numerica]</h3>
+<p>Usate <code>brms</code> per stimare lo stesso modello. Qual è la media a posteriori della pendenza? <em>(Due cifre decimali.)</em></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a>mod_bayes <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb7-2"><a href=""></a>  punteggio <span class="sc">~</span> ore,</span>
+<span id="cb7-3"><a href=""></a>  <span class="at">data =</span> dati_reg,</span>
+<span id="cb7-4"><a href=""></a>  <span class="at">family =</span> <span class="fu">gaussian</span>(),</span>
+<span id="cb7-5"><a href=""></a>  <span class="at">seed =</span> <span class="dv">42</span>,</span>
+<span id="cb7-6"><a href=""></a>  <span class="at">backend =</span> <span class="st">"cmdstanr"</span>,</span>
+<span id="cb7-7"><a href=""></a>  <span class="at">silent =</span> <span class="dv">2</span>,</span>
+<span id="cb7-8"><a href=""></a>  <span class="at">refresh =</span> <span class="dv">0</span></span>
+<span id="cb7-9"><a href=""></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-5.3">Soluzione 5.3</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a>post <span class="ot">&lt;-</span> <span class="fu">as_draws_df</span>(mod_bayes)</span>
+<span id="cb8-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"Media a posteriori pendenza:"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(post<span class="sc">$</span>b_ore), <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Media a posteriori pendenza: 0.7 </code></pre>
+</div>
+</div>
+<p><strong>Risposta:</strong> 0.7</p>
+<p>Nota: con prior debolmente informative (default di brms), le stime frequentista e bayesiana sono molto simili.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="domanda-5.4-scelta-multipla">Domanda 5.4 — [Scelta multipla]</h3>
+<p>Un collega legge l’IC al 95% della pendenza e dice: “C’è il 95% di probabilità che la vera pendenza sia in questo intervallo.” Se l’analisi è stata fatta con <code>lm()</code>, questa frase è:</p>
+<ol type="a">
+<li>Corretta: è esattamente il significato dell’intervallo di confidenza.</li>
+<li>Scorretta: l’intervallo di confidenza si riferisce alla procedura ripetuta, non al parametro fisso.</li>
+<li>Corretta solo se il campione è grande.</li>
+<li>Scorretta: l’IC al 95% copre il 95% dei dati, non del parametro.</li>
+<li>Corretta solo se la distribuzione è normale.</li>
+</ol>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-5.4">Soluzione 5.4</h3>
+<p><strong>Risposta corretta: (b)</strong></p>
+<p>L’IC frequentista al 95% significa: “Se ripetessi lo studio infinite volte, il 95% degli intervalli così calcolati conterrebbe il vero <span class="math inline">\(\beta\)</span>.” Non possiamo dire che <em>questo specifico</em> intervallo contenga <span class="math inline">\(\beta\)</span> con probabilità 0.95 — il parametro è fisso, non casuale.</p>
+<p>L’<strong>intervallo di credibilità bayesiano</strong> al 95%, invece, <em>ha</em> questa interpretazione: “C’è il 95% di probabilità che <span class="math inline">\(\beta\)</span> sia in questo intervallo.”</p>
+</section>
+<section class="slide level2">
+
+<h3 id="domanda-5.5-scelta-multipla">Domanda 5.5 — [Scelta multipla]</h3>
+<p>Lo studente Matteo studia 20 ore. Si vuole prevedere il suo punteggio. Quale differenza c’è tra la previsione frequentista e quella bayesiana?</p>
+<ol type="a">
+<li>La previsione bayesiana è sempre più accurata.</li>
+<li>La previsione frequentista è un singolo numero senza incertezza.</li>
+<li>La previsione bayesiana produce una distribuzione completa, da cui si può calcolare qualsiasi probabilità (es. <span class="math inline">\(P(Y &gt; 25)\)</span>).</li>
+<li>Non c’è alcuna differenza: entrambe danno lo stesso intervallo.</li>
+<li>La previsione frequentista è più conservativa perché usa un campione.</li>
+</ol>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-5.5">Soluzione 5.5</h3>
+<p><strong>Risposta corretta: (c)</strong></p>
+<p>La previsione frequentista produce un valore puntuale e un intervallo di previsione. La previsione bayesiana produce un’<strong>intera distribuzione predittiva a posteriori</strong>, da cui si può calcolare <em>qualsiasi</em> probabilità di interesse (es. <span class="math inline">\(P(Y &gt; 25 \mid X=20, \text{dati})\)</span>, <span class="math inline">\(P(20 &lt; Y &lt; 28 \mid X=20, \text{dati})\)</span>, ecc.).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>pred_bayes <span class="ot">&lt;-</span> <span class="fu">posterior_predict</span>(mod_bayes, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">ore =</span> <span class="dv">20</span>))</span>
+<span id="cb10-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"P(Y &gt; 25 | X=20, dati) ="</span>, <span class="fu">round</span>(<span class="fu">mean</span>(pred_bayes <span class="sc">&gt;</span> <span class="dv">25</span>), <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>P(Y &gt; 25 | X=20, dati) = 0.73 </code></pre>
+</div>
+</div>
+</section>
+<section id="esercizio-6-inferenza-su-una-media" class="slide level2">
+<h2>Esercizio 6 — Inferenza su una media</h2>
+<p><strong>Scenario:</strong> Si vuole stimare il livello medio di ansia (<span class="math inline">\(\mu\)</span>) in studenti durante gli esami, misurato con lo STAI (scala 20–80).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a>ansia <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">48</span>, <span class="dv">55</span>, <span class="dv">42</span>, <span class="dv">61</span>, <span class="dv">50</span>, <span class="dv">53</span>, <span class="dv">47</span>, <span class="dv">58</span>, <span class="dv">44</span>, <span class="dv">52</span>,</span>
+<span id="cb12-2"><a href=""></a>           <span class="dv">56</span>, <span class="dv">49</span>, <span class="dv">63</span>, <span class="dv">51</span>, <span class="dv">45</span>, <span class="dv">57</span>, <span class="dv">54</span>, <span class="dv">46</span>, <span class="dv">60</span>, <span class="dv">50</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><em>(8 minuti)</em></p>
+</section>
+<section class="slide level2">
+
+<h3 id="domanda-6.1-numerica">Domanda 6.1 — [Numerica]</h3>
+<p>Eseguite un test-<span class="math inline">\(t\)</span> a un campione con <span class="math inline">\(H_0: \mu = 45\)</span>. Qual è il valore della statistica <span class="math inline">\(t\)</span>? <em>(Due cifre decimali.)</em></p>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-6.1">Soluzione 6.1</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a>tt <span class="ot">&lt;-</span> <span class="fu">t.test</span>(ansia, <span class="at">mu =</span> <span class="dv">45</span>)</span>
+<span id="cb13-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"Statistica t:"</span>, <span class="fu">round</span>(tt<span class="sc">$</span>statistic, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Statistica t: 5.33 </code></pre>
+</div>
+</div>
+<p><strong>Risposta:</strong> 5.33</p>
+</section>
+<section class="slide level2">
+
+<h3 id="domanda-6.2-numerica">Domanda 6.2 — [Numerica]</h3>
+<p>Qual è il valore-<span class="math inline">\(p\)</span> del test? <em>(Quattro cifre decimali.)</em></p>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-6.2">Soluzione 6.2</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Valore-p:"</span>, <span class="fu">round</span>(tt<span class="sc">$</span>p.value, <span class="dv">4</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Valore-p: 0 </code></pre>
+</div>
+</div>
+<p><strong>Risposta:</strong> 0</p>
+</section>
+<section class="slide level2">
+
+<h3 id="domanda-6.3-numerica">Domanda 6.3 — [Numerica]</h3>
+<p>Stimate il modello solo-intercetta con <code>brms</code>. Calcolate <span class="math inline">\(P(\mu &gt; 50 \mid \text{dati})\)</span> dai campioni della posterior. <em>(Due cifre decimali.)</em></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a>dati_ansia <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">ansia =</span> ansia)</span>
+<span id="cb17-2"><a href=""></a>mod_ansia <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb17-3"><a href=""></a>  ansia <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb17-4"><a href=""></a>  <span class="at">data =</span> dati_ansia,</span>
+<span id="cb17-5"><a href=""></a>  <span class="at">family =</span> <span class="fu">gaussian</span>(),</span>
+<span id="cb17-6"><a href=""></a>  <span class="at">seed =</span> <span class="dv">42</span>,</span>
+<span id="cb17-7"><a href=""></a>  <span class="at">silent =</span> <span class="dv">2</span>,</span>
+<span id="cb17-8"><a href=""></a>  <span class="at">refresh =</span> <span class="dv">0</span>,</span>
+<span id="cb17-9"><a href=""></a>  <span class="at">backend =</span> <span class="st">"cmdstanr"</span></span>
+<span id="cb17-10"><a href=""></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-6.3">Soluzione 6.3</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a>post_mu <span class="ot">&lt;-</span> <span class="fu">as_draws_df</span>(mod_ansia)<span class="sc">$</span>b_Intercept</span>
+<span id="cb18-2"><a href=""></a>P_gt_50 <span class="ot">&lt;-</span> <span class="fu">mean</span>(post_mu <span class="sc">&gt;</span> <span class="dv">50</span>)</span>
+<span id="cb18-3"><a href=""></a><span class="fu">cat</span>(<span class="st">"P(mu &gt; 50 | dati) ="</span>, <span class="fu">round</span>(P_gt_50, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>P(mu &gt; 50 | dati) = 0.94 </code></pre>
+</div>
+</div>
+<p><strong>Risposta:</strong> 0.94</p>
+</section>
+<section class="slide level2">
+
+<h3 id="domanda-6.4-scelta-multipla">Domanda 6.4 — [Scelta multipla]</h3>
+<p>Con l’approccio frequentista, è possibile calcolare <span class="math inline">\(P(\mu &gt; 50 \mid \text{dati})\)</span>?</p>
+<ol type="a">
+<li>Sì, basta usare la funzione <code>pnorm()</code> con la media campionaria e l’errore standard.</li>
+<li>Sì, il valore-<span class="math inline">\(p\)</span> del test <span class="math inline">\(H_0: \mu = 50\)</span> fornisce esattamente questa probabilità.</li>
+<li>No, perché nel paradigma frequentista <span class="math inline">\(\mu\)</span> è una costante fissa e non ha una distribuzione di probabilità.</li>
+<li>No, perché il test-<span class="math inline">\(t\)</span> funziona solo per <span class="math inline">\(H_0: \mu = 0\)</span>.</li>
+<li>Sì, corrisponde a <span class="math inline">\(1 - p/2\)</span> dove <span class="math inline">\(p\)</span> è il valore-<span class="math inline">\(p\)</span> bilaterale.</li>
+</ol>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-6.4">Soluzione 6.4</h3>
+<p><strong>Risposta corretta: (c)</strong></p>
+<p>Nel paradigma frequentista, <span class="math inline">\(\mu\)</span> è trattato come una <strong>costante fissa ignota</strong>. La probabilità si riferisce ai dati (o a statistiche dei dati), <strong>non al parametro</strong>. L’espressione <span class="math inline">\(P(\mu &gt; 50 \mid \text{dati})\)</span> non ha significato frequentista.</p>
+<p>L’approccio bayesiano tratta <span class="math inline">\(\mu\)</span> come una variabile casuale (con distribuzione a posteriori) e <span class="math inline">\(P(\mu &gt; 50 \mid \text{dati})\)</span> è semplicemente l’area della posterior alla destra di 50.</p>
+<blockquote>
+<p>Questa è la <strong>differenza epistemologica fondamentale</strong> tra i due paradigmi.</p>
+</blockquote>
+</section>
+<section id="esercizio-7-confronto-tra-due-medie" class="slide level2">
+<h2>Esercizio 7 — Confronto tra due medie</h2>
+<p><strong>Scenario:</strong> Uno studio confronta i punteggi di benessere psicologico (WEMWBS, scala 14–70) tra studenti che praticano mindfulness (T) e un controllo (C).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a>gruppo_T <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">52</span>, <span class="dv">58</span>, <span class="dv">55</span>, <span class="dv">61</span>, <span class="dv">49</span>, <span class="dv">56</span>, <span class="dv">53</span>, <span class="dv">60</span>, <span class="dv">57</span>, <span class="dv">54</span>,</span>
+<span id="cb20-2"><a href=""></a>              <span class="dv">51</span>, <span class="dv">59</span>, <span class="dv">55</span>, <span class="dv">62</span>, <span class="dv">50</span>, <span class="dv">57</span>, <span class="dv">53</span>, <span class="dv">58</span>, <span class="dv">56</span>, <span class="dv">48</span>)</span>
+<span id="cb20-3"><a href=""></a>gruppo_C <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">45</span>, <span class="dv">50</span>, <span class="dv">42</span>, <span class="dv">48</span>, <span class="dv">47</span>, <span class="dv">44</span>, <span class="dv">51</span>, <span class="dv">46</span>, <span class="dv">49</span>, <span class="dv">43</span>,</span>
+<span id="cb20-4"><a href=""></a>              <span class="dv">50</span>, <span class="dv">47</span>, <span class="dv">45</span>, <span class="dv">52</span>, <span class="dv">41</span>, <span class="dv">48</span>, <span class="dv">46</span>, <span class="dv">44</span>, <span class="dv">49</span>, <span class="dv">47</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><em>(8 minuti)</em></p>
+</section>
+<section class="slide level2">
+
+<h3 id="domanda-7.1-numerica">Domanda 7.1 — [Numerica]</h3>
+<p>Eseguite un test-<span class="math inline">\(t\)</span> per campioni indipendenti (<code>var.equal = TRUE</code>). Qual è la differenza tra le medie (<span class="math inline">\(\bar{X}_T - \bar{X}_C\)</span>)? <em>(Una cifra decimale.)</em></p>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-7.1">Soluzione 7.1</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href=""></a>diff_medie <span class="ot">&lt;-</span> <span class="fu">mean</span>(gruppo_T) <span class="sc">-</span> <span class="fu">mean</span>(gruppo_C)</span>
+<span id="cb21-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"Differenza medie:"</span>, <span class="fu">round</span>(diff_medie, <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Differenza medie: 8.5 </code></pre>
+</div>
+</div>
+<p><strong>Risposta:</strong> 8.5</p>
+</section>
+<section class="slide level2">
+
+<h3 id="domanda-7.2-numerica">Domanda 7.2 — [Numerica]</h3>
+<p>Qual è il valore della statistica <span class="math inline">\(t\)</span>? <em>(Due cifre decimali.)</em></p>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-7.2">Soluzione 7.2</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a>tt2 <span class="ot">&lt;-</span> <span class="fu">t.test</span>(gruppo_T, gruppo_C, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb23-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"Statistica t:"</span>, <span class="fu">round</span>(tt2<span class="sc">$</span>statistic, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Statistica t: 7.65 </code></pre>
+</div>
+</div>
+<p><strong>Risposta:</strong> 7.65</p>
+</section>
+<section class="slide level2">
+
+<h3 id="domanda-7.3-numerica">Domanda 7.3 — [Numerica]</h3>
+<p>Stimate il modello con <code>brms</code>. Calcolate <span class="math inline">\(P(\mu_T - \mu_C &gt; 5 \mid \text{dati})\)</span>, cioè la probabilità che la differenza superi la soglia di rilevanza clinica di 5 punti. <em>(Due cifre decimali.)</em></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a>dati_gruppi <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb25-2"><a href=""></a>  <span class="at">benessere =</span> <span class="fu">c</span>(gruppo_T, gruppo_C),</span>
+<span id="cb25-3"><a href=""></a>  <span class="at">gruppo =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"T"</span>, <span class="st">"C"</span>), <span class="at">each =</span> <span class="dv">20</span>))</span>
+<span id="cb25-4"><a href=""></a>)</span>
+<span id="cb25-5"><a href=""></a></span>
+<span id="cb25-6"><a href=""></a>mod_gruppi <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb25-7"><a href=""></a>  benessere <span class="sc">~</span> gruppo,</span>
+<span id="cb25-8"><a href=""></a>  <span class="at">data =</span> dati_gruppi,</span>
+<span id="cb25-9"><a href=""></a>  <span class="at">family =</span> <span class="fu">gaussian</span>(),</span>
+<span id="cb25-10"><a href=""></a>  <span class="at">seed =</span> <span class="dv">42</span>,</span>
+<span id="cb25-11"><a href=""></a>  <span class="at">silent =</span> <span class="dv">2</span>,</span>
+<span id="cb25-12"><a href=""></a>  <span class="at">refresh =</span> <span class="dv">0</span>,</span>
+<span id="cb25-13"><a href=""></a>  <span class="at">backend =</span> <span class="st">"cmdstanr"</span></span>
+<span id="cb25-14"><a href=""></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-7.3">Soluzione 7.3</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a>post_diff <span class="ot">&lt;-</span> <span class="fu">as_draws_df</span>(mod_gruppi)<span class="sc">$</span>b_gruppoT</span>
+<span id="cb26-2"><a href=""></a></span>
+<span id="cb26-3"><a href=""></a><span class="fu">cat</span>(<span class="st">"P(diff &gt; 0 | dati) ="</span>, <span class="fu">round</span>(<span class="fu">mean</span>(post_diff <span class="sc">&gt;</span> <span class="dv">0</span>), <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>P(diff &gt; 0 | dati) = 1 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"P(diff &gt; 5 | dati) ="</span>, <span class="fu">round</span>(<span class="fu">mean</span>(post_diff <span class="sc">&gt;</span> <span class="dv">5</span>), <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>P(diff &gt; 5 | dati) = 1 </code></pre>
+</div>
+</div>
+<p><strong>Risposta:</strong> 1</p>
+</section>
+<section class="slide level2">
+
+<h3 id="domanda-7.4-scelta-multipla">Domanda 7.4 — [Scelta multipla]</h3>
+<p>Un clinico vi chiede: “Il trattamento mindfulness produce un beneficio <em>clinicamente rilevante</em>?” Quale approccio risponde meglio?</p>
+<ol type="a">
+<li>Il frequentista, perché il valore-<span class="math inline">\(p\)</span> è piccolo.</li>
+<li>Il bayesiano, perché permette di calcolare direttamente la probabilità che la differenza superi una soglia clinica.</li>
+<li>Sono equivalenti: entrambi rispondono alla domanda.</li>
+<li>Nessuno dei due: serve un’analisi qualitativa.</li>
+<li>Il frequentista, perché l’IC al 95% indica la dimensione dell’effetto.</li>
+</ol>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-7.4">Soluzione 7.4</h3>
+<p><strong>Risposta corretta: (b)</strong></p>
+<p>Il test-<span class="math inline">\(t\)</span> risponde a “la differenza è diversa da zero?” (sì/no). Ma il clinico vuole sapere “la differenza è <em>abbastanza grande</em> da essere utile?” — una domanda sulla <strong>magnitudine</strong>, non sulla significatività.</p>
+<p>L’approccio bayesiano risponde calcolando <span class="math inline">\(P(\delta &gt; \text{soglia} \mid \text{dati})\)</span> direttamente dalla posterior: questa è la probabilità che l’effetto sia clinicamente rilevante.</p>
+</section>
+<section id="esercizio-8-interpretazioni-e-fraintendimenti" class="slide level2">
+<h2>Esercizio 8 — Interpretazioni e fraintendimenti</h2>
+<p>Questo esercizio verifica la comprensione epistemologica del confronto tra i due paradigmi.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="domanda-8.1-scelta-multipla">Domanda 8.1 — [Scelta multipla]</h3>
+<p>Un ricercatore trova <span class="math inline">\(p = 0.03\)</span> e scrive nel report: “C’è il 97% di probabilità che l’effetto sia reale.” Quale affermazione è corretta?</p>
+<ol type="a">
+<li>La frase è corretta: <span class="math inline">\(1 - p\)</span> è la probabilità che l’effetto esista.</li>
+<li>La frase è corretta solo se la potenza è superiore all’80%.</li>
+<li>La frase è scorretta: il valore-<span class="math inline">\(p\)</span> è <span class="math inline">\(P(\text{dati} \mid H_0)\)</span>, non <span class="math inline">\(P(H_0 \mid \text{dati})\)</span>; scambiarli è la fallacia della trasposizione del condizionale.</li>
+<li>La frase è scorretta perché <span class="math inline">\(p = 0.03\)</span> è troppo vicino a 0.05.</li>
+<li>La frase è corretta nel paradigma bayesiano, scorretta in quello frequentista.</li>
+</ol>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-8.1">Soluzione 8.1</h3>
+<p><strong>Risposta corretta: (c)</strong></p>
+<p>Il valore-<span class="math inline">\(p\)</span> risponde a: “Supponendo che <span class="math inline">\(H_0\)</span> sia vera, quanto sarebbero improbabili dati così estremi?” È <span class="math inline">\(P(\text{dati} \mid H_0)\)</span>, non <span class="math inline">\(P(H_0 \mid \text{dati})\)</span>.</p>
+<p>Scambiare i due è lo stesso errore del test diagnostico: <span class="math inline">\(P(+ \mid \text{malattia}) \neq P(\text{malattia} \mid +)\)</span>.</p>
+<p>Solo l’approccio bayesiano calcola <span class="math inline">\(P(\text{ipotesi} \mid \text{dati})\)</span>.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="domanda-8.2-scelta-multipla">Domanda 8.2 — [Scelta multipla]</h3>
+<p>Un altro ricercatore trova <span class="math inline">\(p = 0.06\)</span> e conclude: “Il trattamento non ha effetto.” Qual è il problema di questa conclusione?</p>
+<ol type="a">
+<li>Non c’è alcun problema: <span class="math inline">\(p &gt; 0.05\)</span> dimostra che l’effetto è nullo.</li>
+<li>Avrebbe dovuto usare <span class="math inline">\(\alpha = 0.10\)</span>.</li>
+<li>“Non rifiutare <span class="math inline">\(H_0\)</span>” non equivale a dimostrare che <span class="math inline">\(H_0\)</span> sia vera; con più dati, lo stesso effetto potrebbe risultare significativo.</li>
+<li>Il problema è solo che non ha riportato la dimensione dell’effetto.</li>
+<li>La conclusione è corretta se il campione è grande.</li>
+</ol>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-8.2">Soluzione 8.2</h3>
+<p><strong>Risposta corretta: (c)</strong></p>
+<p>“Non rifiutare <span class="math inline">\(H_0\)</span>” non significa “accettare <span class="math inline">\(H_0\)</span>”: l’assenza di evidenza <strong>non è</strong> evidenza di assenza. Con un campione più grande, lo stesso effetto potrebbe raggiungere la significatività. Il test NHST non quantifica la plausibilità di <span class="math inline">\(H_0\)</span>.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="domanda-8.3-scelta-multipla">Domanda 8.3 — [Scelta multipla]</h3>
+<p>In un’analisi bayesiana con <code>brms</code>, l’intervallo di credibilità al 95% per la differenza tra due gruppi è <span class="math inline">\([0.2, \, 8.4]\)</span>. Qual è l’interpretazione corretta?</p>
+<ol type="a">
+<li>Se ripetessimo lo studio, il 95% degli intervalli conterrebbe il vero valore.</li>
+<li>Il 95% dei dati si trova tra 0.2 e 8.4.</li>
+<li>C’è il 95% di probabilità che la vera differenza sia tra 0.2 e 8.4.</li>
+<li>L’effetto è significativo perché l’intervallo non contiene zero.</li>
+<li>C’è il 5% di probabilità che l’effetto sia negativo.</li>
+</ol>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-8.3">Soluzione 8.3</h3>
+<p><strong>Risposta corretta: (c)</strong></p>
+<p>L’intervallo di credibilità bayesiano ha un’interpretazione probabilistica <strong>diretta</strong>: “Data l’evidenza, c’è il 95% di probabilità che il parametro sia in questo intervallo.” Questa è esattamente la domanda che il ricercatore si pone — e a cui l’IC frequentista <em>non</em> risponde.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="domanda-8.4-scelta-multipla">Domanda 8.4 — [Scelta multipla]</h3>
+<p>Qual è la differenza <strong>fondamentale</strong> tra il paradigma frequentista e quello bayesiano?</p>
+<ol type="a">
+<li>Il frequentismo usa campioni grandi, il bayesianesimo campioni piccoli.</li>
+<li>Il frequentismo assegna probabilità ai dati condizionalmente ai parametri; il bayesianesimo assegna probabilità ai parametri condizionalmente ai dati.</li>
+<li>Il frequentismo è oggettivo, il bayesianesimo è soggettivo.</li>
+<li>Il bayesianesimo non usa la verosimiglianza.</li>
+<li>Il frequentismo funziona solo con distribuzioni normali.</li>
+</ol>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-8.4">Soluzione 8.4</h3>
+<p><strong>Risposta corretta: (b)</strong></p>
+<ul>
+<li><strong>Frequentismo:</strong> calcola <span class="math inline">\(P(\text{dati} \mid \theta)\)</span> — il parametro è fisso, i dati variano.</li>
+<li><strong>Bayesianesimo:</strong> calcola <span class="math inline">\(P(\theta \mid \text{dati})\)</span> — i dati sono fissi (osservati), l’incertezza è sul parametro.</li>
+</ul>
+<p>Questa differenza ha conseguenze pratiche enormi: il bayesiano può rispondere <em>direttamente</em> a domande come “Qual è la probabilità che <span class="math inline">\(\theta &gt; 0\)</span>?” o “Qual è la probabilità che l’effetto sia clinicamente rilevante?”</p>
+</section>
+<section class="slide level2">
+
+<h3 id="domanda-8.5-scelta-multipla">Domanda 8.5 — [Scelta multipla]</h3>
+<p>In che senso la distribuzione a posteriori contiene “più informazione” del valore-<span class="math inline">\(p\)</span>?</p>
+<ol type="a">
+<li>Perché la posterior è calcolata su più dati.</li>
+<li>Perché il valore-<span class="math inline">\(p\)</span> risponde a una sola domanda (<span class="math inline">\(H_0\)</span> sì/no), mentre la posterior contiene la stima, l’incertezza, probabilità direzionali e previsioni per nuovi dati.</li>
+<li>Perché la posterior è sempre più precisa.</li>
+<li>Perché il valore-<span class="math inline">\(p\)</span> non tiene conto della dimensione campionaria.</li>
+<li>Perché il valore-<span class="math inline">\(p\)</span> ignora i dati.</li>
+</ol>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-8.5">Soluzione 8.5</h3>
+<p><strong>Risposta corretta: (b)</strong></p>
+<p>Il valore-<span class="math inline">\(p\)</span> è un <strong>singolo numero</strong> che risponde a una sola domanda: “Quanto sono estremi i dati sotto <span class="math inline">\(H_0\)</span>?” La posterior è un’<strong>intera distribuzione</strong> che contiene:</p>
+<ul>
+<li>la stima puntuale (media, mediana);</li>
+<li>l’incertezza (ampiezza della distribuzione);</li>
+<li>probabilità direzionali (<span class="math inline">\(P(\theta &gt; 0)\)</span>, <span class="math inline">\(P(\theta &gt; \text{soglia})\)</span>);</li>
+<li>previsioni per nuovi dati (via posterior predictive).</li>
+</ul>
+</section>
+<section id="riepilogo-del-segmento-2" class="slide level2">
+<h2>Riepilogo del Segmento 2</h2>
+<h3 id="competenze-pratiche-attese">Competenze pratiche attese</h3>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Analisi</th>
+<th>Frequentista</th>
+<th>Bayesiano</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Regressione bivariata</td>
+<td><code>lm()</code>, <code>coef()</code>, <code>confint()</code></td>
+<td><code>brm()</code>, <code>as_draws_df()</code></td>
+</tr>
+<tr class="even">
+<td>Test su una media</td>
+<td><code>t.test(x, mu = ...)</code></td>
+<td><code>brm(y ~ 1)</code></td>
+</tr>
+<tr class="odd">
+<td>Confronto due medie</td>
+<td><code>t.test(x, y)</code></td>
+<td><code>brm(y ~ gruppo)</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="competenze-concettuali-attese">Competenze concettuali attese</h3>
+<ul>
+<li>IC frequentista ≠ IC bayesiano (significato diverso).</li>
+<li><span class="math inline">\(P(\text{dati} \mid H_0) \neq P(H_0 \mid \text{dati})\)</span> (fallacia della trasposizione).</li>
+<li>La posterior risponde direttamente alla domanda del ricercatore.</li>
+</ul>
+</section>
+<section id="per-approfondire" class="slide level2">
+<h2>Per approfondire</h2>
+<ul>
+<li><a href="https://ccaudek.github.io/utet-companion/" class="uri">https://ccaudek.github.io/utet-companion/</a> — Tutto il materiale del corso</li>
+</ul>
+
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="esercitazione_ripasso_seg2_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="esercitazione_ripasso_seg2_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="esercitazione_ripasso_seg2_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="esercitazione_ripasso_seg2_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="esercitazione_ripasso_seg2_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="esercitazione_ripasso_seg2_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="esercitazione_ripasso_seg2_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="esercitazione_ripasso_seg2_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="esercitazione_ripasso_seg2_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="esercitazione_ripasso_seg2_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'print',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copiato!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copiato!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

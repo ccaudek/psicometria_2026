@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="it"><head>
+<script src="2_variabili_casuali_files/libs/clipboard/clipboard.min.js"></script>
+<script src="2_variabili_casuali_files/libs/quarto-html/tabby.min.js"></script>
+<script src="2_variabili_casuali_files/libs/quarto-html/popper.min.js"></script>
+<script src="2_variabili_casuali_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="2_variabili_casuali_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="2_variabili_casuali_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="2_variabili_casuali_files/libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.27">
+
+  <meta name="author" content="Corrado Caudek">
+  <title>Variabili casuali</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="2_variabili_casuali_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="2_variabili_casuali_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="2_variabili_casuali_files/libs/revealjs/dist/theme/quarto-32eda4d62c2e25823ebe39cba2bb0a8e.css">
+  <link href="2_variabili_casuali_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="2_variabili_casuali_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="2_variabili_casuali_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="2_variabili_casuali_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" data-background-color="#0072bc" class="quarto-title-block center">
+  <h1 class="title">Variabili casuali</h1>
+  <p class="subtitle">Funzioni di variabili casuali e calcoli in R</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Corrado Caudek <a href="https://orcid.org/0000-0002-1404-0420" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
+</div>
+<div class="quarto-title-author-email">
+<a href="mailto:corrado.caudek@unifi.it">corrado.caudek@unifi.it</a>
+</div>
+        <p class="quarto-title-affiliation">
+            Università degli Studi di Firenze
+          </p>
+    </div>
+</div>
+
+  <p class="date">11 febbraio 2026</p>
+</section>
+<section>
+<section id="trasformare-i-dati-trasformare-le-domande" class="title-slide slide level1 center" data-background-color="#e74c3c" style="color: white;">
+<h1>Trasformare i dati, trasformare le domande</h1>
+
+</section>
+<section id="un-caso-quotidiano" class="slide level2">
+<h2>Un caso quotidiano</h2>
+<p>Un vostro collega vi chiede di confrontare le prestazioni di un paziente su due test diversi:</p>
+<div class="fragment">
+<ul>
+<li><strong>Test di memoria:</strong> punteggio grezzo = 42 (media pop. = 50, DS = 8)</li>
+<li><strong>Test di attenzione:</strong> punteggio grezzo = 28 (media pop. = 35, DS = 5)</li>
+</ul>
+</div>
+<div class="fragment">
+<p>In quale dei due il paziente è “più deficitario”?</p>
+</div>
+</section>
+<section class="slide level2">
+
+<p>Non potete rispondere confrontando 42 con 28 — le scale sono diverse. Dovete <strong>trasformare</strong> i punteggi in una scala comune.</p>
+<div class="fragment">
+<p>Memoria: <span class="math inline">\(z = (42 - 50)/8 = -1.00\)</span>.</p>
+<p>Attenzione: <span class="math inline">\(z = (28 - 35)/5 = -1.40\)</span>.</p>
+</div>
+<div class="fragment">
+<p>Il paziente è più deficitario nell’attenzione. Questa è una <strong>trasformazione di variabile casuale</strong> — il tema di questa seconda parte.</p>
+</div>
+</section>
+<section id="obiettivi-della-lezione" class="slide level2 unnumbered unlisted">
+<h2>Obiettivi della lezione</h2>
+<ol type="1">
+<li>Capire cosa succede quando <strong>trasformiamo</strong> una variabile casuale.</li>
+<li>Calcolare <strong>media</strong> e <strong>varianza</strong> usando R.</li>
+<li>Verificare i calcoli con <strong>simulazioni</strong>.</li>
+</ol>
+</section>
+<section id="unidea-semplice" class="slide level2">
+<h2>Un’idea semplice</h2>
+<p>Se <span class="math inline">\(X\)</span> è una variabile casuale e applichiamo una funzione <span class="math inline">\(g\)</span>, otteniamo una <strong>nuova</strong> variabile casuale:</p>
+<p><span class="math display">\[
+Y = g(X).
+\]</span></p>
+<p><strong>Esempio:</strong> se <span class="math inline">\(X\)</span> è un punteggio grezzo, possiamo creare <span class="math inline">\(Y = 2X + 10\)</span>.</p>
+</section>
+<section id="perché-ci-interessa" class="slide level2">
+<h2>Perché ci interessa?</h2>
+<p>In psicologia trasformiamo spesso i dati:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Trasformazione</th>
+<th>Formula</th>
+<th>Uso tipico</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Punteggio z</td>
+<td><span class="math inline">\(Z = \frac{X - \mu}{\sigma}\)</span></td>
+<td>Standardizzare</td>
+</tr>
+<tr class="even">
+<td>Punteggio T</td>
+<td><span class="math inline">\(T = 50 + 10Z\)</span></td>
+<td>Scale psicometriche</td>
+</tr>
+<tr class="odd">
+<td>Logaritmo</td>
+<td><span class="math inline">\(Y = \log(X)\)</span></td>
+<td>Tempi di reazione</td>
+</tr>
+</tbody>
+</table>
+<p>Ogni volta che calcolate un punteggio z, costruite un T-score, o applicate una trasformazione logaritmica, state creando una nuova variabile casuale a partire da una esistente.</p>
+</section>
+<section id="la-domanda-chiave" class="slide level2">
+<h2>La domanda chiave</h2>
+<blockquote>
+<p>Se conosco la media di <span class="math inline">\(X\)</span>, posso calcolare facilmente la media di <span class="math inline">\(Y = g(X)\)</span>?</p>
+</blockquote>
+<p><strong>Dipende dalla funzione.</strong></p>
+</section>
+<section id="caso-facile-trasformazioni-lineari" class="slide level2">
+<h2>Caso facile: trasformazioni lineari</h2>
+<p>Per <span class="math inline">\(Y = a + bX\)</span>, la risposta è <strong>sì</strong>:</p>
+<p><span class="math display">\[
+\mathbb{E}(a + bX) = a + b \cdot \mathbb{E}(X).
+\]</span></p>
+<p>La media “passa attraverso” la trasformazione lineare.</p>
+</section>
+<section id="esempio-concreto" class="slide level2">
+<h2>Esempio concreto</h2>
+<p>Un test ha media <span class="math inline">\(\mathbb{E}(X) = 25\)</span>.</p>
+<p>Creiamo <span class="math inline">\(Y = 10 + 2X\)</span>.</p>
+<p>Qual è <span class="math inline">\(\mathbb{E}(Y)\)</span>?</p>
+<p><span class="math display">\[
+\mathbb{E}(Y) = 10 + 2 \times 25 = 60.
+\]</span></p>
+</section>
+<section id="caso-difficile-trasformazioni-non-lineari" class="slide level2">
+<h2>Caso difficile: trasformazioni non lineari</h2>
+<p>Per funzioni come <span class="math inline">\(\sqrt{X}\)</span> o <span class="math inline">\(\log(X)\)</span>, <strong>non</strong> possiamo fare lo stesso.</p>
+<p><span class="math display">\[
+\mathbb{E}[\sqrt{X}] \neq \sqrt{\mathbb{E}[X]}.
+\]</span></p>
+<p>La media della radice <strong>non è</strong> la radice della media.</p>
+</section>
+<section id="un-esempio-numerico" class="slide level2">
+<h2>Un esempio numerico</h2>
+<p>Consideriamo tre valori: <span class="math inline">\(X = \{1, 4, 9\}\)</span>, tutti equiprobabili.</p>
+<p><strong>Media di X:</strong></p>
+<p><span class="math display">\[
+\mathbb{E}(X) = \frac{1 + 4 + 9}{3} = \frac{14}{3} \approx 4.67.
+\]</span></p>
+<p><strong>Radice della media:</strong></p>
+<p><span class="math display">\[
+\sqrt{\mathbb{E}(X)} = \sqrt{4.67} \approx 2.16.
+\]</span></p>
+</section>
+<section id="continuiamo-lesempio" class="slide level2">
+<h2>Continuiamo l’esempio</h2>
+<p><strong>Media delle radici:</strong></p>
+<p><span class="math display">\[
+\mathbb{E}(\sqrt{X}) = \frac{\sqrt{1} + \sqrt{4} + \sqrt{9}}{3} = \frac{1 + 2 + 3}{3} = 2.
+\]</span></p>
+<p><strong>Confronto:</strong></p>
+<ul>
+<li><span class="math inline">\(\sqrt{\mathbb{E}(X)} \approx 2.16\)</span>.</li>
+<li><span class="math inline">\(\mathbb{E}(\sqrt{X}) = 2\)</span>.</li>
+</ul>
+<p>I due valori sono <strong>diversi</strong>!</p>
+</section>
+<section id="la-regola-generale-disuguaglianza-di-jensen" class="slide level2">
+<h2>La regola generale (disuguaglianza di Jensen)</h2>
+<p>Per funzioni <strong>concave</strong> (come <span class="math inline">\(\sqrt{x}\)</span> e <span class="math inline">\(\log(x)\)</span>):</p>
+<p><span class="math display">\[
+\mathbb{E}[g(X)] \le g(\mathbb{E}[X]).
+\]</span></p>
+<p>Per funzioni <strong>convesse</strong> (come <span class="math inline">\(x^2\)</span>):</p>
+<p><span class="math display">\[
+\mathbb{E}[g(X)] \ge g(\mathbb{E}[X]).
+\]</span></p>
+</section>
+<section id="perché-questo-conta-per-la-ricerca-psicologica" class="slide level2" data-background-color="#2c3e50" style="color: white;">
+<h2>Perché questo conta per la ricerca psicologica</h2>
+<p>Questa non è solo una curiosità matematica — ha conseguenze pratiche serie.</p>
+<div class="fragment">
+<p><strong>Esempio:</strong> i tempi di reazione (TR) hanno spesso valori estremi che “trascinano” la media aritmetica. La soluzione classica è lavorare con <span class="math inline">\(\log(\text{TR})\)</span>.</p>
+</div>
+</section>
+<section id="perché-questo-conta-per-la-ricerca-psicologica-1" class="slide level2" data-background-color="#2c3e50" style="color: white;">
+<h2>Perché questo conta per la ricerca psicologica</h2>
+<p>Ma se calcolate la media dei log-TR e poi la ritrasformate con l’esponenziale per tornare in millisecondi, <strong>non</strong> ottenete la media dei TR originali. Ottenete la <strong>media geometrica</strong> — che è sistematicamente più bassa.</p>
+<div class="fragment">
+<p>Se non capite questo meccanismo, rischiate di interpretare male i risultati dei vostri studi.</p>
+</div>
+</section></section>
+<section>
+<section id="calcoli-in-r" class="title-slide slide level1 center" data-background-color="#0072bc" style="color: white;">
+<h1>Calcoli in R</h1>
+
+</section>
+<section id="rappresentare-una-distribuzione-discreta-in-r" class="slide level2">
+<h2>Rappresentare una distribuzione discreta in R</h2>
+<p>In R usiamo due vettori:</p>
+<ul>
+<li><code>x</code> = valori possibili;</li>
+<li><code>p</code> = probabilità corrispondenti.</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="co"># Punteggi possibili di uno screening (0=negativo, 1=dubbio, 2=positivo)</span></span>
+<span id="cb1-2"><a href=""></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb1-3"><a href=""></a></span>
+<span id="cb1-4"><a href=""></a><span class="co"># Probabilità</span></span>
+<span id="cb1-5"><a href=""></a>p <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.70</span>, <span class="fl">0.20</span>, <span class="fl">0.10</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="controllo-fondamentale" class="slide level2">
+<h2>Controllo fondamentale</h2>
+<p>Le probabilità devono sommare a 1:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="fu">sum</span>(p)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+</div>
+<p>Se non otteniamo 1, c’è un errore.</p>
+</section>
+<section id="calcolare-la-media-valore-atteso" class="slide level2">
+<h2>Calcolare la media (valore atteso)</h2>
+<p>La media è una <strong>somma pesata</strong>: ogni valore moltiplicato per la sua probabilità.</p>
+<p><span class="math display">\[
+\mathbb{E}(X) = \sum x_i \cdot p(x_i)
+\]</span></p>
+<p>In R:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a>media <span class="ot">&lt;-</span> <span class="fu">sum</span>(x <span class="sc">*</span> p)</span>
+<span id="cb4-2"><a href=""></a>media</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4</code></pre>
+</div>
+</div>
+</section>
+<section id="passo-per-passo" class="slide level2">
+<h2>Passo per passo</h2>
+<p>Cosa fa <code>x * p</code>?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a>x <span class="sc">*</span> p</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0 0.2 0.2</code></pre>
+</div>
+</div>
+<p>Ogni valore è moltiplicato per la sua probabilità.</p>
+<p><code>sum()</code> somma tutti questi prodotti.</p>
+</section>
+<section id="calcolare-la-varianza" class="slide level2">
+<h2>Calcolare la varianza</h2>
+<p>Formula operativa:</p>
+<p><span class="math display">\[
+\mathbb{V}(X) = \mathbb{E}(X^2) - [\mathbb{E}(X)]^2
+\]</span></p>
+<p><strong>Passo 1:</strong> Calcolare <span class="math inline">\(\mathbb{E}(X^2)\)</span></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a>media_quadrati <span class="ot">&lt;-</span> <span class="fu">sum</span>(x<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> p)</span>
+<span id="cb8-2"><a href=""></a>media_quadrati</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6</code></pre>
+</div>
+</div>
+</section>
+<section id="calcolare-la-varianza-continua" class="slide level2">
+<h2>Calcolare la varianza (continua)</h2>
+<p><strong>Passo 2:</strong> Applicare la formula</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>varianza <span class="ot">&lt;-</span> media_quadrati <span class="sc">-</span> media<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb10-2"><a href=""></a>varianza</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.44</code></pre>
+</div>
+</div>
+<p><strong>Passo 3:</strong> La deviazione standard è la radice</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="fu">sqrt</span>(varianza)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.663325</code></pre>
+</div>
+</div>
+</section>
+<section id="riassunto-dei-calcoli" class="slide level2">
+<h2>Riassunto dei calcoli</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="co"># Dati dello screening</span></span>
+<span id="cb14-2"><a href=""></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb14-3"><a href=""></a>p <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.70</span>, <span class="fl">0.20</span>, <span class="fl">0.10</span>)</span>
+<span id="cb14-4"><a href=""></a></span>
+<span id="cb14-5"><a href=""></a><span class="co"># Calcoli</span></span>
+<span id="cb14-6"><a href=""></a>media    <span class="ot">&lt;-</span> <span class="fu">sum</span>(x <span class="sc">*</span> p)</span>
+<span id="cb14-7"><a href=""></a>varianza <span class="ot">&lt;-</span> <span class="fu">sum</span>(x<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> p) <span class="sc">-</span> media<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb14-8"><a href=""></a>sd       <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(varianza)</span>
+<span id="cb14-9"><a href=""></a></span>
+<span id="cb14-10"><a href=""></a><span class="co"># Risultati</span></span>
+<span id="cb14-11"><a href=""></a><span class="fu">c</span>(<span class="at">Media =</span> media, <span class="at">Varianza =</span> varianza, <span class="at">SD =</span> sd)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Media Varianza       SD 
+0.400000 0.440000 0.663325 </code></pre>
+</div>
+</div>
+<p>Questi tre numeri riassumono completamente il comportamento del test: punteggio medio atteso, dispersione e dispersione in unità interpretabili.</p>
+</section>
+<section id="perché-simulare" class="slide level2">
+<h2>Perché simulare?</h2>
+<p>La simulazione ci permette di <strong>verificare</strong> i calcoli teorici.</p>
+<div class="fragment">
+<p><strong>Idea:</strong> generiamo molti dati casuali e calcoliamo la media campionaria. Deve avvicinarsi alla media teorica.</p>
+</div>
+</section>
+<section id="la-funzione-sample" class="slide level2">
+<h2>La funzione <code>sample()</code></h2>
+<p><code>sample()</code> estrae valori casuali da un insieme:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="co"># Estrai 10 valori da x, con le probabilità p</span></span>
+<span id="cb16-2"><a href=""></a><span class="fu">sample</span>(x, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> p)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 2 2 0 1 0 0 1 0 0 1</code></pre>
+</div>
+</div>
+<p><code>replace = TRUE</code> significa “con reinserimento” (possiamo estrarre lo stesso valore più volte).</p>
+</section>
+<section id="simulazione-completa" class="slide level2">
+<h2>Simulazione completa</h2>
+<p>Generiamo 10,000 osservazioni:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a>campione <span class="ot">&lt;-</span> <span class="fu">sample</span>(x, <span class="at">size =</span> <span class="dv">10000</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> p)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Calcoliamo la media del campione:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a><span class="fu">mean</span>(campione)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4047</code></pre>
+</div>
+</div>
+<p>Confrontiamo con la media teorica (0.40).</p>
+</section>
+<section id="confronto-teoria-vs-simulazione" class="slide level2">
+<h2>Confronto teoria vs simulazione</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href=""></a><span class="co"># Media</span></span>
+<span id="cb21-2"><a href=""></a><span class="fu">c</span>(<span class="at">Teorica =</span> media, <span class="at">Simulata =</span> <span class="fu">mean</span>(campione))</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Teorica Simulata 
+  0.4000   0.4047 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a><span class="co"># Varianza (nota: var() usa n-1, quindi è leggermente diversa)</span></span>
+<span id="cb23-2"><a href=""></a><span class="fu">c</span>(<span class="at">Teorica =</span> varianza, <span class="at">Simulata =</span> <span class="fu">var</span>(campione))</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Teorica  Simulata 
+0.4400000 0.4467626 </code></pre>
+</div>
+</div>
+<p>I valori sono molto simili. Questa convergenza non è un caso: è una conseguenza della <strong>legge dei grandi numeri</strong> — con molte osservazioni, la media campionaria converge alla media teorica.</p>
+</section>
+<section id="cosa-ci-insegna-la-simulazione" class="slide level2">
+<h2>Cosa ci insegna la simulazione?</h2>
+<p>La simulazione rende <strong>concreti</strong> due concetti teorici:</p>
+<h3 id="valore-atteso">📌 Valore atteso</h3>
+<p>È il <strong>centro di equilibrio</strong> della variabile casuale. Se ripetiamo l’esperimento molte volte, la media dei risultati si avvicina a questo valore.</p>
+<p>👉 Nella simulazione: <code>mean(campione)</code> ≈ media teorica.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="varianza">📌 Varianza</h3>
+<p>Misura <strong>quanto i risultati oscillano</strong> attorno al valore atteso.</p>
+<p>👉 Nella simulazione: <code>var(campione)</code> ≈ varianza teorica.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="interpretazione-intuitiva">🎯 Interpretazione intuitiva</h3>
+<ul>
+<li>Il <strong>valore atteso</strong> è la media a cui tendono i risultati nel lungo periodo.</li>
+<li>La <strong>varianza</strong> misura quanto sono dispersi i risultati attorno a quella media.</li>
+<li>La simulazione mostra che questi non sono solo calcoli astratti: emergono naturalmente quando ripetiamo l’esperimento molte volte.</li>
+</ul>
+<p>👉 La teoria descrive il comportamento limite.<br>
+👉 La simulazione lo rende osservabile.</p>
+</section>
+<section id="esercizio-1-scala-likert-di-ansia" class="slide level2">
+<h2>Esercizio 1 — Scala Likert di ansia</h2>
+<p>In uno studio psicologico, il livello di ansia dei partecipanti viene misurato su una scala di Likert a 5 punti (da 1 = “Per niente ansioso” a 5 = “Estremamente ansioso”).</p>
+<div class="fragment">
+<p>La distribuzione di probabilità dei punteggi osservati nella popolazione è la seguente:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Punteggio</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Probabilità</td>
+<td>0.10</td>
+<td>0.25</td>
+<td>0.35</td>
+<td>0.20</td>
+<td>0.10</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="fragment">
+<p>Calcola il valore atteso (media) e la deviazione standard della distribuzione.</p>
+</div>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-esercizio-1">Soluzione Esercizio 1</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a><span class="co"># Dati</span></span>
+<span id="cb25-2"><a href=""></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span></span>
+<span id="cb25-3"><a href=""></a>p <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.10</span>, <span class="fl">0.25</span>, <span class="fl">0.35</span>, <span class="fl">0.20</span>, <span class="fl">0.10</span>)</span>
+<span id="cb25-4"><a href=""></a></span>
+<span id="cb25-5"><a href=""></a><span class="co"># Calcoli</span></span>
+<span id="cb25-6"><a href=""></a>media    <span class="ot">&lt;-</span> <span class="fu">sum</span>(x <span class="sc">*</span> p)</span>
+<span id="cb25-7"><a href=""></a>varianza <span class="ot">&lt;-</span> <span class="fu">sum</span>(x<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> p) <span class="sc">-</span> media<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb25-8"><a href=""></a></span>
+<span id="cb25-9"><a href=""></a><span class="fu">c</span>(<span class="at">Media =</span> media, <span class="at">SD =</span> <span class="fu">sqrt</span>(varianza))</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Media       SD 
+2.950000 1.116915 </code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<h3 id="interpretazione">Interpretazione</h3>
+<p>Il punteggio medio è circa 3 (“moderatamente ansioso”), con una variabilità di circa 1.1 punti.</p>
+<p>La distribuzione è leggermente spostata verso il basso rispetto al centro della scala — la maggior parte delle persone riporta un’ansia moderata o bassa.</p>
+</section>
+<section id="esercizio-2-verifica-mediante-simulazione" class="slide level2">
+<h2>Esercizio 2 — Verifica mediante simulazione</h2>
+<p>Genera 5,000 risposte dalla scala Likert dell’esercizio 1.</p>
+<p>Confronta la media simulata e quella teorica.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-esercizio-2">Soluzione Esercizio 2</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a>campione <span class="ot">&lt;-</span> <span class="fu">sample</span>(x, <span class="at">size =</span> <span class="dv">5000</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> p)</span>
+<span id="cb27-2"><a href=""></a></span>
+<span id="cb27-3"><a href=""></a><span class="fu">c</span>(<span class="at">Media_teorica =</span> media, <span class="at">Media_simulata =</span> <span class="fu">mean</span>(campione))</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Media_teorica Media_simulata 
+        2.9500         2.9592 </code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<h3 id="come-funziona-sample">Come funziona <code>sample()</code>?</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a>campione <span class="ot">&lt;-</span> <span class="fu">sample</span>(x, <span class="at">size =</span> <span class="dv">5000</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> p)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Spiegazione:</strong></p>
+<ol type="1">
+<li><strong><code>x = c(1,2,3,4,5)</code></strong> → possibili valori<br>
+</li>
+<li><strong><code>size = 5000</code></strong> → numero di estrazioni<br>
+</li>
+<li><strong><code>replace = TRUE</code></strong> → estrai con reinserimento<br>
+</li>
+<li><strong><code>prob = p</code></strong> → usa le probabilità date</li>
+</ol>
+</section>
+<section class="slide level2">
+
+<h3 id="interpretazione-intuitiva-1">Interpretazione intuitiva</h3>
+<p>Immaginate un’urna molto grande in cui la proporzione delle palline rispecchia le probabilità.</p>
+<p>Se una probabilità è 0.35, circa il 35% delle palline riporta quel numero.</p>
+<p>Estraendo molte volte con reinserimento, le frequenze osservate si avvicineranno a quelle proporzioni.</p>
+</section>
+<section id="esercizio-3-un-test-è-equo" class="slide level2" data-background-color="#2c3e50" style="color: white;">
+<h2>Esercizio 3 — Un test è equo?</h2>
+<p>Questo esercizio risponde a una domanda che vi faranno spesso come psicologi:</p>
+<blockquote>
+<p><em>“Se uno studente risponde a caso, quale punteggio ottiene?”</em></p>
+</blockquote>
+<p>Se il punteggio atteso a caso è positivo, il test <strong>premia</strong> la risposta casuale. Se è zero, il test è <strong>equo</strong>. Se è negativo, il test <strong>penalizza</strong> il caso.</p>
+<p>Capire questo è fondamentale per progettare e valutare test.</p>
+</section>
+<section id="esercizio-3-punteggio-in-un-test-a-scelta-multipla" class="slide level2">
+<h2>Esercizio 3 — Punteggio in un test a scelta multipla</h2>
+<p>Un test è composto da <strong>n = 15 domande</strong>, ciascuna con <strong>5 risposte possibili</strong>, di cui una sola corretta.</p>
+<div class="fragment">
+<p>Lo studente risponde <strong>completamente a caso</strong> a tutte le domande.</p>
+</div>
+<div class="fragment">
+<p>Il sistema di punteggio è:</p>
+<ul>
+<li><strong>+1 punto</strong> per ogni risposta corretta,</li>
+<li><strong>–0.25 punti</strong> per ogni risposta errata,</li>
+<li><strong>0 punti</strong> per ogni risposta non data.</li>
+</ul>
+</div>
+</section>
+<section id="esercizio-3-domande" class="slide level2">
+<h2>Esercizio 3 — Domande</h2>
+<ol type="1">
+<li>Qual è la <strong>distribuzione</strong> del numero di risposte corrette?</li>
+<li>Calcolare il <strong>valore atteso</strong> e la <strong>deviazione standard</strong> del <strong>punteggio totale</strong> ottenuto dallo studente.</li>
+</ol>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-esercizio-3">Soluzione Esercizio 3</h3>
+<p><strong>Distribuzione del numero di risposte corrette</strong></p>
+<p>Il numero di risposte corrette <span class="math inline">\(X\)</span> segue una <strong>distribuzione binomiale</strong>: <span class="math display">\[
+X \sim \text{Binom}(n = 15, \, p = 0.2)
+\]</span> dove <span class="math inline">\(p = 0.2\)</span> è la probabilità di indovinare una singola domanda per caso.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="passo-1-una-singola-domanda">Passo 1: una singola domanda</h3>
+<p>Consideriamo <strong>una sola domanda</strong>.</p>
+<ul>
+<li>Probabilità di rispondere correttamente: <span class="math inline">\(p =  0.2\)</span>.</li>
+<li>Probabilità di rispondere in modo errato: <span class="math inline">\(1 - p = 0.8\)</span>.</li>
+</ul>
+<p>Il punteggio per una domanda è:</p>
+<ul>
+<li><strong>+1</strong> se la risposta è corretta;</li>
+<li><strong>–0.25</strong> se la risposta è errata.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="valore-atteso-per-una-domanda">Valore atteso per una domanda</h3>
+<p>Il <strong>valore atteso del punteggio per una domanda</strong> è quindi:</p>
+<p><span class="math display">\[
+\mathbb{E}(\text{punteggio per una domanda})
+= 1 \cdot 0.2 + (-0.25) \cdot 0.8.
+\]</span></p>
+<p>Calcoliamo:</p>
+<p><span class="math display">\[
+\mathbb{E} = 0.2 - 0.2 = 0.
+\]</span></p>
+<p><strong>In media, una risposta data a caso vale 0 punti.</strong></p>
+</section>
+<section class="slide level2">
+
+<h3 id="passo-2-tutte-le-15-domande">Passo 2: tutte le 15 domande</h3>
+<p>Il punteggio totale (<span class="math inline">\(S\)</span>) è la <strong>somma dei punteggi delle singole domande</strong>.</p>
+<p>Poiché il valore atteso di ogni domanda è 0, per la <strong>linearità del valore atteso</strong> il valore atteso totale è:</p>
+<p><span class="math display">\[
+\mathbb{E}(S) = 15 \times 0 = 0.
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<h3 id="risultato-finale-valore-atteso">Risultato finale (valore atteso)</h3>
+<p><span class="math display">\[
+\boxed{\mathbb{E}(S) = 0}
+\]</span></p>
+<p><strong>Uno studente che risponde completamente a caso non guadagna né perde punti in media.</strong></p>
+</section>
+<section class="slide level2">
+
+<p>Questo tipo di punteggio è detto <strong>“corretto per il caso”</strong>: il sistema di penalizzazione è costruito apposta per rendere <strong>neutrale</strong> il rispondere a caso.</p>
+<div class="fragment">
+<p>La penalità di</p>
+<p><span class="math display">\[-1/(k-1),\]</span> dove <span class="math inline">\(k\)</span> è il numero di alternative (qui <span class="math inline">\(-1/4 = -0.25\)</span>) è la formula generale che garantisce questa proprietà.</p>
+</div>
+</section>
+<section id="esercizio-4-simulazione-del-punteggio-del-test" class="slide level2">
+<h2>Esercizio 4 — Simulazione del punteggio del test</h2>
+<p>Nell’Esercizio 3 abbiamo calcolato teoricamente che:</p>
+<ul>
+<li><strong>punteggio atteso = 0</strong>,</li>
+<li><strong>deviazione standard ≈ 1.94</strong>.</li>
+</ul>
+<p>Ora vogliamo verificare questi risultati con una simulazione.</p>
+<p>Simuliamo <strong>5,000 studenti</strong> che rispondono completamente a caso a un test di 15 domande.</p>
+</section>
+<section id="qual-è-il-modello-probabilistico" class="slide level2">
+<h2>1️⃣ Qual è il modello probabilistico?</h2>
+<p>Ogni domanda:</p>
+<ul>
+<li>ha 5 alternative,</li>
+<li>solo 1 è corretta,</li>
+<li>quindi la probabilità di rispondere correttamente a caso è:</li>
+</ul>
+<p><span class="math display">\[
+p = 0.2.
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p>Il numero di risposte corrette <span class="math inline">\(X\)</span> su 15 domande segue quindi una:</p>
+<p><span class="math display">\[
+X \sim \text{Binom}(n = 15, p = 0.2).
+\]</span></p>
+<p>👉 <span class="math inline">\(X\)</span> è la nostra <strong>variabile casuale di base</strong>.</p>
+</section>
+<section id="simuliamo-il-numero-di-risposte-corrette" class="slide level2">
+<h2>2️⃣ Simuliamo il numero di risposte corrette</h2>
+<p>Simuliamo 5,000 studenti.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href=""></a>num_corrette <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">5000</span>, <span class="at">size =</span> <span class="dv">15</span>, <span class="at">prob =</span> <span class="fl">0.2</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Cosa fa questo comando?</p>
+<ul>
+<li>genera 5,000 valori,</li>
+<li>ognuno rappresenta il numero di risposte corrette di uno studente,</li>
+<li>ciascun valore è estratto da una Binomiale(15, 0.2).</li>
+</ul>
+<p>Ora abbiamo 5,000 possibili valori di <span class="math inline">\(X\)</span>.</p>
+</section>
+<section class="slide level2">
+
+<p>I primi 30 valori sono:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href=""></a>num_corrette[<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 2 2 2 2 4 3 6 1 2 3 2 1 1 2 3 3 5 4 3 4 4 2 3 2 3 2 5 2 4 1</code></pre>
+</div>
+</div>
+</section>
+<section id="come-si-calcola-il-punteggio" class="slide level2">
+<h2>3️⃣ Come si calcola il punteggio?</h2>
+<p>Regola del test:</p>
+<ul>
+<li>+1 punto per risposta corretta,</li>
+<li>−0.25 punti per risposta sbagliata,</li>
+<li>15 domande totali.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>Se uno studente ha <span class="math inline">\(X\)</span> risposte corrette:</p>
+<ul>
+<li>risposte sbagliate = <span class="math inline">\(15 - X\)</span>.</li>
+</ul>
+<p>Il punteggio totale è:</p>
+<p><span class="math display">\[
+\text{Punteggio} = 1 \cdot X - 0.25 \cdot (15 - X).
+\]</span></p>
+</section>
+<section id="semplifichiamo-la-formula" class="slide level2">
+<h2>4️⃣ Semplifichiamo la formula</h2>
+<p><span class="math display">\[
+\text{Punteggio} = X - 0.25(15 - X).
+\]</span></p>
+<p><span class="math display">\[
+= X - 3.75 + 0.25X
+\]</span></p>
+<p><span class="math display">\[
+= 1.25X - 3.75.
+\]</span></p>
+<p>👉 Il punteggio è una <strong>trasformazione lineare</strong> di <span class="math inline">\(X\)</span>.</p>
+</section>
+<section class="slide level2">
+
+<p>Questo è importante perché:</p>
+<p>Se <span class="math inline">\(Y = aX + b\)</span>, allora</p>
+<p><span class="math display">\[
+E(Y) = aE(X) + b,
+\]</span></p>
+<p><span class="math display">\[
+Var(Y) = a^2 Var(X).
+\]</span></p>
+</section>
+<section id="calcoliamo-i-punteggi-simulati" class="slide level2">
+<h2>5️⃣ Calcoliamo i punteggi simulati</h2>
+<p>Applichiamo la formula a tutti i 5,000 studenti:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a>punteggi_totali <span class="ot">&lt;-</span> <span class="fl">1.25</span> <span class="sc">*</span> num_corrette <span class="sc">-</span> <span class="fl">3.75</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Ora abbiamo 5,000 punteggi simulati.</p>
+<p>I primi valori sono:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href=""></a>punteggi_totali[<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>]</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] -1.25 -1.25 -1.25 -1.25  1.25  0.00  3.75 -2.50 -1.25  0.00 -1.25 -2.50
+[13] -2.50 -1.25  0.00  0.00  2.50  1.25  0.00  1.25  1.25 -1.25  0.00 -1.25
+[25]  0.00 -1.25  2.50 -1.25  1.25 -2.50</code></pre>
+</div>
+</div>
+</section>
+<section id="confronto-tra-teoria-e-simulazione" class="slide level2">
+<h2>Confronto tra teoria e simulazione</h2>
+<p>Valori teorici:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href=""></a>media_teorica <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb36-2"><a href=""></a>sd_teorica <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fl">3.75</span>)  <span class="co"># varianza teorica = 3.75</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Valori simulati:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href=""></a><span class="fu">data.frame</span>(</span>
+<span id="cb37-2"><a href=""></a>  <span class="at">Statistica =</span> <span class="fu">c</span>(<span class="st">"Media"</span>, <span class="st">"Deviazione Standard"</span>),</span>
+<span id="cb37-3"><a href=""></a>  <span class="at">Teorica =</span> <span class="fu">c</span>(media_teorica, sd_teorica),</span>
+<span id="cb37-4"><a href=""></a>  <span class="at">Simulata =</span> <span class="fu">c</span>(<span class="fu">mean</span>(punteggi_totali), <span class="fu">sd</span>(punteggi_totali))</span>
+<span id="cb37-5"><a href=""></a>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           Statistica  Teorica  Simulata
+1               Media 0.000000 -0.040750
+2 Deviazione Standard 1.936492  1.949368</code></pre>
+</div>
+</div>
+<p>👉 I risultati della simulazione sono molto vicini ai valori teorici.</p>
+<p>Questo è un esempio concreto della <strong>Legge dei Grandi Numeri</strong>.</p>
+</section>
+<section id="visualizziamo-la-distribuzione" class="slide level2">
+<h2>Visualizziamo la distribuzione</h2>
+
+<img data-src="2_variabili_casuali_files/figure-revealjs/unnamed-chunk-23-1.png" width="960" class="r-stretch"><p>La linea rossa indica la media teorica (0).</p>
+</section>
+<section id="interpretazione-finale" class="slide level2">
+<h2>Interpretazione finale</h2>
+<p>La simulazione ci mostra tre cose importanti:</p>
+<ul>
+<li><p>Il valore atteso è il centro della distribuzione. La media dei punteggi simulati è circa 0.</p></li>
+<li><p>La deviazione standard misura la dispersione. I punteggi oscillano attorno a 0 con variabilità ≈ 1.94.</p></li>
+<li><p>Anche chi risponde a caso può fare punti positivi. Ma punteggi molto alti sono rari.</p></li>
+</ul>
+<p>👉 Questo è il principio dello scoring: il sistema deve penalizzare il caso abbastanza da distinguere fortuna da competenza.</p>
+</section>
+<section id="messaggio-chiave" class="slide level2">
+<h2>Messaggio chiave</h2>
+<ul>
+<li>La teoria ci dà le formule per la media e la varianza.</li>
+<li>La simulazione ci mostra che quelle formule descrivono davvero ciò che accade.</li>
+<li>Il punteggio è una trasformazione lineare di una binomiale.</li>
+<li>Media e varianza si trasformano in modo prevedibile.</li>
+</ul>
+<p>La probabilità non è solo calcolo simbolico:<br>
+è una descrizione quantitativa del comportamento nel lungo periodo.</p>
+</section>
+<section id="esercizio-5-la-scala-t-in-pratica" class="slide level2">
+<h2>Esercizio 5 — La scala T in pratica</h2>
+<p>I punteggi <span class="math inline">\(X\)</span> a un test di personalità hanno:</p>
+<ul>
+<li>media <span class="math inline">\(\mathbb{E}(X) = 25\)</span>;</li>
+<li>deviazione standard <span class="math inline">\(\mathrm{SD}(X) = 5\)</span>.</li>
+</ul>
+<p>Il punteggio viene trasformato nella <strong>scala T</strong>:</p>
+<p><span class="math display">\[
+T = 50 + 10 \cdot \frac{X - 25}{5}.
+\]</span></p>
+<p><strong>Domanda:</strong> qual è la <strong>media</strong> di <span class="math inline">\(T\)</span>?</p>
+</section>
+<section class="slide level2">
+
+<h3 id="soluzione-esercizio-5">Soluzione Esercizio 5</h3>
+<p>Passo 1: semplificare la formula.</p>
+<p><span class="math display">\[
+T = 50 + 10 \cdot \frac{X - 25}{5}
+= 50 + 2(X - 25).
+\]</span></p>
+<p>Sviluppiamo il prodotto:</p>
+<p><span class="math display">\[
+T = 50 + 2X - 50 = 2X.
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<h3 id="passo-2-usare-la-regola-del-valore-atteso">Passo 2: usare la regola del valore atteso</h3>
+<p>Per una trasformazione lineare vale:</p>
+<p><span class="math display">\[
+\mathbb{E}(a + bX) = a + b\,\mathbb{E}(X).
+\]</span></p>
+<p>Qui <span class="math inline">\(T = 2X\)</span>, quindi:</p>
+<p><span class="math display">\[
+\mathbb{E}(T) = 2 \cdot \mathbb{E}(X) = 2 \cdot 25 = 50.
+\]</span></p>
+<p><span class="math display">\[
+\boxed{\mathbb{E}(T) = 50}
+\]</span></p>
+<p>La media della scala <strong>T</strong> è 50 — per costruzione.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="verifica-con-simulazione">Verifica con simulazione</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href=""></a>X <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">10000</span>, <span class="at">mean =</span> <span class="dv">25</span>, <span class="at">sd =</span> <span class="dv">5</span>)</span>
+<span id="cb39-2"><a href=""></a>T_score <span class="ot">&lt;-</span> <span class="dv">50</span> <span class="sc">+</span> <span class="dv">10</span> <span class="sc">*</span> (X <span class="sc">-</span> <span class="dv">25</span>) <span class="sc">/</span> <span class="dv">5</span></span>
+<span id="cb39-3"><a href=""></a></span>
+<span id="cb39-4"><a href=""></a><span class="fu">c</span>(<span class="at">Media_T =</span> <span class="fu">mean</span>(T_score), <span class="at">SD_T =</span> <span class="fu">sd</span>(T_score))</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Media_T     SD_T 
+50.00776 10.07689 </code></pre>
+</div>
+</div>
+<p>La media è circa <strong>50</strong> e la deviazione standard circa <strong>10</strong>: è proprio la <strong>scala T standard</strong>.</p>
+</section>
+<section id="perché-la-scala-t-è-così-utilizzata-in-psicologia" class="slide level2" data-background-color="#2c3e50" style="color: white;">
+<h2>Perché la scala T è così utilizzata in psicologia?</h2>
+<p>La scala T (media = 50, DS = 10) è usata in molti test clinici e di personalità: MMPI-2, NEO-PI-R, CBCL, SCL-90-R e molti altri.</p>
+<div class="fragment">
+<p>Ora sapete <strong>esattamente</strong> cosa significa “un T-score di 65”: è 1.5 deviazioni standard sopra la media, cioè al 93° percentile. E sapete anche <em>perché</em> la trasformazione funziona: è una trasformazione lineare e le proprietà del valore atteso e della varianza garantiscono che la nuova scala abbia i parametri desiderati.</p>
+</div>
+</section>
+<section id="perché-la-scala-t-è-così-utilizzata-in-psicologia-1" class="slide level2" data-background-color="#2c3e50" style="color: white;">
+<h2>Perché la scala T è così utilizzata in psicologia?</h2>
+<p>Molti manuali di test indicano un <strong>cut-off a T = 65</strong> (1.5 DS sopra la media) come soglia di “significatività clinica” — ora sapete che questa soglia lascia sopra circa il <strong>6.7%</strong> della popolazione normativa.</p>
+</section>
+<section id="riepilogo-comandi-r-essenziali" class="slide level2">
+<h2>Riepilogo: comandi R essenziali</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Operazione</th>
+<th>Codice R</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Creare vettore</td>
+<td><code>x &lt;- c(1, 2, 3)</code></td>
+</tr>
+<tr class="even">
+<td>Somma</td>
+<td><code>sum(x)</code></td>
+</tr>
+<tr class="odd">
+<td>Media campionaria</td>
+<td><code>mean(x)</code></td>
+</tr>
+<tr class="even">
+<td>Varianza campionaria</td>
+<td><code>var(x)</code></td>
+</tr>
+<tr class="odd">
+<td>Deviazione standard</td>
+<td><code>sd(x)</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="riepilogo-comandi-r-essenziali-1" class="slide level2">
+<h2>Riepilogo: comandi R essenziali</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Operazione</th>
+<th>Codice R</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Campionamento</td>
+<td><code>sample(x, n, replace=TRUE, prob=p)</code></td>
+</tr>
+<tr class="even">
+<td>Binomiale</td>
+<td><code>rbinom(n, size, prob)</code></td>
+</tr>
+<tr class="odd">
+<td>Normale</td>
+<td><code>rnorm(n, mean, sd)</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="il-percorso-fin-qui" class="slide level2" data-background-color="#2c3e50" style="color: white;">
+<h2>Il percorso fin qui</h2>
+<p>Nelle ultime lezioni abbiamo costruito una cassetta degli attrezzi completa:</p>
+<div class="fragment">
+<p><strong>Lezioni 5-6</strong> — Il linguaggio della probabilità e l’aggiornamento bayesiano.</p>
+<p><strong>Lezione 8</strong> — Modelli per conteggi: Bernoulli, Binomiale, Poisson.</p>
+<p><strong>Lezione 9</strong> — Modelli per misure continue: Normale e Beta.</p>
+<p><strong>Lezione 10 (oggi)</strong> — Come sintetizzare e trasformare le distribuzioni: valore atteso, varianza, funzioni di v.c.</p>
+</div>
+</section>
+<section id="il-percorso-fin-qui-1" class="slide level2" data-background-color="#2c3e50" style="color: white;">
+<h2>Il percorso fin qui</h2>
+<p>Il passo successivo è capire come due variabili <strong>variano insieme</strong> — la covarianza e la correlazione — che sono alla base di quasi tutta la statistica psicologica, dalla regressione all’analisi fattoriale.</p>
+</section>
+<section id="riepilogo-concettuale" class="slide level2">
+<h2>Riepilogo concettuale</h2>
+<ol type="1">
+<li><p><strong>Trasformare</strong> una v.c. crea una nuova v.c. con proprietà diverse.</p></li>
+<li><p>Per trasformazioni <strong>lineari</strong>: <span class="math inline">\(\mathbb{E}(a + bX) = a + b\mathbb{E}(X)\)</span>.</p></li>
+<li><p>Per trasformazioni <strong>non lineari</strong>: <span class="math inline">\(\mathbb{E}[g(X)] \neq g(\mathbb{E}[X])\)</span>.</p></li>
+<li><p><strong>Media</strong> = somma pesata: <code>sum(x * p)</code>.</p></li>
+<li><p><strong>Varianza</strong> = <span class="math inline">\(\mathbb{E}(X^2) - [\mathbb{E}(X)]^2\)</span>.</p></li>
+<li><p>Le <strong>simulazioni</strong> verificano i calcoli teorici.</p></li>
+</ol>
+</section>
+<section id="per-la-prossima-lezione" class="slide level2">
+<h2>Per la prossima lezione</h2>
+<p>Materiale di studio: https://ccaudek.github.io/utet-prob/</p>
+<p>Capitoli da rivedere:</p>
+<ul>
+<li>Cap. 6: Variabili casuali</li>
+<li>Cap. 8: Proprietà delle v.c.</li>
+<li>Cap. 9: Covarianza e correlazione</li>
+</ul>
+<p><strong>Prossimo argomento:</strong> distribuzioni congiunte e covarianza.</p>
+
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="2_variabili_casuali_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="2_variabili_casuali_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="2_variabili_casuali_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="2_variabili_casuali_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="2_variabili_casuali_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="2_variabili_casuali_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="2_variabili_casuali_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="2_variabili_casuali_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="2_variabili_casuali_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="2_variabili_casuali_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'print',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copiato!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copiato!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
